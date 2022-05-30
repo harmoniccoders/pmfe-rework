@@ -1,0 +1,2388 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FlyPal",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Admin/token": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admintoken",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/create": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admincreate",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/list": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminlist",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/metrics": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminmetrics",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardMetricsViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardMetricsViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardMetricsViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/delete/{email}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admindelete{email}",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/complaints/decline/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admincomplaintsdecline{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/complaints/resolve/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admincomplaintsresolve{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/complain/list/user/{userId}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admincomplainlistuser{userId}",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/user/get/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminuserget{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/chart/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminchartusers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthlyUserViewIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthlyUserViewIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthlyUserViewIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/chart/complaints/pending": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminchartcomplaintspending",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/chart/complaints/resolved": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminchartcomplaintsresolved",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyComplaintCountIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/create": {
+      "post": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintscreate",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplaintsModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplaintsModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplaintsModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplaintsModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/list/user": {
+      "get": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintslistuser",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/list": {
+      "get": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintslist",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/get/{complaintsId}": {
+      "get": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintsget{complaintsId}",
+        "parameters": [
+          {
+            "name": "complaintsId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/categories/create": {
+      "post": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintscategoriescreate",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NameModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NameModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NameModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NameModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/categories/list": {
+      "get": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintscategorieslist",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsCategoryIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userregister",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/User/token": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Usertoken",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/verifyUser/{token}/{email}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "UserverifyUser{token}{email}",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/delete/{email}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userdelete{email}",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/reset/initiate/{email}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userresetinitiate{email}",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/reset/complete": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userresetcomplete",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordReset"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordReset"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordReset"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordReset"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/list": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userlist",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/search/{search}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Usersearch{search}",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewIEnumerableStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewIEnumerableStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewIEnumerableStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/getbyid": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Usergetbyid",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/update": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userupdate",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/password/update": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userpasswordupdate",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginModel": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserMetricsView": {
+        "type": "object",
+        "properties": {
+          "pendingComplaints": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resolvedComplaints": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "declinedComplaints": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "profilePhotoReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/UserMetricsView"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserView"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Register": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewPagedCollection": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "previous": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "last": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserView"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewPagedCollectionStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserViewPagedCollection"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DashboardMetricsView": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newUsers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resolvedComplaints": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pendingComplaints": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "declinedComplaints": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DashboardMetricsViewStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/DashboardMetricsView"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserView"
+          },
+          "complaintsCategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "departureLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "finalDestination": {
+            "type": "string",
+            "nullable": true
+          },
+          "departureDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "connectingFlights": {
+            "type": "boolean"
+          },
+          "arrivalTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "notificationPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "delayedFlight": {
+            "type": "string",
+            "nullable": true
+          },
+          "airline": {
+            "type": "string",
+            "nullable": true
+          },
+          "flightNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInformation": {
+            "type": "string",
+            "nullable": true
+          },
+          "mandateFormReference": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsViewStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ComplaintsView"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsViewPagedCollection": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "previous": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "last": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComplaintsView"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsViewPagedCollectionStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ComplaintsViewPagedCollection"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MonthlyUserView": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MonthlyUserViewIEnumerableStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyUserView"
+            },
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyComplaintCount": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyComplaintCountIEnumerableStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailyComplaintCount"
+            },
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsModel": {
+        "type": "object",
+        "properties": {
+          "complaintsCategoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "departureLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "finalDestination": {
+            "type": "string",
+            "nullable": true
+          },
+          "departureDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "connectingFlights": {
+            "type": "boolean"
+          },
+          "connectingFlightAirLine": {
+            "type": "string",
+            "nullable": true
+          },
+          "connectingFlightNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "boardingPass": {
+            "type": "string",
+            "nullable": true
+          },
+          "arrivalTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "notificationPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "delayedFlight": {
+            "type": "string",
+            "nullable": true
+          },
+          "airline": {
+            "type": "string",
+            "nullable": true
+          },
+          "flightNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalInformation": {
+            "type": "string",
+            "nullable": true
+          },
+          "mandateFormReference": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsViewIEnumerableStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComplaintsView"
+            },
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NameModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsCategory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsCategoryStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ComplaintsCategory"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComplaintsCategoryIEnumerableStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComplaintsCategory"
+            },
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PasswordReset": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewIEnumerableStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserView"
+            },
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "extention": {
+            "type": "string",
+            "nullable": true
+          },
+          "base64String": {
+            "type": "string",
+            "nullable": true
+          },
+          "propertyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isImage": {
+            "type": "boolean"
+          },
+          "isVideo": {
+            "type": "boolean"
+          },
+          "isDocument": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "profilePhotoReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "profilePicture": {
+            "$ref": "#/components/schemas/MediaModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PasswordResetModel": {
+        "type": "object",
+        "properties": {
+          "existingPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}
