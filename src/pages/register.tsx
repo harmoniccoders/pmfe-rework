@@ -18,6 +18,8 @@ import * as yup from 'yup';
 import { Register } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+import { useToasts } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -40,11 +42,26 @@ const signupform = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const { addToast } = useToasts();
+  const router = useRouter();
 
   const onSubmit = async (data: Register) => {
     try {
-      const result = await RegisterUser(undefined, data);
+      const result = await (await RegisterUser(undefined, data)).data;
       console.log({ result });
+      if (result.status) {
+        addToast('User Successfully Created', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        router.push('/');
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
     } catch (err) {}
   };
   return (
@@ -118,6 +135,7 @@ const signupform = () => {
                 error={errors.password}
                 defaultValue=""
                 register={register}
+                type="password"
               />
               <PrimaryInput<Register>
                 label="Repeat your password"
@@ -125,8 +143,13 @@ const signupform = () => {
                 error={errors.password}
                 defaultValue=""
                 register={register}
+                type="password"
               />
-              <ButtonComponent content="sign up" isValid={isValid} />
+              <ButtonComponent
+                content="sign up"
+                isValid={isValid}
+                loading={loading}
+              />
             </form>
 
             <Box></Box>
