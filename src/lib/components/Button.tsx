@@ -3,9 +3,10 @@ import React from 'react';
 
 interface Props {
   content: string;
+  isValid: boolean;
 }
 
-const ButtonComponent = ({ content }: Props) => {
+const ButtonComponent = ({ content, isValid }: Props) => {
   return (
     <Box w="100%" h="50px" mt="25px" mb="25px">
       <Button
@@ -14,6 +15,7 @@ const ButtonComponent = ({ content }: Props) => {
         h="100%"
         variant="solid"
         textTransform="capitalize"
+        disabled={isValid ? false : true}
       >
         {content}
       </Button>
