@@ -11,7 +11,9 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
-  return <></>;
+  return <>
+  {children}
+  </>;
 };
 
 export default Layout;
