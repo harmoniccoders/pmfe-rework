@@ -4,13 +4,13 @@ const Input: DeepPartial<Theme['components']['Input']> = {
   variants: {
     outline: {
       field: {
-        borderRadius: '5px',
+        borderRadius: '4px',
         background: 'white',
         boxSizing: 'border-box',
-        height: '4rem',
-        borderColor: 'brand.100',
+        height: '3.12rem',
+        borderColor: 'brand.50',
         border: '1px solid',
-        boxShadow: '0px 0px 9px rgba(0, 127, 130, 0.37)',
+        // boxShadow: '0px 0px 9px rgba(0, 127, 130, 0.37)',
         _focus: {
           borderColor: 'brand.200',
           border: '1px solid',
@@ -18,6 +18,9 @@ const Input: DeepPartial<Theme['components']['Input']> = {
         _placeholder: {
           fontSize: '.8rem',
         },
+        _valid: {
+          backgroundColor: 'red'
+        }
       },
     },
     filled: {
