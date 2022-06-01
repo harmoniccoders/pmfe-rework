@@ -2,7 +2,7 @@ import {
   Box,
   Button,
   Heading,
-  HStack,
+  Stack,
   Image,
   Text,
   VStack,
@@ -17,24 +17,31 @@ interface Props {
 
 const Service = ({ title, img, button, text }: Props) => {
   return (
-    <HStack spacing="5" boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)" p="4" rounded="md">
-      <Box>
-        <Image src={img} alt={title} maxW="240px" />
+    <Stack direction={['column', 'row']}
+      spacing="5"
+      maxW="550px"
+      w="full"
+      boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
+      p="4"
+      rounded="md"
+    >
+      <Box alignSelf="center">
+        <Image src={img} alt={title} maxW="240px" w="full" />
       </Box>
       <VStack spacing="3" align="start">
-        <Heading fontSize="xl">{title}</Heading>
-        <Text fontSize="14">{text}</Text>
+        <Heading fontSize={["xl", '2xl' ]}>{title}</Heading>
+        <Text fontSize="sm">{text}</Text>
         <Button
           variant="outline"
           fontSize="14"
           w="full"
-          colorScheme="blue"
+          colorScheme="gray"
           color="gray"
         >
           {button}
         </Button>
       </VStack>
-    </HStack>
+    </Stack>
   );
 };
 

@@ -17,18 +17,14 @@ const Hero = () => {
       spacing="5"
       justify="center"
     >
-      <Text
-        color="white"
-        fontSize="20"
-        // textShadow="0 2px 11px 0 rgba(0,0,0,0.65)"
-        textShadow="xl"
-      >
+      <Text color="white" fontSize="2xl" textShadow="1px 2px 1px #000000">
         FInd property to rent or buy
       </Text>
-      <InputGroup w="70%">
+      <InputGroup w={{ base: '90%',md: '70%', lg:'50%'}} shadow="md">
         <Input
           type="text"
           border="none"
+          _placeholder={{ fontSize: "md" }}
           placeholder="Enter an address, state, neighbourhood or area"
         />
         <InputRightElement children={<BsSearch color="blue" />} />

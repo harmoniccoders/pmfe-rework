@@ -1,10 +1,15 @@
 import {
   HStack,
-  Stack,
   Link,
   Image,
   useDisclosure,
   IconButton,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerBody,
+  VStack,
+  DrawerHeader,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import {BiMenu} from 'react-icons/bi'
@@ -17,7 +22,8 @@ const Header = () => {
   return (
     <HStack
       align="center"
-      justify="space-around"
+      justify={['space-between', 'space-around']}
+      px={[3, 0]}
       py="5"
     >
       <Image
@@ -25,36 +31,92 @@ const Header = () => {
         display={{ md: 'none' }}
         justifySelf="center"
         alt="logo"
-        w="150px"
+        w="200px"
       />
       <IconButton
         size={'md'}
-        icon={isOpen ? <BiMenu /> : <BiMenu />}
+        w="fit-content"
+        variant="ghost"
+        pl={2}
+        fontSize="24"
+        icon={<BiMenu />}
         aria-label={'Open Menu'}
         display={{ md: 'none' }}
-        onClick={isOpen ? onClose : onOpen}
+        onClick={onOpen}
       />
-      <HStack spacing="5">
+      <HStack spacing="5" display={['none', 'block']}>
         {left.map((item) => (
           <NextLink key={item} href={`/${item}`} passHref>
-            <Link textTransform="capitalize">{item}</Link>
+            <Link
+              textTransform="capitalize"
+              _hover={{ color: 'blue' }}
+              fontWeight="bold"
+            >
+              {item}
+            </Link>
           </NextLink>
         ))}
       </HStack>
       <Image
         src="/Logo (1).png"
-        display={{ base: 'none', md: 'block' }}
+        display={['none', 'block']}
         justifySelf="center"
         alt="logo"
         w="200px"
       />
-      <HStack spacing="5">
+      <HStack spacing="5" display={['none', 'block']}>
         {right.map((item) => (
           <NextLink key={item} href={`/${item}`} passHref>
-            <Link textTransform="capitalize">{item}</Link>
+            <Link
+              textTransform="capitalize"
+              _hover={{ color: 'blue' }}
+              fontWeight="bold"
+            >
+              {item}
+            </Link>
           </NextLink>
         ))}
       </HStack>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">
+            <Image
+              src="/Logo (1).png"
+              display={{ md: 'none' }}
+              justifySelf="center"
+              alt="logo"
+              w="200px"
+            />
+          </DrawerHeader>
+          <DrawerBody>
+            <VStack spacing="3" align="start" mt="3">
+              {left.map((item) => (
+                <NextLink key={item} href={`/${item}`} passHref>
+                  <Link
+                    textTransform="capitalize"
+                    _hover={{ color: 'blue' }}
+                    fontWeight="bold"
+                  >
+                    {item}
+                  </Link>
+                </NextLink>
+              ))}
+              {right.map((item) => (
+                <NextLink key={item} href={`/${item}`} passHref>
+                  <Link
+                    textTransform="capitalize"
+                    _hover={{ color: 'blue' }}
+                    fontWeight="bold"
+                  >
+                    {item}
+                  </Link>
+                </NextLink>
+              ))}
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </HStack>
   );
 };

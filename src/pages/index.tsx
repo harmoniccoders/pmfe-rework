@@ -1,8 +1,19 @@
 import axios from 'axios';
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  SimpleGrid,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import Header from 'lib/components/Header';
 import Hero from 'lib/components/home/Hero';
 import Service from 'lib/components/home/Service';
+import Footer from 'lib/components/Footer';
 
 const services = [
   {
@@ -34,11 +45,32 @@ const index = () => (
   <Box>
     <Header />
     <Hero />
-    <SimpleGrid columns={[1, 2]} px={[5, 20]} py={[5, 14]} gap="8">
+    <Flex flexWrap="wrap" justifyContent="center" py={[5, 14]} px="5" gap="8">
       {services.map((service) => (
         <Service key={service.title} {...service} />
       ))}
-    </SimpleGrid>
+    </Flex>
+    <Stack
+      direction={{base: 'column', lg: 'row' }}
+      align="center"
+      justify="center"
+      bg="green.50"
+      minH="400px"
+      spacing="10"
+    >
+      <VStack>
+        <Heading alignSelf="start">Get the app!</Heading>
+        <Text>
+          Download our Android or iOS app and take <br /> PropertyMataaz with
+          you wherever you go.
+        </Text>
+      </VStack>
+      <Stack direction={['column', 'row']} spacing="5">
+        <Image src="/iOS+App+Store+badge-min.png" alt="apple" />
+        <Image src="/Google+Play+badge-min.png" alt="google" />
+      </Stack>
+    </Stack>
+    <Footer />
   </Box>
 );
 
