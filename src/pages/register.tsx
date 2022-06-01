@@ -28,7 +28,7 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
   password: yup.string().min(8).max(16).required(),
-  // confirmPassword: yup.string().oneOf([yup.ref('create_password'), null]),
+  phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
 });
 
 const signupform = () => {
@@ -54,7 +54,7 @@ const signupform = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/');
+        router.push('/verify');
         return;
       }
       addToast(result.message, {
@@ -62,7 +62,9 @@ const signupform = () => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <Box border="2px solid green" width="100%">
@@ -130,15 +132,14 @@ const signupform = () => {
                 register={register}
               />
               <PrimaryInput<Register>
-                label="Create a Password"
-                name="password"
-                error={errors.password}
+                label="mobile number 2"
+                name="phoneNumber1"
+                error={errors.phoneNumber1}
                 defaultValue=""
                 register={register}
-                type="password"
               />
               <PrimaryInput<Register>
-                label="Repeat your password"
+                label="Create a Password"
                 name="password"
                 error={errors.password}
                 defaultValue=""

@@ -1,20 +1,5 @@
-import {
-  FormControl,
-  FormLabel,
-  GridItem,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Text,
-} from '@chakra-ui/react';
-import React, { useState } from 'react';
-import {
-  FieldError,
-  UseFormRegister,
-  RegisterOptions,
-  Path,
-} from 'react-hook-form';
+import { FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { FieldError, UseFormRegister, Path } from 'react-hook-form';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
   name: Path<TFormValues>;
@@ -50,18 +35,7 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
   error,
   disableLabel = false,
   placeholder = '',
-  variant = 'outline',
-  borderColor = 'gray.300',
-  borderRadius = 'md',
-  placeholderColor = 'gray.300',
   defaultValue,
-  format,
-  value,
-  icon,
-  testId,
-  w,
-  padding,
-  onChange,
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl>
@@ -71,7 +45,7 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
         pos="relative"
         top={5}
         left={4}
-        minW="90px"
+        width="fit-content"
         zIndex={3}
         bg="brand.200"
       >
