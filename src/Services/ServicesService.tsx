@@ -37,3 +37,10 @@
 //       ? `${process.env.NEXT_PUBLIC_FILE_SERVICE_BASEURL}/api/file/${logoReference}/${process.env.NEXT_PUBLIC_FILE_SERVICE_KEY}`
 //       : null;
 // }
+import React from 'react';
+
+function ServicesService() {
+  return <div>ServicesService</div>;
+}
+
+export default ServicesService;
