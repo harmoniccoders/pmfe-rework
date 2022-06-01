@@ -5,10 +5,10 @@ const extendedColors: DeepPartial<
   Record<string, Theme['colors']['blackAlpha']>
 > = {
   brand: {
-    50:'#DCE1E7',
-    100: '#007F82',
+    50: '#DCE1E7',
+    100: '#0042ff',
     // 200: '#1B345B',
-    200:'white',
+    200: 'white',
     // 300: '#059C9F',
     300: '#0042FF',
     400: 'rgba(5, 156, 159, 0.36)',
@@ -17,7 +17,6 @@ const extendedColors: DeepPartial<
     700: '#DFF8F9',
     800: '#F5FDFE',
     900: '#0D73FF',
-    
   },
 };
 
