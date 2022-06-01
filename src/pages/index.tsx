@@ -14,6 +14,7 @@ import Header from 'lib/components/Header';
 import Hero from 'lib/components/home/Hero';
 import Service from 'lib/components/home/Service';
 import Footer from 'lib/components/Footer';
+import Link from 'next/link';
 
 const services = [
   {
@@ -51,7 +52,7 @@ const index = () => (
       ))}
     </Flex>
     <Stack
-      direction={{base: 'column', lg: 'row' }}
+      direction={{ base: 'column', lg: 'row' }}
       align="center"
       justify="center"
       bg="green.50"
@@ -66,8 +67,20 @@ const index = () => (
         </Text>
       </VStack>
       <Stack direction={['column', 'row']} spacing="5">
-        <Image src="/iOS+App+Store+badge-min.png" alt="apple" />
-        <Image src="/Google+Play+badge-min.png" alt="google" />
+        <Link href="/">
+          <Image
+            cursor="pointer"
+            src="/iOS+App+Store+badge-min.png"
+            alt="apple"
+          />
+        </Link>
+        <Link href="/">
+          <Image
+            cursor="pointer"
+            src="/Google+Play+badge-min.png"
+            alt="google"
+          />
+        </Link>
       </Stack>
     </Stack>
     <Footer />
