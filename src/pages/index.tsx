@@ -44,7 +44,6 @@ const services = [
 ];
 const index = () => (
   <Box>
-    <Header />
     <Hero />
     <Flex flexWrap="wrap" justifyContent="center" py={[5, 14]} px="5" gap="8">
       {services.map((service) => (
@@ -83,7 +82,6 @@ const index = () => (
         </Link>
       </Stack>
     </Stack>
-    <Footer />
   </Box>
 );
 

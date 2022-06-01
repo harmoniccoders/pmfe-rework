@@ -9,30 +9,38 @@ import {
   DrawerContent,
   DrawerBody,
   VStack,
+  Text,
   DrawerHeader,
 } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 import NextLink from 'next/link';
-import {BiMenu} from 'react-icons/bi'
+import { BiMenu } from 'react-icons/bi';
 
 const Header = () => {
+  const user = Cookies.get('user');
   const left = ['sell', 'buy', 'rent', 'clean', 'fix'];
   const right = [' verify', 'get rent loan', 'login', 'sign up'];
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <HStack
       align="center"
-      justify={['space-between', 'space-around']}
+      justify={['space-between', 'space-between']}
+      w="90%"
+      mx="auto"
       px={[3, 0]}
       py="5"
     >
-      <Image
-        src="/Logo (1).png"
-        display={{ md: 'none' }}
-        justifySelf="center"
-        alt="logo"
-        w="200px"
-      />
+      <NextLink href="/" passHref>
+        <Image
+          src="/Logo (1).png"
+          display={{ md: 'none' }}
+          justifySelf="center"
+          alt="logo"
+          cursor="pointer"
+          w="200px"
+        />
+      </NextLink>
       <IconButton
         size={'md'}
         w="fit-content"
@@ -57,25 +65,36 @@ const Header = () => {
           </NextLink>
         ))}
       </HStack>
-      <Image
-        src="/Logo (1).png"
-        display={['none', 'block']}
-        justifySelf="center"
-        alt="logo"
-        w="200px"
-      />
+      <NextLink href="/" passHref>
+        <Image
+          src="/Logo (1).png"
+          display={['none', 'block']}
+          justifySelf="center"
+          alt="logo"
+          w="200px"
+          cursor="pointer"
+        />
+      </NextLink>
       <HStack spacing="5" display={['none', 'block']}>
-        {right.map((item) => (
-          <NextLink key={item} href={`/${item}`} passHref>
-            <Link
-              textTransform="capitalize"
-              _hover={{ color: 'blue' }}
-              fontWeight="bold"
-            >
-              {item}
-            </Link>
-          </NextLink>
-        ))}
+        {user ? (
+          <>UserLoged In</>
+        ) : (
+          <>
+            {right.map((item) => (
+              <NextLink key={item} href={`/${item}`} passHref>
+                <Text
+                  textTransform="capitalize"
+                  _hover={{ color: 'blue' }}
+                  fontWeight="bold"
+                  display="inline"
+                  cursor="pointer"
+                >
+                  {item}
+                </Text>
+              </NextLink>
+            ))}
+          </>
+        )}
       </HStack>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -104,13 +123,13 @@ const Header = () => {
               ))}
               {right.map((item) => (
                 <NextLink key={item} href={`/${item}`} passHref>
-                  <Link
+                  <Text
                     textTransform="capitalize"
                     _hover={{ color: 'blue' }}
                     fontWeight="bold"
                   >
                     {item}
-                  </Link>
+                  </Text>
                 </NextLink>
               ))}
             </VStack>
