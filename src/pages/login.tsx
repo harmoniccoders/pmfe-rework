@@ -13,7 +13,7 @@ import { useOperationMethod } from 'react-openapi-client';
 
 
 const schema = yup.object({
-    email: yup.string().email().required(),
+    username: yup.string().required(),
     password: yup.string().required(),
   }).required();
 
@@ -58,9 +58,9 @@ const Login = () =>{
             <Stack alignItems='center !important' my='10rem' justifyContent='center' p='2rem' spacing={2} >
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <PrimaryInput<LoginModel>
-                        label="Email"
-                        name="email"
-                        error={errors.email}
+                        label="username"
+                        name="username"
+                        error={errors.username}
                         defaultValue=""
                         login={login}
                     />
