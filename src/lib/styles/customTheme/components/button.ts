@@ -21,13 +21,16 @@ const Button: DeepPartial<Theme['components']['Button']> = {
       },
     },
     solid: {
-      backgroundColor: 'brand.100',
+      // backgroundColor: 'brand.100',
+      backgroundColor: 'brand.300',
       color: 'white',
       width: '11rem',
       height: '3.12rem',
       _hover: {
-        backgroundColor: 'brand.200',
+        backgroundColor: 'transparent',
         transition: 'all .5s ease',
+        border: '2px solid #0042FF',
+        color: 'brand.300'
       },
       _focus: {
         boxShadow: '0',
