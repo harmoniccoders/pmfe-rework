@@ -26,6 +26,7 @@ const LoggedIn = () => {
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
   const LogUserOut = () => {
     Cookies.remove('user');
+    Cookies.remove('token');
     router.push('/');
   };
 

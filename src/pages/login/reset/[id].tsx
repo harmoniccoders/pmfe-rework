@@ -11,19 +11,16 @@ import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import ButtonComponent from 'lib/components/Button';
 import { useState } from 'react';
 import Link from 'next/link';
+import { GetServerSidePropsContext } from 'next';
 
 const schema = yup.object().shape({
   newPassword: yup.string().required(),
+  code: yup.string(),
 });
 
-const PasswordReset = () => {
+const PasswordReset = ({ code }: { code: string }) => {
   const [ResetComplete, { loading, data, error }] =
     useOperationMethod('Userresetcomplete');
-
-  const router = useRouter();
-  const { id } = router.query;
-  console.log({ id });
-
   const {
     register,
     handleSubmit,
@@ -31,7 +28,7 @@ const PasswordReset = () => {
   } = useForm<PasswordReset>({
     resolver: yupResolver(schema),
     defaultValues: {
-      code: id as unknown as string,
+      code: code,
     },
     mode: 'all',
   });
@@ -40,9 +37,9 @@ const PasswordReset = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const onSubmit = async (data: PasswordReset) => {
+    console.log({ data });
     try {
       const result = await (await ResetComplete(undefined, data)).data;
-      console.log({ data });
       if (result.status) {
         addToast('Password Reset Succesfull', {
           appearance: 'success',
@@ -108,7 +105,10 @@ const PasswordReset = () => {
                 </Link>
               </Flex>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+              <form
+                onSubmit={handleSubmit(onSubmit, (error) => console.log(error))}
+                style={{ width: '100%' }}
+              >
                 <PrimaryInput<PasswordReset>
                   label="New Password"
                   name="newPassword"
@@ -117,6 +117,7 @@ const PasswordReset = () => {
                   register={register}
                   type="password"
                 />
+
                 <ButtonComponent
                   content="Submit"
                   isValid={isValid}
@@ -132,3 +133,12 @@ const PasswordReset = () => {
 };
 
 export default PasswordReset;
+
+export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
+  const { id } = ctx.query;
+  return {
+    props: {
+      code: id,
+    },
+  };
+};

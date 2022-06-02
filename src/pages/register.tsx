@@ -54,7 +54,7 @@ const signupform = () => {
           autoDismiss: true,
         });
 
-        cookies.set('email', JSON.stringify(result.data.email));
+        cookies.set('user', JSON.stringify(result.data));
         router.push('/verify');
         return;
       }

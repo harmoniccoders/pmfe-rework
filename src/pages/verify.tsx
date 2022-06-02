@@ -1,40 +1,24 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  Link,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
 import NextLink from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { UserverifyUserTokenEmailParameters } from 'types/api';
+import { UserverifyUserTokenEmailParameters, UserView } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import cookies from 'js-cookie';
+import { GetServerSidePropsContext } from 'next';
+import { returnUserData } from 'lib/Utils/userData';
 
 const schema = yup.object().shape({
   token: yup.string().required(),
 });
 
-const verify = () => {
+const verify = ({ user }: { user: UserView }) => {
   const router = useRouter();
-
-  const usersEmail = cookies.get('email');
-
-  let userEmail;
-
-  if (usersEmail !== undefined) {
-    userEmail = JSON.parse(usersEmail);
-  } else {
-    userEmail = '';
-  }
+  const userEmail = user.email;
 
   const [VerifyUser, { loading, data, error }] = useOperationMethod(
     'UserverifyUser{token}{email}'
@@ -46,7 +30,7 @@ const verify = () => {
   } = useForm<UserverifyUserTokenEmailParameters>({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: userEmail as unknown as string,
+      email: userEmail,
     },
     mode: 'all',
   });
@@ -185,3 +169,26 @@ const verify = () => {
 };
 
 export default verify;
+
+export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
+  const {
+    data: { user, redirect },
+  } = returnUserData(ctx);
+  const userData = JSON.parse(user);
+  console.log({ userData });
+
+  if (redirect)
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
+
+  return {
+    props: {
+      user: userData,
+    },
+  };
+};
