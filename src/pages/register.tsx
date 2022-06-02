@@ -92,7 +92,7 @@ const signupform = () => {
             // bg="brand.100"
           >
             <Image
-              src="admin.png"
+              src="assets/admin.png"
               alt="an image to display"
               w="100%"
               h="100%"

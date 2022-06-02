@@ -13,7 +13,7 @@ import Services from 'lib/components/Services';
 const index = () => (
   <Box>
     <Hero />
-    <Services/>
+    <Services />
     <Stack
       direction={{ base: 'column', lg: 'row' }}
       align="center"
@@ -23,13 +23,17 @@ const index = () => (
       spacing="10"
     >
       <VStack>
-        <Heading alignSelf="start">Get the app!</Heading>
+        <Heading alignSelf={['center', 'start']}>Get the app!</Heading>
         <Text>
           Download our Android or iOS app and take <br /> PropertyMataaz with
           you wherever you go.
         </Text>
       </VStack>
-      <Stack direction={['column', 'row']} spacing="5">
+      <Stack
+        direction={['column', 'row']}
+        spacing="5"
+        align={['center', 'unset']}
+      >
         <Link href="/">
           <Image
             cursor="pointer"

@@ -78,7 +78,7 @@ const Login = () => {
           mx="1.3rem"
           borderRadius="8px"
         >
-          <Image src="/admin.png" />
+          <Image src="/assets/admin.png" />
         </Box>
 
         <Stack
@@ -121,7 +121,7 @@ const Login = () => {
             </Text>
           </Flex>
           <Text color="brand.100" fontWeight="bold">
-            <Link href="/reset"> Forgot password</Link>
+            <Link href="/login/reset"> Forgot password</Link>
           </Text>
         </Stack>
       </Grid>

@@ -12,20 +12,21 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { BsBorderWidth } from 'react-icons/bs';
-import LoggedIn from './LoggedIn'
+import LoggedIn from './LoggedIn';
 
 const NavLink = ({ path, name }: { path: string; name: string }) => {
   const router = useRouter();
 
   const getNavLinks = (name: string) => {
-    if (router.asPath === name) return 'blue';
+    if (router.asPath === name) return 'brand.100';
   };
   return (
     <Link href={path}>
       <Text
-        _hover={{ color: 'blue' }}
+        _hover={{ color: 'brand.100' }}
         cursor="pointer"
         fontWeight="bold"
+        fontSize=".9rem"
         color={getNavLinks(path)}
       >
         {name}
@@ -64,7 +65,7 @@ const DesktopView = ({ user }: { user: any }) => {
         <NavLink name="Buy" path="/buy" />
         <NavLink name="Rent" path="/rent" />
         <NavLink name="Clean" path="/clean" />
-        <NavLink name="Fix" path="/clean" />
+        {/* <NavLink name="Fix" path="/clean" /> */}
       </HStack>
       <Center>
         <Link href="/">

@@ -16,10 +16,29 @@ import {
 } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
 const LoggedIn = () => {
   const user = JSON.parse(Cookies.get('user') || '');
-  const [isOpened, setIsOpened] = useBoolean();
-  const [isMenuOpened, setIsMenuOpened] = useBoolean();
+  const [isOpened, setIsOpened] = useState<boolean>();
+  const router = useRouter();
+  const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
+  const LogUserOut = () => {
+    Cookies.remove('user');
+    router.push('/');
+  };
+
+  const dropDown = useRef(null);
+  const dropDownB = useRef(null);
+  const [listening, setListening] = useState(false);
+
+  useEffect(
+    listenForOutsideClick(listening, setListening, dropDown, setIsOpened)
+  );
+  useEffect(
+    listenForOutsideClick(listening, setListening, dropDownB, setIsMenuOpened)
+  );
   return (
     <Stack
       direction={['column', 'row']}
@@ -31,22 +50,24 @@ const LoggedIn = () => {
           gap="2"
           align="center"
           cursor="pointer"
-          onClick={setIsOpened.toggle}
+          onClick={() => setIsOpened(true)}
           fontWeight="bold"
+          ref={dropDown}
         >
           My Mataaz <BiChevronDown />
         </Flex>
         <VStack
           bg="white"
           align="start"
-          p="5"
-          mt="5"
-          w='full'
-          shadow="md"
-          position="absolute"
+          p={['2', '5']}
+          mt={['0', '5']}
+          w="full"
+          shadow={['none', 'md']}
+          position={['relative', 'absolute']}
           display={isOpened ? 'flex' : 'none'}
           transition={'all .5s ease'}
           overflow="hidden"
+          fontWeight="600"
         >
           <Link href="/listings">Listings</Link>
           <Link href="/draft">Drafts</Link>
@@ -59,27 +80,31 @@ const LoggedIn = () => {
           gap="3"
           align="center"
           cursor="pointer"
-          onClick={setIsMenuOpened.toggle}
+          onClick={() => setIsMenuOpened(true)}
           fontWeight="bold"
+          ref={dropDownB}
         >
           {user?.firstName}{' '}
           <Avatar size="xs" src={user?.profilePicture || '/assets/user-icon'} />
           <BiChevronDown />
         </Flex>
         <VStack
-          align="start"
-          mt="5"
           bg="white"
-          p="5"
+          align="start"
+          p={['2', '5']}
+          mt={['0', '5']}
           w="full"
-          shadow="md"
-          position="absolute"
+          shadow={['none', 'md']}
+          position={['relative', 'absolute']}
           display={isMenuOpened ? 'flex' : 'none'}
           transition={'all .5s ease'}
           overflow="hidden"
+          fontWeight="600"
         >
           <Link href="/profile">Profile</Link>
-          <Link href="/">Logout</Link>
+          <Text cursor="pointer" onClick={() => LogUserOut()}>
+            Logout
+          </Text>
         </VStack>
       </Box>
     </Stack>

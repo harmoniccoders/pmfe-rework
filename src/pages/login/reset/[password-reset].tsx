@@ -71,7 +71,7 @@ const PasswordReset = () => {
             mx="1.3rem"
             borderRadius="8px"
           >
-            <Image src="/admin.png" />
+            <Image src="/assets/admin.png" />
           </Box>
 
           <Stack
