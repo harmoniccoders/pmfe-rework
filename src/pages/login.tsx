@@ -110,7 +110,7 @@ const Login = () => {
               loading={loading}
             />
           </form>
-          <Text color='blue'><Link href='/forgot-password' > Forgort password</Link></Text> 
+          <Text color='blue' fontWeight='800'><Link href='/forgot-password' > Forgot password</Link></Text> 
         </Stack>
       </Grid>
     </Box>
