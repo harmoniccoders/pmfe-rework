@@ -43,7 +43,7 @@ const ForgotPassword = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/password-reset');
+        router.push('/login');
         return;
       }
       addToast(result.message, {

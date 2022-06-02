@@ -27,7 +27,7 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
   password: yup.string().min(8).max(16).required(),
-  phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
+  // phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
 });
 
 const signupform = () => {
@@ -164,27 +164,37 @@ const signupform = () => {
             />
           </form>
 
-          <Box bg="brand.50" w="100%" h="1px" my="10px"></Box>
-
-          <Box w="100%" mt="20px" padding="10px 0 10px">
-            <Text w="100%" textAlign="center">
+          <Box w="100%" padding="10px 0 10px" fontSize=".9rem">
+            <Text w="100%" textAlign="center" fontWeight="500">
               Already have an account?
               <NextLink href="/login" passHref>
-                <Link color="brand.100"> Login.</Link>
+                <Link color="brand.100" fontWeight="bold">
+                  {' '}
+                  Login.
+                </Link>
               </NextLink>
             </Text>
           </Box>
 
-          <Box bg="brand.50" w="100%" h="1px" my="10px"></Box>
+          <Divider borderColor="brand.50" />
 
-          <Box w="100%" margin="20px 0 30px">
-            <Text textAlign="center" padding="10px 0 10px">
-              By creating an account you agree to our <br />
-              <NextLink href="#" passHref>
-                <Link color="brand.100">terms &amp; conditions</Link>
-              </NextLink>
+          <Flex
+            w="100%"
+            align="center"
+            mb="1rem"
+            mt=".5rem"
+            justify="center"
+            fontSize=".7rem"
+          >
+            <Text textAlign="center" padding="10px 0">
+              By creating an account you agree to our &nbsp;
             </Text>
-          </Box>
+            <NextLink href="#" passHref>
+              <Text color="brand.100" cursor="pointer">
+                terms &amp; conditions
+              </Text>
+            </NextLink>
+          </Flex>
         </Box>
       </Flex>
     </Box>

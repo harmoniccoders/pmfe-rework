@@ -22,6 +22,7 @@ const PasswordReset = () => {
 
   const router = useRouter();
   const { id } = router.query;
+  console.log({ id });
 
   const {
     register,
@@ -41,7 +42,7 @@ const PasswordReset = () => {
   const onSubmit = async (data: PasswordReset) => {
     try {
       const result = await (await ResetComplete(undefined, data)).data;
-      console.log({ result });
+      console.log({ data });
       if (result.status) {
         addToast('Password Reset Succesfull', {
           appearance: 'success',
@@ -117,7 +118,7 @@ const PasswordReset = () => {
                   type="password"
                 />
                 <ButtonComponent
-                  content="Go to Login"
+                  content="Submit"
                   isValid={isValid}
                   loading={loading}
                 />

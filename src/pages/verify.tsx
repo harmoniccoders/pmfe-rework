@@ -55,7 +55,7 @@ const verify = () => {
   const onSubmit = async (data: UserverifyUserTokenEmailParameters) => {
     try {
       const result = await (await VerifyUser(undefined, data)).data;
-      console.log({ result });
+      console.log({ data });
       if (result.status) {
         addToast('Verification Complete', {
           appearance: 'success',
@@ -129,7 +129,15 @@ const verify = () => {
             flexDirection="column"
             justifyContent={['flex-start', 'flex-start', 'center']}
           >
-            <Text color="brand.50" lineHeight={1.5} mt="10px" mb="5px">
+            <Text
+              color="black"
+              lineHeight={1.5}
+              mt="10px"
+              mb="5px"
+              w="80%"
+              mx="auto"
+              textAlign="center"
+            >
               A confirmation mail was sent to you. Please check your mail to
               verify your account.
             </Text>
@@ -150,16 +158,25 @@ const verify = () => {
               />
             </form>
 
-            <Box bg="brand.50" w="100%" h="1px" my="10px"></Box>
+            <Divider borderColor="brand.50" />
 
-            <Box w="100%" margin="20px 0 30px">
-              <Text textAlign="center" padding="10px 0 10px">
-                By creating an account you agree to our <br />
-                <NextLink href="#" passHref>
-                  <Link color="brand.100">terms &amp; conditions</Link>
-                </NextLink>
+            <Flex
+              w="100%"
+              align="center"
+              mb="1rem"
+              mt=".5rem"
+              justify="center"
+              fontSize=".7rem"
+            >
+              <Text textAlign="center" padding="10px 0">
+                By creating an account you agree to our &nbsp;
               </Text>
-            </Box>
+              <NextLink href="#" passHref>
+                <Text color="brand.100" cursor="pointer">
+                  terms &amp; conditions
+                </Text>
+              </NextLink>
+            </Flex>
           </Box>
         </Flex>
       </Box>
