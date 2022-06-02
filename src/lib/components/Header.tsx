@@ -19,7 +19,7 @@ import { BiMenu } from 'react-icons/bi';
 const Header = () => {
   const user = Cookies.get('user');
   const left = ['sell', 'buy', 'rent', 'clean', 'fix'];
-  const right = [' verify', 'get rent loan', 'login', 'sign up'];
+  const right = [' verify', 'get rent loan', 'login', 'register'];
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
