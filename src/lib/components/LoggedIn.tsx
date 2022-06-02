@@ -20,7 +20,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
 const LoggedIn = () => {
-  const user = JSON.parse(Cookies.get('user') || '');
   const [isOpened, setIsOpened] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
@@ -29,6 +28,7 @@ const LoggedIn = () => {
     Cookies.remove('token');
     router.push('/');
   };
+  const user = JSON.parse(Cookies.get('user') || '');
 
   const dropDown = useRef(null);
   const dropDownB = useRef(null);

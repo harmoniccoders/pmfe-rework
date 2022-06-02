@@ -175,7 +175,6 @@ export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
     data: { user, redirect },
   } = returnUserData(ctx);
   const userData = JSON.parse(user);
-  console.log({ userData });
 
   if (redirect)
     return {
