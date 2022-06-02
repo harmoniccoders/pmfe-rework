@@ -1,6 +1,7 @@
 import {
   Box,
   Text,
+  
   Grid,
   Stack,
   FormLabel,
@@ -20,6 +21,7 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import Cookies from 'js-cookie';
+import Link from 'next/link'
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -68,8 +70,8 @@ const Login = () => {
     <Box w="90%" mx="auto" h="80vh" overflow="hidden">
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
         <Box
-          w="50vw"
-          h={['35vh', '65vh']}
+          w="45vw"
+          h={['33vh', '60vh']}
           // bg="#ccc"
           my="5rem"
           mx="1.3rem"
@@ -108,6 +110,7 @@ const Login = () => {
               loading={loading}
             />
           </form>
+          <Text color='blue'><Link href='/forgot-password' > Forgort password</Link></Text> 
         </Stack>
       </Grid>
     </Box>
