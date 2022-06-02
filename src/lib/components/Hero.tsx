@@ -11,13 +11,13 @@ const Hero = () => {
   return (
     <VStack
       minH="400px"
-      backgroundImage='url("/hero.jpg")'
+      backgroundImage='url("/assets/hero.jpg")'
       backgroundRepeat="no-repeat"
       backgroundPosition="center"
       spacing="5"
       justify="center"
     >
-      <Text color="white" fontSize="2xl" textShadow="1px 2px 1px #000000">
+      <Text color="white" fontSize="2xl" fontWeight="800" textShadow="1px 2px 1px #000000">
         FInd property to rent or buy
       </Text>
       <InputGroup w={{ base: '90%',md: '70%', lg:'50%'}} shadow="md">
