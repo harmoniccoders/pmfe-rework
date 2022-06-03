@@ -65,7 +65,6 @@ const DesktopView = ({ user }: { user: any }) => {
         <NavLink name="Buy" path="/buy" />
         <NavLink name="Rent" path="/rent" />
         <NavLink name="Clean" path="/clean" />
-        {/* <NavLink name="Fix" path="/clean" /> */}
       </HStack>
       <Center>
         <Link href="/">
@@ -82,7 +81,6 @@ const DesktopView = ({ user }: { user: any }) => {
           <LoggedIn />
         ) : (
           <>
-            <NavLink name="Verify" path="/verify" />
             <NavLink name="Get Rent Loan" path="/get-rent-loan" />
             <NavLink name="Login" path="/login" />
             <NavLink name="Sign Up" path="/register" />
@@ -136,13 +134,12 @@ const MobileView = ({ user }: { user: any }) => {
         <NavLink name="Buy" path="/buy" />
         <NavLink name="Rent" path="/rent" />
         <NavLink name="Clean" path="/clean" />
-        <NavLink name="Fix" path="/clean" />
-        <NavLink name="Verify" path="/verify" />
-        <NavLink name="Get Rent Loan" path="/get-rent-loan" />
+
         {user ? (
           <LoggedIn />
         ) : (
           <>
+            <NavLink name="Get Rent Loan" path="/get-rent-loan" />
             <NavLink name="Login" path="/login" />
             <NavLink name="Sign Up" path="/register" />
           </>
