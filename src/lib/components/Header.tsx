@@ -42,13 +42,13 @@ const Header = () => {
         />
       </NextLink>
       <IconButton
-        size={'md'}
+        size="md"
         w="fit-content"
         variant="ghost"
         pl={2}
         fontSize="24"
         icon={<BiMenu />}
-        aria-label={'Open Menu'}
+        aria-label="Open Menu"
         display={{ md: 'none' }}
         onClick={onOpen}
       />

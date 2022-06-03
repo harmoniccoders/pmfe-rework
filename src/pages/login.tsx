@@ -1,7 +1,6 @@
 import {
   Box,
   Text,
-  
   Grid,
   Stack,
   FormLabel,
@@ -9,6 +8,8 @@ import {
   Input,
   Button,
   InputGroup,
+  Flex,
+  Divider,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { LoginModel } from 'types/api';
@@ -21,7 +22,7 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import Cookies from 'js-cookie';
-import Link from 'next/link'
+import Link from 'next/link';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -110,11 +111,22 @@ const Login = () => {
               loading={loading}
             />
           </form>
-          <Text color='blue' fontWeight='800'><Link href='/forgot-password' > Forgot password</Link></Text> 
+          <Divider mb="1rem !important" />
+          <Flex>
+            <Text fontSize=".8rem" fontWeight="500">
+              Already have an account? &nbsp;
+            </Text>
+            <Text fontSize=".8rem" fontWeight="bold" color="brand.100">
+              <Link href="/register"> Sign Up</Link>
+            </Text>
+          </Flex>
+          <Text color="brand.100" fontWeight="bold">
+            <Link href="/reset"> Forgot password</Link>
+          </Text>
         </Stack>
       </Grid>
     </Box>
-  );
+    );
 };
 
 export default Login;
