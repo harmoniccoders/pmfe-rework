@@ -2,14 +2,12 @@ import {
   Box,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Image,
-  Input,
   Text,
-  VStack,
+  Link,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
 import React, { FormEvent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,6 +18,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
+import cookies from 'js-cookie';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -28,7 +27,7 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
   password: yup.string().min(8).max(16).required(),
-  phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
+  // phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
 });
 
 const signupform = () => {
@@ -54,6 +53,8 @@ const signupform = () => {
           appearance: 'success',
           autoDismiss: true,
         });
+
+        cookies.set('user', JSON.stringify(result.data));
         router.push('/verify');
         return;
       }
@@ -88,9 +89,15 @@ const signupform = () => {
             display={['none', 'block']}
             w="100%"
             h={[0, '18rem', '25rem']}
-            bg="brand.100"
+            // bg="brand.100"
           >
-            {/* <Image src="" alt="an image to display" /> */}
+            <Image
+              src="assets/admin.png"
+              alt="an image to display"
+              w="100%"
+              h="100%"
+              objectFit="contain"
+            />
           </Box>
         </Box>
         <Box
@@ -100,12 +107,12 @@ const signupform = () => {
           mt={[0, '20px', 0]}
           margin="auto"
         >
-          {/* <form onSubmit={handleSubmit}> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <PrimaryInput<Register>
               label="first name"
               name="firstName"
               error={errors.firstName}
+              placeholder="Type in your first name"
               defaultValue=""
               register={register}
             />
@@ -113,6 +120,7 @@ const signupform = () => {
               label="surname "
               name="lastName"
               error={errors.lastName}
+              placeholder="Type in your surname"
               defaultValue=""
               register={register}
             />
@@ -120,6 +128,7 @@ const signupform = () => {
               label="email"
               name="email"
               error={errors.email}
+              placeholder="Enter your email"
               defaultValue=""
               register={register}
             />
@@ -127,6 +136,7 @@ const signupform = () => {
               label="mobile number"
               name="phoneNumber"
               error={errors.phoneNumber}
+              placeholder="Enter your mobile number"
               defaultValue=""
               register={register}
             />
@@ -134,6 +144,7 @@ const signupform = () => {
               label="mobile number 2"
               name="phoneNumber1"
               error={errors.phoneNumber1}
+              placeholder="Enter a second mobile number"
               defaultValue=""
               register={register}
             />
@@ -141,6 +152,7 @@ const signupform = () => {
               label="Create a Password"
               name="password"
               error={errors.password}
+              placeholder="* * * *"
               defaultValue=""
               register={register}
               type="password"
@@ -152,7 +164,37 @@ const signupform = () => {
             />
           </form>
 
-          <Box></Box>
+          <Box w="100%" padding="10px 0 10px" fontSize=".9rem">
+            <Text w="100%" textAlign="center" fontWeight="500">
+              Already have an account?
+              <NextLink href="/login" passHref>
+                <Link color="brand.100" fontWeight="bold">
+                  {' '}
+                  Login.
+                </Link>
+              </NextLink>
+            </Text>
+          </Box>
+
+          <Divider borderColor="brand.50" />
+
+          <Flex
+            w="100%"
+            align="center"
+            mb="1rem"
+            mt=".5rem"
+            justify="center"
+            fontSize=".7rem"
+          >
+            <Text textAlign="center" padding="10px 0">
+              By creating an account you agree to our &nbsp;
+            </Text>
+            <NextLink href="#" passHref>
+              <Text color="brand.100" cursor="pointer">
+                terms &amp; conditions
+              </Text>
+            </NextLink>
+          </Flex>
         </Box>
       </Flex>
     </Box>
