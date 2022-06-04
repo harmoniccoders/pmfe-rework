@@ -1,5 +1,4 @@
 import { HStack, Image, Text, VStack } from "@chakra-ui/react";
-import { ImageProps } from "next/image";
 
 type Props = {
   img: string;

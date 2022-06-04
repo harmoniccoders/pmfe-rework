@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Box, Center, Stack, Text } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
 import CustomModal from 'lib/components/CustomModal';
+import BookCleaning from 'lib/components/BookCleaning';
 
 const clean = () => {
-   const [isOpen, setIopen] = useState(false);
-   const onClose = () => {
-     setIopen(!isOpen);
-   };
+  const [isOpen, setIopen] = useState(false);
+  const onClose = () => {
+    setIopen(!isOpen);
+  };
   return (
     <Box w="90%" mx="auto" py="4">
       <Stack w={['full', '50%']}>
@@ -24,7 +25,11 @@ const clean = () => {
       <Center h="30vh" fontSize=".9rem">
         You currently have no Cleaning sessions Booked.
       </Center>
-      <CustomModal component={<></>} isOpen={isOpen} onClose={onClose} />
+      <CustomModal
+        component={<BookCleaning />}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </Box>
   );
 };
