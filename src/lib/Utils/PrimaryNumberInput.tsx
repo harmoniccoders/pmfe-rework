@@ -70,7 +70,15 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
         {label}
       </FormLabel>
       <HStack spacing="5" justify="space-between">
-        <Button bg="blue" rounded="full" w="10px" color="white" {...dec}>
+        <Button
+          bg="brand.100"
+          width="40px"
+          height="40px"
+          variant="solid"
+          borderRadius="50%"
+          color="white"
+          {...dec}
+        >
           -
         </Button>
 
@@ -82,9 +90,18 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
           {...register(name, { required, ...validate })}
           defaultValue={defaultValue}
           disabled={disableLabel}
-          maxW="40"
+          maxW="52"
+          height="40px"
         />
-        <Button bg="blue" w="10px" rounded="full" color="white" {...inc}>
+        <Button
+          bg="brand.100"
+          width="40px"
+          height="40px"
+          variant="solid"
+          borderRadius="50%"
+          color="white"
+          {...inc}
+        >
           +
         </Button>
       </HStack>
