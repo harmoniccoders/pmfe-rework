@@ -7,6 +7,7 @@ import {
     Image,
     Input,
     Button,
+    CheckBox,
     InputGroup,
     Flex,
     Divider,
@@ -90,6 +91,13 @@ const Form = () =>{
                     label="Property Title"
                     name="title"
                     error={errors.title}
+                    defaultValue=""
+                    register={register}
+                    />
+                    <PrimaryInput
+                    label="Area"
+                    name="area"
+                    error={errors.area}
                     defaultValue=""
                     register={register}
                     />
