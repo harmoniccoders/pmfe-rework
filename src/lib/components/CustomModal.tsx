@@ -1,14 +1,15 @@
 import { Box, IconButton, Text } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaChevronLeft } from 'react-icons/fa';
 
 type Props = {
   component: ReactNode;
   isOpen: boolean;
-  onClose: any;
+  closeModal: any;
+  back?: boolean;
 };
 
-const CustomModal = ({ component, isOpen, onClose }: Props) => {
+const CustomModal = ({ component, isOpen, closeModal, back }: Props) => {
   return (
     <Box
       display={isOpen ? 'block' : 'none'}
@@ -30,9 +31,9 @@ const CustomModal = ({ component, isOpen, onClose }: Props) => {
         mx="auto"
         h="full"
       >
-        <Box textAlign="end">
+        <Box textAlign={back ? 'unset' : 'end'}>
           <IconButton
-            onClick={onClose}
+            onClick={closeModal}
             variant="ghost"
             p="0"
             icon={<FaTimes />}

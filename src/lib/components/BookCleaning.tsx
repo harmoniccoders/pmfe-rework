@@ -7,6 +7,10 @@ import {
   Text,
   Link,
   Button,
+  Select,
+  FormControl,
+  FormLabel,
+  VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
@@ -15,15 +19,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import { Register } from 'types/api';
-import { CleaningModel } from 'types/api';
+import { CleaningModel, PropertyType } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import cookies from 'js-cookie';
+import { PrimaryNumberInput } from 'lib/Utils/PrimaryNumberInput';
 
 const schema = yup.object().shape({
-  fileName: yup.string(),
+  // fileName: yup.string(),
   buildingType: yup.string(),
   buildingState: yup.string(),
   dateNeeded: yup.string().required(),
@@ -32,8 +37,14 @@ const schema = yup.object().shape({
   numberOfFloors: yup.number().required(),
 });
 
-const BookCleaning = () => {
-  const [CleanRequest, { loading, data, error }] =
+const BookCleaning = ({
+  result,
+  closeModal,
+}: {
+  result: PropertyType[];
+  closeModal: any;
+}) => {
+  const [RequestCleaning, { loading, data, error }] =
     useOperationMethod('Cleanrequest');
   const {
     register,
@@ -48,13 +59,14 @@ const BookCleaning = () => {
 
   const onSubmit = async (data: CleaningModel) => {
     try {
-      const result = await (await CleanRequest(undefined, data)).data;
+      const result = await (await RequestCleaning(undefined, data)).data;
       console.log({ result });
       if (result.status) {
         addToast('Application created sucessfully', {
           appearance: 'success',
           autoDismiss: true,
         });
+        router.push('/clean');
         return;
       }
       addToast(result.message, {
@@ -64,6 +76,7 @@ const BookCleaning = () => {
       return;
     } catch (err) {
       console.log(err);
+      console.log('errr');
     }
   };
   return (
@@ -72,24 +85,104 @@ const BookCleaning = () => {
         Book Cleaning Session
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <PrimaryInput<CleaningModel>
+        <FormControl>
+          <FormLabel
+            htmlFor="What type of building is it?"
+            textTransform="capitalize"
+            pos="relative"
+            top={5}
+            left={4}
+            width="fit-content"
+            zIndex={3}
+            bg="brand.200"
+          >
+            What type of building is it?
+          </FormLabel>
+          <Select placeholder="Choose an option" size="lg" fontSize="md">
+            {result.map((options: any) => {
+              return (
+                <option key={options.name} value={options.name}>
+                  {options.name}
+                </option>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel
+            htmlFor="What is the state of the building?"
+            textTransform="capitalize"
+            pos="relative"
+            top={5}
+            left={4}
+            width="fit-content"
+            zIndex={3}
+            bg="brand.200"
+          >
+            What is the state of the building?
+          </FormLabel>
+          <Select placeholder="Choose an option" size="lg" fontSize="md">
+            {result.map((options: any) => {
+              return <option key={options.name}>{options.name}</option>;
+            })}
+          </Select>
+        </FormControl>
+        <PrimaryInput<CleaningModel>
           label="When do you want the cleaning done?"
           name="dateNeeded"
           error={errors.dateNeeded}
-          placeholder="06/04/2022"
+          placeholder=""
           defaultValue=""
           type="date"
+          register={register}
+        />
+        <PrimaryNumberInput<CleaningModel>
+          label="Number of Bedrooms"
+          name="numberOfBedrooms"
+          error={errors.numberOfBedrooms}
+          placeholder="0"
+          defaultValue=""
+          register={register}
+        />
+        <PrimaryNumberInput<CleaningModel>
+          label="Number of Bathrooms/Toilets"
+          name="numberOfBathrooms"
+          error={errors.numberOfBathrooms}
+          placeholder="0"
+          defaultValue=""
+          register={register}
+        />
+        <PrimaryNumberInput<CleaningModel>
+          label="Number of Floors"
+          name="numberOfFloors"
+          error={errors.numberOfFloors}
+          placeholder="0"
+          defaultValue=""
           register={register}
         />
         <ButtonComponent
           content="Get Qoute"
           isValid={isValid}
           loading={loading}
-        /> */}
+        />
       </form>
-      <Button variant="outline" w="full" color="gray" fontWeight="100">
+      <Button
+        variant="outline"
+        w="full"
+        onClick={closeModal}
+        color="gray"
+        fontWeight="100"
+      >
         Cancel
       </Button>
+      <VStack spacing="1" mt=".5rem" pb="14" fontSize="sm">
+        <Text textAlign="center">By sending this request you agree to our</Text>
+        <NextLink href="#" passHref>
+          <Text color="brand.100" fontWeight="600" cursor="pointer">
+            Terms &amp; Conditions
+          </Text>
+        </NextLink>
+      </VStack>
     </Box>
   );
 };
