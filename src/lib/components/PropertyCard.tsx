@@ -11,13 +11,12 @@ import {
   Divider,
   Button,
   ButtonGroup,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
-import { FaBed, FaToilet } from 'react-icons/fa';
-import { BsTags } from 'react-icons/bs';
-import { IoIosRibbon } from 'react-icons/io';
 import Icons from './Icons';
+import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
 
 type Props = {
   location: string;
@@ -27,6 +26,10 @@ type Props = {
   price: string;
 };
 
+const iconStyle = {
+  color: '#0042ff',
+};
+
 const PropertyCard = ({
   location,
   description,
@@ -34,14 +37,15 @@ const PropertyCard = ({
   bathroom,
   price,
 }: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
-      w="full"
       // w="100%"
+      w="300px"
       minH="350px"
       borderRadius="8px"
-      mx="auto"
       pb="10px"
     >
       <Flex direction="column" pos="relative" w="100%">
@@ -96,25 +100,25 @@ const PropertyCard = ({
             padding="10px 0"
           >
             <GridItem mb="5px" display="flex" alignItems="center">
-              <Icons iconClass="fa-bed" />
+              <Icons iconClass="fa-bed" style={iconStyle} />
               <Text fontSize="13px" ml="4px">
                 {bedroom}
               </Text>
             </GridItem>
             <GridItem mb="5px" display="flex" alignItems="center">
-              <Icons iconClass="fa-toilet" />
+              <Icons iconClass="fa-toilet" style={iconStyle} />
               <Text fontSize="13px" ml="4px">
                 {bathroom}
               </Text>
             </GridItem>
             <GridItem mb="5px" display="flex" alignItems="center">
-              <Icons iconClass="fa-tags" />
+              <Icons iconClass="fa-tags" style={iconStyle} />
               <Text fontSize="13px" ml="4px">
                 &#8358;{price}
               </Text>
             </GridItem>
             <GridItem mb="5px" display="flex" alignItems="center">
-              <Icons iconClass="fa-award" />
+              <Icons iconClass="fa-award" style={iconStyle} />
               <Text fontSize="13px" ml="4px">
                 Governor's consent
               </Text>
@@ -123,18 +127,23 @@ const PropertyCard = ({
 
           <Divider orientation="horizontal" borderColor="brand.50" />
 
-          <Box mb="20px" w="90%" mx="auto" pt="5px">
-            <ButtonGroup w="100%">
-              <Button variant="outline" height="40px" color="rgb(37,36,39)">
-                See more
-              </Button>
-              <Button variant="solid" height="40px">
-                Enquire
-              </Button>
-            </ButtonGroup>
-          </Box>
+          <Flex mb="20px" w="90%" mx="auto" pt="5px" gap={3}>
+            <Button
+              variant="outline"
+              height="40px"
+              color="rgb(37,36,39)"
+              onClick={onOpen}
+            >
+              See more
+            </Button>
+            <Button variant="solid" height="40px">
+              Enquire
+            </Button>
+          </Flex>
         </VStack>
       </Flex>
+
+      <SeemoreModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };
