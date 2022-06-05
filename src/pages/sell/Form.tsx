@@ -24,6 +24,9 @@ import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 
 const schema = yup.object().shape({
+    id: yup.string(),
+    dateCreated: yup.string(),
+    dateModified: yup.string(),
     name: yup.string().required(),
     address: yup.string().required(),
     description: yup.string().required(),
@@ -72,7 +75,31 @@ const Form = () =>{
             <Box>
                 <Stack>
                     <form  onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                    
+                    <PrimaryInput
+                    label="id"
+                    name="id"
+                    error={errors.id}
+                    defaultValue=""
+                    register={register}
+                    style={{display:'none'}}
+                    />
+                    <PrimaryInput
+                    label="id"
+                    name="dateCreated"
+                    error={errors.dateCreated}
+                    defaultValue=""
+                    register={register}
+                    style={{display:'none'}}
+                    />
+                    <PrimaryInput
+                    label="id"
+                    name="dateModified"
+                    error={errors.dateModified}
+                    defaultValue=""
+                    register={register}
+                    style={{display:'none'}}
+                    />
+
                     <PrimaryInput
                     label="Name"
                     name="name"
