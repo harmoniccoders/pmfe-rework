@@ -8,7 +8,9 @@ import {
   Text,
   NumberInputField,
   NumberInput,
+  FormErrorMessage,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 import { FieldError, UseFormRegister, Path, Controller } from 'react-hook-form';
 
@@ -53,6 +55,7 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
       defaultValue: 0,
       min: 0,
     });
+  const [value, setValue] = useState(0);
 
   const inc = getIncrementButtonProps();
   const dec = getDecrementButtonProps();
@@ -85,7 +88,7 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
         <Input
           variant="outline"
           textAlign="center"
-          {...input}
+          // {...input}
           placeholder={placeholder}
           {...register(name, { required, ...validate })}
           defaultValue={defaultValue}
@@ -105,10 +108,10 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
           +
         </Button>
       </HStack>
-      <Text fontSize=".7rem" color="red">
+      <FormErrorMessage fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </Text>
+      </FormErrorMessage>
     </FormControl>
   );
 };

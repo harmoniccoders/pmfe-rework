@@ -24,14 +24,4 @@ export class DataAccess {
   };
 }
 
-// export default async function Api(url: string, method = 'GET', data = null) {
-//   const token = Cookies.get('token');
-//   console.log(token);
-//   axios.get(`${process.env.NEXT_PUBLIC_API_BASEURL}/${url}`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-// }
-
 export default api;
