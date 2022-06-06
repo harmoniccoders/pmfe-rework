@@ -71,7 +71,6 @@ const BookCleaning = ({
   console.log(watch('numberOfFloors'));
 
   const onSubmit = async (data: CleaningModel) => {
-    // console.log({ data });
     data.dateNeeded = new Date(
       data.dateNeeded as unknown as Date
     ).toLocaleDateString();
