@@ -10,11 +10,11 @@ const Sell =()=>{
         <Grid templateColumns='repeat(1, 1fr)' w='100%' h='100%'  >
             <Stack alignItems='center' justifyContent='center' spacing={[3,6]}>
                 <Box
-            w="35vw"
-            h={['25vh', '35vh']}
+            w={['90%',"35vw"]}
+            h={['30vh', '35vh']}
             // bg="#ccc"
-            my="5rem"
-            mx="1.3rem"
+            my={['2rem',"5rem"]}
+            mx={['.53rem',"1.3rem"]}
             borderRadius="8px"
             >
             <Image src="/assets/admin.png" />
@@ -33,13 +33,6 @@ const Sell =()=>{
                 <ModalBody>
                     <Form/>
                 </ModalBody>
-
-                {/* <ModalFooter>
-                    <Button colorScheme='blue' mr={3} onClick={onClose}>
-                    Close
-                    </Button>
-                    <Button variant='ghost'>Secondary Action</Button>
-                </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </Grid>
