@@ -1,4 +1,5 @@
 import { Grid, Text,Stack, Box, Button, Image , useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
+import {ChevronLeftIcon} from '@chakra-ui/icons'
 import Link from 'next/link'
 import ButtonComponent from 'lib/components/Button';
 import Form from './Form'
@@ -28,7 +29,7 @@ const Sell =()=>{
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                <Text color='brand.100' onClick={onClose}>  Back </Text>
+                <Text color='brand.100' p='1.2rem' onClick={onClose}><ChevronLeftIcon/>  Back </Text>
                 <ModalBody>
                     <Form/>
                 </ModalBody>

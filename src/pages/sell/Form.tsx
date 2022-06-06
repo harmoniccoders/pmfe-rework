@@ -7,12 +7,14 @@ import {
     Image,
     Input,
     Button,
-    CheckBox,
+    Checkbox,
     InputGroup,
     Flex,
     Divider,
   } from '@chakra-ui/react';
+ 
   import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+  //import { PrimarySelect } from 'lib/Uti;s/PrimarySelect'
   import { Property } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { FormEvent } from 'react';
@@ -22,6 +24,7 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
+import { PrimarySelect } from './../../lib/Utils/PrimarySelect';
 
 const schema = yup.object().shape({
     id: yup.string(),
@@ -73,7 +76,7 @@ const Form = () =>{
     return(
         <>
             <Box>
-                <Stack>
+                <Stack p='2rem'>
                     <form  onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
                     <PrimaryInput
                     label="id"
@@ -108,13 +111,6 @@ const Form = () =>{
                     register={register}
                     />
                     <PrimaryInput
-                    label="Address"
-                    name="Address"
-                    error={errors.address}
-                    defaultValue=""
-                    register={register}
-                    />
-                    <PrimaryInput
                     label="Property Title"
                     name="title"
                     error={errors.title}
@@ -122,9 +118,9 @@ const Form = () =>{
                     register={register}
                     />
                     <PrimaryInput
-                    label="Area"
-                    name="area"
-                    error={errors.area}
+                    label="Address"
+                    name="Address"
+                    error={errors.address}
                     defaultValue=""
                     register={register}
                     />
@@ -135,6 +131,37 @@ const Form = () =>{
                     defaultValue=""
                     register={register}
                     />
+                     {/* <FormControl>
+                        <FormLabel
+                            htmlFor="What is the state of the building?"
+                            textTransform="capitalize"
+                            pos="relative"
+                            top={5}
+                            left={4}
+                            width="fit-content"
+                            zIndex={3}
+                            bg="brand.200"
+                        >
+                            What is the state of the building?
+                        </FormLabel>
+                        <Select placeholder="Choose an option" size="lg" fontSize="md">
+                            {result.map((options: any) => {
+                            return <option key={options.name}>{options.name}</option>;
+                            })}
+                        </Select>
+                        </FormControl> */}
+                    
+                    <PrimaryInput
+                    label="Area"
+                    name="area"
+                    error={errors.area}
+                    defaultValue=""
+                    register={register}
+                    />
+                    
+                    <Checkbox>I want to sell myself</Checkbox>
+                    <Checkbox>Help me sell </Checkbox>
+                    <Button color='white' bg='brand.100' w='100%' borderRadius='8px' cursor='pointer' >Next</Button>
                     </form>
                 </Stack>
             </Box>
