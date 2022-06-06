@@ -26,6 +26,7 @@ const LoggedIn = () => {
   const LogUserOut = () => {
     Cookies.remove('user');
     Cookies.remove('token');
+    Cookies.remove('userIn');
     router.push('/');
   };
   const user = JSON.parse(Cookies.get('user') || '');

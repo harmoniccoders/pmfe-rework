@@ -1,4 +1,10 @@
-import { FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 import { FieldError, UseFormRegister, Path } from 'react-hook-form';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {

@@ -1,44 +1,38 @@
 import {
   Flex,
   Box,
-  Image,
-  Badge,
   VStack,
   Text,
-  Icon,
   Grid,
   GridItem,
   Divider,
   Button,
-  ButtonGroup,
   useDisclosure,
-  Hide,
 } from '@chakra-ui/react';
 import React from 'react';
-import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
-import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
+import CleanDetailsModal from 'lib/styles/customTheme/components/Modals/CleanDetailsModal';
 
 type Props = {
-  location: string | undefined | null;
-  description: string | undefined;
+  propertyType: string | undefined | null;
   bedroom: number | undefined;
   bathroom: number | undefined;
-  price: number | undefined;
-  title: string;
+  floor: number | undefined;
+  date: string | undefined;
+  data: {};
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const PropertyCard = ({
-  location,
-  description,
+const CleanCard = ({
+  propertyType,
   bedroom,
   bathroom,
-  price,
-  title,
+  date,
+  floor,
+  data,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -46,44 +40,17 @@ const PropertyCard = ({
     <>
       <Box
         w="full"
-        pb="1rem"
+        py="2rem"
+        px="1rem"
         borderRadius="8px"
         overflow="hidden"
         boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
       >
-        <Box w="full" h="140px" pos="relative">
-          <Image
-            src="/assets/property-img.png"
-            alt="propery-image"
-            w="100%"
-            height="100%"
-            objectFit="cover"
-          />
-          <Flex
-            bg="brand.100"
-            color="white"
-            pos="absolute"
-            w="fit-content"
-            px="1.5rem"
-            h="24px"
-            top="18%"
-            fontSize="14px"
-            align="center"
-            justify="center"
-            borderRadius="4px 0 0 4px"
-            right="0"
-            textTransform="capitalize"
-          >
-            {location}
-          </Flex>
-        </Box>
         <VStack align="flex-start" spacing={4}>
-          <Flex justify="space-between" px=".8rem" mt="1rem" w="full">
-            <Text fontWeight={600} fontSize="17px">
-              {description}
+          <Flex px=".8rem" mt="1rem" w="full">
+            <Text fontWeight={600} fontSize="17px" textTransform="capitalize">
+              {propertyType?.toLowerCase()}
             </Text>
-
-            <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
             <GridItem>
@@ -110,15 +77,17 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;{price}
+                  {`${floor} ${
+                    floor ? (floor > 1 ? 'Floors' : 'Floor') : null
+                  }`}
                 </Text>
               </Flex>
             </GridItem>
             <GridItem>
               <Flex alignItems="center">
-                <Icons iconClass="fa-award" style={iconStyle} />
+                <Icons iconClass="fa-calendar" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {title}
+                  {date}
                 </Text>
               </Flex>
             </GridItem>
@@ -128,23 +97,19 @@ const PropertyCard = ({
             <Button
               variant="outline"
               height="40px"
-              w="fit-content"
+              w="full"
               px="1.8rem"
               color="rgb(37,36,39)"
               onClick={onOpen}
-              width="120px"
             >
-              See more
-            </Button>
-            <Button variant="solid" height="40px" w="fit-content" px="2.2rem">
-              Enquire
+              View Details
             </Button>
           </Flex>
         </VStack>
       </Box>
-      <SeemoreModal isOpen={isOpen} onClose={onClose} />
+      <CleanDetailsModal isOpen={isOpen} onClose={onClose} data={data} />
     </>
   );
 };
 
-export default PropertyCard;
+export default CleanCard;

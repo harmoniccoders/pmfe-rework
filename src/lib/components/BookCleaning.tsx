@@ -1,40 +1,30 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  Link,
-  Button,
-  Select,
-  FormControl,
-  FormLabel,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Text, Button, VStack, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-// import { Register } from 'types/api';
 import { CleaningModel, PropertyType } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import cookies from 'js-cookie';
-import { PrimaryNumberInput } from 'lib/Utils/PrimaryNumberInput';
+import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
+import NumberCounter from 'lib/Utils/NumberCounter';
+import { useState } from 'react';
+import { buildingState } from 'lib/Utils/BuildingStates';
+import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
+import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 
 const schema = yup.object().shape({
-  // fileName: yup.string(),
   buildingType: yup.string(),
   buildingState: yup.string(),
+  propertyTypeId: yup.number().required(),
   dateNeeded: yup.string().required(),
-  numberOfBedrooms: yup.number().required(),
-  numberOfBathrooms: yup.number().required(),
-  numberOfFloors: yup.number().required(),
+  numberOfBedrooms: yup.number(),
+  numberOfBathrooms: yup.number(),
+  numberOfFloors: yup.number(),
 });
 
 const BookCleaning = ({
@@ -49,6 +39,11 @@ const BookCleaning = ({
   const {
     register,
     handleSubmit,
+    control,
+    watch,
+    setValue,
+    getValues,
+    reset,
     formState: { errors, isValid },
   } = useForm<CleaningModel>({
     resolver: yupResolver(schema),
@@ -56,8 +51,31 @@ const BookCleaning = ({
   });
   const { addToast } = useToasts();
   const router = useRouter();
+  const [buildingType, setBuildingType] = useState('');
+
+  setValue('buildingType', buildingType);
+
+  const clearFieldsOnClose = () => {
+    reset({
+      buildingType: '',
+      dateNeeded: '',
+      numberOfBathrooms: 0,
+      numberOfFloors: 0,
+      numberOfBedrooms: 0,
+    });
+    closeModal();
+  };
+
+  console.log(watch('numberOfBedrooms'));
+  console.log(watch('numberOfBathrooms'));
+  console.log(watch('numberOfFloors'));
 
   const onSubmit = async (data: CleaningModel) => {
+    // console.log({ data });
+    data.dateNeeded = new Date(
+      data.dateNeeded as unknown as Date
+    ).toLocaleDateString();
+
     try {
       const result = await (await RequestCleaning(undefined, data)).data;
       console.log({ result });
@@ -66,6 +84,7 @@ const BookCleaning = ({
           appearance: 'success',
           autoDismiss: true,
         });
+        closeModal();
         router.push('/clean');
         return;
       }
@@ -73,6 +92,7 @@ const BookCleaning = ({
         appearance: 'error',
         autoDismiss: true,
       });
+      closeModal();
       return;
     } catch (err) {
       console.log(err);
@@ -85,80 +105,66 @@ const BookCleaning = ({
         Book Cleaning Session
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
-          <FormLabel
-            htmlFor="What type of building is it?"
-            textTransform="capitalize"
-            pos="relative"
-            top={5}
-            left={4}
-            width="fit-content"
-            zIndex={3}
-            bg="brand.200"
+        <HStack mt={4} spacing={4}>
+          <Button
+            height="2.5rem"
+            onClick={() => setBuildingType('residential')}
+            variant={buildingType == 'residential' ? 'solid' : 'outline'}
           >
-            What type of building is it?
-          </FormLabel>
-          <Select placeholder="Choose an option" size="lg" fontSize="md">
-            {result.map((options: any) => {
-              return (
-                <option key={options.name} value={options.name}>
-                  {options.name}
-                </option>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <FormControl>
-          <FormLabel
-            htmlFor="What is the state of the building?"
-            textTransform="capitalize"
-            pos="relative"
-            top={5}
-            left={4}
-            width="fit-content"
-            zIndex={3}
-            bg="brand.200"
+            Residential
+          </Button>
+          <Button
+            height="2.5rem"
+            onClick={() => setBuildingType('commercial')}
+            variant={buildingType == 'commercial' ? 'solid' : 'outline'}
           >
-            What is the state of the building?
-          </FormLabel>
-          <Select placeholder="Choose an option" size="lg" fontSize="md">
-            {result.map((options: any) => {
-              return <option key={options.name}>{options.name}</option>;
-            })}
-          </Select>
-        </FormControl>
-        <PrimaryInput<CleaningModel>
+            Commercial
+          </Button>
+        </HStack>
+        <PrimarySelectKey<CleaningModel>
+          label="What type of building is it?"
+          name="propertyTypeId"
+          register={register}
+          error={errors.propertyTypeId}
+          control={control}
+          options={result}
+          placeholder="Please select"
+        />
+        <PrimarySelectLabel<CleaningModel>
+          label=" What is the state of the building?"
+          name="buildingState"
+          register={register}
+          error={errors.buildingState}
+          control={control}
+          options={buildingState}
+          placeholder="Please select"
+        />
+        <PrimaryDate<CleaningModel>
           label="When do you want the cleaning done?"
           name="dateNeeded"
           error={errors.dateNeeded}
-          placeholder=""
-          defaultValue=""
-          type="date"
           register={register}
+          control={control}
+          minDate={new Date()}
         />
-        <PrimaryNumberInput<CleaningModel>
+
+        <NumberCounter
+          valueName="numberOfBedrooms"
+          setValue={setValue}
+          getValues={getValues}
           label="Number of Bedrooms"
-          name="numberOfBedrooms"
-          error={errors.numberOfBedrooms}
-          placeholder="0"
-          defaultValue=""
-          register={register}
         />
-        <PrimaryNumberInput<CleaningModel>
-          label="Number of Bathrooms/Toilets"
-          name="numberOfBathrooms"
-          error={errors.numberOfBathrooms}
-          placeholder="0"
-          defaultValue=""
-          register={register}
+        <NumberCounter
+          valueName="numberOfBathrooms"
+          setValue={setValue}
+          getValues={getValues}
+          label="Number of Bathrooms"
         />
-        <PrimaryNumberInput<CleaningModel>
+        <NumberCounter
+          valueName="numberOfFloors"
+          setValue={setValue}
+          getValues={getValues}
           label="Number of Floors"
-          name="numberOfFloors"
-          error={errors.numberOfFloors}
-          placeholder="0"
-          defaultValue=""
-          register={register}
         />
         <ButtonComponent
           content="Get Qoute"
@@ -169,12 +175,14 @@ const BookCleaning = ({
       <Button
         variant="outline"
         w="full"
-        onClick={closeModal}
+        // type="reset"
+        onClick={clearFieldsOnClose}
         color="gray"
         fontWeight="100"
       >
         Cancel
       </Button>
+
       <VStack spacing="1" mt=".5rem" pb="14" fontSize="sm">
         <Text textAlign="center">By sending this request you agree to our</Text>
         <NextLink href="#" passHref>

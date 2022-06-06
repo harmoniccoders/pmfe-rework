@@ -31,13 +31,18 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.8.8",
-    "@mui/material": "^5.8.1",
+    "@material-ui/core": "^4.12.4",
+    "@mui/lab": "^5.0.0-alpha.84",
+    "@mui/material": "latest",
+    "@mui/x-date-pickers": "latest",
     "@types/file-saver": "^2.0.5",
     "@types/js-cookie": "^3.0.2",
+    "@types/react-datepicker": "^4.4.2",
     "@uploadcare/react-widget": "^2.0.0",
     "animate.css": "^4.1.1",
     "axios": "^0.26.1",
     "chart.js": "^3.7.1",
+    "date-fns": "latest",
     "eslint-import-resolver-typescript": "^2.7.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^6",
@@ -50,6 +55,7 @@
     "postmark": "^3.0.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.1.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.4.0",
@@ -57,6 +63,7 @@
     "react-multi-carousel": "^2.8.0",
     "react-openapi-client": "^0.2.2",
     "react-reveal": "^1.2.2",
+    "react-selectrix": "^1.0.17",
     "react-smarttab": "^2.0.1",
     "react-toast-notifications": "^2.5.1",
     "react-use-window-scroll": "^1.0.13",
@@ -92,5 +99,9 @@
     "prettier": "2.5.1",
     "standard-version": "^9.3.2",
     "typescript": "^4.6.3"
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
   }
 }

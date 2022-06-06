@@ -29,11 +29,21 @@ const SeemoreModal = ({ isOpen, onClose }: Props) => {
       isOpen={isOpen}
       onClose={onClose}
       motionPreset="slideInBottom"
-      scrollBehavior="outside"
+      // scrollBehavior="outside"
     >
-      <ModalOverlay />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
-      <ModalContent top="-50px">
+      <ModalContent
+        py={5}
+        borderRadius="0"
+        w={['88%', '80%']}
+        overflow="hidden"
+        maxH="100vh"
+        maxW="50%"
+        pos="fixed"
+        mt="1rem"
+        mb="1rem"
+      >
         <ModalHeader>
           <Flex justifyContent="space-between" alignItems="center">
             <Text
@@ -63,7 +73,7 @@ const SeemoreModal = ({ isOpen, onClose }: Props) => {
         </ModalHeader>
 
         <ModalBody>
-          <Box w="100%">
+          <Box maxH="77vh" overflowY="auto" px={5}>
             <Flex w="100%" pos="relative" flexDirection="column">
               <Box w=" 100%" h="250px" bg="brand.50">
                 {/* image */}

@@ -41,7 +41,7 @@ const Counter = ({ room }: Props) => {
           variant="solid"
           borderRadius="50%"
           fontSize="20px"
-          onClick={addCount}
+          onClick={subtractCount}
         >
           -
         </Button>
@@ -66,7 +66,7 @@ const Counter = ({ room }: Props) => {
           variant="solid"
           borderRadius="50%"
           fontSize="20px"
-          onClick={subtractCount}
+          onClick={addCount}
         >
           +
         </Button>
