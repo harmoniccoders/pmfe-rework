@@ -132,6 +132,7 @@ const PropertyCard = ({
               px="1.8rem"
               color="rgb(37,36,39)"
               onClick={onOpen}
+              width="120px"
             >
               See more
             </Button>
