@@ -14,10 +14,9 @@ const ListedProperties = ({ data }: Props) => {
     <Grid
       mt={['40px', 0]}
       // templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}
-      templateColumns="repeat(3,1fr)"
+      templateColumns="repeat(4,1fr)"
       rowGap={5}
       columnGap={3}
-      border="1px solid green"
       w="100%"
       overflow="hidden"
     >

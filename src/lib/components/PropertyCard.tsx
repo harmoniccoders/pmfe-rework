@@ -42,8 +42,8 @@ const PropertyCard = ({
   return (
     <Box
       boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
-      // w="100%"
-      w="300px"
+      w="full"
+      // w="300px"
       minH="350px"
       borderRadius="8px"
       pb="10px"
@@ -127,16 +127,17 @@ const PropertyCard = ({
 
           <Divider orientation="horizontal" borderColor="brand.50" />
 
-          <Flex mb="20px" w="90%" mx="auto" pt="5px" gap={3}>
+          <Flex mb="20px" w="90%" mx="auto" pt="5px">
             <Button
               variant="outline"
               height="40px"
               color="rgb(37,36,39)"
               onClick={onOpen}
+              width="120px"
             >
               See more
             </Button>
-            <Button variant="solid" height="40px">
+            <Button variant="solid" height="40px" width="120px">
               Enquire
             </Button>
           </Flex>
