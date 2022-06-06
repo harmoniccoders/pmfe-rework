@@ -80,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
 
-    console.log({ cleanRequests });
+    
 
     return {
       props: {
