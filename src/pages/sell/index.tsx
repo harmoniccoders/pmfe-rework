@@ -33,12 +33,12 @@ const Sell =()=>{
                     <Form/>
                 </ModalBody>
 
-                <ModalFooter>
+                {/* <ModalFooter>
                     <Button colorScheme='blue' mr={3} onClick={onClose}>
                     Close
                     </Button>
                     <Button variant='ghost'>Secondary Action</Button>
-                </ModalFooter>
+                </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </Grid>
