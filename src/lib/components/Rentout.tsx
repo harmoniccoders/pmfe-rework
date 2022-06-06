@@ -1,6 +1,18 @@
 import { Box, Button, Text, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
+import CustomModal from './CustomModal';
+import RentPropertyForm from './RentPropertyForm';
 
 const Rentout = () => {
+  const [isOpen, setIsopen] = useState<boolean>(false);
+  //  const requests = cleanRequests.value;
+
+  const closeModal = () => {
+    setIsopen(false);
+  };
+  const openModal = () => {
+    setIsopen(true);
+  };
   return (
     <Box>
       <Box>
@@ -28,6 +40,11 @@ const Rentout = () => {
           </Button>
         </VStack>
       </Box>
+      <CustomModal
+        component={<RentPropertyForm result={[]} closeModal={closeModal} />}
+        isOpen={isOpen}
+        closeModal={closeModal}
+      />
     </Box>
   );
 };

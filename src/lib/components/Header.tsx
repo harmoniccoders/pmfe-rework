@@ -21,7 +21,7 @@ const NavLink = ({ path, name }: { path: string; name: string }) => {
     if (router.asPath === name) return 'brand.100';
   };
   return (
-    <Link href={path}>
+    <Link href={path} passHref>
       <Text
         _hover={{ color: 'brand.100' }}
         cursor="pointer"

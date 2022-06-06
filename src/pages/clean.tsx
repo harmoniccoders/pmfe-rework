@@ -32,7 +32,7 @@ const clean = ({
           img="/assets/cleanProperty.png"
           title="Book Cleaning Session"
           text="Professional cleaning services"
-          openModal={openModal}
+          onClick={openModal}
         />
       </Grid>
       <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
