@@ -10,20 +10,19 @@ import {
   TabPanel,
   Flex,
 } from '@chakra-ui/react';
-import PropertyCard from 'lib/components/PropertyCard';
-import BuyFilter from 'lib/styles/customTheme/components/BuyFilter';
-import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
+import axios from 'axios';
+import Listed from 'lib/components/Listed';
 import RequestProperty from 'lib/styles/customTheme/components/RequestProperty';
-import React from 'react';
+import { DataAccess } from 'lib/Utils/Api';
+import { GetServerSideProps } from 'next';
+import { PropertyModel } from 'types/api';
 
-type Props = {};
-
-const buy = (props: Props) => {
+const buy = ({ data }: { data: PropertyModel[] }) => {
   return (
     <Box w="100%" mt="30px">
       <Box w="90%" mx="auto">
         <Heading fontSize="16px" lineHeight={1.5}>
-          "Find a property to buy with the safety of 103% money back guarantee"
+          Find a property to buy with the safety of 103% money back guarantee
         </Heading>
 
         <Tabs isFitted mt="40px" variant="unstyled" defaultIndex={0}>
@@ -60,10 +59,7 @@ const buy = (props: Props) => {
 
           <TabPanels mt="20px">
             <TabPanel w="100%" px="0px">
-              <Flex width="100%" flexDirection={['column', 'row']}>
-                <BuyFilter />
-                <ListedProperties />
-              </Flex>
+              <Listed data={data} />
             </TabPanel>
             <TabPanel>
               <RequestProperty />
@@ -77,60 +73,25 @@ const buy = (props: Props) => {
 
 export default buy;
 
-// <div>
-// {
-/* buy
-      <Grid
-        // templateColumns="repeat()"
-        templateColumns="repeat(auto-fit, minmax(100px, 260px))"
-        border="2px solid green"
-        justifyContent="space-between"
-        rowGap={4}
-        w="90%"
-        mx="auto"
-      >
-        <GridItem>
-          <PropertyCard
-            location="lekki phase 2"
-            description="the location is okay"
-            bedroom="7"
-            bathroom="9"
-            price="145"
-          />
-        </GridItem>
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const bearer = `Bearer ${ctx.req.cookies.token}`;
+  const _dataAccess = new DataAccess(bearer);
+  let { url } = ctx.query;
+  url = 'limit=8&offset=0';
+  try {
+    const data = (await _dataAccess.get(`/api/Property/list?${url}`)).data;
+    // console.log({ data });
 
-        <GridItem>
-          <PropertyCard
-            location="lekki phase 2"
-            description="the location is okay"
-            bedroom="7"
-            bathroom="9"
-            price="145"
-          />
-        </GridItem>
-
-        <GridItem>
-          <PropertyCard
-            location="lekki phase 2"
-            description="the location is okay"
-            bedroom="7"
-            bathroom="9"
-            price="145"
-          />
-        </GridItem>
-
-        <GridItem>
-          <PropertyCard
-            location="lekki phase 2"
-            description="the location is okay"
-            bedroom="7"
-            bathroom="9"
-            price="145"
-          />
-        </GridItem>
-      </Grid>
-      {/* <PropertyCard />
-      <PropertyCard />
-      <PropertyCard /> */
-// }
-// </div> */}
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        data: [],
+      },
+    };
+  }
+};

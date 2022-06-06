@@ -23,7 +23,6 @@ import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import Expired from 'lib/Utils/Expired';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -61,7 +60,9 @@ const Login = () => {
         Cookies.set('user', JSON.stringify(result.data), {
           expires: 1 / 96,
         });
-        Cookies.set('userIn', 'true');
+        Cookies.set('userIn', 'true', {
+          expires: 1 / 96,
+        });
         router.push('/');
         return;
       }
@@ -132,7 +133,7 @@ const Login = () => {
         </Stack>
       </Grid>
     </Box>
-    );
+  );
 };
 
 export default Login;
