@@ -1,12 +1,21 @@
-import { Box, Text, Button, VStack, HStack, Checkbox } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  Checkbox,
+  Textarea,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { CleaningModel, PropertyType } from 'types/api';
+import { PropertyModel, PropertyType } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import cookies from 'js-cookie';
@@ -17,26 +26,43 @@ import { buildingState } from 'lib/Utils/BuildingStates';
 import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { FaInfo } from 'react-icons/fa';
+import { StateSelect } from 'lib/Utils/StateSelect';
+import ManageTenant from './ManageTenant';
+import CustomModal from 'lib/styles/customTheme/components/Modals/CustomModal';
 
 const schema = yup.object().shape({
-  buildingType: yup.string(),
-  buildingState: yup.string(),
+  name: yup.string(),
+  title: yup.string(),
+  propertyTitle: yup.string(),
+  state: yup.string(),
+  lga: yup.string(),
+  area: yup.string(),
+  address: yup.string(),
+  description: yup.string(),
+  rent: yup.string(),
+  price: yup.number(),
+  budget: yup.number(),
   propertyTypeId: yup.number().required(),
-  dateNeeded: yup.string().required(),
+  rentCollectionTypeId: yup.number(),
   numberOfBedrooms: yup.number(),
   numberOfBathrooms: yup.number(),
-  numberOfFloors: yup.number(),
+  bank: yup.string(),
+  accountNumber: yup.string(),
+  sellMyself: yup.boolean(),
 });
 
 const RentPropertyForm = ({
-  result,
+  propertyTypesData,
+  propertyTitleData,
+  statesData,
   closeModal,
 }: {
-  result: PropertyType[];
+  propertyTypesData: PropertyType[];
+  propertyTitleData: PropertyType[];
+  statesData: any[];
   closeModal: any;
 }) => {
-  const [RequestCleaning, { loading, data, error }] =
-    useOperationMethod('Cleanrequest');
+  const [Rent, { loading, data, error }] = useOperationMethod('');
   const {
     register,
     handleSubmit,
@@ -46,22 +72,42 @@ const RentPropertyForm = ({
     getValues,
     reset,
     formState: { errors, isValid },
-  } = useForm<CleaningModel>({
+  } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
   const { addToast } = useToasts();
   const router = useRouter();
-  const [buildingType, setBuildingType] = useState('');
+  const [manageMyself, setManageMyself] = useState<boolean>(true);
+  const [manageForMe, setManageForMe] = useState<boolean>(false);
+  const [isOpen, setIsopen] = useState<boolean>(false);
 
-  setValue('buildingType', buildingType);
+  const closeSecondModal = () => {
+    setIsopen(false);
+  };
+  const openSecondModal = () => {
+    setIsopen(true);
+  };
+
+  const checkManage = () => {
+    if (manageForMe) {
+      setManageForMe(false);
+      setManageMyself(true);
+    } else {
+      setManageForMe(true);
+      setManageMyself(false);
+    }
+  };
 
   const clearFieldsOnClose = () => {
     reset({
-      buildingType: '',
-      dateNeeded: '',
+      name: '',
+      title: '',
+      state: '',
+      area: '',
+      address: '',
+      description: '',
       numberOfBathrooms: 0,
-      numberOfFloors: 0,
       numberOfBedrooms: 0,
     });
     closeModal();
@@ -69,15 +115,10 @@ const RentPropertyForm = ({
 
   console.log(watch('numberOfBedrooms'));
   console.log(watch('numberOfBathrooms'));
-  console.log(watch('numberOfFloors'));
 
-  const onSubmit = async (data: CleaningModel) => {
-    data.dateNeeded = new Date(
-      data.dateNeeded as unknown as Date
-    ).toLocaleDateString();
-
+  const onSubmit = async (data: PropertyModel) => {
     try {
-      const result = await (await RequestCleaning(undefined, data)).data;
+      const result = await (await Rent(undefined, data)).data;
       console.log({ result });
       if (result.status) {
         addToast('Application created sucessfully', {
@@ -100,63 +141,137 @@ const RentPropertyForm = ({
     }
   };
   return (
-    <Box width="90%" mx="auto" mt={['1.875rem', '2.3rem']}>
+    <Box width="90%" mx="auto" mt={['.3rem', '0.5rem']}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <PrimaryInput<CleaningModel>
+        <PrimaryInput<PropertyModel>
           label="Name"
-          name="password"
+          name="name"
           placeholder="Give us your listing a name that makes it easy to find"
           defaultValue=""
           register={register}
-          error={errors.password}
+          error={errors.name}
+          fontSize="sm"
         />
-        <PrimarySelectKey<CleaningModel>
-          label="What type of building is it?"
+        <PrimarySelectKey<PropertyModel>
+          label="Type"
           name="propertyTypeId"
           register={register}
           error={errors.propertyTypeId}
           control={control}
-          options={result}
+          options={propertyTypesData}
           placeholder="Choose a property type"
+          fontSize="sm"
         />
-        <PrimarySelectLabel<CleaningModel>
-          label=" What is the state of the building?"
-          name="buildingState"
+        <PrimarySelectKey<PropertyModel>
+          label="Property Title"
+          name="title"
           register={register}
-          error={errors.buildingState}
+          error={errors.title}
           control={control}
-          options={buildingState}
-          placeholder="Please select"
+          options={propertyTitleData}
+          placeholder="Choose a property title"
+          fontSize="sm"
         />
-        <PrimaryDate<CleaningModel>
-          label="When do you want the cleaning done?"
-          name="dateNeeded"
-          error={errors.dateNeeded}
+        <StateSelect<PropertyModel>
+          label="State"
+          name="state"
           register={register}
+          error={errors.state}
           control={control}
-          minDate={new Date()}
+          options={statesData}
+          placeholder="What state in Nigeria do you want the property"
+          fontSize="sm"
+        />
+        <PrimaryInput<PropertyModel>
+          label="Area"
+          name="area"
+          placeholder=""
+          defaultValue=""
+          register={register}
+          error={errors.area}
+          fontSize="sm"
+        />
+        <PrimaryInput<PropertyModel>
+          label="Address"
+          name="address"
+          placeholder="House No, Street, Estate"
+          defaultValue=""
+          register={register}
+          error={errors.address}
+          fontSize="sm"
         />
 
+        <PrimaryTextArea<PropertyModel>
+          label="Description"
+          name="description"
+          placeholder=""
+          defaultValue=""
+          register={register}
+          error={errors.description}
+          fontSize="sm"
+        />
+        <PrimaryInput<PropertyModel>
+          label="Rent(Per year)"
+          name="price"
+          type="number"
+          placeholder="₦0.00"
+          defaultValue=""
+          register={register}
+          error={errors.price}
+          fontSize="sm"
+        />
         <NumberCounter
           valueName="numberOfBedrooms"
           setValue={setValue}
           getValues={getValues}
           label="Number of Bedrooms"
+          fontSize="sm"
         />
         <NumberCounter
           valueName="numberOfBathrooms"
           setValue={setValue}
           getValues={getValues}
           label="Number of Bathrooms"
+          fontSize="sm"
         />
-        <VStack spacing={5}>
-          <Checkbox>I want to manage the tenant myself</Checkbox>
-          <Checkbox>Help me manage my tenant <FaInfo color='gray.700'/></Checkbox>
+        <VStack spacing={2} align="start" mt="2">
+          <Checkbox onChange={checkManage} isChecked={manageMyself}>
+            <Text fontSize="sm" fontWeight={500}>
+              I want to manage the tenant myself
+            </Text>
+          </Checkbox>
+          <Checkbox onChange={checkManage} isChecked={manageForMe}>
+            <HStack fontSize="sm" fontWeight={500}>
+              <Text>Help me manage my tenant </Text>
+              <Text color="white" p="1" rounded="full" bg="gray.600">
+                <FaInfo size={10} />
+              </Text>
+            </HStack>
+          </Checkbox>
         </VStack>
-        <ButtonComponent
-          content="Get Qoute"
-          isValid={isValid}
-          loading={loading}
+        {manageMyself && (
+          <ButtonComponent
+            content="Submit"
+            isValid={isValid}
+            loading={loading}
+          />
+        )}
+        {manageForMe && (
+          <Button onClick={openSecondModal} w="full" mt="25px" mb="25px">
+            Next
+          </Button>
+        )}
+        <CustomModal
+          component={
+            <ManageTenant
+              register={register}
+              control={control}
+              errors={errors}
+            />
+          }
+          isOpen={isOpen}
+          back={true}
+          closeModal={closeSecondModal}
         />
       </form>
     </Box>

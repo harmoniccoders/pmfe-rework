@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Center, Grid, Stack, Text } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
-import CustomModal from 'lib/components/CustomModal';
+import CustomModal from 'lib/styles/customTheme/components/Modals/CustomModal';
 import BookCleaning from 'lib/components/BookCleaning';
 import { PropertyType } from 'types/api';
 import { GetServerSideProps } from 'next';
@@ -50,6 +50,7 @@ const clean = ({
       <CustomModal
         component={<BookCleaning result={data} closeModal={closeModal} />}
         isOpen={isOpen}
+        back={true}
         closeModal={closeModal}
       />
     </Box>
@@ -80,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cleanRequests = (
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
-
+    console.log('data', data);
     return {
       props: {
         data,

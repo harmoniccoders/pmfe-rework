@@ -1,14 +1,27 @@
 import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
-import CustomModal from 'lib/components/CustomModal';
+import CustomModal from 'lib/styles/customTheme/components/Modals/CustomModal';
 import Rentout from 'lib/components/Rentout';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { GetServerSideProps } from 'next';
+import { returnUserData } from 'lib/Utils/userData';
+import { DataAccess } from 'lib/Utils/Api';
+import { PropertyType } from 'types/api';
+import axios from 'axios';
 
-const rent = () => {
+const rent = ({
+  propertyTypes,
+  propertyTitle,
+  states,
+}: {
+  propertyTypes: PropertyType[];
+  propertyTitle: PropertyType[];
+  states: any[];
+}) => {
   const [isOpen, setIsopen] = useState<boolean>(false);
   const router = useRouter();
-
+  // const requests = cleanRequests.value;
   const openRentProperty = () => {
     router.push('/rent/rentProperty');
   };
@@ -37,7 +50,13 @@ const rent = () => {
         />
       </SimpleGrid>
       <CustomModal
-        component={<Rentout />}
+        component={
+          <Rentout
+            propertyTypesData={propertyTypes}
+            propertyTitleData={propertyTitle}
+            statesData={states}
+          />
+        }
         isOpen={isOpen}
         closeModal={closeModal}
       />
@@ -46,3 +65,46 @@ const rent = () => {
 };
 
 export default rent;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const {
+    data: { user, redirect },
+  } = returnUserData(ctx);
+  if (redirect)
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
+
+  const bearer = `Bearer ${ctx.req.cookies.token}`;
+  const _dataAccess = new DataAccess(bearer);
+  let { url } = ctx.query;
+  url = 'limit=8&offset=0';
+  try {
+    const propertyTypes = (await _dataAccess.get('api/Property/types')).data;
+    const propertyTitle = (await _dataAccess.get('api/Property/titles')).data;
+    const states = await (await axios.get(
+      'https://locationsng-api.herokuapp.com/api/v1/states'
+    )).data;
+
+    return {
+      props: {
+        propertyTypes,
+        propertyTitle,
+        states,
+      },
+    };
+  } catch (error) {
+    // console.log(error.message);
+    return {
+      props: {
+        propertyTypes: {},
+        propertyTitle: {},
+        states: [],
+      },
+    };
+  }
+};

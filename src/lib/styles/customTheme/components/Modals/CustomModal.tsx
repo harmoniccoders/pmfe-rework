@@ -1,4 +1,4 @@
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FaTimes, FaChevronLeft } from 'react-icons/fa';
 
@@ -32,13 +32,28 @@ const CustomModal = ({ component, isOpen, closeModal, back }: Props) => {
         h="full"
       >
         <Box textAlign={back ? 'unset' : 'end'}>
-          <IconButton
-            onClick={closeModal}
-            variant="ghost"
-            p="0"
-            icon={<FaTimes />}
-            aria-label="closeModal"
-          />
+          {back ? (
+            <HStack
+              w="fit-content"
+              onClick={closeModal}
+              cursor="pointer"
+              fontWeight={600}
+              align="center"
+              p="5"
+              fontSize="sm"
+            >
+              <FaChevronLeft />
+              <Text>Back</Text>
+            </HStack>
+          ) : (
+            <IconButton
+              onClick={closeModal}
+              variant="ghost"
+              p="0"
+              icon={<FaTimes />}
+              aria-label="closeModal"
+            />
+          )}
         </Box>
         {component}
       </Box>

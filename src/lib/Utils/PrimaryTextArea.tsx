@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
   Text,
+  Textarea,
 } from '@chakra-ui/react';
 import { FieldError, UseFormRegister, Path } from 'react-hook-form';
 
@@ -32,7 +33,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   onChange?: any;
 }
 
-export const PrimaryInput = <TFormValues extends Record<string, any>>({
+export const PrimaryTextArea = <TFormValues extends Record<string, any>>({
   name,
   required = false,
   type = 'text',
@@ -60,9 +61,10 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
       >
         {label}
       </FormLabel>
-      <Input
-        type={type}
+      <Textarea
+        // type={type}
         placeholder={placeholder}
+        minH="200px"
         variant="outline"
         {...register(name, { required, ...validate })}
         defaultValue={defaultValue}

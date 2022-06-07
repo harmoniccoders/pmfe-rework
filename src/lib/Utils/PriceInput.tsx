@@ -61,7 +61,7 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
         {label}
       </FormLabel>
       <Input
-        type={type}
+        type="number"
         placeholder={placeholder}
         variant="outline"
         {...register(name, { required, ...validate })}
