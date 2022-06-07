@@ -18,6 +18,7 @@ const clean = ({
 }) => {
   const [isOpen, setIsopen] = useState<boolean>(false);
   const requests = cleanRequests.value;
+  console.log({ data });
 
   const closeModal = () => {
     setIsopen(false);
@@ -79,8 +80,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cleanRequests = (
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
-
-    
 
     return {
       props: {
