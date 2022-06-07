@@ -3,6 +3,7 @@ import {
   Stack,
   FormControl,
   FormLabel,
+  VStack,
   Button,
   Checkbox,
   HStack,
@@ -12,12 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-import {
-  Property,
-  PropertyModel,
-  PropertyTitle,
-  PropertyType,
-} from 'types/api';
+import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,6 +29,7 @@ import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle } from 'react-icons/fa';
+import { Widget } from '@uploadcare/react-widget';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -52,15 +49,6 @@ const Form = ({
     useOperationMethod('PropertyCreate');
 
   const schema = yup.object().shape({
-    // id: yup.string(),
-    // dateCreated: yup.string(),
-    // dateModified: yup.string(),
-    // name: yup.string().required(),
-    // address: yup.string().required(),
-    // description: yup.string().required(),
-    // title: yup.string().required(),
-    // numberOfBedrooms: yup.number().required(),
-    // numberOfBathrooms: yup.number().required(),
     address: yup.string().required(),
     description: yup.string().required(),
     title: yup.string().required(),
@@ -152,6 +140,10 @@ const Form = ({
 
   const { addToast } = useToasts();
   const router = useRouter();
+
+  const onChange = () => {
+    console.log('yay!!');
+  };
 
   const onSubmit = async (data: PropertyModel) => {
     console.log({ data });
@@ -289,6 +281,11 @@ const Form = ({
                     placeholder="N0"
                     defaultValue=""
                     register={register}
+                  />
+
+                  <Widget
+                    publicKey="fda3a71102659f95625f"
+                    onChange={onChange}
                   />
                 </>
               )}

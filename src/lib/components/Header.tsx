@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   Stack,
-  Link,
   Image,
   Text,
   useBoolean,
@@ -11,6 +10,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import Link from 'next/link'
 import { BsBorderWidth } from 'react-icons/bs';
 import LoggedIn from './LoggedIn';
 
@@ -21,7 +21,7 @@ const NavLink = ({ path, name }: { path: string; name: string }) => {
     if (router.asPath === name) return 'brand.100';
   };
   return (
-    <Link href={path}>
+    <Link href={path} passHref>
       <Text
         _hover={{ color: 'brand.100' }}
         cursor="pointer"

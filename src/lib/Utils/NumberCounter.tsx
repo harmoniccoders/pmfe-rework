@@ -17,10 +17,12 @@ interface CounterProps {
   setValue: any;
   getValues: any;
   label: string;
+  fontSize?: string;
 }
 function NumberCounter({
   valueName,
   label,
+  fontSize,
   setValue,
   getValues,
 }: CounterProps) {
@@ -32,6 +34,7 @@ function NumberCounter({
         textAlign="center"
         bg="brand.200"
         zIndex={3}
+        fontSize={fontSize}
       >
         {label}
       </FormLabel>

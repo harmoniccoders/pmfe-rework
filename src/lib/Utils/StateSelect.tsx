@@ -25,6 +25,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   radios?: any;
   options: any;
   placeholder?: string;
+  fontSize?: string;
   data?: any;
 }
 
@@ -41,6 +42,7 @@ export const StateSelect = <TFormValues extends Record<string, any>>({
   options,
   data,
   placeholder,
+  fontSize,
 }: FormInputProps<TFormValues>) => {
   return (
     <GridItem>
@@ -54,6 +56,7 @@ export const StateSelect = <TFormValues extends Record<string, any>>({
           width="fit-content"
           zIndex={3}
           bg="brand.200"
+          fontSize={fontSize}
         >
           {label}
         </FormLabel>

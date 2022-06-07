@@ -2694,7 +2694,7 @@
   resolved "https://registry.yarnpkg.com/@uploadcare/client-suspense/-/client-suspense-1.1.0.tgz#33334401c24138947a3751b54e6c698dd461cbe3"
   integrity sha512-ijI2KMHWe3KU5EwW5s2bbKl2APJHa8jAS/uLVvumhUzGv/R9eQk27CpuMl3sr3GpoevjGVl+MKu/tk4SfJVPXg==
 
-"@uploadcare/react-widget@^2.0.0":
+"@uploadcare/react-widget@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@uploadcare/react-widget/-/react-widget-2.1.1.tgz#20ac41ac34d382176c7f80b258f7fddf3fb41982"
   integrity sha512-qkUlfDXiNl81YjM9IojSVKU2cLMT2O86h/lGu/Hku8siGkYBHniZ/WEZZhXjtlIqDdqVvLDVDUbEg1HcTN/lcQ==

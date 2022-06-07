@@ -25,6 +25,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   radios?: any;
   options: any;
   placeholder?: string;
+  fontSize?: string;
   data?: any;
 }
 
@@ -41,6 +42,7 @@ export const PrimarySelectKey = <TFormValues extends Record<string, any>>({
   options,
   data,
   placeholder,
+  fontSize,
 }: FormInputProps<TFormValues>) => {
   return (
     <GridItem>
@@ -48,6 +50,7 @@ export const PrimarySelectKey = <TFormValues extends Record<string, any>>({
         <FormLabel
           htmlFor={label}
           textTransform="capitalize"
+          fontSize={fontSize}
           pos="relative"
           top={5}
           left={4}

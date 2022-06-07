@@ -4,10 +4,10 @@ type Props = {
   img: string;
   title: string;
   text: string;
-  openModal?: any;
+  onClick?: any;
 };
 
-const CardButton = ({ img, title, text, openModal }: Props) => {
+const CardButton = ({ img, title, text, onClick }: Props) => {
   return (
     <HStack
       cursor="pointer"
@@ -16,7 +16,7 @@ const CardButton = ({ img, title, text, openModal }: Props) => {
       p="6"
       spacing="4"
       rounded="md"
-      onClick={openModal}
+      onClick={onClick}
     >
       <Image w="40px" src={img} alt={title} />
       <VStack align="start" spacing="1">

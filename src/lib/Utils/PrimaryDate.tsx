@@ -22,6 +22,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   radios?: any;
   minDate?: any;
   placeholder?: string;
+  fontSize?: string;
   icon?: any;
 }
 
@@ -37,6 +38,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
   radios,
   icon,
   placeholder,
+  fontSize,
   minDate,
 }: FormInputProps<TFormValues>) => {
   return (
@@ -51,6 +53,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
           width="fit-content"
           zIndex={3}
           bg="brand.200"
+          fontSize={fontSize}
         >
           {label}
         </FormLabel>
