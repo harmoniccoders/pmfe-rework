@@ -34,7 +34,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/js-cookie": "^3.0.2",
     "@types/react-datepicker": "^4.4.2",
-    "@uploadcare/react-widget": "^2.0.0",
+    "@uploadcare/react-widget": "^2.1.1",
     "animate.css": "^4.1.1",
     "axios": "^0.26.1",
     "chart.js": "^3.7.1",

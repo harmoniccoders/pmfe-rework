@@ -2370,7 +2370,7 @@
   resolved "https://registry.yarnpkg.com/@types/jquery-deferred/-/jquery-deferred-0.3.0.tgz#d1cec125dac971e523e75771d71c9a3d6befa529"
   integrity sha512-QpOMjSm4rI4Kc57LRDAWlNtwze4KrD8niPqaYuxVnFREAKrKSrrP0vtE9hew1Kr9KB3xjc/Uq1/gfSHGCuce7Q==
 
-"@types/jquery@^3.5.5":
+"@types/jquery@^3.5.14":
   version "3.5.14"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.14.tgz#ac8e11ee591e94d4d58da602cb3a5a8320dee577"
   integrity sha512-X1gtMRMbziVQkErhTQmSe2jFwwENA/Zr+PprCkF63vFq+Yt5PZ4AlKqgmeNlwgn7dhsXEK888eIW2520EpC+xg==
@@ -2735,21 +2735,21 @@
     "@typescript-eslint/types" "5.6.0"
     eslint-visitor-keys "^3.0.0"
 
-"@uploadcare/client-suspense@^1.0.5":
+"@uploadcare/client-suspense@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@uploadcare/client-suspense/-/client-suspense-1.1.0.tgz#33334401c24138947a3751b54e6c698dd461cbe3"
   integrity sha512-ijI2KMHWe3KU5EwW5s2bbKl2APJHa8jAS/uLVvumhUzGv/R9eQk27CpuMl3sr3GpoevjGVl+MKu/tk4SfJVPXg==
 
-"@uploadcare/react-widget@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@uploadcare/react-widget/-/react-widget-2.0.0.tgz#c87537ae21e4d4bdde05f740383ad089652251a3"
-  integrity sha512-krsjBicaQ0slWWN5us+0fzqZ8PClE+ypVdaWx2VTMns6kzNRjpjMp7li4wXPAQipYiDkgLl0rSq+I0Tk39GLLg==
+"@uploadcare/react-widget@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@uploadcare/react-widget/-/react-widget-2.1.1.tgz#20ac41ac34d382176c7f80b258f7fddf3fb41982"
+  integrity sha512-qkUlfDXiNl81YjM9IojSVKU2cLMT2O86h/lGu/Hku8siGkYBHniZ/WEZZhXjtlIqDdqVvLDVDUbEg1HcTN/lcQ==
   dependencies:
-    "@types/jquery" "^3.5.5"
+    "@types/jquery" "^3.5.14"
     "@types/jquery-deferred" "^0.3.0"
-    "@uploadcare/client-suspense" "^1.0.5"
+    "@uploadcare/client-suspense" "^1.1.0"
     react-fast-compare "^3.2.0"
-    uploadcare-widget "^3.17.0"
+    uploadcare-widget "^3.17.2"
 
 "@use-it/event-listener@^0.1.2":
   version "0.1.7"
@@ -7369,7 +7369,7 @@ upath@^1.2.0:
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
-uploadcare-widget@^3.17.0:
+uploadcare-widget@^3.17.2:
   version "3.17.2"
   resolved "https://registry.yarnpkg.com/uploadcare-widget/-/uploadcare-widget-3.17.2.tgz#5e09d8c0000eb3653afd9a7ff1d502fb874bbcf7"
   integrity sha512-A9fDKCguevWcFaMCrHROtYzwnMZbOozER6Dru+4zrZH1pP0S7zI/g+7wLv+5U4XZTc5m+4ZrwHrZJzkIRnWeMQ==

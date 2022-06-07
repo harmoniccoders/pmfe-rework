@@ -3,6 +3,7 @@ import {
   Stack,
   FormControl,
   FormLabel,
+  VStack,
   Button,
   Checkbox,
   HStack,
@@ -27,6 +28,8 @@ import { useOperationMethod } from 'react-openapi-client';
 import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
 import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { StateSelect } from 'lib/Utils/StateSelect';
+import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
+import { Widget } from '@uploadcare/react-widget'
 
 const schema = yup.object().shape({
   id: yup.string(),
@@ -64,8 +67,8 @@ const Form = ({
     setFormStep((cur) => cur + 1);
   };
 
-  const RenderButton = () => {
-    if (formStep > 1) {
+  const renderButton = () => {
+    if (formStep === 2) {
       return null;
     } else if (formStep === 1) {
       return (
@@ -104,6 +107,10 @@ const Form = ({
 
   const { addToast } = useToasts();
   const router = useRouter();
+
+  const onChange=()=>{
+    console.log('yay!!')
+  }
 
   const onSubmit = async (data: PropertyModel) => {
     console.log({ data });
@@ -184,16 +191,18 @@ const Form = ({
                   defaultValue=""
                   register={register}
                 />
-                <PrimaryInput<PropertyModel>
+                <PrimaryTextbox<PropertyModel>
                   label="Description"
                   name="description"
                   error={errors.description}
                   defaultValue=""
+                  type=''
                   register={register}
                 />
-
-                <Checkbox>I want to sell myself</Checkbox>
-                <Checkbox>Help me sell </Checkbox>
+                <VStack spacing={2} mt='1rem' mb='1rem' textAlign='left' float='left'>
+                  <Checkbox>I want to sell myself</Checkbox>
+                  <Checkbox>Help me sell </Checkbox>
+                </VStack>
               </>
             )}
             {formStep === 1 && (
@@ -206,10 +215,21 @@ const Form = ({
                   defaultValue=""
                   register={register}
                 />
+
+                <Widget publicKey='fda3a71102659f95625f' onChange={onChange}/>
               </>
             )}
 
-            {RenderButton}
+    <Button
+        onClick={completeFormStep}
+        color="white"
+        bg="brand.100"
+        w="100%"
+        borderRadius="8px"
+        cursor="pointer"
+      >
+        Next
+      </Button>
           </form>
         </Stack>
       </Box>
