@@ -51,6 +51,7 @@ const clean = ({
           <Button
             bg="brand.100"
             onClick={onOpen}
+            // width="30%"Fw
             color="#fff"
             borderRadius="8px"
           >
@@ -64,7 +65,6 @@ const clean = ({
           propertyTitles={propertyTitles}
           getStates={getStates}
         />
-        //{' '}
       </Grid>
     </Box>
   );

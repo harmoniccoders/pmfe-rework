@@ -7,6 +7,8 @@ import {
   Checkbox,
   HStack,
   Select,
+  Flex,
+  Tooltip,
 } from '@chakra-ui/react';
 
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
@@ -30,6 +32,7 @@ import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
+import { FaInfoCircle } from 'react-icons/fa';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -260,7 +263,15 @@ const Form = ({
                             label={'I want to sell myself'}
                             value={'true'}
                           />
-                          <RadioInput label={'Help me sell'} value={'false'} />
+                          <Flex align="center" gap="1" pos="relative">
+                            <RadioInput
+                              label={'Help me sell'}
+                              value={'false'}
+                            />
+                            <Tooltip label="When we help you sell, your property is listed as verified.">
+                              <FaInfoCircle />
+                            </Tooltip>
+                          </Flex>
                         </>
                       }
                     />
