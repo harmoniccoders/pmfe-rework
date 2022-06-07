@@ -3,6 +3,9 @@ import {
   Stack,
   FormControl,
   FormLabel,
+  InputLeftElement,
+  Input,
+  InputGroup,
   VStack,
   Button,
   Checkbox,
@@ -30,6 +33,7 @@ import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { StateSelect } from 'lib/Utils/StateSelect';
 import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
 import { Widget } from '@uploadcare/react-widget'
+import { BiImage } from 'react-icons/bi'
 
 const schema = yup.object().shape({
   id: yup.string(),
@@ -215,8 +219,24 @@ const Form = ({
                   defaultValue=""
                   register={register}
                 />
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents='none'
+                    children={<BiImage color='gray.300' />}
+                  />
+                  <Input type='tel' placeholder='Upload Picture' disabled='true'/>
+                </InputGroup>
 
                 <Widget publicKey='fda3a71102659f95625f' onChange={onChange}/>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents='none'
+                    children={<BiImage color='gray.300' />}
+                  />
+                  <Input type='tel' placeholder='Upload Video' disabled />
+
+                  <Widget publicKey='fda3a71102659f95625f' onChange={onChange}/>
+                </InputGroup>
               </>
             )}
 
