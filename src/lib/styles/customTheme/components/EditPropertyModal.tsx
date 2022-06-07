@@ -16,31 +16,28 @@ import {
   GridItem,
   VStack,
 } from '@chakra-ui/react';
+import EditPropertyForm from 'pages/sell/EditPropertyForm';
 import Form from 'pages/sell/Form';
 import { useState } from 'react';
-import { PropertyTitle, PropertyType } from 'types/api';
+import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 
-interface AddPropertyProps {
+interface EditPropertyProps {
   isOpen: boolean;
   onClose: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  item: PropertyModel;
 }
 
-function AddPropertyModal({
+function EditPropertyModal({
   isOpen,
   onClose,
   propertyTitles,
   propertyTypes,
   getStates,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  propertyTitles: PropertyTitle[];
-  propertyTypes: PropertyType[];
-  getStates: any[];
-}) {
+  item,
+}: EditPropertyProps) {
   // console.log({ propertyTypes });
   const [formStep, setFormStep] = useState(0);
   return (
@@ -108,13 +105,14 @@ function AddPropertyModal({
 
         <ModalBody>
           <Box maxH="77vh" overflowY="auto" px={5}>
-            <Form
+            <EditPropertyForm
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
               getStates={getStates}
               formStep={formStep}
               setFormStep={setFormStep}
               onClose={onClose}
+              item={item}
             />
           </Box>
         </ModalBody>
@@ -123,4 +121,4 @@ function AddPropertyModal({
   );
 }
 
-export default AddPropertyModal;
+export default EditPropertyModal;

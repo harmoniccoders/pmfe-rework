@@ -12,6 +12,7 @@ const ListedProperties = ({ data }: { data: PropertyModel[] }) => {
           return (
             <GridItem key={item.id}>
               <PropertyCard
+                id={item.id as number}
                 location={item.area}
                 description={item.name}
                 title={item.title}

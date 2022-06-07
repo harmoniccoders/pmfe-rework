@@ -44,8 +44,8 @@ const schema = yup.object().shape({
   budget: yup.number(),
   propertyTypeId: yup.number().required(),
   rentCollectionTypeId: yup.number(),
-  numberOfBedrooms: yup.number(),
-  numberOfBathrooms: yup.number(),
+  numberOfBedrooms: yup.number().required(),
+  numberOfBathrooms: yup.number().required(),
   bank: yup.string(),
   accountNumber: yup.string(),
   sellMyself: yup.boolean(),
@@ -62,7 +62,7 @@ const RentPropertyForm = ({
   statesData: any[];
   closeModal: any;
 }) => {
-  const [Rent, { loading, data, error }] = useOperationMethod('');
+  const [Rent, { loading, data, error }] = useOperationMethod('Propertycreate');
   const {
     register,
     handleSubmit,
@@ -75,6 +75,11 @@ const RentPropertyForm = ({
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      isForRent: true,
+      isDraft: false,
+      isForSale: false,
+    },
   });
   const { addToast } = useToasts();
   const router = useRouter();

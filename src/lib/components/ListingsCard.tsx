@@ -13,66 +13,28 @@ import {
   ButtonGroup,
   useDisclosure,
   Hide,
+  HStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
-import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
-import axios from 'axios';
-import { Parameters } from 'openapi-client-axios';
-import { useOperationMethod } from 'react-openapi-client';
+import { FaPen } from 'react-icons/fa';
+import { PropertyView } from 'types/api';
+import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
+import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 
 type Props = {
-  location: string | undefined | null;
-  description: string | undefined;
-  bedroom: number | undefined;
-  bathroom: number | undefined;
-  price: number | undefined;
-  title: string;
-  id: number;
+  item: PropertyView;
+  openModal: () => void;
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const PropertyCard = ({
-  location,
-  id,
-  description,
-  bedroom,
-  bathroom,
-  price,
-  title,
-}: Props) => {
+const ListingsCard = ({ item, openModal }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const addViews = async (id: number) => {
-  //   onOpen();
-  //   const result = (
-  //     await axios.get(
-  //       `${process.env.NEXT_PUBLIC_API_BASEURL}${'/api/Property/addview/'}${id}`
-  //     )
-  //   ).data;
-  //   console.log({ result });
-  // };
-
-  const [addViews, { loading, data, error }] = useOperationMethod(
-    'Propertyaddview{Id}'
-  );
-
-  const AddViewToProperty = async () => {
-    const params: Parameters = {
-      Id: id,
-    };
-    onOpen();
-    console.log(params);
-
-    try {
-      const result = await (await addViews(params)).data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -92,6 +54,37 @@ const PropertyCard = ({
             objectFit="cover"
           />
           <Flex
+            fontSize=".8rem"
+            fontWeight="600"
+            justify="space-between"
+            color={item.isDraft ? 'white' : 'black'}
+            bgColor={
+              item.status === 'PENDING'
+                ? 'brand.600'
+                : item.isDraft
+                ? '#191919'
+                : '#96FFC9'
+            }
+            pos="absolute"
+            bottom="0"
+            h="2rem"
+            align="center"
+            w="full"
+            px="1rem"
+          >
+            <Text>
+              {item.status === 'PENDING'
+                ? 'Listing is pending'
+                : item.isDraft
+                ? 'Only visible to you'
+                : 'Listing is live'}
+            </Text>
+            <HStack cursor="pointer" onClick={() => openModal()}>
+              <Text>Edit</Text>
+              <FaPen />
+            </HStack>
+          </Flex>
+          <Flex
             bg="brand.100"
             color="white"
             pos="absolute"
@@ -106,13 +99,13 @@ const PropertyCard = ({
             right="0"
             textTransform="capitalize"
           >
-            {location}
+            {item.lga}
           </Flex>
         </Box>
         <VStack align="flex-start" spacing={4}>
           <Flex justify="space-between" px=".8rem" mt="1rem" w="full">
             <Text fontWeight={600} fontSize="17px">
-              {description}
+              {item.name}
             </Text>
 
             <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
@@ -122,8 +115,12 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bedroom} ${
-                    bedroom ? (bedroom > 1 ? 'Bedrooms' : 'Bedroom') : null
+                  {`${item.numberOfBedrooms} ${
+                    item.numberOfBedrooms
+                      ? item.numberOfBedrooms > 1
+                        ? 'Bedrooms'
+                        : 'Bedroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -132,8 +129,12 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bathroom} ${
-                    bathroom ? (bathroom > 1 ? 'Bathrooms' : 'Bathroom') : null
+                  {`${item.numberOfBathrooms} ${
+                    item.numberOfBathrooms
+                      ? item.numberOfBathrooms > 1
+                        ? 'Bathrooms'
+                        : 'Bathroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -142,7 +143,7 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;{price}
+                  &#8358;{item.price}
                 </Text>
               </Flex>
             </GridItem>
@@ -150,33 +151,36 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {title}
+                  {item.title}
                 </Text>
               </Flex>
             </GridItem>
           </Grid>
           <Divider borderColor="brand.50" />
-          <Flex px=".8rem" justify="space-between" w="full">
+          <HStack px=".8rem" spacing={4} w="full">
             <Button
               variant="outline"
               height="40px"
-              w="fit-content"
-              px="1.8rem"
+              width="full"
               color="rgb(37,36,39)"
-              onClick={() => AddViewToProperty()}
-              width="120px"
+              onClick={() => setShowModal(true)}
             >
-              See more
+              Delete
             </Button>
-            <Button variant="solid" height="40px" w="fit-content" px="2.2rem">
-              Enquire
+            <Button variant="solid" height="40px" width="full" onClick={onOpen}>
+              Details
             </Button>
-          </Flex>
+          </HStack>
         </VStack>
       </Box>
-      <SeemoreModal isOpen={isOpen} onClose={onClose} id={id} />
+      <ViewListedProperty isOpen={isOpen} onClose={onClose} item={item} />
+      <DeleteListings
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        item={item}
+      />
     </>
   );
 };
 
-export default PropertyCard;
+export default ListingsCard;

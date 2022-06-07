@@ -29,7 +29,14 @@ const LoggedIn = () => {
     Cookies.remove('userIn');
     router.push('/');
   };
-  const user = JSON.parse(Cookies.get('user') || '');
+
+  let user;
+  const logedInUser = Cookies.get('user');
+  if (logedInUser !== null) {
+    user = JSON.parse(logedInUser as unknown as string);
+  } else {
+    router.push('/login');
+  }
 
   const dropDown = useRef(null);
   const dropDownB = useRef(null);
@@ -86,7 +93,7 @@ const LoggedIn = () => {
           fontWeight="bold"
           ref={dropDownB}
         >
-          {user?.firstName}{' '}
+          {user?.firstName}
           <Avatar size="xs" src={user?.profilePicture || '/assets/user-icon'} />
           <BiChevronDown />
         </Flex>

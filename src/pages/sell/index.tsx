@@ -7,65 +7,126 @@ import {
   Text,
   Image,
   useDisclosure,
+  GridItem,
+  Flex,
 } from '@chakra-ui/react';
-import { PropertyTitle, PropertyType } from 'types/api';
+import {
+  PropertyModel,
+  PropertyTitle,
+  PropertyType,
+  PropertyView,
+} from 'types/api';
 import { GetServerSideProps } from 'next';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
 import axios from 'axios';
+import PropertyCard from 'lib/components/PropertyCard';
+import ListingsCard from 'lib/components/ListingsCard';
+import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
+import { useState } from 'react';
 
 const clean = ({
   propertyTitles,
   propertyTypes,
   getStates,
-  cleanRequests,
+  listings,
 }: {
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   getStates: any;
-  cleanRequests: any;
+  listings: any;
 }) => {
   // const requests = cleanRequests.value;
-  console.log({ propertyTitles });
-  console.log({ propertyTypes });
-  console.log({ getStates });
+  // console.log({ propertyTitles });
+  // console.log({ propertyTypes });
+  // console.log({ getStates });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+  const result = listings.value.filter(
+    (property: PropertyView) => !property.isDraft
+  );
+  console.log({ result });
+
   return (
     <Box w="90%" mx="auto" py="4">
-      <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
-        <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
-          <Box
-            w={['90%', '35vw']}
-            h={['30vh', '35vh']}
-            // bg="#ccc"
-            my={['2rem', '5rem']}
-            mx={['.53rem', '1.3rem']}
-            borderRadius="8px"
-          >
-            <Image src="/assets/admin.png" />
-          </Box>
-          <Text>You have no current property listed for sale.</Text>
+      {result.length > 0 ? (
+        <Box>
+          <Flex justify="space-between" align="center" my="8">
+            <Text fontWeight="bold" color="brand.100" fontSize="lg">
+              My Listings
+            </Text>
+            <Button
+              bg="brand.100"
+              onClick={onOpen}
+              height="3rem"
+              color="#fff"
+              borderRadius="8px"
+            >
+              + &nbsp; Add Property
+            </Button>
+          </Flex>
 
-          <Button
-            bg="brand.100"
-            onClick={onOpen}
-            // width="30%"Fw
-            color="#fff"
-            borderRadius="8px"
-          >
-            + &nbsp; Add Property
-          </Button>
-        </Stack>
-        <AddPropertyModal
-          isOpen={isOpen}
-          onClose={onClose}
-          propertyTypes={propertyTypes}
-          propertyTitles={propertyTitles}
-          getStates={getStates}
-        />
-      </Grid>
+          <Grid templateColumns="repeat(4,1fr)" columnGap="3" rowGap={5}>
+            <>
+              {result.map((item: PropertyView) => {
+                return (
+                  <>
+                    <GridItem key={item.id}>
+                      <ListingsCard item={item} openModal={openModal} />
+                    </GridItem>
+                    <EditPropertyModal
+                      item={item as PropertyModel}
+                      isOpen={showModal}
+                      onClose={() => setShowModal(false)}
+                      propertyTypes={propertyTypes}
+                      propertyTitles={propertyTitles}
+                      getStates={getStates}
+                    />
+                  </>
+                );
+              })}
+            </>
+          </Grid>
+        </Box>
+      ) : (
+        <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
+          <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
+            <Box
+              w={['90%', '35vw']}
+              h={['30vh', '35vh']}
+              // bg="#ccc"
+              my={['2rem', '5rem']}
+              mx={['.53rem', '1.3rem']}
+              borderRadius="8px"
+            >
+              <Image src="/assets/admin.png" />
+            </Box>
+            <Text>You have no current property listed for sale.</Text>
+
+            <Button
+              bg="brand.100"
+              onClick={onOpen}
+              // width="30%"Fw
+              color="#fff"
+              borderRadius="8px"
+            >
+              + &nbsp; Add Property
+            </Button>
+          </Stack>
+        </Grid>
+      )}
+      <AddPropertyModal
+        isOpen={isOpen}
+        onClose={onClose}
+        propertyTypes={propertyTypes}
+        propertyTitles={propertyTitles}
+        getStates={getStates}
+      />
     </Box>
   );
 };
@@ -96,8 +157,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
-    const cleanRequests = (
-      await _dataAccess.get(`/api/Clean/requests/user?${url}`)
+    const listings = (
+      await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
     ).data;
 
     return {
@@ -105,14 +166,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         propertyTypes,
         propertyTitles,
         getStates,
-        cleanRequests,
+        listings,
       },
     };
   } catch (error) {
     return {
       props: {
         propertyTypes: {},
-        cleanRequests: [],
+        listings: [],
       },
     };
   }

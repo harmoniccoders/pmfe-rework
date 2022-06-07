@@ -58,6 +58,7 @@
     "react-openapi-client": "^0.2.2",
     "react-reveal": "^1.2.2",
     "react-selectrix": "^1.0.17",
+    "react-share": "^4.4.0",
     "react-smarttab": "^2.0.1",
     "react-toast-notifications": "^2.5.1",
     "react-use-window-scroll": "^1.0.13",

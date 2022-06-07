@@ -79,7 +79,7 @@ const Login = () => {
     <Box w="90%" mx="auto" h="80vh" overflow="hidden">
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
         <Box
-          w="45vw"
+          w="40vw"
           h={['33vh', '60vh']}
           // bg="#ccc"
           my="5rem"
@@ -91,7 +91,7 @@ const Login = () => {
 
         <Stack
           alignItems="center !important"
-          my="10rem"
+          // my="10rem"
           justifyContent="center"
           p="2rem"
           spacing={2}

@@ -7,7 +7,7 @@ const Input: DeepPartial<Theme['components']['Input']> = {
         borderRadius: '4px',
         background: 'white',
         boxSizing: 'border-box',
-        height: '3.12rem',
+        height: '3rem',
         borderColor: 'brand.50',
         border: '1px solid',
         // boxShadow: '0px 0px 9px rgba(0, 127, 130, 0.37)',
@@ -19,8 +19,8 @@ const Input: DeepPartial<Theme['components']['Input']> = {
           fontSize: '.8rem',
         },
         _valid: {
-          backgroundColor: 'red'
-        }
+          backgroundColor: 'red',
+        },
       },
     },
     filled: {

@@ -23,8 +23,8 @@ const schema = yup.object().shape({
   propertyTypeId: yup.number().required(),
   dateNeeded: yup.string().required(),
   numberOfBedrooms: yup.number(),
-  numberOfBathrooms: yup.number(),
-  numberOfFloors: yup.number(),
+  numberOfBathrooms: yup.number().required(),
+  numberOfFloors: yup.number().required(),
 });
 
 const BookCleaning = ({
@@ -66,9 +66,9 @@ const BookCleaning = ({
     closeModal();
   };
 
-  console.log(watch('numberOfBedrooms'));
-  console.log(watch('numberOfBathrooms'));
-  console.log(watch('numberOfFloors'));
+  watch('numberOfBedrooms');
+  watch('numberOfBathrooms');
+  watch('numberOfFloors');
 
   const onSubmit = async (data: CleaningModel) => {
     data.dateNeeded = new Date(
