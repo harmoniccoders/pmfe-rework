@@ -78,9 +78,11 @@ const RentPropertyForm = ({
   });
   const { addToast } = useToasts();
   const router = useRouter();
-  const [manageMyself, setManageMyself] = useState<boolean>(true);
-  const [manageForMe, setManageForMe] = useState<boolean>(false);
+  const [sellMyself, setSellMyself] = useState<boolean>(true);
+  const [sellForMe, setSellForMe] = useState<boolean>(false);
   const [isOpen, setIsopen] = useState<boolean>(false);
+
+  setValue('sellMyself', sellMyself);
 
   const closeSecondModal = () => {
     setIsopen(false);
@@ -90,12 +92,12 @@ const RentPropertyForm = ({
   };
 
   const checkManage = () => {
-    if (manageForMe) {
-      setManageForMe(false);
-      setManageMyself(true);
+    if (sellForMe) {
+      setSellForMe(false);
+      setSellMyself(true);
     } else {
-      setManageForMe(true);
-      setManageMyself(false);
+      setSellForMe(true);
+      setSellMyself(false);
     }
   };
 
@@ -234,13 +236,13 @@ const RentPropertyForm = ({
           label="Number of Bathrooms"
           fontSize="sm"
         />
-        <VStack spacing={2} align="start" mt="2">
-          <Checkbox onChange={checkManage} isChecked={manageMyself}>
+        <VStack spacing={2} align="start" mt="5">
+          <Checkbox onChange={checkManage} isChecked={sellMyself}>
             <Text fontSize="sm" fontWeight={500}>
               I want to manage the tenant myself
             </Text>
           </Checkbox>
-          <Checkbox onChange={checkManage} isChecked={manageForMe}>
+          <Checkbox onChange={checkManage} isChecked={sellForMe}>
             <HStack fontSize="sm" fontWeight={500}>
               <Text>Help me manage my tenant </Text>
               <Text color="white" p="1" rounded="full" bg="gray.600">
@@ -249,14 +251,14 @@ const RentPropertyForm = ({
             </HStack>
           </Checkbox>
         </VStack>
-        {manageMyself && (
+        {sellMyself && (
           <ButtonComponent
             content="Submit"
             isValid={isValid}
             loading={loading}
           />
         )}
-        {manageForMe && (
+        {sellForMe && (
           <Button onClick={openSecondModal} w="full" mt="25px" mb="25px">
             Next
           </Button>
@@ -267,6 +269,7 @@ const RentPropertyForm = ({
               register={register}
               control={control}
               errors={errors}
+              closeModals={{ closeSecondModal, closeModal }}
             />
           }
           isOpen={isOpen}

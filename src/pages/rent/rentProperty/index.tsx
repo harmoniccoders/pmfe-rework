@@ -1,6 +1,4 @@
 import {
-  GridItem,
-  Grid,
   Box,
   Heading,
   Tabs,
@@ -8,11 +6,8 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Flex,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Listed from 'lib/components/Listed';
-import RequestProperty from 'lib/styles/customTheme/components/RequestProperty';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';
@@ -52,6 +47,7 @@ const RentProperty = ({ data }: { data: PropertyModel[] }) => {
                 fontWeight: 600,
               }}
               fontWeight="500"
+              isDisabled
             >
               request property
             </Tab>
@@ -61,9 +57,7 @@ const RentProperty = ({ data }: { data: PropertyModel[] }) => {
             <TabPanel w="100%" px="0px">
               <Listed data={data} />
             </TabPanel>
-            <TabPanel>
-              {/* <RequestProperty /> */}
-            </TabPanel>
+            <TabPanel></TabPanel>
           </TabPanels>
         </Tabs>
       </Box>
@@ -80,7 +74,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   url = 'limit=8&offset=0';
   try {
     const data = (await _dataAccess.get(`/api/Property/list/rent?${url}`)).data;
-    // console.log({ data });
 
     return {
       props: {

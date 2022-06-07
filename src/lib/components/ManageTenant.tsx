@@ -1,5 +1,4 @@
 import { Box, Button, HStack, Text } from '@chakra-ui/react';
-import axios from 'axios';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
@@ -14,10 +13,16 @@ interface Props {
   register: UseFormRegister<PropertyModel>;
   errors: any;
   control: Control<PropertyModel>;
+  closeModals: any;
 }
 
-const ManageTenant = ({ register, control, errors }: Props) => {
-   
+const ManageTenant = ({ register, control, errors, closeModals }: Props) => {
+  const closeAllModal = () => {
+    closeModals.closeSecondModal();
+    closeModals.closeModal();
+  };
+
+
   return (
     <Box width="90%" mx="auto" mt={['1.875rem', '2.3rem']} color="black">
       <Box>
@@ -57,7 +62,7 @@ const ManageTenant = ({ register, control, errors }: Props) => {
           control={control}
           options={rentFrequency}
           fontSize="sm"
-          placeholder="Choose an option"
+          placeholder="Choose option: weekly, monthly, yearly"
         />
         <PrimarySelectKey<PropertyModel>
           label="Your Bank"
@@ -66,7 +71,7 @@ const ManageTenant = ({ register, control, errors }: Props) => {
           error={errors.bank}
           control={control}
           options={[]}
-          placeholder="Choose option: weekly, monthly, yearly"
+          placeholder="Choose your bank"
           fontSize="sm"
         />
         <PrimaryInput<PropertyModel>
@@ -84,7 +89,7 @@ const ManageTenant = ({ register, control, errors }: Props) => {
           <ButtonComponent content="Submit" isValid={false} loading={false} />
         </Box>
 
-        <Button w="50%" variant="outline" type="button">
+        <Button w="50%" variant="outline" type="button" onClick={closeAllModal}>
           Cancel
         </Button>
       </HStack>
