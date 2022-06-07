@@ -19,7 +19,7 @@ import {
  
   import { PrimaryInput } from 'lib/Utils/PrimaryInput';
   //import { PrimarySelect } from 'lib/Uti;s/PrimarySelect'
-  import { Property } from 'types/api';
+  import { PropertyModel } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,7 +29,6 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryNumberInput } from 'lib/Utils/PrimaryNumberInput';
-import { PrimarySelect } from './../../lib/Utils/PrimarySelect';
 
 const schema = yup.object().shape({
     id: yup.string(),
@@ -81,7 +80,7 @@ const Form = () =>{
         register,
          handleSubmit,
           formState: {errors, isValid},
-        } = useForm<Property>({
+        } = useForm<PropertyModel>({
         resolver: yupResolver(schema),
         mode:'all',
     });
@@ -89,7 +88,7 @@ const Form = () =>{
     const { addToast } = useToasts();
     const router = useRouter();
 
-    const onSubmit = async (data: Property) => {
+    const onSubmit = async (data: PropertyModel) => {
         try{
             const result = await (await PropertyUser(undefined, data)).data;
             console.log({result});
@@ -117,7 +116,7 @@ const Form = () =>{
                    { formStep === 0 &&(
                    
                     <>
-                    <PrimaryInput<Property>
+                    <PrimaryInput<PropertyModel>
                     label="Name"
                     name="name"
                     error={errors.name}
@@ -207,14 +206,14 @@ const Form = () =>{
                     />
                      <PrimaryInput
                     label="Address"
-                    name="Address"
+                    name="address"
                     error={errors.address}
                     defaultValue=""
                     register={register}
                     />
                     <PrimaryInput
                     label="Description"
-                    name="Description"
+                    name="description"
                     error={errors.description}
                     defaultValue=""
                     register={register}
@@ -235,7 +234,7 @@ const Form = () =>{
                         defaultValue=""
                         register={register}
                         />
-                        <PrimaryNumberInput<Property>
+                        <PrimaryNumberInput<PropertyModel>
                         label="Number of Bedrooms"
                         name="numberOfBedrooms"
                         error={errors.numberOfBedrooms}
@@ -243,7 +242,7 @@ const Form = () =>{
                         defaultValue=""
                         register={register}
                         />
-                        <PrimaryNumberInput<Property>
+                        <PrimaryNumberInput<PropertyModel>
                         label="Number of Bathrooms/Toilets"
                         name="numberOfBathrooms"
                         error={errors.numberOfBathrooms}
