@@ -71,7 +71,6 @@ const BookCleaning = ({
   console.log(watch('numberOfFloors'));
 
   const onSubmit = async (data: CleaningModel) => {
-    // console.log({ data });
     data.dateNeeded = new Date(
       data.dateNeeded as unknown as Date
     ).toLocaleDateString();
@@ -105,22 +104,30 @@ const BookCleaning = ({
         Book Cleaning Session
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <HStack mt={4} spacing={4}>
-          <Button
-            height="2.5rem"
-            onClick={() => setBuildingType('residential')}
-            variant={buildingType == 'residential' ? 'solid' : 'outline'}
-          >
-            Residential
-          </Button>
-          <Button
-            height="2.5rem"
-            onClick={() => setBuildingType('commercial')}
-            variant={buildingType == 'commercial' ? 'solid' : 'outline'}
-          >
-            Commercial
-          </Button>
-        </HStack>
+        <Box mt="5">
+          <Text fontSize="sm" fontWeight="500">
+            Is the building residential or commercial?
+          </Text>
+
+          <HStack mt={1} spacing={4}>
+            <Button
+              height="2.5rem"
+              fontSize="sm"
+              onClick={() => setBuildingType('residential')}
+              variant={buildingType == 'residential' ? 'solid' : 'outline'}
+            >
+              Residential
+            </Button>
+            <Button
+              fontSize="sm"
+              height="2.5rem"
+              onClick={() => setBuildingType('commercial')}
+              variant={buildingType == 'commercial' ? 'solid' : 'outline'}
+            >
+              Commercial
+            </Button>
+          </HStack>
+        </Box>
         <PrimarySelectKey<CleaningModel>
           label="What type of building is it?"
           name="propertyTypeId"
@@ -128,7 +135,8 @@ const BookCleaning = ({
           error={errors.propertyTypeId}
           control={control}
           options={result}
-          placeholder="Please select"
+          fontSize="sm"
+          placeholder="Choose an option"
         />
         <PrimarySelectLabel<CleaningModel>
           label=" What is the state of the building?"
@@ -137,7 +145,8 @@ const BookCleaning = ({
           error={errors.buildingState}
           control={control}
           options={buildingState}
-          placeholder="Please select"
+          fontSize="sm"
+          placeholder="Choose an option"
         />
         <PrimaryDate<CleaningModel>
           label="When do you want the cleaning done?"
@@ -146,6 +155,7 @@ const BookCleaning = ({
           register={register}
           control={control}
           minDate={new Date()}
+          fontSize="sm"
         />
 
         <NumberCounter
@@ -153,18 +163,21 @@ const BookCleaning = ({
           setValue={setValue}
           getValues={getValues}
           label="Number of Bedrooms"
+          fontSize="sm"
         />
         <NumberCounter
           valueName="numberOfBathrooms"
           setValue={setValue}
           getValues={getValues}
           label="Number of Bathrooms"
+          fontSize="sm"
         />
         <NumberCounter
           valueName="numberOfFloors"
           setValue={setValue}
           getValues={getValues}
           label="Number of Floors"
+          fontSize="sm"
         />
         <ButtonComponent
           content="Get Qoute"

@@ -36,6 +36,7 @@ const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
+      
       // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
