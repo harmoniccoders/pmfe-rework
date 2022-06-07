@@ -14,7 +14,7 @@ import {
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { LoginModel } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -44,6 +44,7 @@ const Login = () => {
 
   const { addToast } = useToasts();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(true);
 
   const onSubmit = async (data: LoginModel) => {
     try {
@@ -110,7 +111,7 @@ const Login = () => {
               defaultValue=""
               register={register}
               error={errors.password}
-              type="password"
+              type={showPassword ? 'password' : 'text'}
             />
             <ButtonComponent
               content="Login"

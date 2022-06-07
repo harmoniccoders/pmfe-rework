@@ -67,7 +67,7 @@ export const StateSelect = <TFormValues extends Record<string, any>>({
               options={options}
               customKeys={{
                 key: 'name',
-                label: 'capital',
+                label: 'name',
               }}
               onChange={(value: { key: string; label: string }) =>
                 field.onChange(value.key)

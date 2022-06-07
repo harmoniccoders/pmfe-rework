@@ -1,0 +1,25 @@
+.radio {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  border-radius: 3px !important;
+  border: 2px solid blue !important;
+  background: transparent !important;
+}
+.css-1k7ql8a[aria-checked='true'],
+.css-1k7ql8a[data-checked] {
+  background: blue !important;
+}
+.css-1k7ql8a[aria-checked='true']::before,
+.css-1k7ql8a[data-checked]::before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6px !important;
+  height: 13px !important;
+  border-radius: 0 !important;
+  margin-bottom: 3px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  background: unset !important;
+  transform: rotate(45deg);
+}

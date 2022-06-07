@@ -17,6 +17,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Form from 'pages/sell/Form';
+import { useState } from 'react';
 import { PropertyTitle, PropertyType } from 'types/api';
 
 interface AddPropertyProps {
@@ -40,7 +41,8 @@ function AddPropertyModal({
   propertyTypes: PropertyType[];
   getStates: any[];
 }) {
-  console.log({ propertyTypes });
+  // console.log({ propertyTypes });
+  const [formStep, setFormStep] = useState(0);
   return (
     <Modal
       isOpen={isOpen}
@@ -57,27 +59,51 @@ function AddPropertyModal({
         w={['88%', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW="50%"
+        maxW="40%"
         pos="fixed"
         mt="1rem"
         mb="1rem"
       >
         <ModalHeader>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text
-              onClick={onClose}
-              display="flex"
+          {formStep === 0 ? (
+            <Flex
+              justifyContent="space-between"
               alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
+              onClick={onClose}
             >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px' }}
-              ></span>
-              Back
-            </Text>
-          </Flex>
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            </Flex>
+          ) : (
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              onClick={() => setFormStep(formStep - 1)}
+            >
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            </Flex>
+          )}
         </ModalHeader>
 
         <ModalBody>
@@ -86,6 +112,8 @@ function AddPropertyModal({
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
               getStates={getStates}
+              formStep={formStep}
+              setFormStep={setFormStep}
             />
           </Box>
         </ModalBody>

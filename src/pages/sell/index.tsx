@@ -1,62 +1,77 @@
 import {
-  Grid,
-  Text,
-  Stack,
   Box,
   Button,
+  Center,
+  Grid,
+  Stack,
+  Text,
   Image,
   useDisclosure,
 } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
-import { returnUserData } from 'lib/Utils/userData';
-import { DataAccess } from 'lib/Utils/Api';
 import { PropertyTitle, PropertyType } from 'types/api';
+import { GetServerSideProps } from 'next';
+import { DataAccess } from 'lib/Utils/Api';
+import { returnUserData } from 'lib/Utils/userData';
 import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
 import axios from 'axios';
 
-const sell = ({
+const clean = ({
   propertyTitles,
-  data,
+  propertyTypes,
   getStates,
+  cleanRequests,
 }: {
-  propertyTitles: PropertyTitle[];
-  data: PropertyType[];
-  getStates: any[];
+  propertyTitles: PropertyType[];
+  propertyTypes: PropertyTitle[];
+  getStates: any;
+  cleanRequests: any;
 }) => {
+  // const requests = cleanRequests.value;
+  console.log({ propertyTitles });
+  console.log({ propertyTypes });
+  console.log({ getStates });
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log({ data });
-
   return (
-    <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
-      <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
-        <Box
-          w={['90%', '35vw']}
-          h={['30vh', '35vh']}
-          // bg="#ccc"
-          my={['2rem', '5rem']}
-          mx={['.53rem', '1.3rem']}
-          borderRadius="8px"
-        >
-          <Image src="/assets/admin.png" />
-        </Box>
-        <Text>You have no current property listed for sale.</Text>
+    <Box w="90%" mx="auto" py="4">
+      <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
+        <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
+          <Box
+            w={['90%', '35vw']}
+            h={['30vh', '35vh']}
+            // bg="#ccc"
+            my={['2rem', '5rem']}
+            mx={['.53rem', '1.3rem']}
+            borderRadius="8px"
+          >
+            <Image src="/assets/admin.png" />
+          </Box>
+          <Text>You have no current property listed for sale.</Text>
 
-        <Button bg="brand.100" onClick={onOpen} color="#fff" borderRadius="8px">
-          + &nbsp; Add Property
-        </Button>
-      </Stack>
-      <AddPropertyModal
-        isOpen={isOpen}
-        onClose={onClose}
-        propertyTypes={data}
-        propertyTitles={propertyTitles}
-        getStates={getStates}
-      />
-    </Grid>
+          <Button
+            bg="brand.100"
+            onClick={onOpen}
+            color="#fff"
+            borderRadius="8px"
+          >
+            + &nbsp; Add Property
+          </Button>
+        </Stack>
+        <AddPropertyModal
+          isOpen={isOpen}
+          onClose={onClose}
+          propertyTypes={propertyTypes}
+          propertyTitles={propertyTitles}
+          getStates={getStates}
+        />
+        //{' '}
+      </Grid>
+    </Box>
   );
 };
 
-export default sell;
+export default clean;
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     data: { user, redirect },
@@ -75,32 +90,29 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get('api/Property/types')).data;
-    const propertyTitles = (await _dataAccess.get('api/Property/titles')).data;
+    const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
+    const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
     const getStates = (
-      await axios.get('https://locationsng-api.herokuapp.com/api/v1/states')
+      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
-    console.log({ data });
 
-    const listings = (
-      await _dataAccess.get(`/api​/Property​/user​/created?${url}`)
+    const cleanRequests = (
+      await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
 
     return {
       props: {
-        data,
+        propertyTypes,
         propertyTitles,
         getStates,
-        listings,
+        cleanRequests,
       },
     };
   } catch (error) {
     return {
       props: {
         propertyTypes: {},
-        propertyTitles: {},
-        getStates: [],
-        listings: [],
+        cleanRequests: [],
       },
     };
   }
