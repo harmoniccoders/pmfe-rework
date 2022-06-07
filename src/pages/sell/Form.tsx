@@ -33,7 +33,7 @@ import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { StateSelect } from 'lib/Utils/StateSelect';
 import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
 import { Widget } from '@uploadcare/react-widget'
-import { BiImage } from 'react-icons/bi'
+import { BiImage, BiVideo } from 'react-icons/bi'
 
 const schema = yup.object().shape({
   id: yup.string(),
@@ -224,14 +224,14 @@ const Form = ({
                     pointerEvents='none'
                     children={<BiImage color='gray.300' />}
                   />
-                  <Input type='tel' placeholder='Upload Picture' disabled='true'/>
+                  <Input type='tel' placeholder='Upload Picture' disabled/>
                 </InputGroup>
 
                 <Widget publicKey='fda3a71102659f95625f' onChange={onChange}/>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents='none'
-                    children={<BiImage color='gray.300' />}
+                    children={<BiVideo color='gray.300' />}
                   />
                   <Input type='tel' placeholder='Upload Video' disabled />
 
