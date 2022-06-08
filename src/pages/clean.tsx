@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Center, Grid, Stack, Text } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
-import CustomModal from 'lib/components/CustomModal';
+import CustomModal from 'lib/styles/customTheme/components/Modals/CustomModal';
 import BookCleaning from 'lib/components/BookCleaning';
 import { PropertyType } from 'types/api';
 import { GetServerSideProps } from 'next';
@@ -18,6 +18,7 @@ const clean = ({
 }) => {
   const [isOpen, setIsopen] = useState<boolean>(false);
   const requests = cleanRequests.value;
+  console.log({ data });
 
   const closeModal = () => {
     setIsopen(false);
@@ -32,7 +33,7 @@ const clean = ({
           img="/assets/cleanProperty.png"
           title="Book Cleaning Session"
           text="Professional cleaning services"
-          openModal={openModal}
+          onClick={openModal}
         />
       </Grid>
       <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
@@ -49,6 +50,7 @@ const clean = ({
       <CustomModal
         component={<BookCleaning result={data} closeModal={closeModal} />}
         isOpen={isOpen}
+        back={true}
         closeModal={closeModal}
       />
     </Box>
@@ -79,9 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cleanRequests = (
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
-
-    console.log({ cleanRequests });
-
+    console.log('data', data);
     return {
       props: {
         data,

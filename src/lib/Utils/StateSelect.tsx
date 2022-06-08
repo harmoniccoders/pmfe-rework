@@ -29,7 +29,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   data?: any;
 }
 
-export const PrimarySelectLabel = <TFormValues extends Record<string, any>>({
+export const StateSelect = <TFormValues extends Record<string, any>>({
   name,
   required = false,
   label = '',
@@ -69,11 +69,11 @@ export const PrimarySelectLabel = <TFormValues extends Record<string, any>>({
               height={150}
               options={options}
               customKeys={{
-                key: 'id',
+                key: 'name',
                 label: 'name',
               }}
-              onChange={(value: { key: number; label: string }) =>
-                field.onChange(value.label)
+              onChange={(value: { key: string; label: string }) =>
+                field.onChange(value.key)
               }
             />
           )}
