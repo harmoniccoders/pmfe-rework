@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Box, Center, Grid, Stack, Text } from '@chakra-ui/react';
+import { Box, Center, Grid, Text } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
-import CustomModal from 'lib/styles/customTheme/components/Modals/CustomModal';
-import BookCleaning from 'lib/components/BookCleaning';
 import { PropertyType } from 'types/api';
 import { GetServerSideProps } from 'next';
 import { DataAccess } from 'lib/Utils/Api';
 import CleanProperty from 'lib/styles/customTheme/components/CleanProperty';
 import { returnUserData } from 'lib/Utils/userData';
+import BookCleaningModal from 'lib/styles/customTheme/components/Modals/BookCleaningModal';
 
 const clean = ({
   data,
@@ -46,12 +45,10 @@ const clean = ({
           You currently have no Cleaning sessions Booked.
         </Center>
       )}
-
-      <CustomModal
-        component={<BookCleaning result={data} closeModal={closeModal} />}
-        isOpen={isOpen}
-        back={true}
+      <BookCleaningModal
+        result={data}
         closeModal={closeModal}
+        isOpen={isOpen}
       />
     </Box>
   );
