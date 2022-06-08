@@ -1,53 +1,18 @@
 import {
   Box,
-<<<<<<< HEAD
   Text,
-  Grid,
   Stack,
-  FormLabel,
-  Image,
-  Input,
-  Button,
-  CheckBox,
-  InputGroup,
-  Flex,
-  Divider,
-} from '@chakra-ui/react';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-import { Property } from 'types/api';
-=======
-  Stack,
-  FormControl,
-  FormLabel,
-  InputLeftElement,
-  Input,
-  InputGroup,
-  VStack,
   Button,
   Checkbox,
-  HStack,
-  Select,
   Flex,
+  HStack,
   Tooltip,
   Icon,
-  Text,
 } from '@chakra-ui/react';
-
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-<<<<<<< HEAD
 import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
-=======
-//import { PrimarySelect } from 'lib/Uti;s/PrimarySelect'
-import {
-  Property,
-  PropertyModel,
-  PropertyTitle,
-  PropertyType,
-} from 'types/api';
->>>>>>> 0bc8ab9c186d0f28d6a2ed0ec6b861e61fa4bff9
->>>>>>> 6aef2e30f5204bedb22337b5e37183ddf180ca6b
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -57,31 +22,15 @@ import { useOperationMethod } from 'react-openapi-client';
 import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
 import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { StateSelect } from 'lib/Utils/StateSelect';
-<<<<<<< HEAD
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle } from 'react-icons/fa';
-import { Widget } from '@uploadcare/react-widget';
 import NumberCounter from 'lib/Utils/NumberCounter';
-import { BiImage } from 'react-icons/bi';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
-=======
 import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
 import { Widget } from '@uploadcare/react-widget'
 import { BiImage, BiVideo } from 'react-icons/bi'
-
-const schema = yup.object().shape({
-  id: yup.string(),
-  dateCreated: yup.string(),
-  dateModified: yup.string(),
-  name: yup.string().required(),
-  address: yup.string().required(),
-  description: yup.string().required(),
-  title: yup.string().required(),
-  numberOfBedrooms: yup.number().required(),
-  numberOfBathrooms: yup.number().required(),
-});
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -260,9 +209,9 @@ const Form = ({
   return (
     <>
       <Box>
-
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+            <>
             <Box display={formStep === 0 ? 'block' : 'none'}>
               <PrimaryInput<PropertyModel>
                 label="Name"
@@ -310,37 +259,6 @@ const Form = ({
                   placeholder="Choose a Local Government"
                 />
               ) : null}
-            <PrimaryInput
-              label="id"
-              name="id"
-              error={errors.id}
-              defaultValue=""
-              style={{ display: 'none' }}
-            />
-            <PrimaryInput
-              label="id"
-              name="dateCreated"
-              error={errors.dateCreated}
-              defaultValue=""
-              register={register}
-              style={{ display: 'none' }}
-            />
-            <PrimaryInput
-              label="id"
-              name="dateModified"
-              error={errors.dateModified}
-              defaultValue=""
-              register={register}
-              style={{ display: 'none' }}
-            />
-
-            <PrimaryInput
-              label="Name"
-              name="name"
-              error={errors.name}
-              defaultValue=""
-              register={register}
-            />
                   
               <PrimaryInput<PropertyModel>
                 label="Area"
@@ -387,155 +305,8 @@ const Form = ({
                 />
               </Box>
             </Box>
-            <Box display={formStep === 1 ? 'block' : 'none'}>
+            <Box  display={formStep === 1 ? 'block' : 'none'}>
               <PrimaryInput<PropertyModel>
-                label="Price"
-                name="price"
-                error={errors.price}
-                placeholder="N0"
-                defaultValue=""
-                register={register}
-              />
-
-              <Box pos="relative">
-                <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
-                <Widget
-                  publicKey="fda3a71102659f95625f"
-                  //@ts-ignore
-                  id="file"
-                  onChange={onChange}
-                  imagesOnly
-                />
-              </Box>
-              <Box pos="relative">
-                <Icon
-                  as={VscDeviceCameraVideo}
-                  pos="absolute"
-                  top="55%"
-                  left="6%"
-                />
-                <Widget publicKey="fda3a71102659f95625f" onChange={onChange} />
-              </Box>
-
-              <NumberCounter
-                valueName="numberOfBedrooms"
-                setValue={setValue}
-                getValues={getValues}
-                label="Number of Bedrooms"
-                fontSize="sm"
-              />
-              <NumberCounter
-                valueName="numberOfBathrooms"
-                setValue={setValue}
-                getValues={getValues}
-                label="Number of Bathrooms"
-                fontSize="sm"
-              />
-            </Box>
-            {RenderButton()}
-            {/* <>
-              {formStep === 0 && (
-                <>
-                  <PrimaryInput<PropertyModel>
-                    label="Name"
-                    name="name"
-                    error={errors.name}
-                    placeholder="Give your listing a name that makes it able to find"
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimarySelectKey<PropertyModel>
-                    label="Type"
-                    name="propertyTypeId"
-                    register={register}
-                    error={errors.propertyTypeId}
-                    control={control}
-                    options={propertyTypes}
-                    placeholder="Choose a Property"
-                  />
-                  <PrimarySelectLabel<PropertyModel>
-                    label="Property Title"
-                    name="title"
-                    register={register}
-                    error={errors.title}
-                    control={control}
-                    options={propertyTitles}
-                    placeholder="Certificate of Occupancy, Governor's Consent ..."
-                  />
-                  <StateSelect<PropertyModel>
-                    label="State"
-                    name="state"
-                    register={register}
-                    error={errors.state}
-                    control={control}
-                    options={getStates}
-                    placeholder="Which state in Nigeria is your property located"
-                  />
-                  {getValues('state') !== undefined ? (
-                    <StateSelect<PropertyModel>
-                      label="LGA"
-                      name="lga"
-                      register={register}
-                      error={errors.lga}
-                      control={control}
-                      options={lgas}
-                      placeholder="Which state in Nigeria is your property located"
-                    />
-                  ) : null}
-                  <PrimaryInput<PropertyModel>
-                    label="Area"
-                    name="area"
-                    error={errors.area}
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimaryInput<PropertyModel>
-                    label="Address"
-                    name="address"
-                    error={errors.address}
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimaryInput<PropertyModel>
-                    label="Description"
-                    name="description"
-                    error={errors.description}
-                    defaultValue=""
-                    register={register}
-                  />
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
-                      defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to sell myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me sell'}
-                              value={'false'}
-                            />
-                            <Tooltip label="When we help you sell, your property is listed as verified.">
-                              <FaInfoCircle />
-                            </Tooltip>
-                          </Flex>
-                        </>
-                      }
-                    />
-                  </Box>
-                   <Checkbox>I want to sell myself</Checkbox>
-                  <Checkbox>Help me sell </Checkbox> 
-             </> 
-             )} 
-            {/* {formStep === 1 && (
-                <>
-                  <PrimaryInput<PropertyModel>
                     label="Price"
                     name="price"
                     error={errors.price}
@@ -550,7 +321,7 @@ const Form = ({
                       publicKey="fda3a71102659f95625f"
                       //@ts-ignore
                       id="file"
-                      onChange={onChange}
+                      // onChange={onChange}
                       imagesOnly
                     />
                   </Box>
@@ -563,7 +334,7 @@ const Form = ({
                     />
                     <Widget
                       publicKey="fda3a71102659f95625f"
-                      onChange={onChange}
+                      // onChange={onChange}
                     />
                   </Box>
 
@@ -581,10 +352,10 @@ const Form = ({
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />
-                </>
-              )}
-              {RenderButton()}
-            </>  */}
+             
+            </Box>
+            {RenderButton()}
+            </>
           </form>
         </Stack>
       </Box>
@@ -593,3 +364,155 @@ const Form = ({
 };
 
 export default Form;
+            // <>
+            //   {formStep === 0 && (
+            //     <>
+            //       <PrimaryInput<PropertyModel>
+            //         label="Name"
+            //         name="name"
+            //         error={errors.name}
+            //         placeholder="Give your listing a name that makes it able to find"
+            //         defaultValue=""
+            //         register={register}
+            //       />
+            //       <PrimarySelectKey<PropertyModel>
+            //         label="Type"
+            //         name="propertyTypeId"
+            //         register={register}
+            //         error={errors.propertyTypeId}
+            //         control={control}
+            //         options={propertyTypes}
+            //         placeholder="Choose a Property"
+            //       />
+            //       <PrimarySelectLabel<PropertyModel>
+            //         label="Property Title"
+            //         name="title"
+            //         register={register}
+            //         error={errors.title}
+            //         control={control}
+            //         options={propertyTitles}
+            //         placeholder="Certificate of Occupancy, Governor's Consent ..."
+            //       />
+            //       <StateSelect<PropertyModel>
+            //         label="State"
+            //         name="state"
+            //         register={register}
+            //         error={errors.state}
+            //         control={control}
+            //         options={getStates}
+            //         placeholder="Which state in Nigeria is your property located"
+            //       />
+            //       {getValues('state') !== undefined ? (
+            //         <StateSelect<PropertyModel>
+            //           label="LGA"
+            //           name="lga"
+            //           register={register}
+            //           error={errors.lga}
+            //           control={control}
+            //           options={lgas}
+            //           placeholder="Which state in Nigeria is your property located"
+            //         />
+            //       ) : null}
+            //       <PrimaryInput<PropertyModel>
+            //         label="Area"
+            //         name="area"
+            //         error={errors.area}
+            //         defaultValue=""
+            //         register={register}
+            //       />
+            //       <PrimaryInput<PropertyModel>
+            //         label="Address"
+            //         name="address"
+            //         error={errors.address}
+            //         defaultValue=""
+            //         register={register}
+            //       />
+            //       <PrimaryInput<PropertyModel>
+            //         label="Description"
+            //         name="description"
+            //         error={errors.description}
+            //         defaultValue=""
+            //         register={register}
+            //       />
+            //       <Box my="1.3em">
+            //         <RadioButton<PropertyModel>
+            //           name="sellMyself"
+            //           register={register}
+            //           defaultValue=""
+            //           error={errors.sellMyself}
+            //           control={control}
+            //           radios={
+            //             <>
+            //               <RadioInput
+            //                 label={'I want to sell myself'}
+            //                 value={'true'}
+            //               />
+            //               <Flex align="center" gap="1" pos="relative">
+            //                 <RadioInput
+            //                   label={'Help me sell'}
+            //                   value={'false'}
+            //                 />
+            //                 <Tooltip label="When we help you sell, your property is listed as verified.">
+            //                   <FaInfoCircle />
+            //                 </Tooltip>
+            //               </Flex>
+            //             </>
+            //           }
+            //         />
+            //       </Box>
+            //        <Checkbox>I want to sell myself</Checkbox>
+            //       <Checkbox>Help me sell </Checkbox> 
+            //     </> 
+            //  )} 
+            //  {formStep === 1 && (
+            //     <>
+            //       <PrimaryInput<PropertyModel>
+            //         label="Price"
+            //         name="price"
+            //         error={errors.price}
+            //         placeholder="N0"
+            //         defaultValue=""
+            //         register={register}
+            //       />
+
+            //       <Box pos="relative">
+            //         <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
+            //         <Widget
+            //           publicKey="fda3a71102659f95625f"
+            //           //@ts-ignore
+            //           id="file"
+            //           onChange={onChange}
+            //           imagesOnly
+            //         />
+            //       </Box>
+            //       <Box pos="relative">
+            //         <Icon
+            //           as={VscDeviceCameraVideo}
+            //           pos="absolute"
+            //           top="55%"
+            //           left="6%"
+            //         />
+            //         <Widget
+            //           publicKey="fda3a71102659f95625f"
+            //           onChange={onChange}
+            //         />
+            //       </Box>
+
+            //       <NumberCounter
+            //         valueName="numberOfBedrooms"
+            //         setValue={setValue}
+            //         getValues={getValues}
+            //         label="Number of Bedrooms"
+            //         fontSize="sm"
+            //       />
+            //       <NumberCounter
+            //         valueName="numberOfBathrooms"
+            //         setValue={setValue}
+            //         getValues={getValues}
+            //         label="Number of Bathrooms"
+            //         fontSize="sm"
+            //       />
+            //     </>
+            //   )}
+            //   {RenderButton()}
+            // </>
