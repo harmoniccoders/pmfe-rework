@@ -31,11 +31,16 @@ import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage, BiVideo } from 'react-icons/bi';
+import { incomeBracket } from 'lib/Utils/IncomeBracket';
+import { rentFrequency } from 'lib/Utils/RentFrequency';
+import { tenantTypes } from 'lib/Utils/TenantType';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  getBanks: any[];
   formStep: number;
   setFormStep: any;
   onClose: () => void;
@@ -44,6 +49,7 @@ const Form = ({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
   formStep,
   setFormStep,
   onClose,
@@ -59,8 +65,13 @@ const Form = ({
     lga: yup.string().required(),
     state: yup.string().required(),
     propertyTypeId: yup.number().required(),
+    rentCollectionTypeId: yup.number(),
+    tenantTypeId: yup.number(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
+    bank: yup.string(),
+    accountNumber: yup.string(),
+    budget: yup.number(),
     // numberofBathrooms: yup.number().when('name', {
     //   is: () => formStep === 1,
     //   then: yup.number().required('Please provide info'),
@@ -92,7 +103,9 @@ const Form = ({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      isForSale: true,
+      isForRent: true,
+      isDraft: false,
+      isForSale: false,
     },
   });
 
@@ -152,14 +165,7 @@ const Form = ({
     } else if (formStep === 1) {
       return (
         <Box>
-          <HStack spacing={3}>
-            <Button
-              w="50%"
-              variant="outline"
-              onClick={() => setValue('isDraft', true)}
-            >
-              Save as Draft
-            </Button>
+          <HStack spacing={3} pt="5">
             <Box w="50%">
               <ButtonComponent
                 content="Submit"
@@ -167,10 +173,14 @@ const Form = ({
                 loading={loading}
               />
             </Box>
+            <Button
+              w="50%"
+              variant="outline"
+              onClick={() => clearPreviewData()}
+            >
+              Cancel
+            </Button>
           </HStack>
-          <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
-            Cancel
-          </Button>
         </Box>
       );
     } else {
@@ -183,7 +193,7 @@ const Form = ({
 
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
-    console.log({ data });
+    console.log("sellmyself",{ data });
     try {
       const result = await (await PropertyUser(undefined, data)).data;
       console.log({ result });
@@ -194,7 +204,7 @@ const Form = ({
         });
         onClose();
         setFormStep(0);
-        router.reload();
+        router.push('/listings');
         return;
       }
       addToast(result.message, {
@@ -274,47 +284,22 @@ const Form = ({
                   defaultValue=""
                   register={register}
                 />
-                <PrimaryInput<PropertyModel>
+                <PrimaryTextArea<PropertyModel>
                   label="Description"
                   name="description"
                   error={errors.description}
                   defaultValue=""
                   register={register}
                 />
-                <Box my="1.3em">
-                  <RadioButton<PropertyModel>
-                    name="sellMyself"
-                    register={register}
-                    defaultValue=""
-                    error={errors.sellMyself}
-                    control={control}
-                    radios={
-                      <>
-                        <RadioInput
-                          label={'I want to sell myself'}
-                          value={'true'}
-                        />
-                        <Flex align="center" gap="1" pos="relative">
-                          <RadioInput label={'Help me sell'} value={'false'} />
-                          <Tooltip label="When we help you sell, your property is listed as verified.">
-                            <FaInfoCircle />
-                          </Tooltip>
-                        </Flex>
-                      </>
-                    }
-                  />
-                </Box>
-              </Box>
-              <Box display={formStep === 1 ? 'block' : 'none'}>
                 <PrimaryInput<PropertyModel>
-                  label="Price"
+                  label="Rent (Per year)"
                   name="price"
                   error={errors.price}
-                  placeholder="N0"
+                  placeholder="₦00.00"
+                  type="number"
                   defaultValue=""
                   register={register}
                 />
-
                 <Box pos="relative">
                   <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
                   <Widget
@@ -337,7 +322,6 @@ const Form = ({
                     // onChange={onChange}
                   />
                 </Box>
-
                 <NumberCounter
                   valueName="numberOfBedrooms"
                   setValue={setValue}
@@ -352,6 +336,96 @@ const Form = ({
                   label="Number of Bathrooms"
                   fontSize="sm"
                 />
+                <Box my="1.3em">
+                  <RadioButton<PropertyModel>
+                    name="sellMyself"
+                    register={register}
+                    defaultValue=""
+                    error={errors.sellMyself}
+                    control={control}
+                    radios={
+                      <>
+                        <RadioInput
+                          label={'I want to manage the tenant myself'}
+                          value={'true'}
+                        />
+                        <Flex align="center" gap="1" pos="relative">
+                          <RadioInput
+                            label={'Help me manage my tenant'}
+                            value={'false'}
+                          />
+                          <Tooltip
+                            label="We help you rent out your property."
+                            aria-label="A tooltip"
+                          >
+                            <FaInfoCircle />
+                          </Tooltip>
+                        </Flex>
+                      </>
+                    }
+                  />
+                </Box>
+              </Box>
+              <Box display={formStep === 1 ? 'block' : 'none'}>
+                <Box>
+                  <Text fontWeight="600" fontSize="sm">
+                    What kind of tenants do you want?
+                  </Text>
+                  <PrimarySelectKey<PropertyModel>
+                    label="Type"
+                    name="tenantTypeId"
+                    register={register}
+                    error={errors.tenantTypeId}
+                    control={control}
+                    options={tenantTypes}
+                    fontSize="sm"
+                    placeholder="Choose an option"
+                  />
+                  <PrimarySelectKey<PropertyModel>
+                    label="Annual Income Bracket"
+                    name="budget"
+                    register={register}
+                    error={errors.budget}
+                    control={control}
+                    options={incomeBracket}
+                    placeholder="Choose a property type"
+                    fontSize="sm"
+                  />
+                </Box>
+                <Box mt="8">
+                  <Text fontWeight="600" fontSize="sm">
+                    Rent Collection
+                  </Text>
+                  <PrimarySelectKey<PropertyModel>
+                    label="How Frequently do you want to collect rent?"
+                    name="rentCollectionTypeId"
+                    register={register}
+                    error={errors.rentCollectionTypeId}
+                    control={control}
+                    options={rentFrequency}
+                    fontSize="sm"
+                    placeholder="Choose option: weekly, monthly, yearly"
+                  />
+                  <PrimarySelectKey<PropertyModel>
+                    label="Your Bank"
+                    name="bank"
+                    register={register}
+                    error={errors.bank}
+                    control={control}
+                    options={getBanks}
+                    placeholder="Choose your bank"
+                    fontSize="sm"
+                  />
+                  <PrimaryInput<PropertyModel>
+                    label="Your Account Number"
+                    name="accountNumber"
+                    placeholder="Enter your bank account number"
+                    defaultValue=""
+                    register={register}
+                    error={errors.accountNumber}
+                    fontSize="sm"
+                  />
+                </Box>
               </Box>
               {RenderButton()}
             </>

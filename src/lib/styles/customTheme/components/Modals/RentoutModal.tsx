@@ -30,10 +30,9 @@ const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
+        w={['full', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW="40%"
         pos="fixed"
         mt="1rem"
         mb="1rem"

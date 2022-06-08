@@ -8,6 +8,7 @@ import {
   TabPanel,
 } from '@chakra-ui/react';
 import Listed from 'lib/components/Listed';
+import RequestProperty from 'lib/styles/customTheme/components/RequestProperty';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';
@@ -47,7 +48,6 @@ const RentProperty = ({ data }: { data: PropertyModel[] }) => {
                 fontWeight: 600,
               }}
               fontWeight="500"
-              isDisabled
             >
               request property
             </Tab>
@@ -57,7 +57,9 @@ const RentProperty = ({ data }: { data: PropertyModel[] }) => {
             <TabPanel w="100%" px="0px">
               <Listed data={data} />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <RequestProperty />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Box>

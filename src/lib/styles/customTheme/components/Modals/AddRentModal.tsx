@@ -34,12 +34,14 @@ function AddRentModal({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
 }: {
   isOpen: boolean;
   onClose: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  getBanks: any[];
 }) {
   const [formStep, setFormStep] = useState(0);
   return (
@@ -54,11 +56,10 @@ function AddRentModal({
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
+        w={['full', '80%']}
         // overflow="hidden"
-        overflow="scroll"
+        overflowY="scroll"
         maxH="100vh"
-        maxW="40%"
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -106,11 +107,12 @@ function AddRentModal({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box pb="7" px={5}>
             <Form
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
               getStates={getStates}
+              getBanks={getBanks}
               formStep={formStep}
               setFormStep={setFormStep}
               onClose={onClose}

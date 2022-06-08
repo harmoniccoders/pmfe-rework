@@ -124,11 +124,9 @@ const BookCleaningModal = ({
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
-        // overflow="hidden"
-        overflow="scroll"
+        w={['full', '80%']}
+        overflowY="scroll"
         maxH="100vh"
-        maxW="40%"
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -253,7 +251,7 @@ const BookCleaningModal = ({
               Cancel
             </Button>
 
-            <VStack spacing="1" mt=".5rem" pb="14" fontSize="sm">
+            <VStack spacing="1" mt=".5rem" pb="10" fontSize="sm">
               <Text textAlign="center">
                 By sending this request you agree to our
               </Text>

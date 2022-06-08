@@ -64,7 +64,7 @@ export const PrimaryTextArea = <TFormValues extends Record<string, any>>({
       <Textarea
         // type={type}
         placeholder={placeholder}
-        minH="200px"
+        minH="100px"
         variant="outline"
         {...register(name, { required, ...validate })}
         defaultValue={defaultValue}

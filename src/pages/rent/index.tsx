@@ -14,10 +14,13 @@ const rent = ({
   propertyTitles,
   propertyTypes,
   getStates,
-}: {
+  getBanks,
+}: 
+{
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   getStates: any;
+  getBanks: any;
 }) => {
   // const [isOpen, setIsopen] = useState<boolean>(false);
   const router = useRouter();
@@ -53,17 +56,14 @@ const rent = ({
         />
       </SimpleGrid>
 
-      <RentoutModal
-        isOpen={isOpen}
-        onClose={onClose}
-        openModal={openModal}
-      />
+      <RentoutModal isOpen={isOpen} onClose={onClose} openModal={openModal} />
       <AddRentModal
         isOpen={showModal}
         onClose={closeModal}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
         getStates={getStates}
+        getBanks={getBanks}
       />
     </Box>
   );
@@ -95,43 +95,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
+    const getBanks = await (await axios.get(
+      'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+    )).data;
+
     return {
       props: {
         propertyTypes,
         propertyTitles,
         getStates,
+        getBanks,
       },
     };
   } catch (error) {
+    console.log('error');
     return {
       props: {
         propertyTypes: {},
-        listings: [],
       },
     };
   }
-  // try {
-  //   const propertyTypes = (await _dataAccess.get('api/Property/types')).data;
-  //   const propertyTitle = (await _dataAccess.get('api/Property/titles')).data;
-  //   const states = await (await axios.get(
-  //     'https://locationsng-api.herokuapp.com/api/v1/states'
-  //   )).data;
-
-  //   return {
-  //     props: {
-  //       propertyTypes,
-  //       propertyTitle,
-  //       states,
-  //     },
-  //   };
-  // } catch (error) {
-  //   // console.log(error.message);
-  //   return {
-  //     props: {
-  //       propertyTypes: {},
-  //       propertyTitle: {},
-  //       states: [],
-  //     },
-  //   };
-  // }
 };
