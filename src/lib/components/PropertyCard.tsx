@@ -18,43 +18,21 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
-import axios from 'axios';
 import { Parameters } from 'openapi-client-axios';
 import { useOperationMethod } from 'react-openapi-client';
+import { useRouter } from 'next/router';
+import { PropertyView } from 'types/api';
 
 type Props = {
-  location: string | undefined | null;
-  description: string | undefined;
-  bedroom: number | undefined;
-  bathroom: number | undefined;
-  price: number | undefined;
-  title: string;
-  id: number;
+  item: PropertyView;
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const PropertyCard = ({
-  location,
-  id,
-  description,
-  bedroom,
-  bathroom,
-  price,
-  title,
-}: Props) => {
+const PropertyCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const addViews = async (id: number) => {
-  //   onOpen();
-  //   const result = (
-  //     await axios.get(
-  //       `${process.env.NEXT_PUBLIC_API_BASEURL}${'/api/Property/addview/'}${id}`
-  //     )
-  //   ).data;
-  //   console.log({ result });
-  // };
 
   const [addViews, { loading, data, error }] = useOperationMethod(
     'Propertyaddview{Id}'
@@ -62,10 +40,9 @@ const PropertyCard = ({
 
   const AddViewToProperty = async () => {
     const params: Parameters = {
-      Id: id,
+      Id: item.id as number,
     };
     onOpen();
-    console.log(params);
 
     try {
       const result = await (await addViews(params)).data;
@@ -73,6 +50,9 @@ const PropertyCard = ({
       console.log(err);
     }
   };
+
+  const router = useRouter();
+  const curPage = router.asPath;
 
   return (
     <>
@@ -106,24 +86,45 @@ const PropertyCard = ({
             right="0"
             textTransform="capitalize"
           >
-            {location}
+            {item.area}
           </Flex>
         </Box>
         <VStack align="flex-start" spacing={4}>
-          <Flex justify="space-between" px=".8rem" mt="1rem" w="full">
-            <Text fontWeight={600} fontSize="17px">
-              {description}
+          <Flex
+            justify="space-between"
+            px=".8rem"
+            mt="1rem"
+            w="full"
+            alignItems="center"
+          >
+            <Text
+              fontWeight={600}
+              fontSize="16px"
+              w="200px"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {item.name}
             </Text>
 
-            <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            {!item.sellMyself ? (
+              <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            ) : (
+              <Icons iconClass="fa-exclamation-triangle" />
+            )}
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bedroom} ${
-                    bedroom ? (bedroom > 1 ? 'Bedrooms' : 'Bedroom') : null
+                  {`${item.numberOfBedrooms} ${
+                    item.numberOfBedrooms
+                      ? item.numberOfBedrooms > 1
+                        ? 'Bedrooms'
+                        : 'Bedroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -132,8 +133,12 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bathroom} ${
-                    bathroom ? (bathroom > 1 ? 'Bathrooms' : 'Bathroom') : null
+                  {`${item.numberOfBathrooms} ${
+                    item.numberOfBathrooms
+                      ? item.numberOfBathrooms > 1
+                        ? 'Bathrooms'
+                        : 'Bathroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -142,7 +147,8 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;{price}
+                  &#8358;
+                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
               </Flex>
             </GridItem>
@@ -150,7 +156,7 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {title}
+                  {item.title}
                 </Text>
               </Flex>
             </GridItem>
@@ -160,21 +166,27 @@ const PropertyCard = ({
             <Button
               variant="outline"
               height="40px"
-              w="fit-content"
-              px="1.8rem"
+              width="full"
               color="rgb(37,36,39)"
               onClick={() => AddViewToProperty()}
-              width="120px"
             >
               See more
             </Button>
-            <Button variant="solid" height="40px" w="fit-content" px="2.2rem">
-              Enquire
-            </Button>
+
+            {!item.sellMyself && (
+              <Button
+                variant="solid"
+                height="40px"
+                w="full"
+                onClick={() => router.push(`${curPage}/enquire/${item.id}`)}
+              >
+                Enquire
+              </Button>
+            )}
           </Flex>
         </VStack>
       </Box>
-      <SeemoreModal isOpen={isOpen} onClose={onClose} id={id} />
+      <SeemoreModal isOpen={isOpen} onClose={onClose} item={item} />
     </>
   );
 };

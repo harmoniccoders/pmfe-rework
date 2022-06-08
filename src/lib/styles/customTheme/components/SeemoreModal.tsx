@@ -14,33 +14,37 @@ import {
   Heading,
   Grid,
   GridItem,
+  VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import Icons from 'lib/components/Icons';
 import React, { useEffect, useState } from 'react';
 import ShareListingsModal from './Modals/ShareListingsModal';
+import { useRouter } from 'next/router';
+import { PropertyView } from 'types/api';
 
-type Props = {
+interface Props {
   isOpen?: any;
   onClose?: any;
-  id: number;
+  item: PropertyView;
+}
+const iconStyle = {
+  color: '#0042ff',
 };
 
-const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
+const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
     setShowModal(true);
     onClose();
   };
+  const router = useRouter();
+  const [showContactDetails, setShowContactDetails] = useState<boolean>(false);
+
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        motionPreset="slideInBottom"
-        // scrollBehavior="outside"
-      >
+      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom">
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
@@ -86,7 +90,13 @@ const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
             <Box maxH="77vh" overflowY="auto" px={5}>
               <Flex w="100%" pos="relative" flexDirection="column">
                 <Box w=" 100%" h="250px" bg="brand.50">
-                  {/* image */}
+                  <Image
+                    src="/assets/property-img.png"
+                    alt="propery-image"
+                    w="100%"
+                    height="100%"
+                    objectFit="cover"
+                  />
                 </Box>
 
                 <Badge
@@ -98,18 +108,14 @@ const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
                   fontWeight={400}
                   display="flex"
                   alignItems="center"
-                  justifyContent="center"
-                  h="20px"
-                  color="white"
-                  w="120px"
-                  borderRadius="4px 0 0 4px"
+                  fontSize="14px"
+                  cursor="pointer"
                 >
-                  Lekkii phase one
+                  {item.area}
                 </Badge>
               </Flex>
-
               <Heading fontSize="16px" my="30px">
-                Reily towers duplex
+                {item.name}
               </Heading>
 
               <Grid
@@ -120,44 +126,94 @@ const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
                 padding="10px 0"
               >
                 <GridItem mb="5px" display="flex" alignItems="center">
-                  <Icons iconClass="fa-bed" />
+                  <Icons iconClass="fa-bed" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    7 Bedrooms
+                    {`${item.numberOfBedrooms} ${
+                      item.numberOfBedrooms
+                        ? item.numberOfBedrooms > 1
+                          ? 'Bedrooms'
+                          : 'Bedroom'
+                        : null
+                    }`}
                   </Text>
                 </GridItem>
                 <GridItem mb="5px" display="flex" alignItems="center">
-                  <Icons iconClass="fa-toilet" />
+                  <Icons iconClass="fa-toilet" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    9 Bathrooms
+                    {`${item.numberOfBathrooms} ${
+                      item.numberOfBathrooms
+                        ? item.numberOfBathrooms > 1
+                          ? 'Bathrooms'
+                          : 'Bathroom'
+                        : null
+                    }`}
                   </Text>
                 </GridItem>
                 <GridItem mb="5px" display="flex" alignItems="center">
-                  <Icons iconClass="fa-tags" />
+                  <Icons iconClass="fa-tags" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    &#8358;145M
+                    &#8358;
+                    {item.price
+                      ?.toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                   </Text>
                 </GridItem>
                 <GridItem mb="5px" display="flex" alignItems="center">
-                  <Icons iconClass="fa-award" />
+                  <Icons iconClass="fa-award" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    Governor's consent
+                    {item.title}
                   </Text>
                 </GridItem>
               </Grid>
 
-              <Button
-                variant="solid"
-                textTransform="capitalize"
-                height="40px"
-                width="100%"
-              >
-                enquire
-              </Button>
+              {item.sellMyself ? (
+                <Button
+                  variant="solid"
+                  textTransform="capitalize"
+                  height="40px"
+                  width="100%"
+                  onClick={() => setShowContactDetails(!showContactDetails)}
+                >
+                  Contact seller
+                </Button>
+              ) : (
+                <Button
+                  variant="solid"
+                  textTransform="capitalize"
+                  height="40px"
+                  width="100%"
+                  onClick={() => router.push('/enquiries')}
+                >
+                  Enquire
+                </Button>
+              )}
+
+              {showContactDetails && (
+                <VStack align="flex-start" mt="15px">
+                  <Text fontWeight={600}> {item.createdByUser?.fullName} </Text>
+                  <Text
+                    as="a"
+                    fontSize=".8rem"
+                    color="brand.100"
+                    href={`tel:${item.createdByUser?.phoneNumber}`}
+                  >
+                    {item.createdByUser?.phoneNumber}
+                  </Text>
+                  <Text
+                    fontSize=".8rem"
+                    color="brand.100"
+                    as="a"
+                    href={`mailto:${item.createdByUser?.email}`}
+                  >
+                    {item.createdByUser?.email}
+                  </Text>
+                </VStack>
+              )}
 
               <Box w="100%" my="20px">
                 <Heading fontSize="14px">Overview</Heading>
 
-                <Text>some texts</Text>
+                {item.description?.replaceAll(/(<([^>]+)>)/gi, '')}
               </Box>
 
               <Flex w="100%" flexDirection="column">
@@ -173,14 +229,14 @@ const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
                   </Heading>
 
                   <Text fontSize="10px" lineHeight={1.5}>
-                    Information displayed about this property constitutes a mere
-                    advertisement. PropertyMataaz makes no warranty as to the
-                    accuracy of the advertisement or any linked or associated
-                    information. Information about this property is provided and
-                    maintained by undefined. PropertyMataaz shall not in any way
-                    be held liable for the actions of any agent and/or property
-                    owner/landlord with respect to this property on or off this
-                    web application, website or App.
+                    {` Information displayed about this property constitutes a mere
+                  advertisement. PropertyMataaz makes no warranty as to the
+                  accuracy of the advertisement or any linked or associated
+                  information. Information about this property is provided and
+                  maintained by ${item.createdByUser?.fullName}. PropertyMataaz shall not in any way
+                  be held liable for the actions of any agent and/or property
+                  owner/landlord with respect to this property on or off this
+                  web application, website or App.`}
                   </Text>
                 </Box>
               </Flex>
@@ -216,7 +272,7 @@ const SeemoreModal = ({ isOpen, onClose, id }: Props) => {
       <ShareListingsModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        id={id}
+        id={item.id as number}
       />
     </>
   );

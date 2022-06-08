@@ -39,7 +39,9 @@ function NumberCounter({
         {label}
       </FormLabel>
       <NumberInput
-        onChange={(valueString) => setValue(valueName, parseInt(valueString))}
+        onChange={(valueString: string) =>
+          setValue(valueName, parseInt(valueString))
+        }
         value={getValues(valueName) || 0}
         max={50}
         min={0}

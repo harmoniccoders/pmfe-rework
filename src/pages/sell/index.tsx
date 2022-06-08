@@ -21,12 +21,11 @@ import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
 import axios from 'axios';
-import PropertyCard from 'lib/components/PropertyCard';
 import ListingsCard from 'lib/components/ListingsCard';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 import { useState } from 'react';
 
-const clean = ({
+const sell = ({
   propertyTitles,
   propertyTypes,
   getStates,
@@ -131,8 +130,7 @@ const clean = ({
   );
 };
 
-export default clean;
-
+export default sell;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     data: { user, redirect },

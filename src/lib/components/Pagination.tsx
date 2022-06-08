@@ -2,6 +2,7 @@ import { Flex, Icon, Square, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { PagedCollection } from 'types/AppTypes';
+import Icons from './Icons';
 
 function Pagination({ data }: { data: PagedCollection }) {
   const totalPages = Math.ceil(
@@ -15,6 +16,10 @@ function Pagination({ data }: { data: PagedCollection }) {
   const router = useRouter();
   const next = data.next?.href;
   const previous = data.previous?.href;
+
+  const iconStyle = {
+    color: 'white',
+  };
 
   const paginate = (direction: 'next' | 'previous') => {
     let link = '';
@@ -37,34 +42,37 @@ function Pagination({ data }: { data: PagedCollection }) {
   };
   return (
     <Flex align="center" justify="flex-end" p="0 2rem">
-      <Text fontSize="14px" fontFamily="Poppins" color="black" mr="1rem">
-        {`${data.size || 0} items`}
-      </Text>
       <Flex align="center">
         <Square
           size="30px"
           borderRadius="2px"
           boxShadow="0px 1px 4px rgba(0, 0, 0, 0.14)"
-          bgColor="#E2E8F0;"
+          bgColor="brand.100"
           cursor="pointer"
           onClick={() => paginate('previous')}
         >
-          <Icon as={FiChevronLeft} color="#323232" fontSize="1.2rem" />
+          <Icons iconClass="fa-angle-left" style={iconStyle} />
+          {/* <Icon as={FiChevronLeft} color="#323232" fontSize="1.2rem" /> */}
         </Square>
-        <Text fontSize="14px" fontFamily="Poppins" px="1.5rem" color="black">
+        <Text fontSize="14px" px="1.5rem" color="black">
           {`${currentPage} of ${totalPages}`}
         </Text>
         <Square
           size="30px"
           borderRadius="2px"
           boxShadow="0px 1px 4px rgba(0, 0, 0, 0.14)"
-          bgColor="#E2E8F0;"
+          bgColor="brand.100"
           cursor="pointer"
           onClick={() => paginate('next')}
         >
-          <Icon as={FiChevronRight} color="#323232" fontSize="1.2rem" />
+          <Icons iconClass="fa-angle-right" style={iconStyle} />
+          {/* <Icon as={FiChevronRight} color="#323232" fontSize="1.2rem" /> */}
         </Square>
       </Flex>
+
+      <Text fontSize="14px" color="black" ml="1rem">
+        {`${data.size || 0} items`}
+      </Text>
     </Flex>
   );
 }

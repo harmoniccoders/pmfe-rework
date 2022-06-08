@@ -29,7 +29,7 @@ const Button: DeepPartial<Theme['components']['Button']> = {
       _hover: {
         backgroundColor: 'transparent',
         transition: 'all .5s ease',
-        border: '2px solid #0042FF',
+        border: '1px solid #0042FF',
         color: 'brand.300',
       },
       _focus: {

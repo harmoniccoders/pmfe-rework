@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  iconClass: string;
+  iconClass?: any;
   style?: any;
 };
 
