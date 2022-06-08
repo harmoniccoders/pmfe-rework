@@ -1,167 +1,180 @@
-import {
-  GridItem,
-  Box,
-  Grid,
-  FormControl,
-  FormLabel,
-  Select,
-  Input,
-  Textarea,
-  Button,
-} from '@chakra-ui/react';
-import Icons from 'lib/components/Icons';
-import React from 'react';
-import Counter from './Counter';
+import { Box, Stack, Grid } from '@chakra-ui/react';
+import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+import { PropertyRequestInput, PropertyType } from 'types/api';
+import ButtonComponent from 'lib/components/Button';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useToasts } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
+import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
+import { StateSelect } from 'lib/Utils/StateSelect';
+import axios from 'axios';
+import NumberCounter from 'lib/Utils/NumberCounter';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 
-const schema = yup.object().shape({
-  id: yup.string(),
-  dateCreated: yup.string(),
-  dateModified: yup.string(),
-  name: yup.string().required(),
-  address: yup.string().required(),
-  description: yup.string().required(),
-  title: yup.string().required(),
-});
+interface Props {
+  propertyTypes: PropertyType[];
+  getStates: any[];
+}
+const Form = ({ propertyTypes, getStates }: Props) => {
+  const [requestProperty, { loading, data, error }] =
+    useOperationMethod('PropertyRequestnew');
 
-const RequestProperty = () => {
-  const [PropertyUser, { loading, data, error }] =
-    useOperationMethod('PropertyCreate');
+  const schema = yup.object().shape({
+    budget: yup.string().required(),
+    comment: yup.string().required(),
+    lga: yup.string().required(),
+    state: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    numberofBathrooms: yup.number(),
+    numberOfBedRooms: yup.number(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    getValues,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<PropertyRequestInput>({
+    resolver: yupResolver(schema),
+    mode: 'all',
+  });
+
+  // (watch('sellMyself'));
+  watch('numberOfBedRooms');
+  watch('numberOfBathrooms');
+
+  const [lgas, setLgas] = useState([]);
+
+  useEffect(() => {
+    const getLga = async (state: string) => {
+      const result = (
+        await axios.get(
+          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
+        )
+      ).data;
+
+      if (Array.isArray(result) === true) {
+        setLgas(
+          result.map((value: string) => {
+            return { name: value };
+          })
+        );
+      }
+    };
+    getLga(getValues('state') as unknown as string);
+  }, [watch('state')]);
+
+  const { addToast } = useToasts();
+  const router = useRouter();
+
+  const onSubmit = async (data: PropertyRequestInput) => {
+    console.log({ data });
+
+    try {
+      const result = await (await requestProperty(undefined, data)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Request Succesful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        router.push('/listings/requests');
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err) {}
+  };
   return (
-    <Box>
-      <form>
-        <Grid
-          templateColumns={['repeat(1,1fr)', 'repeat(1,1fr)', 'repeat(3,1fr)']}
-        ></Grid>
-      </form>
-    </Box>
+    <>
+      <Box>
+        <Stack>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+            <Grid templateColumns="repeat(3,1fr)" gap={10}>
+              <Box w="full">
+                <PrimarySelectKey<PropertyRequestInput>
+                  label="Type"
+                  name="propertyTypeId"
+                  register={register}
+                  error={errors.propertyTypeId}
+                  control={control}
+                  options={propertyTypes}
+                  placeholder="Choose a Property"
+                />
+
+                <StateSelect<PropertyRequestInput>
+                  label="State"
+                  name="state"
+                  register={register}
+                  error={errors.state}
+                  control={control}
+                  options={getStates}
+                  placeholder="Which state in Nigeria is your property located"
+                />
+                {getValues('state') !== undefined ? (
+                  <StateSelect<PropertyRequestInput>
+                    label="Area"
+                    name="lga"
+                    register={register}
+                    error={errors.lga}
+                    control={control}
+                    options={lgas}
+                    placeholder="Choose a Local Government"
+                  />
+                ) : null}
+                <PrimaryTextArea<PropertyRequestInput>
+                  label="Comments"
+                  name="comment"
+                  minH="150px"
+                  error={errors.comment}
+                  defaultValue=""
+                  register={register}
+                />
+              </Box>
+              <Box w="full">
+                <PrimaryInput<PropertyRequestInput>
+                  label="Budget"
+                  name="budget"
+                  error={errors.budget}
+                  defaultValue=""
+                  register={register}
+                />
+                <NumberCounter
+                  valueName="numberOfBedRooms"
+                  setValue={setValue}
+                  getValues={getValues}
+                  label="Number of Bedrooms"
+                  fontSize="sm"
+                />
+                <NumberCounter
+                  valueName="numberOfBathrooms"
+                  setValue={setValue}
+                  getValues={getValues}
+                  label="Number of Bathrooms"
+                  fontSize="sm"
+                />
+                <ButtonComponent
+                  isValid={isValid}
+                  loading={loading}
+                  content="submit"
+                />
+              </Box>
+            </Grid>
+          </form>
+        </Stack>
+      </Box>
+    </>
   );
 };
 
-export default RequestProperty;
-{
-  /* <form>
-  <Grid templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']} columnGap={[0, 5]}>
-    <GridItem>
-      <FormControl>
-        <FormLabel
-          htmlFor="select-type"
-          textTransform="capitalize"
-          pos="relative"
-          top={6}
-          left={4}
-          width="fit-content"
-          zIndex={3}
-          bg="brand.200"
-        >
-          Type
-        </FormLabel>
-        <Select
-          placeholder="choose a property type"
-          icon={<Icons iconClass="fa-angle-right" />}
-          variant="outline"
-          height="48px"
-        >
-          <option value="bungalow">bungalow</option>
-          <option value="duplex">duplex</option>
-        </Select>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel
-          htmlFor="select-state"
-          textTransform="capitalize"
-          pos="relative"
-          top={6}
-          left={4}
-          width="fit-content"
-          zIndex={3}
-          bg="brand.200"
-        >
-          State
-        </FormLabel>
-        <Select
-          placeholder="what state in Nigeria do you want your property?"
-          icon={<Icons iconClass="fa-angle-right" />}
-          variant="outline"
-          height="48px"
-        >
-          <option value="bungalow">bungalow</option>
-          <option value="duplex">duplex</option>
-        </Select>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel
-          htmlFor="select-type"
-          textTransform="capitalize"
-          pos="relative"
-          top={6}
-          left={4}
-          width="fit-content"
-          zIndex={3}
-          bg="brand.200"
-        >
-          Area(optional)
-        </FormLabel>
-
-        <Input
-          type="text"
-          placeholder="which area do you want your property in"
-          h="40px"
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel
-          htmlFor="text-area"
-          textTransform="capitalize"
-          pos="relative"
-          top={5}
-          left={4}
-          width="fit-content"
-          zIndex={3}
-          bg="brand.200"
-        >
-          Comments
-        </FormLabel>
-
-        <Textarea
-          placeholder="Type in whatever you want"
-          size="sm"
-          resize="vertical"
-        />
-      </FormControl>
-    </GridItem>
-
-    <GridItem>
-      <FormControl>
-        <FormLabel
-          htmlFor="price"
-          textTransform="capitalize"
-          pos="relative"
-          top={6}
-          left={4}
-          width="fit-content"
-          zIndex={3}
-          bg="brand.200"
-        >
-          Budget
-        </FormLabel>
-
-        <Input type="text" placeholder="&#8358;0" h="40px" />
-      </FormControl>
-
-      <Counter room="Bedrooms" />
-      <Counter room="Bathroom" />
-
-      <Button variant="solid" height="40px" my="20px" width="100%">
-        Submit Request
-      </Button>
-    </GridItem>
-  </Grid>
-</form>; */
-}
+export default Form;

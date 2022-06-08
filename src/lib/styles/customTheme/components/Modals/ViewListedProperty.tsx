@@ -26,10 +26,11 @@ import { PropertyView } from 'types/api';
 type Props = {
   isOpen?: any;
   onClose?: any;
+  openModal: () => void;
   item: PropertyView;
 };
 
-const ViewListedProperty = ({ isOpen, onClose, item }: Props) => {
+const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -115,7 +116,7 @@ const ViewListedProperty = ({ isOpen, onClose, item }: Props) => {
                       ? 'Only visible to you'
                       : 'Listing is live'}
                   </Text>
-                  <HStack cursor="pointer">
+                  <HStack cursor="pointer" onClick={() => openModal()}>
                     <Text>Edit</Text>
                     <FaPen />
                   </HStack>

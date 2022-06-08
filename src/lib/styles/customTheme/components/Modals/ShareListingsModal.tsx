@@ -42,7 +42,14 @@ type Props = {
 
 const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
   const { addToast } = useToasts();
-  const url = window.origin + `/buy/enquires/${id}`;
+
+  let url: string;
+  const isBrowser = () => typeof window !== 'undefined';
+  if (isBrowser()) {
+    url = window.origin + `/buy/enquires/${id}`;
+  } else {
+    url = '';
+  }
 
   const handleCopyToClipboard = async () => {
     console.log({ url });
@@ -70,7 +77,7 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
           w={['88%', '80%']}
           overflow="hidden"
           maxH="100vh"
-          maxW="50%"
+          maxW="40%"
           pos="fixed"
           mt="0"
           //   mb="1rem"
@@ -105,11 +112,11 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
 
           <ModalBody>
             <Box h="100vh" overflowY="auto" px={5}>
-              <Heading fontSize="16px" my="2rem" textAlign="left" pl=".6rem">
+              <Heading fontSize="16px" my="2rem" textAlign="left" pl="1.8rem">
                 Share this listing
               </Heading>
 
-              <HStack>
+              <HStack ml="1rem">
                 <FacebookShareButton url={url} className="mb-2 ml-2">
                   <FacebookIcon size={32} round></FacebookIcon>
                 </FacebookShareButton>
@@ -125,23 +132,26 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
               </HStack>
               <Flex
                 w="full"
-                borderRadius="10px"
+                borderRadius="80px"
                 bgColor="black"
                 justify="space-between"
                 align="center"
-                px="1rem"
+                px="2rem"
                 mt="1rem"
+                h="3rem"
               >
-                <Text color="white" fontWeight="600" fontSize="1.1rem">
+                <Text color="white" fontWeight="600" fontSize=".9rem">
                   {url}
                 </Text>
-                <Button
+                <Box
+                  as="button"
                   type="button"
+                  color="white"
+                  fontWeight="500"
                   onClick={() => handleCopyToClipboard()}
-                  bgColor="transparent"
                 >
                   Copy
-                </Button>
+                </Box>
               </Flex>
             </Box>
           </ModalBody>

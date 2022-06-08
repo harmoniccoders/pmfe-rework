@@ -22,6 +22,7 @@ import React, { useEffect, useState } from 'react';
 import ShareListingsModal from './Modals/ShareListingsModal';
 import { useRouter } from 'next/router';
 import { PropertyView } from 'types/api';
+import ReportListingModal from './Modals/ReportListingModal';
 
 interface Props {
   isOpen?: any;
@@ -34,6 +35,7 @@ const iconStyle = {
 
 const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
   const [showModal, setShowModal] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const openModal = () => {
     setShowModal(true);
@@ -54,9 +56,10 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
           overflow="hidden"
           maxH="100vh"
           maxW="50%"
+          h="100%"
           pos="fixed"
-          mt="1rem"
-          mb="1rem"
+          mt="0rem"
+          mb="0rem"
         >
           <ModalHeader>
             <Flex justifyContent="space-between" alignItems="center">
@@ -89,7 +92,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
           <ModalBody>
             <Box maxH="77vh" overflowY="auto" px={5}>
               <Flex w="100%" pos="relative" flexDirection="column">
-                <Box w=" 100%" h="250px" bg="brand.50">
+                <Box w="full" h="140px" pos="relative">
                   <Image
                     src="/assets/property-img.png"
                     alt="propery-image"
@@ -97,22 +100,24 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                     height="100%"
                     objectFit="cover"
                   />
+                  <Flex
+                    bg="brand.100"
+                    color="white"
+                    pos="absolute"
+                    w="fit-content"
+                    px="1.5rem"
+                    h="24px"
+                    top="18%"
+                    fontSize="14px"
+                    align="center"
+                    justify="center"
+                    borderRadius="4px 0 0 4px"
+                    right="0"
+                    textTransform="capitalize"
+                  >
+                    {item.area}
+                  </Flex>
                 </Box>
-
-                <Badge
-                  pos="absolute"
-                  top="20px"
-                  right={0}
-                  bg="brand.100"
-                  textTransform="capitalize"
-                  fontWeight={400}
-                  display="flex"
-                  alignItems="center"
-                  fontSize="14px"
-                  cursor="pointer"
-                >
-                  {item.area}
-                </Badge>
               </Flex>
               <Heading fontSize="16px" my="30px">
                 {item.name}
@@ -223,12 +228,12 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   {/* map */}
                 </Box>
 
-                <Box my="30px" bg="blue.50" borderRadius="5px" padding="10px">
-                  <Heading fontSize="12px" lineHeight={1.5}>
+                <Box my="30px" bg="blue.50" borderRadius="5px" p="1rem">
+                  <Heading fontSize="13px" lineHeight={1.5}>
                     Disclaimer
                   </Heading>
 
-                  <Text fontSize="10px" lineHeight={1.5}>
+                  <Text fontSize="13px" lineHeight={1.5} textAlign="justify">
                     {` Information displayed about this property constitutes a mere
                   advertisement. PropertyMataaz makes no warranty as to the
                   accuracy of the advertisement or any linked or associated
@@ -273,6 +278,11 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         id={item.id as number}
+      />
+      <ReportListingModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        item={item}
       />
     </>
   );
