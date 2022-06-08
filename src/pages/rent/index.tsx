@@ -15,8 +15,7 @@ const rent = ({
   propertyTypes,
   getStates,
   getBanks,
-}: 
-{
+}: {
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   getStates: any;
@@ -95,10 +94,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
-    const getBanks = await (await axios.get(
-      'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
-    )).data;
-
+    const getBanks = await (
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
+    console.log(getBanks);
     return {
       props: {
         propertyTypes,
