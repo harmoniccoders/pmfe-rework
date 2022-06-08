@@ -130,56 +130,58 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
 
           <ModalBody>
             <Box h="100vh" overflowY="auto" px={5}>
-              <PrimaryInput<ReportModel>
-                label="Property Name"
-                name="propertyId"
-                defaultValue={item.name as string}
-                error={errors.propertyId}
-                register={register}
-              />
-              {loggedInUser ? (
-                <>
-                  <PrimaryInput<ReportModel>
-                    label="User's Name"
-                    name="userName"
-                    error={errors.userName}
-                    defaultValue={loggedInUser ? loggedInUser?.fullName : ''}
-                    register={register}
-                  />
-                </>
-              ) : (
-                <>
-                  <PrimaryInput<ReportModel>
-                    label="Email"
-                    name="email"
-                    error={errors.email}
-                    defaultValue=""
-                    register={register}
-                    placeholder="youremail@email.com"
-                  />
-                  <PrimaryInput<ReportModel>
-                    label="User's Name"
-                    name="userName"
-                    error={errors.userName}
-                    defaultValue=""
-                    placeholder="Please enter your full name"
-                    register={register}
-                  />
-                </>
-              )}
-              <PrimaryTextArea<ReportModel>
-                label="Complaints"
-                name="description"
-                minH="150px"
-                error={errors.description}
-                defaultValue=""
-                register={register}
-              />
-              <ButtonComponent
-                isValid={isValid}
-                loading={loading}
-                content="submit"
-              />
+              <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+                <PrimaryInput<ReportModel>
+                  label="Property Name"
+                  name="propertyId"
+                  defaultValue={item.name as string}
+                  error={errors.propertyId}
+                  register={register}
+                />
+                {loggedInUser ? (
+                  <>
+                    <PrimaryInput<ReportModel>
+                      label="User's Name"
+                      name="userName"
+                      error={errors.userName}
+                      defaultValue={loggedInUser ? loggedInUser?.fullName : ''}
+                      register={register}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <PrimaryInput<ReportModel>
+                      label="Email"
+                      name="email"
+                      error={errors.email}
+                      defaultValue=""
+                      register={register}
+                      placeholder="youremail@email.com"
+                    />
+                    <PrimaryInput<ReportModel>
+                      label="User's Name"
+                      name="userName"
+                      error={errors.userName}
+                      defaultValue=""
+                      placeholder="Please enter your full name"
+                      register={register}
+                    />
+                  </>
+                )}
+                <PrimaryTextArea<ReportModel>
+                  label="Complaints"
+                  name="description"
+                  minH="150px"
+                  error={errors.description}
+                  defaultValue=""
+                  register={register}
+                />
+                <ButtonComponent
+                  isValid={isValid}
+                  loading={loading}
+                  content="submit"
+                />
+              </form>
             </Box>
           </ModalBody>
         </ModalContent>

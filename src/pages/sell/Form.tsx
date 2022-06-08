@@ -53,28 +53,28 @@ const Form = ({
     useOperationMethod('Propertycreate');
 
   const schema = yup.object().shape({
-    numberOfBedrooms: yup.string().required(),
-    // address: yup.string().required(),
-    // description: yup.string().required(),
-    // title: yup.string().required(),
-    // area: yup.string().required(),
-    // lga: yup.string().required(),
-    // state: yup.string().required(),
-    // propertyTypeId: yup.number().required(),
-    // sellMyself: yup.string().required(),
-    // name: yup.string().required(),
-    // numberofBathrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // price: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // numberOfBedrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
+    // numberOfBedrooms: yup.string().required(),
+    address: yup.string().required(),
+    description: yup.string().required(),
+    title: yup.string().required(),
+    area: yup.string().required(),
+    lga: yup.string().required(),
+    state: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    sellMyself: yup.string().required(),
+    name: yup.string().required(),
+    numberOfBathrooms: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number().required('Please provide info'),
+    }),
+    price: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    numberOfBedrooms: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
     // price: yup.number().when('sellMySelf', {
     //   is: () => formStep === 1,
     //   then: yup.number().required('Please provide info'),
@@ -162,7 +162,6 @@ const Form = ({
               onClick={async () => {
                 await setValue('isDraft', true);
                 await setValue('isForSale', false);
-                onSubmit(data);
               }}
               isLoading={loading}
             >
@@ -192,27 +191,27 @@ const Form = ({
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
-    // try {
-    //   const result = await (await PropertyUser(undefined, data)).data;
-    //   console.log({ result });
-    //   if (result.status) {
-    //     addToast('Property Added', {
-    //       appearance: 'success',
-    //       autoDismiss: true,
-    //     });
-    //     onClose();
-    //     setFormStep(0);
-    //     router.reload();
-    //     return;
-    //   }
-    //   addToast(result.message, {
-    //     appearance: 'error',
-    //     autoDismiss: true,
-    //   });
-    //   setFormStep(0);
-    //   onClose();
-    //   return;
-    // } catch (err) {}
+    try {
+      const result = await (await PropertyUser(undefined, data)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Property Added', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        onClose();
+        setFormStep(0);
+        router.reload();
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      setFormStep(0);
+      onClose();
+      return;
+    } catch (err) {}
   };
   return (
     <>
@@ -230,23 +229,6 @@ const Form = ({
                     defaultValue=""
                     register={register}
                   />
-                  <NumberCount<PropertyModel>
-                    label="Numbers of Bedroom"
-                    name="numberOfBedrooms"
-                    type="number"
-                    error={errors.numberOfBedrooms}
-                    placeholder="0"
-                    defaultValue=""
-                    register={register}
-                  />
-                  {/* <NumberCounter
-                    valueName="numberOfBedrooms"
-                    setValue={setValue}
-                    getValues={getValues}
-                    label="Number of Bedrooms"
-                    fontSize="sm"
-                  /> */}
-
                   <PrimarySelectKey<PropertyModel>
                     label="Type"
                     name="propertyTypeId"
