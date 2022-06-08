@@ -21,6 +21,7 @@ const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
   return (
     <Modal
       isOpen={isOpen}
+      size="lg"
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered

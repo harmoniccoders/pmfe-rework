@@ -48,6 +48,7 @@ function AddRentModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      size="lg"
       motionPreset="slideInBottom"
       isCentered
     >

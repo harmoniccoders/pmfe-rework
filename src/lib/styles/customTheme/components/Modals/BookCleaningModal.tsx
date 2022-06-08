@@ -116,6 +116,7 @@ const BookCleaningModal = ({
     <Modal
       isOpen={isOpen}
       onClose={closeModal}
+      size="lg"
       motionPreset="slideInBottom"
       isCentered
     >
