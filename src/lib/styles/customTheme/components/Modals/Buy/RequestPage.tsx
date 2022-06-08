@@ -1,18 +1,6 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
-import Listed from 'lib/components/Listed';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Box, Heading, HStack } from '@chakra-ui/react';
 import { PropertyModel, PropertyType } from 'types/api';
+import PageTabs from '../../Generics/PageTabs';
 import RequestProperty from '../../RequestProperty';
 
 function RequestPage({
@@ -22,12 +10,6 @@ function RequestPage({
   propertyTypes: PropertyType[];
   getStates: any;
 }) {
-  const router = useRouter();
-  const [inPage, setInPage] = useState('request');
-
-  const navigatePage = (url: string) => {
-    router.push(`/${url}`);
-  };
   return (
     <Box w="100%" mt="30px">
       <Box w="90%" mx="auto">
@@ -50,41 +32,11 @@ function RequestPage({
           p=".2rem"
           mb="1rem"
         >
-          <Flex
-            w="full"
-            align="center"
-            justify="center"
-            cursor="pointer"
-            fontWeight="bold"
-            borderRadius="8px"
-            color={router.asPath === '/buy' ? 'brand.100' : 'inherit'}
-            bgColor={router.asPath === '/buy' ? 'white' : 'transparent'}
-            h="full"
-            onClick={() => navigatePage('buy')}
-          >
-            Listed Properties
-          </Flex>
-          <Flex
-            w="full"
-            align="center"
-            justify="center"
-            cursor="pointer"
-            fontWeight="bold"
-            borderRadius="8px"
-            color={router.asPath === '/request' ? 'brand.100' : 'inherit'}
-            bgColor={router.asPath === '/request' ? 'white' : 'transparent'}
-            h="full"
-            onClick={() => navigatePage('request')}
-          >
-            Request Property
-          </Flex>
+          <PageTabs tabName="buy" tabTitle="Listed Properties" />
+          <PageTabs tabName="request" tabTitle="Request Property" />
         </HStack>
-        {inPage === 'request' && (
-          <RequestProperty
-            propertyTypes={propertyTypes}
-            getStates={getStates}
-          />
-        )}
+
+        <RequestProperty propertyTypes={propertyTypes} getStates={getStates} />
       </Box>
     </Box>
   );

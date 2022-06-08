@@ -15,20 +15,87 @@ import {
   Grid,
   GridItem,
   VStack,
+  HStack,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
 import React from 'react';
 import { Cleaning, CleaningQuote, CleaningView } from 'types/api';
 import moment from 'moment';
+import { useOperationMethod } from 'react-openapi-client';
+import { useToasts } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
+import { Parameters } from 'openapi-client-axios';
 
 type Props = {
   isOpen?: any;
   onClose?: any;
-  data: CleaningView;
+  item: CleaningView;
 };
 
-const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
-  console.log(data.cleaningQuote);
+const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
+  const [reject, { loading: isLoading, data: rData, error: rErr }] =
+    useOperationMethod('Cleanquotereject{id}');
+  const [accept, { loading, data, error }] = useOperationMethod(
+    'Cleanquoteaccept{id}'
+  );
+
+  const { addToast } = useToasts();
+  const router = useRouter();
+
+  const RejectQuote = async () => {
+    const params: Parameters = {
+      id: item.id as number,
+    };
+    console.log(params);
+    try {
+      const result = await (await reject(params)).data;
+      if (result.status) {
+        addToast('Action Succesful', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        onClose();
+        router.reload();
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      onClose();
+      return;
+    } catch (err) {
+      //   onClose();
+      console.log(err);
+    }
+  };
+  const AcceptQuote = async () => {
+    const params: Parameters = {
+      id: item.id as number,
+    };
+    console.log(params);
+    try {
+      const result = await (await accept(params)).data;
+      if (result.status) {
+        addToast('Action Succesful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        onClose();
+        router.reload();
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      onClose();
+      return;
+    } catch (err) {
+      //   onClose();
+      console.log(err);
+    }
+  };
 
   return (
     <Modal
@@ -36,7 +103,7 @@ const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-      
+
       // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
@@ -73,11 +140,11 @@ const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
           <Box maxH="77vh" overflowY="auto" px={5}>
             <VStack align="flex-start" spacing={6}>
               <Heading fontSize="16px" mt="30px" textTransform="capitalize">
-                {data.buildingType}
+                {item.buildingType}
                 <Flex alignItems="center" mt=".5rem">
                   <Icons iconClass="fa-calendar" style={{ color: 'blue' }} />
                   <Text fontSize="13px" ml=".5rem" fontWeight="500">
-                    {moment(data.dateCreated).format('Do MMMM YYYY')}
+                    {moment(item.dateCreated).format('Do MMMM YYYY')}
                   </Text>
                 </Flex>
               </Heading>
@@ -87,7 +154,7 @@ const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
                 </Text>
                 <Text fontSize=".8rem" fontWeight="400">
                   &#8358;
-                  {data.cleaningQuote !== null ? data.cleaningQuote?.quote : 0}
+                  {item.cleaningQuote !== null ? item.cleaningQuote?.quote : 0}
                 </Text>
               </Box>
               <Box>
@@ -97,22 +164,40 @@ const CleanDetailsModal = ({ isOpen, onClose, data }: Props) => {
                 <Flex alignItems="center" mt=".5rem">
                   <Icons iconClass="fa-calendar" style={{ color: 'blue' }} />
                   <Text fontSize=".8rem" fontWeight="400" ml=".5rem">
-                    {data.cleaningQuote === null
+                    {item.cleaningQuote === null
                       ? 'Awaiting Approval'
-                      : moment(data.cleaningQuote?.proposedDate).format(
+                      : moment(item.cleaningQuote?.proposedDate).format(
                           'Do MMMM YYYY'
                         )}
                   </Text>
                 </Flex>
               </Box>
-              <Button
-                variant="solid"
-                textTransform="capitalize"
-                height="40px"
-                width="100%"
-              >
-                Accept Quote
-              </Button>
+              <HStack w="full" spacing={5}>
+                <Button
+                  variant="outline"
+                  height="40px"
+                  width="full"
+                  color="rgb(37,36,39)"
+                  textTransform="uppercase"
+                  onClick={() => RejectQuote()}
+                  isLoading={isLoading}
+                  disabled={item.cleaningQuote === null ? true : false}
+                >
+                  Reject Quote
+                </Button>
+                <Button
+                  variant="solid"
+                  height="40px"
+                  width="full"
+                  color="rgb(37,36,39)"
+                  textTransform="uppercase"
+                  onClick={() => AcceptQuote()}
+                  isLoading={loading}
+                  disabled={item.cleaningQuote === null ? true : false}
+                >
+                  Accept Quote
+                </Button>
+              </HStack>
             </VStack>
           </Box>
         </ModalBody>

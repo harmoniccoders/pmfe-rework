@@ -96,10 +96,10 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                   justify="space-between"
                   color={item.isDraft ? 'white' : 'black'}
                   bgColor={
-                    item.status === 'PENDING'
+                    item.isDraft
+                      ? 'rgba(108,117,125,.9)'
+                      : item.status === 'PENDING'
                       ? 'brand.600'
-                      : item.isDraft
-                      ? '#191919'
                       : '#96FFC9'
                   }
                   pos="absolute"
@@ -110,10 +110,10 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                   px="2rem"
                 >
                   <Text>
-                    {item.status === 'PENDING'
-                      ? 'Listing is pending'
-                      : item.isDraft
+                    {item.isDraft
                       ? 'Only visible to you'
+                      : item.status === 'PENDING'
+                      ? 'Listing is pending'
                       : 'Listing is live'}
                   </Text>
                   <HStack cursor="pointer" onClick={() => openModal()}>

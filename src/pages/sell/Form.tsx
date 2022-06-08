@@ -31,7 +31,6 @@ import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
-import { NumberCount } from 'lib/Utils/NumberCount';
 
 interface Props {
   propertyTitles: PropertyTitle[];

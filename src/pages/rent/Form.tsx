@@ -28,7 +28,6 @@ import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
-import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage, BiVideo } from 'react-icons/bi';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
@@ -44,6 +43,7 @@ interface Props {
   formStep: number;
   setFormStep: any;
   onClose: () => void;
+  isClosed: () => void;
 }
 
 const Form = ({
@@ -54,6 +54,7 @@ const Form = ({
   formStep,
   setFormStep,
   onClose,
+  isClosed,
 }: Props) => {
   const [PropertyUser, { loading, data, error }] =
     useOperationMethod('Propertycreate');
@@ -75,7 +76,7 @@ const Form = ({
     budget: yup.number(),
     numberOfBathrooms: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number().required('Please provide info'),
+      then: yup.number(),
     }),
     price: yup.number().when('name', {
       is: () => formStep === 1,
@@ -130,7 +131,7 @@ const Form = ({
     setFormStep((cur: number) => cur + 1);
   };
 
-  console.log(watch('isDraft'));
+  console.log(watch('sellMyself'));
 
   const [lgas, setLgas] = useState([]);
 
@@ -160,20 +161,32 @@ const Form = ({
   const RenderButton = () => {
     if (formStep === 0) {
       return (
-        <Box onClick={completeFormStep}>
-          <Button
-            type="button"
-            w="100%"
-            h="100%"
-            variant="solid"
-            textTransform="capitalize"
-            disabled={isValid ? false : true}
-            isLoading={loading}
-          >
-            Next
-          </Button>
-          {/* <Text cursor={isValid ? 'pointer' : 'no-drop'}>Next</Text> */}
-        </Box>
+        <>
+          {
+            //@ts-ignore
+            getValues('sellMyself') === 'true' ? (
+              <ButtonComponent
+                content="Submit"
+                isValid={isValid}
+                loading={loading}
+              />
+            ) : (
+              <Box onClick={completeFormStep}>
+                <Button
+                  type="button"
+                  w="100%"
+                  h="100%"
+                  variant="solid"
+                  textTransform="capitalize"
+                  disabled={isValid ? false : true}
+                  isLoading={loading}
+                >
+                  Next
+                </Button>
+              </Box>
+            )
+          }
+        </>
       );
     } else if (formStep === 1) {
       return (
@@ -215,6 +228,7 @@ const Form = ({
           appearance: 'success',
           autoDismiss: true,
         });
+        isClosed();
         onClose();
         setFormStep(0);
         router.push('/rent');

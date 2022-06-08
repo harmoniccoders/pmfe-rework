@@ -78,7 +78,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cleanRequests = (
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
-    console.log('data', data);
     return {
       props: {
         data,

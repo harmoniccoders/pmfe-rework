@@ -76,7 +76,7 @@ const LoggedIn = () => {
           fontWeight="600"
         >
           <Link href="/listings">Listings</Link>
-          <Link href="/draft">Drafts</Link>
+          <Link href="/sell/drafts">Drafts</Link>
           <Link href="/rent">Rent</Link>
           <Link href="/sessions">Sessions</Link>
         </VStack>

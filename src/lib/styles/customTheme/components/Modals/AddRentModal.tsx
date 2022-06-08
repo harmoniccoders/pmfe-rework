@@ -23,9 +23,11 @@ import { PropertyTitle, PropertyType } from 'types/api';
 interface AddRentProps {
   isOpen: boolean;
   onClose: () => void;
+  isClosed: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  getBanks: any[];
 }
 
 function AddRentModal({
@@ -35,14 +37,8 @@ function AddRentModal({
   propertyTypes,
   getStates,
   getBanks,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  propertyTitles: PropertyTitle[];
-  propertyTypes: PropertyType[];
-  getStates: any[];
-  getBanks: any[];
-}) {
+  isClosed,
+}: AddRentProps) {
   const [formStep, setFormStep] = useState(0);
   return (
     <Modal
@@ -117,6 +113,7 @@ function AddRentModal({
               formStep={formStep}
               setFormStep={setFormStep}
               onClose={onClose}
+              isClosed={isClosed}
             />
           </Box>
         </ModalBody>

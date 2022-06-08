@@ -59,6 +59,7 @@ const rent = ({
       <AddRentModal
         isOpen={showModal}
         onClose={closeModal}
+        isClosed={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
         getStates={getStates}

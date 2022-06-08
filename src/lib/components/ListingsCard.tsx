@@ -73,10 +73,10 @@ const ListingsCard = ({
             justify="space-between"
             color={item.isDraft ? 'white' : 'black'}
             bgColor={
-              item.status === 'PENDING'
+              item.isDraft
+                ? 'rgba(108,117,125,.9)'
+                : item.status === 'PENDING'
                 ? 'brand.600'
-                : item.isDraft
-                ? '#191919'
                 : '#96FFC9'
             }
             pos="absolute"
@@ -87,10 +87,10 @@ const ListingsCard = ({
             px="1rem"
           >
             <Text>
-              {item.status === 'PENDING'
-                ? 'Listing is pending'
-                : item.isDraft
+              {item.isDraft
                 ? 'Only visible to you'
+                : item.status === 'PENDING'
+                ? 'Listing is pending'
                 : 'Listing is live'}
             </Text>
             <HStack cursor="pointer" onClick={() => setUpdateModal(true)}>
@@ -168,7 +168,8 @@ const ListingsCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;{item.price}
+                  &#8358;
+                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
               </Flex>
             </GridItem>
