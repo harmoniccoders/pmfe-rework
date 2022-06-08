@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -33,6 +33,13 @@ const schema = yup.object().shape({
 const signupform = () => {
   const [RegisterUser, { loading, data, error }] =
     useOperationMethod('Userregister');
+
+  const [passwordType, setPasswordType] = useState<boolean>(false);
+
+  const changePasswordType = () => {
+    setPasswordType(!passwordType);
+  };
+
   const {
     register,
     handleSubmit,
@@ -155,7 +162,11 @@ const signupform = () => {
               placeholder="* * * *"
               defaultValue=""
               register={register}
-              type="password"
+              // type="password"
+              // iconClass="fa-eye"
+              changePasswordType={changePasswordType}
+              type={passwordType ? 'password' : 'text'}
+              iconClass={passwordType ? 'fa-eye' : 'fa-eye-slash'}
             />
             <ButtonComponent
               content="sign up"

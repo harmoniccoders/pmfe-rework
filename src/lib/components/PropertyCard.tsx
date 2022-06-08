@@ -18,29 +18,21 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
+import { useRouter } from 'next/router';
+import { PropertyView } from 'types/api';
 
 type Props = {
-  location: string | undefined | null;
-  description: string | undefined;
-  bedroom: number | undefined;
-  bathroom: number | undefined;
-  price: number | undefined;
-  title: string;
+  item: PropertyView;
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const PropertyCard = ({
-  location,
-  description,
-  bedroom,
-  bathroom,
-  price,
-  title,
-}: Props) => {
+const PropertyCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const router = useRouter();
 
   return (
     <>
@@ -74,24 +66,45 @@ const PropertyCard = ({
             right="0"
             textTransform="capitalize"
           >
-            {location}
+            {item.area}
           </Flex>
         </Box>
         <VStack align="flex-start" spacing={4}>
-          <Flex justify="space-between" px=".8rem" mt="1rem" w="full">
-            <Text fontWeight={600} fontSize="17px">
-              {description}
+          <Flex
+            justify="space-between"
+            px=".8rem"
+            mt="1rem"
+            w="full"
+            alignItems="center"
+          >
+            <Text
+              fontWeight={600}
+              fontSize="16px"
+              w="200px"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {item.name}
             </Text>
 
-            <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            {!item.sellMyself ? (
+              <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            ) : (
+              <Icons iconClass="fa-exclamation-triangle" />
+            )}
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bedroom} ${
-                    bedroom ? (bedroom > 1 ? 'Bedrooms' : 'Bedroom') : null
+                  {`${item.numberOfBedrooms} ${
+                    item.numberOfBedrooms
+                      ? item.numberOfBedrooms > 1
+                        ? 'Bedrooms'
+                        : 'Bedroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -100,8 +113,12 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {`${bathroom} ${
-                    bathroom ? (bathroom > 1 ? 'Bathrooms' : 'Bathroom') : null
+                  {`${item.numberOfBathrooms} ${
+                    item.numberOfBathrooms
+                      ? item.numberOfBathrooms > 1
+                        ? 'Bathrooms'
+                        : 'Bathroom'
+                      : null
                   }`}
                 </Text>
               </Flex>
@@ -110,7 +127,8 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;{price}
+                  &#8358;
+                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
               </Flex>
             </GridItem>
@@ -118,7 +136,7 @@ const PropertyCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {title}
+                  {item.title}
                 </Text>
               </Flex>
             </GridItem>
@@ -128,21 +146,41 @@ const PropertyCard = ({
             <Button
               variant="outline"
               height="40px"
-              w="fit-content"
+              // width="fit-content"
+              width={item.sellMyself ? '100%' : 'fit-content'}
               px="1.8rem"
               color="rgb(37,36,39)"
               onClick={onOpen}
-              width="120px"
             >
               See more
             </Button>
-            <Button variant="solid" height="40px" w="fit-content" px="2.2rem">
-              Enquire
-            </Button>
+
+            {!item.sellMyself && (
+              <Button
+                variant="solid"
+                height="40px"
+                w="fit-content"
+                px="2.2rem"
+                onClick={() => router.push('/enquiries')}
+              >
+                Enquire
+              </Button>
+            )}
           </Flex>
         </VStack>
       </Box>
-      <SeemoreModal isOpen={isOpen} onClose={onClose} />
+      <SeemoreModal
+        isOpen={isOpen}
+        onClose={onClose}
+        item={item}
+        // location={location}
+        // description={description}
+        // bedroom={bedroom}
+        // bathroom={bathroom}
+        // price={price}
+        // title={title}
+        // overview={overview}
+      />
     </>
   );
 };

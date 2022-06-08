@@ -3,8 +3,11 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
 } from '@chakra-ui/react';
+import Icons from 'lib/components/Icons';
 import { FieldError, UseFormRegister, Path } from 'react-hook-form';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
@@ -29,7 +32,13 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   w?: string;
   padding?: string;
   onChange?: any;
+  iconClass?: string | undefined;
+  changePasswordType?: any;
 }
+
+const iconStyle = {
+  color: 'rgba(0,0,0,0.5)',
+};
 
 export const PrimaryInput = <TFormValues extends Record<string, any>>({
   name,
@@ -42,6 +51,8 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
   disableLabel = false,
   placeholder = '',
   defaultValue,
+  iconClass,
+  changePasswordType,
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl>
@@ -57,14 +68,22 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
       >
         {label}
       </FormLabel>
-      <Input
-        type={type}
-        placeholder={placeholder}
-        variant="outline"
-        {...register(name, { required, ...validate })}
-        defaultValue={defaultValue}
-        disabled={disableLabel}
-      />
+
+      <InputGroup>
+        <Input
+          type={type}
+          placeholder={placeholder}
+          variant="outline"
+          {...register(name, { required, ...validate })}
+          defaultValue={defaultValue}
+          disabled={disableLabel}
+        />
+
+        <InputRightElement
+          children={<Icons iconClass={iconClass} style={iconStyle} />}
+          onClick={changePasswordType}
+        />
+      </InputGroup>
       <Text fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
