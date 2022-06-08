@@ -104,11 +104,22 @@ const ListingsCard = ({ item, openModal }: Props) => {
         </Box>
         <VStack align="flex-start" spacing={4}>
           <Flex justify="space-between" px=".8rem" mt="1rem" w="full">
-            <Text fontWeight={600} fontSize="17px">
+            <Text
+              fontWeight={600}
+              fontSize="14px"
+              w="200px"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
               {item.name}
             </Text>
 
-            <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            {!item.sellMyself ? (
+              <Icon as={MdVerified} w="20px" h="20px" color="brand.100" />
+            ) : (
+              <Icons iconClass="fa-exclamation-triangle" />
+            )}
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
             <GridItem>
@@ -173,7 +184,12 @@ const ListingsCard = ({ item, openModal }: Props) => {
           </HStack>
         </VStack>
       </Box>
-      <ViewListedProperty isOpen={isOpen} onClose={onClose} item={item} />
+      <ViewListedProperty
+        isOpen={isOpen}
+        onClose={onClose}
+        item={item}
+        openModal={openModal}
+      />
       <DeleteListings
         isOpen={showModal}
         onClose={() => setShowModal(false)}

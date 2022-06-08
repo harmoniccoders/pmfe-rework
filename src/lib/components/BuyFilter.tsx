@@ -24,7 +24,7 @@ const iconStyle = {
 
 const BuyFilter = (props: Props) => {
   return (
-    <VStack w="full" py="1rem" align="flex-start" spacing={5}>
+    <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
       <Box w="full">
         <InputGroup alignItems="center">
           <Input

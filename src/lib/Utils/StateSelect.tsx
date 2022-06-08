@@ -65,7 +65,7 @@ export const StateSelect = <TFormValues extends Record<string, any>>({
             <Selectrix
               //@ts-ignore
               placeholder={placeholder}
-              searchable={true}
+              searchable={false}
               height={150}
               options={options}
               customKeys={{

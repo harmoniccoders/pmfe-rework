@@ -34,13 +34,7 @@ function AddPropertyModal({
   propertyTitles,
   propertyTypes,
   getStates,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  propertyTitles: PropertyTitle[];
-  propertyTypes: PropertyType[];
-  getStates: any[];
-}) {
+}: AddPropertyProps) {
   // console.log({ propertyTypes });
   const [formStep, setFormStep] = useState(0);
   return (
