@@ -13,6 +13,7 @@ import {
   ButtonGroup,
   useDisclosure,
   Hide,
+  HStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
@@ -99,7 +100,7 @@ const PropertyCard = ({ item }: Props) => {
           >
             <Text
               fontWeight={600}
-              fontSize="16px"
+              fontSize="14px"
               w="200px"
               whiteSpace="nowrap"
               overflow="hidden"
@@ -162,7 +163,7 @@ const PropertyCard = ({ item }: Props) => {
             </GridItem>
           </Grid>
           <Divider borderColor="brand.50" />
-          <Flex px=".8rem" justify="space-between" w="full">
+          <HStack px=".8rem" w="full" spacing={5}>
             <Button
               variant="outline"
               height="40px"
@@ -183,7 +184,7 @@ const PropertyCard = ({ item }: Props) => {
                 Enquire
               </Button>
             )}
-          </Flex>
+          </HStack>
         </VStack>
       </Box>
       <SeemoreModal isOpen={isOpen} onClose={onClose} item={item} />

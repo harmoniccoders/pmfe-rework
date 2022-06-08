@@ -12,7 +12,7 @@ import {
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -28,9 +28,10 @@ import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
-import { PrimaryTextbox } from './../../lib/Utils/PrimaryTextbox';
-import { Widget } from '@uploadcare/react-widget'
-import { BiImage, BiVideo } from 'react-icons/bi'
+import { Widget } from '@uploadcare/react-widget';
+import { BiImage } from 'react-icons/bi';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
+import { NumberCount } from 'lib/Utils/NumberCount';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -52,26 +53,27 @@ const Form = ({
     useOperationMethod('Propertycreate');
 
   const schema = yup.object().shape({
-    address: yup.string().required(),
-    description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    sellMyself: yup.string().required(),
-    name: yup.string().required(),
+    numberOfBedrooms: yup.string().required(),
+    // address: yup.string().required(),
+    // description: yup.string().required(),
+    // title: yup.string().required(),
+    // area: yup.string().required(),
+    // lga: yup.string().required(),
+    // state: yup.string().required(),
+    // propertyTypeId: yup.number().required(),
+    // sellMyself: yup.string().required(),
+    // name: yup.string().required(),
     // numberofBathrooms: yup.number().when('name', {
     //   is: () => formStep === 1,
     //   then: yup.number().required('Please provide info'),
     // }),
     // price: yup.number().when('name', {
     //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
+    //   then: yup.number(),
     // }),
-    // numberofBedrooms: yup.number().when('name', {
+    // numberOfBedrooms: yup.number().when('name', {
     //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
+    //   then: yup.number(),
     // }),
     // price: yup.number().when('sellMySelf', {
     //   is: () => formStep === 1,
@@ -97,14 +99,14 @@ const Form = ({
   });
 
   // (watch('sellMyself'));
-  watch('numberOfBedrooms');
+  console.log(watch('numberOfBedrooms'));
   watch('numberOfBathrooms');
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
 
-  console.log(watch('isDraft'));
+  // console.log(watch('isDraft'));
 
   const [lgas, setLgas] = useState([]);
 
@@ -155,8 +157,14 @@ const Form = ({
           <HStack spacing={3}>
             <Button
               w="50%"
+              // type="submit"
               variant="outline"
-              onClick={() => setValue('isDraft', true)}
+              onClick={async () => {
+                await setValue('isDraft', true);
+                await setValue('isForSale', false);
+                onSubmit(data);
+              }}
+              isLoading={loading}
             >
               Save as Draft
             </Button>
@@ -184,129 +192,152 @@ const Form = ({
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
-    try {
-      const result = await (await PropertyUser(undefined, data)).data;
-      console.log({ result });
-      if (result.status) {
-        addToast('Property Added', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        onClose();
-        setFormStep(0);
-        router.reload();
-        return;
-      }
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      setFormStep(0);
-      onClose();
-      return;
-    } catch (err) {}
-
+    // try {
+    //   const result = await (await PropertyUser(undefined, data)).data;
+    //   console.log({ result });
+    //   if (result.status) {
+    //     addToast('Property Added', {
+    //       appearance: 'success',
+    //       autoDismiss: true,
+    //     });
+    //     onClose();
+    //     setFormStep(0);
+    //     router.reload();
+    //     return;
+    //   }
+    //   addToast(result.message, {
+    //     appearance: 'error',
+    //     autoDismiss: true,
+    //   });
+    //   setFormStep(0);
+    //   onClose();
+    //   return;
+    // } catch (err) {}
+  };
   return (
     <>
       <Box>
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <>
-            <Box display={formStep === 0 ? 'block' : 'none'}>
-              <PrimaryInput<PropertyModel>
-                label="Name"
-                name="name"
-                error={errors.name}
-                placeholder="Give your listing a name that makes it able to find"
-                defaultValue=""
-                register={register}
-              />
-              <PrimarySelectKey<PropertyModel>
-                label="Type"
-                name="propertyTypeId"
-                register={register}
-                error={errors.propertyTypeId}
-                control={control}
-                options={propertyTypes}
-                placeholder="Choose a Property"
-              />
-              <PrimarySelectLabel<PropertyModel>
-                label="Property Title"
-                name="title"
-                register={register}
-                error={errors.title}
-                control={control}
-                options={propertyTitles}
-                placeholder="Certificate of Occupancy, Governor's Consent ..."
-              />
-              <StateSelect<PropertyModel>
-                label="State"
-                name="state"
-                register={register}
-                error={errors.state}
-                control={control}
-                options={getStates}
-                placeholder="Which state in Nigeria is your property located"
-              />
-              {getValues('state') !== undefined ? (
-                <StateSelect<PropertyModel>
-                  label="LGA"
-                  name="lga"
-                  register={register}
-                  error={errors.lga}
-                  control={control}
-                  options={lgas}
-                  placeholder="Choose a Local Government"
-                />
-              ) : null}
-                  
-              <PrimaryInput<PropertyModel>
-                label="Area"
-                name="area"
-                error={errors.area}
-                defaultValue=""
-                register={register}
-              />
-              <PrimaryInput<PropertyModel>
-                label="Address"
-                name="address"
-                error={errors.address}
-                defaultValue=""
-                register={register}
-              />
-              <PrimaryInput<PropertyModel>
-                label="Description"
-                name="description"
-                error={errors.description}
-                defaultValue=""
-                register={register}
-              />
-              <Box my="1.3em">
-                <RadioButton<PropertyModel>
-                  name="sellMyself"
-                  register={register}
-                  defaultValue=""
-                  error={errors.sellMyself}
-                  control={control}
-                  radios={
-                    <>
-                      <RadioInput
-                        label={'I want to sell myself'}
-                        value={'true'}
-                      />
-                      <Flex align="center" gap="1" pos="relative">
-                        <RadioInput label={'Help me sell'} value={'false'} />
-                        <Tooltip label="When we help you sell, your property is listed as verified.">
-                          <FaInfoCircle />
-                        </Tooltip>
-                      </Flex>
-                    </>
-                  }
-                />
-              </Box>
-            </Box>
-            <Box  display={formStep === 1 ? 'block' : 'none'}>
-              <PrimaryInput<PropertyModel>
+              {formStep === 0 && (
+                <>
+                  <PrimaryInput<PropertyModel>
+                    label="Name"
+                    name="name"
+                    error={errors.name}
+                    placeholder="Give your listing a name that makes it able to find"
+                    defaultValue=""
+                    register={register}
+                  />
+                  <NumberCount<PropertyModel>
+                    label="Numbers of Bedroom"
+                    name="numberOfBedrooms"
+                    type="number"
+                    error={errors.numberOfBedrooms}
+                    placeholder="0"
+                    defaultValue=""
+                    register={register}
+                  />
+                  {/* <NumberCounter
+                    valueName="numberOfBedrooms"
+                    setValue={setValue}
+                    getValues={getValues}
+                    label="Number of Bedrooms"
+                    fontSize="sm"
+                  /> */}
+
+                  <PrimarySelectKey<PropertyModel>
+                    label="Type"
+                    name="propertyTypeId"
+                    register={register}
+                    error={errors.propertyTypeId}
+                    control={control}
+                    options={propertyTypes}
+                    placeholder="Choose a Property"
+                  />
+                  <PrimarySelectLabel<PropertyModel>
+                    label="Property Title"
+                    name="title"
+                    register={register}
+                    error={errors.title}
+                    control={control}
+                    options={propertyTitles}
+                    placeholder="Certificate of Occupancy, Governor's Consent ..."
+                  />
+                  <StateSelect<PropertyModel>
+                    label="State"
+                    name="state"
+                    register={register}
+                    error={errors.state}
+                    control={control}
+                    options={getStates}
+                    placeholder="Which state in Nigeria is your property located"
+                  />
+                  {getValues('state') !== undefined ? (
+                    <StateSelect<PropertyModel>
+                      label="LGA"
+                      name="lga"
+                      register={register}
+                      error={errors.lga}
+                      control={control}
+                      options={lgas}
+                      placeholder="Which state in Nigeria is your property located"
+                    />
+                  ) : null}
+                  <PrimaryInput<PropertyModel>
+                    label="Area"
+                    name="area"
+                    error={errors.area}
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimaryInput<PropertyModel>
+                    label="Address"
+                    name="address"
+                    error={errors.address}
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimaryTextArea<PropertyModel>
+                    label="Description"
+                    name="description"
+                    error={errors.description}
+                    defaultValue=""
+                    minH="200px"
+                    register={register}
+                  />
+                  <Box my="1.3em">
+                    <RadioButton<PropertyModel>
+                      name="sellMyself"
+                      register={register}
+                      defaultValue=""
+                      error={errors.sellMyself}
+                      control={control}
+                      radios={
+                        <>
+                          <RadioInput
+                            label={'I want to sell myself'}
+                            value={'true'}
+                          />
+                          <Flex align="center" gap="1" pos="relative">
+                            <RadioInput
+                              label={'Help me sell'}
+                              value={'false'}
+                            />
+                            <Tooltip label="When we help you sell, your property is listed as verified.">
+                              <FaInfoCircle />
+                            </Tooltip>
+                          </Flex>
+                        </>
+                      }
+                    />
+                  </Box>
+                </>
+              )}
+              {formStep === 1 && (
+                <>
+                  <PrimaryInput<PropertyModel>
                     label="Price"
                     name="price"
                     error={errors.price}
@@ -352,9 +383,9 @@ const Form = ({
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />
-             
-            </Box>
-            {RenderButton()}
+                </>
+              )}
+              {RenderButton()}
             </>
           </form>
         </Stack>
@@ -364,155 +395,3 @@ const Form = ({
 };
 
 export default Form;
-            // <>
-            //   {formStep === 0 && (
-            //     <>
-            //       <PrimaryInput<PropertyModel>
-            //         label="Name"
-            //         name="name"
-            //         error={errors.name}
-            //         placeholder="Give your listing a name that makes it able to find"
-            //         defaultValue=""
-            //         register={register}
-            //       />
-            //       <PrimarySelectKey<PropertyModel>
-            //         label="Type"
-            //         name="propertyTypeId"
-            //         register={register}
-            //         error={errors.propertyTypeId}
-            //         control={control}
-            //         options={propertyTypes}
-            //         placeholder="Choose a Property"
-            //       />
-            //       <PrimarySelectLabel<PropertyModel>
-            //         label="Property Title"
-            //         name="title"
-            //         register={register}
-            //         error={errors.title}
-            //         control={control}
-            //         options={propertyTitles}
-            //         placeholder="Certificate of Occupancy, Governor's Consent ..."
-            //       />
-            //       <StateSelect<PropertyModel>
-            //         label="State"
-            //         name="state"
-            //         register={register}
-            //         error={errors.state}
-            //         control={control}
-            //         options={getStates}
-            //         placeholder="Which state in Nigeria is your property located"
-            //       />
-            //       {getValues('state') !== undefined ? (
-            //         <StateSelect<PropertyModel>
-            //           label="LGA"
-            //           name="lga"
-            //           register={register}
-            //           error={errors.lga}
-            //           control={control}
-            //           options={lgas}
-            //           placeholder="Which state in Nigeria is your property located"
-            //         />
-            //       ) : null}
-            //       <PrimaryInput<PropertyModel>
-            //         label="Area"
-            //         name="area"
-            //         error={errors.area}
-            //         defaultValue=""
-            //         register={register}
-            //       />
-            //       <PrimaryInput<PropertyModel>
-            //         label="Address"
-            //         name="address"
-            //         error={errors.address}
-            //         defaultValue=""
-            //         register={register}
-            //       />
-            //       <PrimaryInput<PropertyModel>
-            //         label="Description"
-            //         name="description"
-            //         error={errors.description}
-            //         defaultValue=""
-            //         register={register}
-            //       />
-            //       <Box my="1.3em">
-            //         <RadioButton<PropertyModel>
-            //           name="sellMyself"
-            //           register={register}
-            //           defaultValue=""
-            //           error={errors.sellMyself}
-            //           control={control}
-            //           radios={
-            //             <>
-            //               <RadioInput
-            //                 label={'I want to sell myself'}
-            //                 value={'true'}
-            //               />
-            //               <Flex align="center" gap="1" pos="relative">
-            //                 <RadioInput
-            //                   label={'Help me sell'}
-            //                   value={'false'}
-            //                 />
-            //                 <Tooltip label="When we help you sell, your property is listed as verified.">
-            //                   <FaInfoCircle />
-            //                 </Tooltip>
-            //               </Flex>
-            //             </>
-            //           }
-            //         />
-            //       </Box>
-            //        <Checkbox>I want to sell myself</Checkbox>
-            //       <Checkbox>Help me sell </Checkbox> 
-            //     </> 
-            //  )} 
-            //  {formStep === 1 && (
-            //     <>
-            //       <PrimaryInput<PropertyModel>
-            //         label="Price"
-            //         name="price"
-            //         error={errors.price}
-            //         placeholder="N0"
-            //         defaultValue=""
-            //         register={register}
-            //       />
-
-            //       <Box pos="relative">
-            //         <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
-            //         <Widget
-            //           publicKey="fda3a71102659f95625f"
-            //           //@ts-ignore
-            //           id="file"
-            //           onChange={onChange}
-            //           imagesOnly
-            //         />
-            //       </Box>
-            //       <Box pos="relative">
-            //         <Icon
-            //           as={VscDeviceCameraVideo}
-            //           pos="absolute"
-            //           top="55%"
-            //           left="6%"
-            //         />
-            //         <Widget
-            //           publicKey="fda3a71102659f95625f"
-            //           onChange={onChange}
-            //         />
-            //       </Box>
-
-            //       <NumberCounter
-            //         valueName="numberOfBedrooms"
-            //         setValue={setValue}
-            //         getValues={getValues}
-            //         label="Number of Bedrooms"
-            //         fontSize="sm"
-            //       />
-            //       <NumberCounter
-            //         valueName="numberOfBathrooms"
-            //         setValue={setValue}
-            //         getValues={getValues}
-            //         label="Number of Bathrooms"
-            //         fontSize="sm"
-            //       />
-            //     </>
-            //   )}
-            //   {RenderButton()}
-            // </>

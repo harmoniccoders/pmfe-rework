@@ -8,9 +8,11 @@ import Pagination from './Pagination';
 function Listed({ data }: { data: any }) {
   console.log({ data });
 
-  const result = data.value;
+  const result = data.value.filter(
+    (property: PropertyModel) => property.isForSale
+  );
   return (
-    <SimpleGrid columns={4} gap={5}>
+    <SimpleGrid columns={4} gap={10}>
       <GridItem colSpan={[4, 2, 2, 1]}>
         <BuyFilter />
       </GridItem>

@@ -3,9 +3,13 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Text,
-  Textarea,
 } from '@chakra-ui/react';
+import Icons from 'lib/components/Icons';
+import { useState } from 'react';
 import { FieldError, UseFormRegister, Path } from 'react-hook-form';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
@@ -31,10 +35,15 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   w?: string;
   padding?: string;
   onChange?: any;
-  minH?: '200px' | string;
+  iconClass?: string | undefined;
+  changePasswordType?: any;
 }
 
-export const PrimaryTextArea = <TFormValues extends Record<string, any>>({
+const iconStyle = {
+  color: 'rgba(0,0,0,0.5)',
+};
+
+export const NumberCount = <TFormValues extends Record<string, any>>({
   name,
   required = false,
   type = 'text',
@@ -46,8 +55,10 @@ export const PrimaryTextArea = <TFormValues extends Record<string, any>>({
   placeholder = '',
   fontSize,
   defaultValue,
-  minH,
+  iconClass,
+  changePasswordType,
 }: FormInputProps<TFormValues>) => {
+  const [count, setCount] = useState(0);
   return (
     <FormControl>
       <FormLabel
@@ -63,16 +74,26 @@ export const PrimaryTextArea = <TFormValues extends Record<string, any>>({
       >
         {label}
       </FormLabel>
-      <Textarea
-        // type={type}
-        placeholder={placeholder}
-        minH={minH}
-        resize="none"
-        variant="outline"
-        {...register(name, { required, ...validate })}
-        defaultValue={defaultValue}
-        disabled={disableLabel}
-      />
+
+      <InputGroup>
+        <InputLeftElement onClick={() => setCount((count) => count + 1)}>
+          +
+        </InputLeftElement>
+        <Input
+          type={type}
+          placeholder={placeholder}
+          variant="outline"
+          value={count}
+          {...register(name, { required, ...validate })}
+          defaultValue={defaultValue}
+          disabled={disableLabel}
+        />
+
+        <InputRightElement
+          children={<Icons iconClass={iconClass} style={iconStyle} />}
+          onClick={changePasswordType}
+        />
+      </InputGroup>
       <Text fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
