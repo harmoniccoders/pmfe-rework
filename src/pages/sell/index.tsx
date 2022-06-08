@@ -42,10 +42,6 @@ const sell = ({
   // console.log({ getStates });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showModal, setShowModal] = useState(false);
-  const openModal = () => {
-    setShowModal(true);
-  };
   const result = listings.value.filter(
     (property: PropertyView) => !property.isDraft
   );
@@ -76,16 +72,13 @@ const sell = ({
                 return (
                   <>
                     <GridItem key={item.id}>
-                      <ListingsCard item={item} openModal={openModal} />
+                      <ListingsCard
+                        item={item}
+                        propertyTypes={propertyTypes}
+                        propertyTitles={propertyTitles}
+                        getStates={getStates}
+                      />
                     </GridItem>
-                    <EditPropertyModal
-                      item={item as PropertyModel}
-                      isOpen={showModal}
-                      onClose={() => setShowModal(false)}
-                      propertyTypes={propertyTypes}
-                      propertyTitles={propertyTitles}
-                      getStates={getStates}
-                    />
                   </>
                 );
               })}

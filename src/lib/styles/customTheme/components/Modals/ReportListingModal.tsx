@@ -32,16 +32,15 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
     useOperationMethod('Reportcreate');
 
   const schema = yup.object().shape({
-    budget: yup.string().required(),
-    comment: yup.string().required(),
-    lga: yup.string().required(),
+    propertyId: yup.string().required(),
+    description: yup.string().required(),
+    userName: yup.string().required(),
   });
 
+  const users = Cookies.get('user') as unknown as string;
   let loggedInUser;
-
-  if (Cookies.get('uesr') !== null || undefined) {
-    loggedInUser = JSON.parse(Cookies.get('uesr') as string);
-    // return
+  if (users !== undefined) {
+    loggedInUser = JSON.parse(users);
   }
 
   const {
@@ -58,6 +57,7 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
 
   const onSubmit = async (data: ReportModel) => {
     console.log({ data });
+    data.propertyId = item.id as number;
 
     try {
       const result = await (await reportProperty(undefined, data)).data;

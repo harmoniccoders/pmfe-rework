@@ -19,22 +19,36 @@ import React, { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import { FaPen } from 'react-icons/fa';
-import { PropertyView } from 'types/api';
+import {
+  PropertyModel,
+  PropertyTitle,
+  PropertyType,
+  PropertyView,
+} from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
+import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 
 type Props = {
   item: PropertyView;
-  openModal: () => void;
+  propertyTitles: PropertyType[];
+  propertyTypes: PropertyTitle[];
+  getStates: any;
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const ListingsCard = ({ item, openModal }: Props) => {
+const ListingsCard = ({
+  item,
+  propertyTitles,
+  propertyTypes,
+  getStates,
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
 
   return (
     <>
@@ -79,7 +93,7 @@ const ListingsCard = ({ item, openModal }: Props) => {
                 ? 'Only visible to you'
                 : 'Listing is live'}
             </Text>
-            <HStack cursor="pointer" onClick={() => openModal()}>
+            <HStack cursor="pointer" onClick={() => setUpdateModal(true)}>
               <Text>Edit</Text>
               <FaPen />
             </HStack>
@@ -188,12 +202,20 @@ const ListingsCard = ({ item, openModal }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         item={item}
-        openModal={openModal}
+        openModal={() => setUpdateModal(true)}
       />
       <DeleteListings
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         item={item}
+      />
+      <EditPropertyModal
+        item={item as PropertyModel}
+        isOpen={updateModal}
+        onClose={() => setUpdateModal(false)}
+        propertyTypes={propertyTypes}
+        propertyTitles={propertyTitles}
+        getStates={getStates}
       />
     </>
   );

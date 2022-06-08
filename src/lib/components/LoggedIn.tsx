@@ -29,13 +29,10 @@ const LoggedIn = () => {
     Cookies.remove('userIn');
     router.push('/');
   };
-
+  const users = Cookies.get('user') as unknown as string;
   let user;
-  const logedInUser = Cookies.get('user');
-  if (logedInUser !== null) {
-    user = JSON.parse(logedInUser as unknown as string);
-  } else {
-    router.push('/login');
+  if (users !== undefined) {
+    user = JSON.parse(users);
   }
 
   const dropDown = useRef(null);

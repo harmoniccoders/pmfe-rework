@@ -148,7 +148,6 @@ const Form = ({
           >
             Next
           </Button>
-          {/* <Text cursor={isValid ? 'pointer' : 'no-drop'}>Next</Text> */}
         </Box>
       );
     } else if (formStep === 1) {
@@ -157,7 +156,7 @@ const Form = ({
           <HStack spacing={3}>
             <Button
               w="50%"
-              // type="submit"
+              type="submit"
               variant="outline"
               onClick={async () => {
                 await setValue('isDraft', true);
@@ -194,7 +193,7 @@ const Form = ({
     try {
       const result = await (await PropertyUser(undefined, data)).data;
       console.log({ result });
-      if (result.status) {
+      if (result.status != 400) {
         addToast('Property Added', {
           appearance: 'success',
           autoDismiss: true,
