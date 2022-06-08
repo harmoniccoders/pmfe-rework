@@ -274,9 +274,10 @@ const Form = ({
                 defaultValue=""
                 register={register}
               />
-              <PrimaryInput<PropertyModel>
+              <PrimaryTextbox<PropertyModel>
                 label="Description"
                 name="description"
+                type=''
                 error={errors.description}
                 defaultValue=""
                 register={register}
