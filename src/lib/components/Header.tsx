@@ -4,7 +4,6 @@ import {
   Flex,
   Stack,
   Image,
-  Text,
   Link,
   useBoolean,
   Center,
