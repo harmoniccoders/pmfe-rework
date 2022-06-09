@@ -11,26 +11,37 @@ import {
   GridItem,
   VStack,
   Image,
+  InputRightElement,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
-import NumberCounter from 'lib/Utils/NumberCounter';
 import Counter from '../styles/customTheme/components/Counter';
 
-type Props = {};
+type Props = {
+  search: (e: any) => void;
+  term: any;
+  clear: () => void;
+  word: string;
+};
 
 const iconStyle = {
   fontSize: '35px',
 };
 
-const BuyFilter = (props: Props) => {
+const BuyFilter = ({ search, term, clear, word }: Props) => {
   return (
     <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
       <Box w="full">
         <InputGroup alignItems="center">
+          <InputLeftElement>
+            <Icons iconClass="fa-search" />
+          </InputLeftElement>
           <Input
             type="text"
             placeholder="Search"
             height="40px"
+            onChange={(e) => term(e.target.value)}
+            onKeyDown={search}
+            value={word}
             _placeholder={{
               fontSize: '14px',
               fontWeight: 600,
@@ -39,9 +50,11 @@ const BuyFilter = (props: Props) => {
               outline: 'none',
             }}
           />
-          <InputLeftElement>
-            <Icons iconClass="fa-search" />
-          </InputLeftElement>
+          {word !== '' && (
+            <InputRightElement onClick={clear}>
+              <Icons iconClass="fa-times" />
+            </InputRightElement>
+          )}
         </InputGroup>
       </Box>
 
