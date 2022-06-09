@@ -100,7 +100,10 @@ const Form = ({ propertyTypes, getStates }: Props) => {
       <Box>
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <Grid templateColumns="repeat(3,1fr)" gap={10}>
+            <Grid
+              templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
+              gap={[2, 10]}
+            >
               <Box w="full">
                 <PrimarySelectKey<PropertyRequestInput>
                   label="Type"
