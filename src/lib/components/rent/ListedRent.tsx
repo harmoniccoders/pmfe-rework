@@ -49,12 +49,12 @@ function ListedRent({ data }: { data: any }) {
   return (
     <SimpleGrid columns={4} gap={10}>
       <GridItem colSpan={[4, 2, 2, 1]}>
-        <BuyFilter
+        {/* <BuyFilter
           search={handleKeyPress}
           term={setSearchTerm}
           clear={clearSearch}
           word={searchTerm}
-        />
+        /> */}
       </GridItem>
       <GridItem colSpan={[4, 2, 2, 3]}>
         <ListedProperties searched={searchedResult} />
