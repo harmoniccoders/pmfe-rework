@@ -1,25 +1,17 @@
-import { PropertyType } from 'types/api';
-import { GetServerSideProps } from 'next';
+import Landlord from 'lib/components/my-rent/Landlord';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
-import CleanPage from 'lib/components/clean/CleanPage';
+import { GetServerSideProps } from 'next';
 
-const clean = ({
-  data,
-  cleanRequests,
-}: {
-  data: PropertyType[];
-  cleanRequests: any;
-}) => {
- 
-  return <CleanPage data={data} cleanRequests={cleanRequests} />;
+const index = ({ data }: { data: any }) => {
+  return <Landlord data={data} />;
 };
 
-export default clean;
+export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
-    data: { user, redirect },
+    data: { redirect },
   } = returnUserData(ctx);
   if (redirect)
     return {
@@ -35,21 +27,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get('api/Property/types')).data;
-    const cleanRequests = (
-      await _dataAccess.get(`/api/Clean/requests/user?${url}`)
-    ).data;
+    const data = (await _dataAccess.get(`/api/Tenancy/landlord?${url}`)).data;
+   
     return {
       props: {
         data,
-        cleanRequests,
       },
     };
   } catch (error) {
     return {
       props: {
-        data: {},
-        cleanRequests: [],
+        propertyTypes: {},
+        data: [],
       },
     };
   }

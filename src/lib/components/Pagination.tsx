@@ -41,7 +41,7 @@ function Pagination({ data }: { data: PagedCollection }) {
     }
   };
   return (
-    <Flex align="center" justify="flex-end" p="0 2rem">
+    <Flex align="center" justify="center" p="0 2rem" w="100%">
       <Flex align="center">
         <Square
           size="30px"
@@ -50,6 +50,7 @@ function Pagination({ data }: { data: PagedCollection }) {
           bgColor="brand.100"
           cursor="pointer"
           onClick={() => paginate('previous')}
+          mr="5px"
         >
           <Icons iconClass="fa-angle-left" style={iconStyle} />
           {/* <Icon as={FiChevronLeft} color="#323232" fontSize="1.2rem" /> */}
@@ -64,6 +65,7 @@ function Pagination({ data }: { data: PagedCollection }) {
           bgColor="brand.100"
           cursor="pointer"
           onClick={() => paginate('next')}
+          ml="5px"
         >
           <Icons iconClass="fa-angle-right" style={iconStyle} />
           {/* <Icon as={FiChevronRight} color="#323232" fontSize="1.2rem" /> */}

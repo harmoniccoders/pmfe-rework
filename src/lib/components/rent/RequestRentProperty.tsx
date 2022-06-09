@@ -19,7 +19,7 @@ interface Props {
   propertyTypes: PropertyType[];
   getStates: any[];
 }
-const Form = ({ propertyTypes, getStates }: Props) => {
+const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
   const [requestProperty, { loading, data, error }] =
     useOperationMethod('PropertyRequestnew');
 
@@ -46,7 +46,6 @@ const Form = ({ propertyTypes, getStates }: Props) => {
     mode: 'all',
   });
 
-  // (watch('sellMyself'));
   watch('numberOfBedRooms');
   watch('numberOfBathrooms');
 
@@ -85,7 +84,7 @@ const Form = ({ propertyTypes, getStates }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/listings/requests');
+        router.push('rent/request-property');
         return;
       }
       addToast(result.message, {
@@ -100,10 +99,7 @@ const Form = ({ propertyTypes, getStates }: Props) => {
       <Box>
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <Grid
-              templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
-              gap={[2, 10]}
-            >
+            <Grid templateColumns="repeat(3,1fr)" gap={10}>
               <Box w="full">
                 <PrimarySelectKey<PropertyRequestInput>
                   label="Type"
@@ -180,4 +176,4 @@ const Form = ({ propertyTypes, getStates }: Props) => {
   );
 };
 
-export default Form;
+export default RequestRentProperty;

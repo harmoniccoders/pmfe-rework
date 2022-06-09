@@ -1,25 +1,40 @@
 import Cookies from 'js-cookie';
-import {
-  Box,
-  Button,
-  MenuItem,
-  MenuButton,
-  Menu,
-  MenuList,
-  Image,
-  Avatar,
-  Text,
-  Flex,
-  Stack,
-  VStack,
-  useBoolean,
-} from '@chakra-ui/react';
+import { Box, Avatar, Text, Flex, Stack, VStack, Link } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
-const LoggedIn = () => {
+
+interface NavProps {
+  path: string;
+  name: string;
+  closeMenu?: () => void;
+}
+
+const NavLink = ({ path, name, closeMenu }: NavProps) => {
+  const router = useRouter();
+
+  const getNavLinks = (name: string) => {
+    if (router.asPath === name) return 'brand.100';
+  };
+  return (
+    <NextLink href={path} passHref>
+      <Link
+        onClick={closeMenu}
+        _hover={{ color: 'brand.100' }}
+        cursor="pointer"
+        whiteSpace="nowrap"
+        // fontSize=".9rem"
+        color={getNavLinks(path)}
+      >
+        {name}
+      </Link>
+    </NextLink>
+  );
+};
+
+const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
   const [isOpened, setIsOpened] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
@@ -67,7 +82,8 @@ const LoggedIn = () => {
           align="start"
           p={['2', '5']}
           mt={['0', '5']}
-          w="full"
+          w="fit-content"
+          zIndex={50}
           shadow={['none', 'md']}
           position={['relative', 'absolute']}
           display={isOpened ? 'flex' : 'none'}
@@ -75,10 +91,19 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <Link href="/listings">Listings</Link>
-          <Link href="/sell/drafts">Drafts</Link>
-          <Link href="/rent">Rent</Link>
-          <Link href="/sessions">Sessions</Link>
+          <NavLink name="Listings" path="/listings" closeMenu={closeMenu} />
+          <NavLink name="Drafts" path="/sell/drafts" closeMenu={closeMenu} />
+          <NavLink
+            name="Rent"
+            path="/my-rent/enquiries"
+            closeMenu={closeMenu}
+          />
+          <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />
+          <NavLink
+            name="Get Rent Loan"
+            path="/get-rent-loan"
+            closeMenu={closeMenu}
+          />
         </VStack>
       </Box>
       <Box position="relative">
@@ -100,6 +125,7 @@ const LoggedIn = () => {
           p={['2', '5']}
           mt={['0', '5']}
           w="full"
+          zIndex={50}
           shadow={['none', 'md']}
           position={['relative', 'absolute']}
           display={isMenuOpened ? 'flex' : 'none'}
@@ -107,7 +133,7 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <Link href="/profile">Profile</Link>
+          <NavLink name="Profile" path="/profile" closeMenu={closeMenu} />
           <Text cursor="pointer" onClick={() => LogUserOut()}>
             Logout
           </Text>

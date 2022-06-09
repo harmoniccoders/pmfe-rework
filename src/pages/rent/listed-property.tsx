@@ -1,24 +1,21 @@
-import BuyPage from 'lib/styles/customTheme/components/Modals/Buy/BuyPage';
+import ListedRentPage from 'lib/components/rent/ListedRentPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';
 
-const buy = ({ data }: { data: PropertyModel[] }) => {
-  console.log({ data });
-
-  return <BuyPage data={data} />;
+const listedRent = ({ data }: { data: PropertyModel[] }) => {
+  return <ListedRentPage data={data} />;
 };
 
-export default buy;
+export default listedRent;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
-  url = 'limit=5&offset=0';
+  url = 'limit=25&offset=0';
   try {
-    const data = (await _dataAccess.get(`/api/Property/list/sales?${url}`))
-      .data;
+    const data = (await _dataAccess.get(`/api/Property/list/rent?${url}`)).data;
     return {
       props: {
         data,

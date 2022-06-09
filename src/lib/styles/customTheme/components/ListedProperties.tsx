@@ -1,13 +1,15 @@
 import { Box, Grid, GridItem, SimpleGrid, Heading } from '@chakra-ui/react';
 import PropertyCard from 'lib/components/PropertyCard';
 import React from 'react';
-import { PropertyModel } from 'types/api';
+import { PropertyModel, PropertyView } from 'types/api';
 
-const ListedProperties = ({ data }: { data: PropertyModel[] }) => {
-  console.log(data);
+const ListedProperties = ({ searched }: { searched: PropertyView[] }) => {
+  // console.log(data);
+  // console.log({ searched });
+
   return (
     <>
-      {data.length <= 0 ? (
+      {searched?.length <= 0 ? (
         <Heading fontSize="16px" lineHeight={1.5}>
           Sorry! There's no property at this time please check back later
         </Heading>
@@ -16,14 +18,15 @@ const ListedProperties = ({ data }: { data: PropertyModel[] }) => {
           templateColumns={[
             'repeat(1,1fr)',
             'repeat(1,1fr)',
-            'repeat(2,1fr)',
+            'repeat(1,1fr)',
             'repeat(3,1fr)',
           ]}
           columnGap="3"
           rowGap={5}
+          width="100%"
         >
           <>
-            {data.map((item) => {
+            {searched.map((item) => {
               return (
                 <GridItem key={item.id}>
                   <PropertyCard item={item} />

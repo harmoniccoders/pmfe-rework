@@ -1,34 +1,25 @@
-import { GetServerSideProps } from 'next';
-import { returnUserData } from 'lib/Utils/userData';
-import { DataAccess } from 'lib/Utils/Api';
-import { PropertyType, PropertyTitle } from 'types/api';
 import axios from 'axios';
-import RentsPage from 'lib/components/rent/RentsPage';
+import RequestRentPage from 'lib/components/rent/RequestRentPage';
+import { DataAccess } from 'lib/Utils/Api';
+import { returnUserData } from 'lib/Utils/userData';
+import { GetServerSideProps } from 'next';
+import React from 'react';
+import { PropertyType, PropertyTitle } from 'types/api';
 
-const rent = ({
-  propertyTitles,
+function requestRent({
   propertyTypes,
   getStates,
-  getBanks,
 }: {
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   getStates: any;
-  getBanks: any;
-}) => {
-
+}) {
   return (
-    <RentsPage
-      propertyTypes={propertyTypes}
-      propertyTitles={propertyTitles}
-      getStates={getStates}
-      getBanks={getBanks}
-    />
+    <RequestRentPage propertyTypes={propertyTypes} getStates={getStates} />
   );
-};
+}
 
-export default rent;
-
+export default requestRent;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     data: { user, redirect },
@@ -48,22 +39,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   url = 'limit=8&offset=0';
   try {
     const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
-    const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
     const getStates = (
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
-    const getBanks = await (
-      await axios.get(
-        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
-      )
-    ).data;
     return {
       props: {
         propertyTypes,
-        propertyTitles,
         getStates,
-        getBanks,
       },
     };
   } catch (error) {

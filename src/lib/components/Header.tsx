@@ -4,25 +4,32 @@ import {
   Flex,
   Stack,
   Image,
-  Text,
+  Link,
   useBoolean,
   Center,
   HStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import Link from 'next/link'
+import NextLink from 'next/link';
 import { BsBorderWidth } from 'react-icons/bs';
 import LoggedIn from './LoggedIn';
 
-const NavLink = ({ path, name }: { path: string; name: string }) => {
+interface NavProps {
+  path: string;
+  name: string;
+  closeMenu?: () => void;
+}
+
+const NavLink = ({ path, name, closeMenu }: NavProps) => {
   const router = useRouter();
 
   const getNavLinks = (name: string) => {
     if (router.asPath === name) return 'brand.100';
   };
   return (
-    <Link href={path} passHref>
-      <Text
+    <NextLink href={path} passHref>
+      <Link
+        onClick={closeMenu}
         _hover={{ color: 'brand.100' }}
         cursor="pointer"
         fontWeight="bold"
@@ -30,8 +37,8 @@ const NavLink = ({ path, name }: { path: string; name: string }) => {
         color={getNavLinks(path)}
       >
         {name}
-      </Text>
-    </Link>
+      </Link>
+    </NextLink>
   );
 };
 
@@ -93,8 +100,12 @@ const DesktopView = ({ user }: { user: any }) => {
 
 const MobileView = ({ user }: { user: any }) => {
   const [isOpened, setIsOpened] = useBoolean();
+  const closeMenu = () => {
+    setIsOpened.off();
+  };
   return (
     <Flex
+      zIndex={50}
       w="full"
       justify="space-between"
       align="center"
@@ -130,18 +141,22 @@ const MobileView = ({ user }: { user: any }) => {
         zIndex="3"
         transition={['all .5s ease', 'unset']}
       >
-        <NavLink name="Sell" path="/sell" />
-        <NavLink name="Buy" path="/buy" />
-        <NavLink name="Rent" path="/rent" />
-        <NavLink name="Clean" path="/clean" />
+        <NavLink closeMenu={closeMenu} name="Sell" path="/sell" />
+        <NavLink closeMenu={closeMenu} name="Buy" path="/buy" />
+        <NavLink closeMenu={closeMenu} name="Rent" path="/rent" />
+        <NavLink closeMenu={closeMenu} name="Clean" path="/clean" />
 
         {user ? (
-          <LoggedIn />
+          <LoggedIn closeMenu={closeMenu} />
         ) : (
           <>
-            <NavLink name="Get Rent Loan" path="/get-rent-loan" />
-            <NavLink name="Login" path="/login" />
-            <NavLink name="Sign Up" path="/register" />
+            <NavLink
+              closeMenu={closeMenu}
+              name="Get Rent Loan"
+              path="/get-rent-loan"
+            />
+            <NavLink closeMenu={closeMenu} name="Login" path="/login" />
+            <NavLink closeMenu={closeMenu} name="Sign Up" path="/register" />
           </>
         )}
       </Stack>

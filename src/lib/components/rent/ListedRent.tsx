@@ -20,10 +20,10 @@ import Counter from 'lib/styles/customTheme/components/Counter';
 import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
 import { useEffect, useState } from 'react';
 import { PropertyView } from 'types/api';
-import Icons from './Icons';
-import Pagination from './Pagination';
+import Icons from '../Icons';
+import Pagination from '../Pagination';
 
-function Listed({ data }: { data: any }) {
+function ListedRent({ data }: { data: any }) {
   const result = data.value;
 
   const [filterOptions, setFilterOptions] = useState({
@@ -53,7 +53,9 @@ function Listed({ data }: { data: any }) {
       if (result.status) {
         setSearchedResult(
           result.data.value.filter((property: PropertyView) => {
-            return property.status === 'VERIFIED';
+            return (
+              property.isForRent === true && property.status === 'VERIFIED'
+            );
           })
         );
       }
@@ -85,7 +87,7 @@ function Listed({ data }: { data: any }) {
       const url = `Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`;
       const result = await (
         await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASEURL}/api/Property/list/sales?${url}`
+          `${process.env.NEXT_PUBLIC_API_BASEURL}/api/Property/list/rent?${url}`
         )
       ).data;
       if (result.status) {
@@ -119,7 +121,7 @@ function Listed({ data }: { data: any }) {
     setSearchedResult(result);
   }, []);
   return (
-    <SimpleGrid columns={4} gap={7}>
+    <SimpleGrid columns={4} gap={10}>
       <GridItem colSpan={[4, 2, 2, 1]}>
         <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
           <Box w="full">
@@ -345,11 +347,11 @@ function Listed({ data }: { data: any }) {
       <GridItem colSpan={[4, 2, 2, 3]}>
         <ListedProperties searched={searchedResult} />
       </GridItem>
-      <GridItem colSpan={4} colStart={1} colEnd={5} my="2rem">
+      <GridItem colSpan={4} colStart={2} colEnd={4} my="2rem">
         <Pagination data={data} />
       </GridItem>
     </SimpleGrid>
   );
 }
 
-export default Listed;
+export default ListedRent;
