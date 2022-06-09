@@ -11,6 +11,7 @@ const Button: DeepPartial<Theme['components']['Button']> = {
       color: '#0042ff',
       width: '11rem',
       height: '3.12rem',
+      fontSize: '.9rem',
       _hover: {
         backgroundColor: 'brand.100',
         color: 'white',
@@ -25,6 +26,7 @@ const Button: DeepPartial<Theme['components']['Button']> = {
       backgroundColor: 'brand.300',
       color: 'white',
       width: '11rem',
+      fontSize: '.8rem',
       height: '3.12rem',
       _hover: {
         backgroundColor: 'transparent',

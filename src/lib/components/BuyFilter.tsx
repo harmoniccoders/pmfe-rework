@@ -12,8 +12,10 @@ import {
   VStack,
   Image,
   InputRightElement,
+  HStack,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
+import { Dispatch, SetStateAction } from 'react';
 import Counter from '../styles/customTheme/components/Counter';
 
 type Props = {
@@ -21,13 +23,26 @@ type Props = {
   term: any;
   clear: () => void;
   word: string;
+  bed: Dispatch<SetStateAction<number>>;
+  bath: Dispatch<SetStateAction<number>>;
+  bedCount: number;
+  bathCount: number;
 };
 
 const iconStyle = {
   fontSize: '35px',
 };
 
-const BuyFilter = ({ search, term, clear, word }: Props) => {
+const BuyFilter = ({
+  search,
+  term,
+  clear,
+  word,
+  bed,
+  bath,
+  bedCount,
+  bathCount,
+}: Props) => {
   return (
     <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
       <Box w="full">
@@ -186,42 +201,33 @@ const BuyFilter = ({ search, term, clear, word }: Props) => {
         </GridItem>
       </Grid>
 
-      <Counter room="bedroom" />
-      <Counter room="bathroom" />
-
-      {/* <NumberCounter
-        valueName="numberOfBedrooms"
-        setValue={setValue}
-        getValues={getValues}
-        label="Number of Bedrooms"
+      <Counter
+        room="bedroom"
+        bed={bed}
+        bath={bath}
+        count={bedCount}
+        bathCount={bathCount}
       />
-      <NumberCounter
-        valueName="numberOfBathrooms"
-        setValue={setValue}
-        getValues={getValues}
-        label="Number of Bathrooms"
-      /> */}
-      <Flex w="100%" justify="space-between" mt="2rem !important">
+      <Counter
+        room="bathroom"
+        bed={bed}
+        bath={bath}
+        count={bedCount}
+        bathCount={bathCount}
+      />
+      <HStack spacing={4} w="full">
         <Button
           variant="outline"
-          textTransform="capitalize"
-          width="fit-content"
           height="40px"
-          px="1.7rem"
-          color="#252427"
+          width="full"
+          color="rgb(37,36,39)"
         >
-          Clear filters
+          Clear Filters
         </Button>
-        <Button
-          variant="solid"
-          textTransform="capitalize"
-          width="fit-content"
-          height="40px"
-          px="1.7rem"
-        >
-          apply filters
+        <Button variant="solid" height="40px" width="full">
+          Apply Filters
         </Button>
-      </Flex>
+      </HStack>
     </VStack>
   );
 };
