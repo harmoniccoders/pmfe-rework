@@ -29,7 +29,7 @@ function ListedRentPage({ data }: { data: PropertyModel[] }) {
             tabTitle="Request Property"
           />
         </HStack>
-        <ListedRent data={data} />
+        {/* <ListedRent data={data} /> */}
       </Box>
     </Box>
   );
