@@ -49,7 +49,6 @@ function Listed({ data }: { data: any }) {
           `${process.env.NEXT_PUBLIC_API_BASEURL}/api/Property/list?search=${searchTerm}`
         )
       ).data;
-      // console.log({ result });
 
       if (result.status) {
         setSearchedResult(

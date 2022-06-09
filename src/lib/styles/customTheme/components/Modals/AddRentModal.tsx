@@ -3,20 +3,12 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
-  Button,
   Text,
-  Image,
   Box,
-  Badge,
-  Heading,
-  Grid,
-  GridItem,
-  VStack,
 } from '@chakra-ui/react';
-import Form from 'pages/rent/Form';
+import RentForm from 'lib/components/rent/RentForm';
 import { useState } from 'react';
 import { PropertyTitle, PropertyType } from 'types/api';
 
@@ -105,7 +97,7 @@ function AddRentModal({
 
         <ModalBody>
           <Box pb="7" px={5}>
-            <Form
+            <RentForm
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
               getStates={getStates}

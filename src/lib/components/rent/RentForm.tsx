@@ -46,7 +46,7 @@ interface Props {
   isClosed: () => void;
 }
 
-const Form = ({
+const RentForm = ({
   propertyTitles,
   propertyTypes,
   getStates,
@@ -86,22 +86,6 @@ const Form = ({
       is: () => formStep === 1,
       then: yup.number(),
     }),
-    // numberofBathrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // price: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // numberofBedrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // price: yup.number().when('sellMySelf', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
   });
 
   const {
@@ -123,7 +107,6 @@ const Form = ({
     },
   });
 
-  // (watch('sellMyself'));
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
 
@@ -317,6 +300,7 @@ const Form = ({
                     name="description"
                     error={errors.description}
                     defaultValue=""
+                    minH='200px'
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>
@@ -467,4 +451,4 @@ const Form = ({
   );
 };
 
-export default Form;
+export default RentForm;

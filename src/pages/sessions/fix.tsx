@@ -1,21 +1,25 @@
-import { PropertyType } from 'types/api';
-import { GetServerSideProps } from 'next';
+import axios from 'axios';
+import FixSession from 'lib/components/sessions/FixSessionPage';
+import SessionPage from 'lib/components/sessions/CleanSessionPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
-import CleanPage from 'lib/components/clean/CleanPage';
+import { GetServerSideProps } from 'next';
+import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 
-const clean = ({
-  data,
-  cleanRequests,
+const sessions = ({
+  fix,
 }: {
-  data: PropertyType[];
-  cleanRequests: any;
+
+  fix: any;
 }) => {
- 
-  return <CleanPage data={data} cleanRequests={cleanRequests} />;
+  return (
+    <FixSession
+      fix={fix}
+    />
+  );
 };
 
-export default clean;
+export default sessions;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -35,21 +39,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get('api/Property/types')).data;
-    const cleanRequests = (
-      await _dataAccess.get(`/api/Clean/requests/user?${url}`)
+
+    const fix = (
+      await _dataAccess.get(`/api/Property?${url}`)
     ).data;
+    
     return {
       props: {
-        data,
-        cleanRequests,
+        fix,
       },
     };
   } catch (error) {
     return {
       props: {
-        data: {},
-        cleanRequests: [],
+      
+        fix: [],
       },
     };
   }

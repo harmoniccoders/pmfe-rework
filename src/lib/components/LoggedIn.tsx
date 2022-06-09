@@ -13,9 +13,10 @@ import {
   Stack,
   VStack,
   useBoolean,
+  Link
 } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
@@ -67,7 +68,8 @@ const LoggedIn = () => {
           align="start"
           p={['2', '5']}
           mt={['0', '5']}
-          w="full"
+          w="fit-content"
+          zIndex={50}
           shadow={['none', 'md']}
           position={['relative', 'absolute']}
           display={isOpened ? 'flex' : 'none'}
@@ -75,10 +77,21 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <Link href="/listings">Listings</Link>
-          <Link href="/sell/drafts">Drafts</Link>
-          <Link href="/rent">Rent</Link>
-          <Link href="/sessions">Sessions</Link>
+          <NextLink href="/listings" passHref>
+            <Link>Listings</Link>
+          </NextLink>
+          <NextLink href="/sell/drafts" passHref>
+            <Link>Drafts</Link>
+          </NextLink>
+          <NextLink href="/my-rent/enquiries" passHref>
+            <Link>Rent</Link>
+          </NextLink>
+          <NextLink href="/sessions/fix" passHref>
+            <Link>Sessions</Link>
+          </NextLink>
+          <NextLink href="/get-rent-loan" passHref>
+            <Link whiteSpace="nowrap">Get Rent Loan</Link>
+          </NextLink>
         </VStack>
       </Box>
       <Box position="relative">
@@ -100,6 +113,7 @@ const LoggedIn = () => {
           p={['2', '5']}
           mt={['0', '5']}
           w="full"
+          zIndex={50}
           shadow={['none', 'md']}
           position={['relative', 'absolute']}
           display={isMenuOpened ? 'flex' : 'none'}
@@ -107,7 +121,9 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <Link href="/profile">Profile</Link>
+          <NextLink href="/profile" passHref>
+            <Link>Profile</Link>
+          </NextLink>
           <Text cursor="pointer" onClick={() => LogUserOut()}>
             Logout
           </Text>
