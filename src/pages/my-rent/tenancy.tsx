@@ -1,33 +1,32 @@
-import { GetServerSideProps } from 'next';
-import { returnUserData } from 'lib/Utils/userData';
-import { DataAccess } from 'lib/Utils/Api';
-import { PropertyType, PropertyTitle } from 'types/api';
 import axios from 'axios';
-import RentsPage from 'lib/components/rent/RentsPage';
+import { DataAccess } from 'lib/Utils/Api';
+import { returnUserData } from 'lib/Utils/userData';
+import { GetServerSideProps } from 'next';
+import { PropertyTitle, PropertyType } from 'types/api';
+import MyTenancy from 'lib/components/my-rent/MyTenancy';
 
-const rent = ({
+const tenancy = ({
   propertyTitles,
   propertyTypes,
   getStates,
-  getBanks,
+  sessions,
 }: {
-  propertyTitles: PropertyType[];
-  propertyTypes: PropertyTitle[];
+  propertyTitles: PropertyTitle[];
+  propertyTypes: PropertyType[];
   getStates: any;
-  getBanks: any;
+  sessions: any;
 }) => {
-
   return (
-    <RentsPage
+    <MyTenancy
+      data={sessions}
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
       getStates={getStates}
-      getBanks={getBanks}
     />
   );
 };
 
-export default rent;
+export default tenancy;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -53,23 +52,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
-    const getBanks = await (
-      await axios.get(
-        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
-      )
+    const sessions = (
+      await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
     ).data;
+
     return {
       props: {
         propertyTypes,
         propertyTitles,
         getStates,
-        getBanks,
+        sessions,
       },
     };
   } catch (error) {
     return {
       props: {
         propertyTypes: {},
+        sessions: [],
       },
     };
   }

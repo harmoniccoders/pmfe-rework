@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
-import Icons from './Icons';
+import Icons from '../Icons';
 import CleanDetailsModal from 'lib/styles/customTheme/components/Modals/CleanDetailsModal';
 
 type Props = {

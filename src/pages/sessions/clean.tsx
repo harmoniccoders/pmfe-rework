@@ -1,21 +1,13 @@
-import { PropertyType } from 'types/api';
-import { GetServerSideProps } from 'next';
+import CleanSession from 'lib/components/sessions/CleanSessionPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
-import CleanPage from 'lib/components/clean/CleanPage';
+import { GetServerSideProps } from 'next';
 
-const clean = ({
-  data,
-  cleanRequests,
-}: {
-  data: PropertyType[];
-  cleanRequests: any;
-}) => {
- 
-  return <CleanPage data={data} cleanRequests={cleanRequests} />;
+const sessions = ({ cleanRequests }: { cleanRequests: any }) => {
+  return <CleanSession cleanRequests={cleanRequests} />;
 };
 
-export default clean;
+export default sessions;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -35,20 +27,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get('api/Property/types')).data;
     const cleanRequests = (
       await _dataAccess.get(`/api/Clean/requests/user?${url}`)
     ).data;
     return {
       props: {
-        data,
         cleanRequests,
       },
     };
   } catch (error) {
     return {
       props: {
-        data: {},
         cleanRequests: [],
       },
     };
