@@ -6,22 +6,22 @@ import { PropertyModel } from 'types/api';
 const ListedProperties = ({ data }: { data: PropertyModel[] }) => {
   console.log(data);
   return (
-    <Grid
-      templateColumns={[
-        'repeat(1,1fr)',
-        'repeat(1,1fr)',
-        'repeat(2,1fr)',
-        'repeat(3,1fr)',
-      ]}
-      columnGap="3"
-      rowGap={5}
-    >
-      <>
-        {data.length <= 0 ? (
-          <Heading fontSize="16px" lineHeight={1.5}>
-            Find a property to buy with the safety of 103% money back guarantee
-          </Heading>
-        ) : (
+    <>
+      {data.length <= 0 ? (
+        <Heading fontSize="16px" lineHeight={1.5}>
+          Sorry! There's no property at this time please check back later
+        </Heading>
+      ) : (
+        <Grid
+          templateColumns={[
+            'repeat(1,1fr)',
+            'repeat(1,1fr)',
+            'repeat(2,1fr)',
+            'repeat(3,1fr)',
+          ]}
+          columnGap="3"
+          rowGap={5}
+        >
           <>
             {data.map((item) => {
               return (
@@ -31,9 +31,9 @@ const ListedProperties = ({ data }: { data: PropertyModel[] }) => {
               );
             })}
           </>
-        )}
-      </>
-    </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 

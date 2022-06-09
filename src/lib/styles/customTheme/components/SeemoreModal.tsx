@@ -41,6 +41,10 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
     setShowModal(true);
     onClose();
   };
+  const reportModal = () => {
+    setShowReport(true);
+    onClose();
+  };
   const router = useRouter();
   const [showContactDetails, setShowContactDetails] = useState<boolean>(false);
 
@@ -254,6 +258,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                 fontWeight={600}
                 textTransform="capitalize"
                 mb="25px"
+                onClick={reportModal}
               >
                 Report this listing
               </Button>

@@ -230,8 +230,8 @@ const EditPropertyForm = ({
     try {
       const result = await (await PropertyUser(undefined, data)).data;
       console.log({ result });
-      if (result.status) {
-        addToast('Property Added', {
+      if (result.status !== 400) {
+        addToast('Property Successfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });

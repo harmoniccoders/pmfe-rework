@@ -1,16 +1,16 @@
 import { GridItem, SimpleGrid } from '@chakra-ui/react';
 
 import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
-import { PropertyModel } from 'types/api';
+import { PropertyView } from 'types/api';
 import BuyFilter from './BuyFilter';
 import Pagination from './Pagination';
 
 function Listed({ data }: { data: any }) {
   console.log({ data });
 
-  const result = data.value.filter(
-    (property: PropertyModel) => property.isForSale
-  );
+  const result = data.value.filter((property: PropertyView) => {
+    return property.isForSale && property.status === 'VERIFIED';
+  });
   return (
     <SimpleGrid columns={4} gap={10}>
       <GridItem colSpan={[4, 2, 2, 1]}>

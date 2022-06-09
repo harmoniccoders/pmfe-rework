@@ -25,7 +25,7 @@ import ListingsCard from 'lib/components/ListingsCard';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 import { useState } from 'react';
 
-const sell = ({
+const drafts = ({
   propertyTitles,
   propertyTypes,
   getStates,
@@ -36,15 +36,8 @@ const sell = ({
   getStates: any;
   listings: any;
 }) => {
-  // const requests = cleanRequests.value;
-  // console.log({ propertyTitles });
-  // console.log({ propertyTypes });
-  // console.log({ getStates });
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const result = listings.value.filter(
-    (property: PropertyView) => !property.isDraft
-  );
+  const result = listings.value;
   console.log({ result });
 
   return (
@@ -53,17 +46,8 @@ const sell = ({
         <Box>
           <Flex justify="space-between" align="center" my="8">
             <Text fontWeight="bold" color="brand.100" fontSize="lg">
-              My Listings
+              My Drafts
             </Text>
-            <Button
-              bg="brand.100"
-              onClick={onOpen}
-              height="3rem"
-              color="#fff"
-              borderRadius="8px"
-            >
-              + &nbsp; Add Property
-            </Button>
           </Flex>
 
           <Grid templateColumns="repeat(3,1fr)" columnGap="8" rowGap={5}>
@@ -98,7 +82,7 @@ const sell = ({
             >
               <Image src="/assets/admin.png" />
             </Box>
-            <Text>You have no current property listed for sale.</Text>
+            <Text>You have no property listed yet.</Text>
 
             <Button
               bg="brand.100"
@@ -123,7 +107,7 @@ const sell = ({
   );
 };
 
-export default sell;
+export default drafts;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     data: { user, redirect },
@@ -148,9 +132,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
-    const listings = (
-      await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
-    ).data;
+    const listings = (await _dataAccess.get(`/api/Property/user/drafts?${url}`))
+      .data;
 
     return {
       props: {

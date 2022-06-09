@@ -54,6 +54,7 @@ const PropertyCard = ({ item }: Props) => {
 
   const router = useRouter();
   const curPage = router.asPath;
+  const enquiry = router.asPath == '/enquires';
 
   return (
     <>
@@ -164,22 +165,42 @@ const PropertyCard = ({ item }: Props) => {
           </Grid>
           <Divider borderColor="brand.50" />
           <HStack px=".8rem" w="full" spacing={5}>
-            <Button
-              variant="outline"
-              height="40px"
-              width="full"
-              color="rgb(37,36,39)"
-              onClick={() => AddViewToProperty()}
-            >
-              See more
-            </Button>
+            {enquiry ? (
+              <Button
+                variant="outline"
+                height="40px"
+                width="full"
+                color="rgb(37,36,39)"
+                disabled={true}
+                textTransform="uppercase"
+                onClick={() => AddViewToProperty()}
+              >
+                {item.isForRent ? 'To Rent' : 'To Buy'}
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                height="40px"
+                width="full"
+                color="rgb(37,36,39)"
+                onClick={() => AddViewToProperty()}
+              >
+                See more
+              </Button>
+            )}
 
             {!item.sellMyself && (
               <Button
                 variant="solid"
                 height="40px"
                 w="full"
-                onClick={() => router.push(`${curPage}/enquire/${item.id}`)}
+                onClick={
+                  enquiry && item.isForRent
+                    ? () => router.push(`/rent/enquire/${item.id}`)
+                    : enquiry && item.isForSale
+                    ? () => router.push(`/buy/enquire/${item.id}`)
+                    : () => router.push(`${curPage}/enquire/${item.id}`)
+                }
               >
                 Enquire
               </Button>

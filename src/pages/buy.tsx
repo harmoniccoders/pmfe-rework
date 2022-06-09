@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
-  url = 'limit=8&offset=0';
+  url = 'limit=25&offset=0';
   try {
     const data = (await _dataAccess.get(`/api/Property/list?${url}`)).data;
     return {
