@@ -27,8 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get(`?${url}`)).data;
-
+    const data = (await _dataAccess.get(`/api/Tenancy/user?${url}`)).data;
     return {
       props: {
         data,
