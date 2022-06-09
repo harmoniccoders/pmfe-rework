@@ -1,12 +1,5 @@
-import { Box, Center, Flex, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import MyListings from 'lib/styles/customTheme/components/Listings/MyListings';
-import {
-  PropertyModel,
-  PropertyTitle,
-  PropertyType,
-  PropertyView,
-} from 'types/api';
 import CleanProperty from '../clean/CleanProperty';
 
 function FixSession({
@@ -38,9 +31,9 @@ function FixSession({
           {fix.length > 0 ? (
             <CleanProperty requests={fix} />
           ) : (
-          <Heading mt="3" fontWeight="medium" fontSize=".9rem">
+          <Text mt="3" fontWeight="medium" fontSize=".9rem">
             You currently do not have any fix request listed...
-          </Heading>
+          </Text>
            )} 
         </Box>
       </Box>

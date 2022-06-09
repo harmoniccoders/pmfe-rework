@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=25&offset=0';
   try {
-    const data = (await _dataAccess.get(`/api/Property/list?${url}`)).data;
+    const data = (await _dataAccess.get(`/api/Property/list/rent?${url}`)).data;
     return {
       props: {
         data,

@@ -300,7 +300,7 @@ const RentForm = ({
                     name="description"
                     error={errors.description}
                     defaultValue=""
-                    minH='200px'
+                    minH="200px"
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>

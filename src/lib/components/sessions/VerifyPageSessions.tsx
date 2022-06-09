@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import CleanProperty from '../clean/CleanProperty';
 
@@ -32,9 +32,9 @@ function VerifySession({
           {data.length > 0 ? (
             <CleanProperty requests={data} />
           ) : (
-          <Heading mt="3" fontWeight="medium" fontSize=".9rem">
+          <Text mt="3" fontWeight="medium" fontSize=".9rem">
             You currently do not have any land search or verification listed...
-          </Heading>
+          </Text>
           )}
         </Box>
       </Box>

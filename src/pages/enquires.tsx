@@ -30,7 +30,7 @@ const enquires = ({ data }: { data: any }) => {
         <PageTabs tabName="requests" tabTitle="My Requests" />
       </HStack>
       <>
-        {result.length <= 0 ? (
+        {result?.length <= 0 ? (
           <Heading fontSize="16px" lineHeight={1.5}>
             Sorry! There's no property at this time please check back later
           </Heading>

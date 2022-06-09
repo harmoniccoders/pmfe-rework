@@ -1,26 +1,40 @@
 import Cookies from 'js-cookie';
-import {
-  Box,
-  Button,
-  MenuItem,
-  MenuButton,
-  Menu,
-  MenuList,
-  Image,
-  Avatar,
-  Text,
-  Flex,
-  Stack,
-  VStack,
-  useBoolean,
-  Link
-} from '@chakra-ui/react';
+import { Box, Avatar, Text, Flex, Stack, VStack, Link } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
-const LoggedIn = () => {
+
+interface NavProps {
+  path: string;
+  name: string;
+  closeMenu?: () => void;
+}
+
+const NavLink = ({ path, name, closeMenu }: NavProps) => {
+  const router = useRouter();
+
+  const getNavLinks = (name: string) => {
+    if (router.asPath === name) return 'brand.100';
+  };
+  return (
+    <NextLink href={path} passHref>
+      <Link
+        onClick={closeMenu}
+        _hover={{ color: 'brand.100' }}
+        cursor="pointer"
+        whiteSpace="nowrap"
+        // fontSize=".9rem"
+        color={getNavLinks(path)}
+      >
+        {name}
+      </Link>
+    </NextLink>
+  );
+};
+
+const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
   const [isOpened, setIsOpened] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
@@ -77,21 +91,19 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <NextLink href="/listings" passHref>
-            <Link>Listings</Link>
-          </NextLink>
-          <NextLink href="/sell/drafts" passHref>
-            <Link>Drafts</Link>
-          </NextLink>
-          <NextLink href="/my-rent/enquiries" passHref>
-            <Link>Rent</Link>
-          </NextLink>
-          <NextLink href="/sessions/fix" passHref>
-            <Link>Sessions</Link>
-          </NextLink>
-          <NextLink href="/get-rent-loan" passHref>
-            <Link whiteSpace="nowrap">Get Rent Loan</Link>
-          </NextLink>
+          <NavLink name="Listings" path="/listings" closeMenu={closeMenu} />
+          <NavLink name="Drafts" path="/sell/drafts" closeMenu={closeMenu} />
+          <NavLink
+            name="Rent"
+            path="/my-rent/enquiries"
+            closeMenu={closeMenu}
+          />
+          <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />
+          <NavLink
+            name="Get Rent Loan"
+            path="/get-rent-loan"
+            closeMenu={closeMenu}
+          />
         </VStack>
       </Box>
       <Box position="relative">
@@ -121,9 +133,7 @@ const LoggedIn = () => {
           overflow="hidden"
           fontWeight="600"
         >
-          <NextLink href="/profile" passHref>
-            <Link>Profile</Link>
-          </NextLink>
+          <NavLink name="Profile" path="/profile" closeMenu={closeMenu} />
           <Text cursor="pointer" onClick={() => LogUserOut()}>
             Logout
           </Text>

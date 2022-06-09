@@ -65,7 +65,11 @@ function MyListings({
               </Button>
             </Flex>
 
-            <Grid templateColumns="repeat(3,1fr)" columnGap="6" rowGap={5}>
+            <Grid
+              templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
+              columnGap="6"
+              rowGap={5}
+            >
               <>
                 {result.map((item: PropertyView) => {
                   return (

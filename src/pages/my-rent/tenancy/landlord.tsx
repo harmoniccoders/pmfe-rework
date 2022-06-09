@@ -1,19 +1,17 @@
-import axios from 'axios';
+import Landlord from 'lib/components/my-rent/Landlord';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyTitle, PropertyType } from 'types/api';
-import RentRelief from 'lib/components/my-rent/RentRelief';
 
-const rentRelief = ({ data }: { data: any }) => {
-  return <RentRelief data={data} />;
+const index = ({ data }: { data: any }) => {
+  return <Landlord data={data} />;
 };
 
-export default rentRelief;
+export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
-    data: { user, redirect },
+    data: { redirect },
   } = returnUserData(ctx);
   if (redirect)
     return {
@@ -29,9 +27,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-
-    const data = (await _dataAccess.get(`/api/Relief/user?${url}`)).data;
-
+    const data = (await _dataAccess.get(`/api/Tenancy/landlord?${url}`)).data;
+   
     return {
       props: {
         data,

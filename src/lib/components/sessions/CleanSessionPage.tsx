@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import CleanProperty from '../clean/CleanProperty';
 
@@ -30,9 +30,9 @@ function CleanSession({ cleanRequests }: { cleanRequests: any }) {
           {requests.length > 0 ? (
             <CleanProperty requests={newRequest} />
           ) : (
-            <Heading mt="3" fontWeight="medium" fontSize=".9rem">
+            <Text mt="3" fontWeight="medium" fontSize=".9rem">
               You currently have no Cleaning sessions Booked.
-            </Heading>
+            </Text>
           )}
         </Box>
       </Box>

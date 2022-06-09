@@ -4,6 +4,8 @@ import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';
 
 const buy = ({ data }: { data: PropertyModel[] }) => {
+  console.log({ data });
+
   return <BuyPage data={data} />;
 };
 
@@ -13,9 +15,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
-  url = 'limit=25&offset=0';
+  url = 'limit=5&offset=0';
   try {
-    const data = (await _dataAccess.get(`/api/Property/list?${url}`)).data;
+    const data = (await _dataAccess.get(`/api/Property/list/sales?${url}`))
+      .data;
     return {
       props: {
         data,
