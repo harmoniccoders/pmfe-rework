@@ -4,7 +4,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Tag,
   Button,
   Text,
   Grid,
@@ -39,7 +38,8 @@ const BuyFilter = ({ search, term, clear, word }: Props) => {
             type="text"
             placeholder="Search"
             height="40px"
-            onChange={(e) => term(e.target.value)}
+            onChange={(e: { target: { value: any } }) => term(e.target.value)}
+            // onChange={(e) => term(e.target.value)}
             onKeyDown={search}
             value={word}
             _placeholder={{
@@ -189,19 +189,7 @@ const BuyFilter = ({ search, term, clear, word }: Props) => {
       <Counter room="bedroom" />
       <Counter room="bathroom" />
 
-      {/* <NumberCounter
-        valueName="numberOfBedrooms"
-        setValue={setValue}
-        getValues={getValues}
-        label="Number of Bedrooms"
-      />
-      <NumberCounter
-        valueName="numberOfBathrooms"
-        setValue={setValue}
-        getValues={getValues}
-        label="Number of Bathrooms"
-      /> */}
-      <Flex w="100%" justify="space-between" mt="2rem !important">
+      <Flex w="100%" justifyContent="space-between" mt="2rem !important">
         <Button
           variant="outline"
           textTransform="capitalize"

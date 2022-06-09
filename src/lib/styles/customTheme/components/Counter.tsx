@@ -42,6 +42,7 @@ const Counter = ({ room }: Props) => {
           borderRadius="50%"
           fontSize="20px"
           onClick={subtractCount}
+          disabled={count === 0 ? true : false}
         >
           -
         </Button>

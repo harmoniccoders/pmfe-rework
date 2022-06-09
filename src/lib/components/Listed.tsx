@@ -47,7 +47,7 @@ function Listed({ data }: { data: any }) {
     setSearchedResult(result);
   }, []);
   return (
-    <SimpleGrid columns={4} gap={10}>
+    <SimpleGrid columns={4} gap={7}>
       <GridItem colSpan={[4, 2, 2, 1]}>
         <BuyFilter
           search={handleKeyPress}
@@ -59,7 +59,7 @@ function Listed({ data }: { data: any }) {
       <GridItem colSpan={[4, 2, 2, 3]}>
         <ListedProperties searched={searchedResult} />
       </GridItem>
-      <GridItem colSpan={4} colStart={2} colEnd={4} my="2rem">
+      <GridItem colSpan={4} colStart={1} colEnd={5} my="2rem">
         <Pagination data={data} />
       </GridItem>
     </SimpleGrid>
