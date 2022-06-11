@@ -34,9 +34,9 @@ const schema = yup.object().shape({
   buildingState: yup.string(),
   propertyTypeId: yup.number().required(),
   dateNeeded: yup.string().required(),
-  numberOfBedrooms: yup.number(),
-  numberOfBathrooms: yup.number().required(),
-  numberOfFloors: yup.number().required(),
+  // numberOfBedrooms: yup.number(),
+  // numberOfBathrooms: yup.number().required(),
+  // numberOfFloors: yup.number().required(),
 });
 
 const BookCleaningModal = ({

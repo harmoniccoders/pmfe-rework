@@ -1,28 +1,24 @@
 import {
   Box,
+  Text,
   Stack,
-  FormControl,
-  FormLabel,
-  VStack,
   Button,
-  Checkbox,
-  HStack,
-  Select,
+  Image,
   Flex,
+  HStack,
   Tooltip,
   Icon,
-  Text,
+  AspectRatio,
 } from '@chakra-ui/react';
-
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
+  MediaModel,
   PropertyModel,
   PropertyTitle,
   PropertyType,
-  PropertyView,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -35,20 +31,23 @@ import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
-import { Widget } from '@uploadcare/react-widget';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
-import { BiImage } from 'react-icons/bi';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
+import { Widget } from '@uploadcare/react-widget';
+import { BiImage } from 'react-icons/bi';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
+import { SRLWrapper } from 'simple-react-lightbox';
+import { Parameters } from 'openapi-client-axios';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  item: PropertyModel;
   formStep: number;
   setFormStep: any;
   onClose: () => void;
-  item: PropertyModel;
 }
 const EditPropertyForm = ({
   propertyTitles,
@@ -56,11 +55,12 @@ const EditPropertyForm = ({
   getStates,
   formStep,
   setFormStep,
-  onClose,
   item,
+  onClose,
 }: Props) => {
-  const [PropertyUser, { loading, data, error }] =
+  const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
+  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -72,22 +72,10 @@ const EditPropertyForm = ({
     propertyTypeId: yup.number().required(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
-    // numberofBathrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // price: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // numberofBedrooms: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
-    // price: yup.number().when('sellMySelf', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
+    price: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
   });
 
   const {
@@ -103,7 +91,11 @@ const EditPropertyForm = ({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      isForSale: true,
+      id: item.id,
+      isActive: item.isActive,
+      isForSale: item.isForSale,
+      isDraft: item.isDraft,
+      isForRent: item.isForRent,
       name: item.name,
       propertyTypeId: item.propertyTypeId,
       title: item.title,
@@ -119,17 +111,19 @@ const EditPropertyForm = ({
     },
   });
 
-  // (watch('sellMyself'));
-  watch('numberOfBedrooms');
   watch('numberOfBathrooms');
+  watch('numberOfBedrooms');
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
 
-  console.log(watch('state'));
+  const widgetApi = useRef();
+  const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
+  const [selectedId, setSelectedId] = useState<Number>();
+  console.log({ selectedId });
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -151,24 +145,9 @@ const EditPropertyForm = ({
   }, [watch('state')]);
 
   const clearPreviewData = () => {
-    // reset({
-    //   name: '',
-    //   propertyTypeId: undefined,
-    //   title: '',
-    //   state: '',
-    //   lga: '',
-    //   area: '',
-    //   address: '',
-    //   description: '',
-    //   sellMyself: undefined,
-    //   price: undefined,
-    //   numberOfBathrooms: undefined,
-    //   numberOfBedrooms: undefined,
-    // });
     setFormStep(0);
     onClose();
   };
-
   const RenderButton = () => {
     if (formStep === 0) {
       return (
@@ -180,11 +159,9 @@ const EditPropertyForm = ({
             variant="solid"
             textTransform="capitalize"
             disabled={isValid ? false : true}
-            isLoading={loading}
           >
             Next
           </Button>
-          {/* <Text cursor={isValid ? 'pointer' : 'no-drop'}>Next</Text> */}
         </Box>
       );
     } else if (formStep === 1) {
@@ -193,8 +170,13 @@ const EditPropertyForm = ({
           <HStack spacing={3}>
             <Button
               w="50%"
+              type="submit"
               variant="outline"
-              onClick={() => setValue('isDraft', true)}
+              onClick={async () => {
+                await setValue('isDraft', true);
+                await setValue('isForSale', false);
+              }}
+              isLoading={getValues('isForSale') ? false : isLoading}
             >
               Save as Draft
             </Button>
@@ -202,7 +184,7 @@ const EditPropertyForm = ({
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={loading}
+                loading={getValues('isDraft') ? !isLoading : isLoading}
               />
             </Box>
           </HStack>
@@ -216,22 +198,76 @@ const EditPropertyForm = ({
     }
   };
 
+  let uploaded;
+  const onChangeImg = async (info: any, type: boolean) => {
+    console.log('Upload completed:', info);
+    uploaded = await groupInfo(info.uuid);
+
+    let newArr = [info.count];
+
+    console.log(newArr.length);
+    console.log({ uploaded });
+    let medias: MediaModel[] = [];
+
+    uploaded.files.forEach((file: any) => {
+      let newMedia: MediaModel = {
+        url: file.original_file_url,
+        isImage: type ? true : false,
+        isVideo: !type ? true : false,
+        name: '',
+        extention: '',
+        base64String: '',
+      };
+
+      medias.push(newMedia);
+    });
+
+    setUploadedMedia([...uploadedMedia, ...medias]);
+  };
+
+  const groupInfo = async (uuid: string) => {
+    const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
+      headers: {
+        Accept: 'application/vnd.uploadcare-v0.5+json',
+        authorization:
+          'Uploadcare.Simple fda3a71102659f95625f:dcdc4ba3595b6be5fc0d',
+      },
+    });
+
+    let res = await result.json();
+    return res;
+  };
+
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const onChange = () => {
-    console.log('yay!!');
+  const [deleteItem, { loading, data: isData, error: isError }] =
+    useOperationMethod('Media{id}');
+
+  const deleteMedia = async () => {
+    const params: Parameters = {
+      id: selectedId as number,
+    };
+
+    try {
+      const result = await (await deleteItem(params)).data;
+      if (result.status) {
+        console.log({ result });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
-
+    data.mediaFiles = uploadedMedia;
     try {
-      const result = await (await PropertyUser(undefined, data)).data;
+      const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
-      if (result.status !== 400) {
-        addToast('Property Successfully Updated', {
+      if (result.status != 400) {
+        addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -249,307 +285,381 @@ const EditPropertyForm = ({
       return;
     } catch (err) {}
   };
-
   return (
     <>
       <Box>
-        <Stack p="2rem">
+        <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <Box display={formStep === 0 ? 'block' : 'none'}>
-              <PrimaryInput<PropertyModel>
-                label="Name"
-                name="name"
-                error={errors.name}
-                placeholder="Give your listing a name that makes it able to find"
-                defaultValue=""
-                register={register}
-              />
-              <PrimarySelectKey<PropertyModel>
-                label="Type"
-                name="propertyTypeId"
-                register={register}
-                error={errors.propertyTypeId}
-                control={control}
-                options={propertyTypes}
-                placeholder="Choose a Property"
-              />
-              <PrimarySelectLabel<PropertyModel>
-                label="Property Title"
-                name="title"
-                register={register}
-                error={errors.title}
-                control={control}
-                options={propertyTitles}
-                placeholder="Certificate of Occupancy, Governor's Consent ..."
-              />
-              <StateSelect<PropertyModel>
-                label="State"
-                name="state"
-                register={register}
-                error={errors.state}
-                control={control}
-                options={getStates}
-                placeholder="Which state in Nigeria is your property located"
-              />
-              {getValues('state') !== undefined ? (
-                <StateSelect<PropertyModel>
-                  label="LGA"
-                  name="lga"
-                  register={register}
-                  error={errors.lga}
-                  control={control}
-                  options={lgas}
-                  placeholder="Which state in Nigeria is your property located"
-                />
-              ) : null}
-              <PrimaryInput<PropertyModel>
-                label="Area"
-                name="area"
-                error={errors.area}
-                defaultValue=""
-                register={register}
-              />
-              <PrimaryInput<PropertyModel>
-                label="Address"
-                name="address"
-                error={errors.address}
-                defaultValue=""
-                register={register}
-              />
-              <PrimaryInput<PropertyModel>
-                label="Description"
-                name="description"
-                error={errors.description}
-                defaultValue=""
-                register={register}
-              />
-              <Box my="1.3em">
-                <RadioButton<PropertyModel>
-                  name="sellMyself"
-                  register={register}
-                  defaultValue=""
-                  error={errors.sellMyself}
-                  control={control}
-                  radios={
-                    <>
-                      <RadioInput
-                        label={'I want to sell myself'}
-                        value={'true'}
-                        checked={item.sellMyself ? true : false}
-                      />
-                      <Flex align="center" gap="1" pos="relative">
-                        <RadioInput
-                          label={'Help me sell'}
-                          value={'false'}
-                          checked={!item.sellMyself ? true : false}
-                        />
-                        <Tooltip label="When we help you sell, your property is listed as verified.">
-                          <FaInfoCircle />
-                        </Tooltip>
-                      </Flex>
-                    </>
-                  }
-                />
-              </Box>
-            </Box>
-            <Box display={formStep === 1 ? 'block' : 'none'}>
-              <PrimaryInput<PropertyModel>
-                label="Price"
-                name="price"
-                error={errors.price}
-                placeholder="N0"
-                defaultValue=""
-                register={register}
-              />
-
-              <Box pos="relative">
-                <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
-                <Widget
-                  publicKey="fda3a71102659f95625f"
-                  //@ts-ignore
-                  id="file"
-                  onChange={onChange}
-                  imagesOnly
-                />
-              </Box>
-              <Box pos="relative">
-                <Icon
-                  as={VscDeviceCameraVideo}
-                  pos="absolute"
-                  top="55%"
-                  left="6%"
-                />
-                <Widget publicKey="fda3a71102659f95625f" onChange={onChange} />
-              </Box>
-
-              <NumberCounter
-                valueName="numberOfBedrooms"
-                setValue={setValue}
-                getValues={getValues}
-                label="Number of Bedrooms"
-                fontSize="sm"
-              />
-              <NumberCounter
-                valueName="numberOfBathrooms"
-                setValue={setValue}
-                getValues={getValues}
-                label="Number of Bathrooms"
-                fontSize="sm"
-              />
-            </Box>
-            {RenderButton()}
-            {/* <>
-                {formStep === 0 && (
-                  <>
-                    <PrimaryInput<PropertyModel>
-                      label="Name"
-                      name="name"
-                      error={errors.name}
-                      placeholder="Give your listing a name that makes it able to find"
-                      defaultValue=""
-                      register={register}
-                    />
-                    <PrimarySelectKey<PropertyModel>
-                      label="Type"
-                      name="propertyTypeId"
-                      register={register}
-                      error={errors.propertyTypeId}
-                      control={control}
-                      options={propertyTypes}
-                      placeholder="Choose a Property"
-                    />
-                    <PrimarySelectLabel<PropertyModel>
-                      label="Property Title"
-                      name="title"
-                      register={register}
-                      error={errors.title}
-                      control={control}
-                      options={propertyTitles}
-                      placeholder="Certificate of Occupancy, Governor's Consent ..."
-                    />
+            <>
+              {formStep === 0 && (
+                <>
+                  <PrimaryInput<PropertyModel>
+                    label="Name"
+                    name="name"
+                    error={errors.name}
+                    placeholder="Give your listing a name that makes it able to find"
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimarySelectKey<PropertyModel>
+                    label="Type"
+                    name="propertyTypeId"
+                    register={register}
+                    error={errors.propertyTypeId}
+                    control={control}
+                    options={propertyTypes}
+                    placeholder="Choose a Property"
+                  />
+                  <PrimarySelectLabel<PropertyModel>
+                    label="Property Title"
+                    name="title"
+                    register={register}
+                    error={errors.title}
+                    control={control}
+                    options={propertyTitles}
+                    placeholder="Certificate of Occupancy, Governor's Consent ..."
+                  />
+                  <StateSelect<PropertyModel>
+                    label="State"
+                    name="state"
+                    register={register}
+                    error={errors.state}
+                    control={control}
+                    options={getStates}
+                    placeholder="Which state in Nigeria is your property located"
+                  />
+                  {getValues('state') !== undefined ? (
                     <StateSelect<PropertyModel>
-                      label="State"
-                      name="state"
+                      label="LGA"
+                      name="lga"
                       register={register}
-                      error={errors.state}
+                      error={errors.lga}
                       control={control}
-                      options={getStates}
+                      options={lgas}
                       placeholder="Which state in Nigeria is your property located"
                     />
-                    {getValues('state') !== undefined ? (
-                      <StateSelect<PropertyModel>
-                        label="LGA"
-                        name="lga"
-                        register={register}
-                        error={errors.lga}
-                        control={control}
-                        options={lgas}
-                        placeholder="Which state in Nigeria is your property located"
-                      />
-                    ) : null}
-                    <PrimaryInput<PropertyModel>
-                      label="Area"
-                      name="area"
-                      error={errors.area}
-                      defaultValue=""
+                  ) : null}
+                  <PrimaryInput<PropertyModel>
+                    label="Area"
+                    name="area"
+                    error={errors.area}
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimaryInput<PropertyModel>
+                    label="Address"
+                    name="address"
+                    error={errors.address}
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimaryTextArea<PropertyModel>
+                    label="Description"
+                    name="description"
+                    error={errors.description}
+                    defaultValue=""
+                    minH="200px"
+                    register={register}
+                  />
+                  <Box my="1.3em">
+                    <RadioButton<PropertyModel>
+                      name="sellMyself"
                       register={register}
-                    />
-                    <PrimaryInput<PropertyModel>
-                      label="Address"
-                      name="address"
-                      error={errors.address}
                       defaultValue=""
-                      register={register}
-                    />
-                    <PrimaryInput<PropertyModel>
-                      label="Description"
-                      name="description"
-                      error={errors.description}
-                      defaultValue=""
-                      register={register}
-                    />
-                    <Box my="1.3em">
-                      <RadioButton<PropertyModel>
-                        name="sellMyself"
-                        register={register}
-                        defaultValue=""
-                        error={errors.sellMyself}
-                        control={control}
-                        radios={
-                          <>
+                      error={errors.sellMyself}
+                      control={control}
+                      radios={
+                        <>
+                          <RadioInput
+                            label={'I want to sell myself'}
+                            value={'true'}
+                          />
+                          <Flex align="center" gap="1" pos="relative">
                             <RadioInput
-                              label={'I want to sell myself'}
-                              value={'true'}
+                              label={'Help me sell'}
+                              value={'false'}
                             />
-                            <Flex align="center" gap="1" pos="relative">
-                              <RadioInput
-                                label={'Help me sell'}
-                                value={'false'}
-                              />
-                              <Tooltip label="When we help you sell, your property is listed as verified.">
-                                <FaInfoCircle />
-                              </Tooltip>
-                            </Flex>
-                          </>
-                        }
-                      />
-                    </Box>
-                    {/* <Checkbox>I want to sell myself</Checkbox>
-                    <Checkbox>Help me sell </Checkbox> */}
-            {/* </> */}
-            {/* )} */}
-            {/* {formStep === 1 && (
-                  <>
-                    <PrimaryInput<PropertyModel>
-                      label="Price"
-                      name="price"
-                      error={errors.price}
-                      placeholder="N0"
-                      defaultValue=""
-                      register={register}
+                            <Tooltip label="When we help you sell, your property is listed as verified.">
+                              <FaInfoCircle />
+                            </Tooltip>
+                          </Flex>
+                        </>
+                      }
                     />
-  
-                    <Box pos="relative">
-                      <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
-                      <Widget
-                        publicKey="fda3a71102659f95625f"
-                        //@ts-ignore
-                        id="file"
-                        onChange={onChange}
-                        imagesOnly
-                      />
-                    </Box>
-                    <Box pos="relative">
-                      <Icon
-                        as={VscDeviceCameraVideo}
-                        pos="absolute"
-                        top="55%"
-                        left="6%"
-                      />
-                      <Widget
-                        publicKey="fda3a71102659f95625f"
-                        onChange={onChange}
-                      />
-                    </Box>
-  
-                    <NumberCounter
-                      valueName="numberOfBedrooms"
-                      setValue={setValue}
-                      getValues={getValues}
-                      label="Number of Bedrooms"
-                      fontSize="sm"
+                  </Box>
+                </>
+              )}
+              {formStep === 1 && (
+                <>
+                  <PrimaryInput<PropertyModel>
+                    label="Price"
+                    name="price"
+                    error={errors.price}
+                    placeholder="N0"
+                    defaultValue=""
+                    register={register}
+                  />
+
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApi.current.openDialog()}
+                    >
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload an Image
+                      </Text>
+                    </Flex>
+                    <Widget
+                      publicKey="fda3a71102659f95625f"
+                      //@ts-ignore
+                      id="file"
+                      multiple
+                      imageShrink="640x480"
+                      multipleMax={9}
+                      imagePreviewMaxSize={9}
+                      imagesOnly
+                      onChange={(info) => onChangeImg(info, true)}
+                      //@ts-ignore
+                      ref={widgetApi}
                     />
-                    <NumberCounter
-                      valueName="numberOfBathrooms"
-                      setValue={setValue}
-                      getValues={getValues}
-                      label="Number of Bathrooms"
-                      fontSize="sm"
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
+                    {uploadedMedia.length > 0 && (
+                      <>
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
+                          {uploadedMedia
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    pos="relative"
+                                  >
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
+                  </Box>
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApis.current.openDialog()}
+                    >
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload an Interactive Video
+                      </Text>
+                    </Flex>
+                    <Widget
+                      publicKey="fda3a71102659f95625f"
+                      //@ts-ignore
+                      id="file"
+                      multiple
+                      imageShrink="640x480"
+                      multipleMax={3}
+                      imagePreviewMaxSize={9}
+                      inputAcceptTypes={'video/*'}
+                      onChange={(info) => onChangeImg(info, false)}
+                      //@ts-ignore
+                      ref={widgetApis}
                     />
-                  </>
-                )}
-                {RenderButton()}
-              </>  */}
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box role="group" pos="relative">
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <video width="150px" height="150px">
+                                      <source
+                                        src={item.url as string}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support this video
+                                    </video>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
+                    {uploadedMedia.length > 0 && (
+                      <>
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {uploadedMedia
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                  >
+                                    <AspectRatio
+                                      maxW="150px"
+                                      w="full"
+                                      ratio={1}
+                                    >
+                                      <iframe
+                                        title="Interactive videp"
+                                        src={item.url as string}
+                                        allowFullScreen
+                                      />
+                                    </AspectRatio>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
+                  </Box>
+
+                  <NumberCounter
+                    valueName="numberOfBedrooms"
+                    setValue={setValue}
+                    getValues={getValues}
+                    label="Number of Bedrooms"
+                    fontSize="sm"
+                  />
+                  <NumberCounter
+                    valueName="numberOfBathrooms"
+                    setValue={setValue}
+                    getValues={getValues}
+                    label="Number of Bathrooms"
+                    fontSize="sm"
+                  />
+                </>
+              )}
+              {RenderButton()}
+            </>
           </form>
         </Stack>
       </Box>

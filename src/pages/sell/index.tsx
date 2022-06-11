@@ -24,6 +24,7 @@ import axios from 'axios';
 import ListingsCard from 'lib/components/ListingsCard';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 import { useState } from 'react';
+import Pagination from 'lib/components/Pagination';
 
 const sell = ({
   propertyTitles,
@@ -42,14 +43,15 @@ const sell = ({
   // console.log({ getStates });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const result = listings.value.filter(
-    (property: PropertyView) => !property.isDraft
-  );
-  console.log({ result });
+  const data = listings.value;
+  console.log({ data });
+
+  const result = data?.filter((property: PropertyView) => !property.isDraft);
+  // console.log({ result });
 
   return (
     <Box w="90%" mx="auto" py="4">
-      {result.length > 0 ? (
+      {result && result.length > 0 ? (
         <Box>
           <Flex justify="space-between" align="center" my="8">
             <Text fontWeight="bold" color="brand.100" fontSize="lg">
@@ -88,6 +90,7 @@ const sell = ({
               })}
             </>
           </Grid>
+          {/* <Pagination data={data} /> */}
         </Box>
       ) : (
         <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
@@ -155,6 +158,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const listings = (
       await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
     ).data;
+    // console.log({ listings });
 
     return {
       props: {

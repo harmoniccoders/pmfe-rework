@@ -3,17 +3,14 @@ import PropertyCard from 'lib/components/PropertyCard';
 import React from 'react';
 import { PropertyModel, PropertyView } from 'types/api';
 
-const ListedProperties = ({ searched }: { searched: PropertyView[] }) => {
+const ListedProperties = ({ result }: { result: PropertyView[] }) => {
   // console.log(data);
   // console.log({ searched });
+  // console.log({ result });
 
   return (
     <>
-      {searched?.length <= 0 ? (
-        <Heading fontSize="16px" lineHeight={1.5}>
-          Sorry! There's no property at this time please check back later
-        </Heading>
-      ) : (
+      {result?.length > 0 ? (
         <Grid
           templateColumns={[
             'repeat(1,1fr)',
@@ -25,7 +22,7 @@ const ListedProperties = ({ searched }: { searched: PropertyView[] }) => {
           rowGap={5}
         >
           <>
-            {searched.map((item) => {
+            {result.map((item) => {
               return (
                 <GridItem key={item.id}>
                   <PropertyCard item={item} />
@@ -34,6 +31,10 @@ const ListedProperties = ({ searched }: { searched: PropertyView[] }) => {
             })}
           </>
         </Grid>
+      ) : (
+        <Heading fontSize="16px" lineHeight={1.5}>
+          Sorry! There's no property at this time please check back later
+        </Heading>
       )}
     </>
   );

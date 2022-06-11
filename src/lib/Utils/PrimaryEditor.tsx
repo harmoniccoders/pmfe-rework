@@ -10,9 +10,16 @@ import {
   NumberInput,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import WYSIWYGEditor from 'lib/components/Editor';
 import { useState } from 'react';
 
-import { FieldError, UseFormRegister, Path, Controller } from 'react-hook-form';
+import {
+  FieldError,
+  UseFormRegister,
+  Path,
+  Controller,
+  Control,
+} from 'react-hook-form';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
   name: Path<TFormValues>;
@@ -37,9 +44,10 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   padding?: string;
   onChange?: any;
   result?: any;
+  control: Control<TFormValues>;
 }
 
-export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
+export const PrimaryEditor = <TFormValues extends Record<string, any>>({
   name,
   required = false,
   label = '',
@@ -49,18 +57,8 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
   disableLabel = false,
   placeholder = '',
   defaultValue,
+  control,
 }: FormInputProps<TFormValues>) => {
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
-    useNumberInput({
-      defaultValue: 0,
-      min: 0,
-    });
-  const [value, setValue] = useState(0);
-
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps();
-
   return (
     <FormControl mt="5">
       <FormLabel
@@ -72,42 +70,11 @@ export const PrimaryNumberInput = <TFormValues extends Record<string, any>>({
       >
         {label}
       </FormLabel>
-      <HStack spacing="5" justify="space-between">
-        <Button
-          bg="brand.100"
-          width="40px"
-          height="40px"
-          variant="solid"
-          borderRadius="50%"
-          color="white"
-          {...dec}
-        >
-          -
-        </Button>
-
-        <Input
-          variant="outline"
-          textAlign="center"
-          // {...input}
-          placeholder={placeholder}
-          {...register(name, { required, ...validate })}
-          defaultValue={defaultValue}
-          disabled={disableLabel}
-          maxW="52"
-          height="40px"
-        />
-        <Button
-          bg="brand.100"
-          width="40px"
-          height="40px"
-          variant="solid"
-          borderRadius="50%"
-          color="white"
-          {...inc}
-        >
-          +
-        </Button>
-      </HStack>
+      <Controller
+        render={({ field }) => <WYSIWYGEditor props={field} />}
+        name={name}
+        control={control}
+      />
       <FormErrorMessage fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}

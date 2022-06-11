@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
+import UpdateUserModal from 'lib/styles/customTheme/components/Modals/UpdatePasswordModal';
 
 interface NavProps {
   path: string;
@@ -50,6 +51,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
     user = JSON.parse(users);
   }
 
+  const [isOpen, setIsOpen] = useState(false);
   const dropDown = useRef(null);
   const dropDownB = useRef(null);
   const [listening, setListening] = useState(false);
@@ -116,7 +118,10 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           ref={dropDownB}
         >
           {user?.firstName}
-          <Avatar size="xs" src={user?.profilePicture || '/assets/user-icon'} />
+          <Avatar
+            size="xs"
+            src={user?.profilePicture || '/assets/user-icon.png'}
+          />
           <BiChevronDown />
         </Flex>
         <VStack
@@ -124,7 +129,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           align="start"
           p={['2', '5']}
           mt={['0', '5']}
-          w="full"
+          w="fit-content"
           zIndex={50}
           shadow={['none', 'md']}
           position={['relative', 'absolute']}
@@ -132,12 +137,25 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           transition={'all .5s ease'}
           overflow="hidden"
           fontWeight="600"
+          whiteSpace="nowrap"
         >
           <NavLink name="Profile" path="/profile" closeMenu={closeMenu} />
-          <Text cursor="pointer" onClick={() => LogUserOut()}>
+          <Text
+            cursor="pointer"
+            onClick={() => setIsOpen(true)}
+            _hover={{ color: 'brand.100' }}
+          >
+            Change Password
+          </Text>
+          <Text
+            cursor="pointer"
+            _hover={{ color: 'brand.100' }}
+            onClick={() => LogUserOut()}
+          >
             Logout
           </Text>
         </VStack>
+        <UpdateUserModal onClose={() => setIsOpen(false)} isOpen={isOpen} />
       </Box>
     </Stack>
   );

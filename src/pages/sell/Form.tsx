@@ -3,16 +3,22 @@ import {
   Text,
   Stack,
   Button,
-  Checkbox,
+  Image,
   Flex,
   HStack,
   Tooltip,
   Icon,
+  AspectRatio,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
+import {
+  MediaModel,
+  PropertyModel,
+  PropertyTitle,
+  PropertyType,
+} from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -31,6 +37,17 @@ import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
+import { SRLWrapper } from 'simple-react-lightbox';
+import dynamic from 'next/dynamic';
+import { EditorProps } from 'react-draft-wysiwyg';
+const Editor = dynamic<EditorProps>(
+  //@ts-ignore
+  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+  { ssr: false }
+);
+
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -48,11 +65,11 @@ const Form = ({
   setFormStep,
   onClose,
 }: Props) => {
-  const [PropertyUser, { loading, data, error }] =
+  const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertycreate');
+  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
-    // numberOfBedrooms: yup.string().required(),
     address: yup.string().required(),
     description: yup.string().required(),
     title: yup.string().required(),
@@ -62,22 +79,10 @@ const Form = ({
     propertyTypeId: yup.number().required(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
-    numberOfBathrooms: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number().required('Please provide info'),
-    }),
     price: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number(),
     }),
-    numberOfBedrooms: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    // price: yup.number().when('sellMySelf', {
-    //   is: () => formStep === 1,
-    //   then: yup.number().required('Please provide info'),
-    // }),
   });
 
   const {
@@ -97,15 +102,15 @@ const Form = ({
     },
   });
 
-  // (watch('sellMyself'));
-  console.log(watch('numberOfBedrooms'));
   watch('numberOfBathrooms');
+  watch('numberOfBedrooms');
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
 
-  // console.log(watch('isDraft'));
+  const widgetApi = useRef();
+  const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
 
@@ -143,7 +148,6 @@ const Form = ({
             variant="solid"
             textTransform="capitalize"
             disabled={isValid ? false : true}
-            isLoading={loading}
           >
             Next
           </Button>
@@ -161,7 +165,7 @@ const Form = ({
                 await setValue('isDraft', true);
                 await setValue('isForSale', false);
               }}
-              isLoading={loading}
+              isLoading={getValues('isForSale') ? false : isLoading}
             >
               Save as Draft
             </Button>
@@ -169,7 +173,7 @@ const Form = ({
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={loading}
+                loading={getValues('isDraft') ? !isLoading : isLoading}
               />
             </Box>
           </HStack>
@@ -183,14 +187,55 @@ const Form = ({
     }
   };
 
+  let uploaded;
+  const onChangeImg = async (info: any, type: boolean) => {
+    console.log('Upload completed:', info);
+    uploaded = await groupInfo(info.uuid);
+
+    let newArr = [info.count];
+
+    console.log(newArr.length);
+    console.log({ uploaded });
+    let medias: MediaModel[] = [];
+
+    uploaded.files.forEach((file: any) => {
+      let newMedia: MediaModel = {
+        url: file.original_file_url,
+        isImage: type ? true : false,
+        isVideo: !type ? true : false,
+        name: '',
+        extention: '',
+        base64String: '',
+      };
+
+      medias.push(newMedia);
+    });
+
+    setUploadedMedia([...uploadedMedia, ...medias]);
+  };
+
+  const groupInfo = async (uuid: string) => {
+    const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
+      headers: {
+        Accept: 'application/vnd.uploadcare-v0.5+json',
+        authorization:
+          'Uploadcare.Simple fda3a71102659f95625f:dcdc4ba3595b6be5fc0d',
+      },
+    });
+
+    let res = await result.json();
+    return res;
+  };
+
   const { addToast } = useToasts();
   const router = useRouter();
 
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
+    data.mediaFiles = uploadedMedia;
     try {
-      const result = await (await PropertyUser(undefined, data)).data;
+      const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
       if (result.status != 400) {
         addToast('Property Added', {
@@ -287,6 +332,20 @@ const Form = ({
                     minH="200px"
                     register={register}
                   />
+
+                  <PrimaryEditor<PropertyModel>
+                    name="description"
+                    control={control}
+                    label="Description"
+                    register={register}
+                    defaultValue=""
+                    error={errors.description}
+                  />
+                  {/* <Editor
+                    toolbarClassName="toolbar-class"
+                    wrapperClassName="wrapper-class"
+                    editorClassName="editor-class"
+                  /> */}
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
                       name="sellMyself"
@@ -326,27 +385,131 @@ const Form = ({
                     register={register}
                   />
 
-                  <Box pos="relative">
-                    <Icon as={BiImage} pos="absolute" top="55%" left="6%" />
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApi.current.openDialog()}
+                    >
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload an Image
+                      </Text>
+                    </Flex>
                     <Widget
                       publicKey="fda3a71102659f95625f"
                       //@ts-ignore
                       id="file"
-                      // onChange={onChange}
+                      multiple
+                      imageShrink="640x480"
+                      multipleMax={9}
+                      imagePreviewMaxSize={9}
                       imagesOnly
+                      onChange={(info) => onChangeImg(info, true)}
+                      //@ts-ignore
+                      ref={widgetApi}
                     />
+                    {uploadedMedia.length > 0 && (
+                      <>
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {uploadedMedia
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                  >
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
                   </Box>
-                  <Box pos="relative">
-                    <Icon
-                      as={VscDeviceCameraVideo}
-                      pos="absolute"
-                      top="55%"
-                      left="6%"
-                    />
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApis.current.openDialog()}
+                    >
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload an Interactive Video
+                      </Text>
+                    </Flex>
                     <Widget
                       publicKey="fda3a71102659f95625f"
-                      // onChange={onChange}
+                      //@ts-ignore
+                      id="file"
+                      multiple
+                      imageShrink="640x480"
+                      multipleMax={3}
+                      imagePreviewMaxSize={9}
+                      inputAcceptTypes={'video/*'}
+                      onChange={(info) => onChangeImg(info, false)}
+                      //@ts-ignore
+                      ref={widgetApis}
                     />
+                    {uploadedMedia.length > 0 && (
+                      <>
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {uploadedMedia
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                  >
+                                    <AspectRatio
+                                      maxW="150px"
+                                      w="full"
+                                      ratio={1}
+                                    >
+                                      <iframe
+                                        title="Interactive videp"
+                                        src={item.url as string}
+                                        allowFullScreen
+                                      />
+                                    </AspectRatio>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
                   </Box>
 
                   <NumberCounter
