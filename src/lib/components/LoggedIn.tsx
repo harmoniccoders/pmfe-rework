@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { Box, Avatar, Text, Flex, Stack, VStack, Link } from '@chakra-ui/react';
+import { Box, Avatar, Text, Flex, Stack, VStack} from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,16 +20,15 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
   };
   return (
     <NextLink href={path} passHref>
-      <Link
+      <Text
         onClick={closeMenu}
         _hover={{ color: 'brand.100' }}
         cursor="pointer"
         whiteSpace="nowrap"
-        // fontSize=".9rem"
         color={getNavLinks(path)}
       >
         {name}
-      </Link>
+      </Text>
     </NextLink>
   );
 };
