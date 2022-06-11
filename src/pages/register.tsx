@@ -34,7 +34,7 @@ const signupform = () => {
   const [RegisterUser, { loading, data, error }] =
     useOperationMethod('Userregister');
 
-  const [passwordType, setPasswordType] = useState<boolean>(false);
+  const [passwordType, setPasswordType] = useState<boolean>(true);
 
   const changePasswordType = () => {
     setPasswordType(!passwordType);

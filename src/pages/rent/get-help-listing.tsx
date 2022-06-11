@@ -1,13 +1,13 @@
-import CleanSession from 'lib/components/sessions/CleanSessionPage';
+import RentHelpPage from 'lib/components/rent/RentHelpPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 
-const cleanSession = ({ cleanRequests }: { cleanRequests: any }) => {
-  return <CleanSession cleanRequests={cleanRequests} />;
+const help = ({ result }: { result: any }) => {
+  return <RentHelpPage result={result} />;
 };
 
-export default cleanSession;
+export default help;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -27,18 +27,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const cleanRequests = (
-      await _dataAccess.get(`/api/Clean/requests/user?${url}`)
+    const result = (
+      await _dataAccess.get(`?${url}`)
     ).data;
     return {
       props: {
-        cleanRequests,
+        result,
       },
     };
   } catch (error) {
     return {
       props: {
-        cleanRequests: [],
+        result: [],
       },
     };
   }

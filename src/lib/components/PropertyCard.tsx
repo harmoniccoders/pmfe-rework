@@ -136,7 +136,7 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text fontSize="11px" ml="4px">
                   {`${item.numberOfBedrooms} ${
                     item.numberOfBedrooms
                       ? item.numberOfBedrooms > 1
@@ -150,7 +150,7 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text fontSize="11px" ml="4px">
                   {`${item.numberOfBathrooms} ${
                     item.numberOfBathrooms
                       ? item.numberOfBathrooms > 1
@@ -164,7 +164,7 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text fontSize="11px" ml="4px">
                   &#8358;
                   {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
@@ -173,7 +173,7 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text fontSize="11px" ml="4px">
                   {item.title}
                 </Text>
               </Flex>

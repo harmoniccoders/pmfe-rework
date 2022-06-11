@@ -4,7 +4,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Tag,
   Button,
   Text,
   Grid,
@@ -54,7 +53,8 @@ const BuyFilter = ({
             type="text"
             placeholder="Search"
             height="40px"
-            onChange={(e) => term(e.target.value)}
+            onChange={(e: { target: { value: any } }) => term(e.target.value)}
+            // onChange={(e) => term(e.target.value)}
             onKeyDown={search}
             value={word}
             _placeholder={{

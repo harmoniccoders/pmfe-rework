@@ -10,8 +10,6 @@ type Props = {
 };
 
 const Counter = ({ room, bed, count, bath, bathCount }: Props) => {
-
-
   return (
     <>
       {room === 'bedroom' ? (
@@ -94,7 +92,7 @@ const Counter = ({ room, bed, count, bath, bathCount }: Props) => {
               variant="solid"
               borderRadius="50%"
               fontSize="20px"
-              disabled={bathCount === 0 }
+              disabled={bathCount === 0}
               onClick={() => bath((bathCount) => Math.max(bathCount - 1, 0))}
             >
               -

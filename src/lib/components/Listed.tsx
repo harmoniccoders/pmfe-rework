@@ -106,7 +106,7 @@ function Listed({ data }: { data: any }) {
   };
 
   return (
-    <SimpleGrid columns={4} gap={10}>
+    <SimpleGrid columns={4} gap={7}>
       <GridItem colSpan={[4, 2, 2, 1]}>
         <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
           <Box w="full">
@@ -332,7 +332,7 @@ function Listed({ data }: { data: any }) {
       <GridItem colSpan={[4, 2, 2, 3]}>
         <ListedProperties result={result} />
       </GridItem>
-      <GridItem colSpan={4} colStart={2} colEnd={4} my="2rem">
+      <GridItem colSpan={4} colStart={1} colEnd={5} my="2rem">
         <Pagination data={data} />
       </GridItem>
     </SimpleGrid>

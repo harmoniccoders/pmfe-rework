@@ -15,11 +15,12 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
           templateColumns={[
             'repeat(1,1fr)',
             'repeat(1,1fr)',
-            'repeat(2,1fr)',
+            'repeat(1,1fr)',
             'repeat(3,1fr)',
           ]}
           columnGap="3"
           rowGap={5}
+          width="100%"
         >
           <>
             {result.map((item) => {
