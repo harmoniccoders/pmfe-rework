@@ -91,16 +91,17 @@ const sell = ({
         </Box>
       ) : (
         <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
-          <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
+          <Stack alignItems="center !important" justifyContent="center !important" spacing={[3, 6]}>
             <Box
-              w={['90%', '35vw']}
-              h={['30vh', '35vh']}
-              // bg="#ccc"
-              my={['2rem', '5rem']}
+              w={['90%','100%', '75%']}
+              h={['100%','100%', '75%']}
               mx={['.53rem', '1.3rem']}
               borderRadius="8px"
+              justifyContent="center !important" 
+              alignItems="center !important"
             >
-              <Image src="/assets/admin.png" />
+              <Center><Image src="/assets/admin.png"  w={['100%', '35vw']}
+              h='100%' /></Center>
             </Box>
             <Text>You have no current property listed for sale.</Text>
 
@@ -108,7 +109,7 @@ const sell = ({
               bg="brand.100"
               onClick={onOpen}
               // width="30%"Fw
-              color="#fff"
+              color="#fff" p='1.5rem'
               borderRadius="8px"
             >
               + &nbsp; Add Property

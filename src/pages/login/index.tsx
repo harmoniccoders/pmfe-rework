@@ -76,50 +76,51 @@ const Login = () => {
   };
 
   return (
-    <Box w="90%" mx="auto" h="80vh" overflow="hidden">
+    <Box w="90%" mx="auto" h="80vh" mt='1.5rem' overflow="hidden" >
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
         <Box
-          w="40vw"
-          h={['33vh', '60vh']}
+          w={["90%",'100%',"40vw"]}
+          h={['100%','100%', '60vh']}
           // bg="#ccc"
-          my="5rem"
+         justifyContent='center'
+         textAlign='center'
           mx="1.3rem"
           borderRadius="8px"
         >
-          <Image src="/assets/admin.png" />
+          <Image src="/assets/admin.png"   my={["1rem",'2rem !important',"5rem"]} />
         </Box>
 
         <Stack
           alignItems="center !important"
-          // my="10rem"
           justifyContent="center"
-          p="2rem"
           spacing={2}
           w="full"
         >
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <PrimaryInput<LoginModel>
-              label="Username"
-              name="email"
-              error={errors.email}
-              defaultValue=""
-              register={register}
-            />
-            <PrimaryInput<LoginModel>
-              label="Password"
-              name="password"
-              defaultValue=""
-              register={register}
-              error={errors.password}
-              type={showPassword ? 'password' : 'text'}
-            />
-            <ButtonComponent
-              content="Login"
-              isValid={isValid}
-              loading={loading}
-            />
+            <Stack gap={3}>
+              <PrimaryInput<LoginModel>
+                label="Username"
+                name="email"
+                error={errors.email}
+                defaultValue=""              
+                register={register}
+              />
+              <PrimaryInput<LoginModel>
+                label="Password"
+                name="password"
+                defaultValue=""
+                register={register}
+                error={errors.password}
+                type={showPassword ? 'password' : 'text'}
+              />
+              <ButtonComponent
+                content="Login"
+                isValid={isValid}
+                loading={loading}
+              />
+            </Stack>
           </form>
-          <Divider mb="1rem !important" />
+          <Divider mb="1rem !important" mt="1rem !important" />
           <Flex>
             <Text fontSize=".8rem" fontWeight="500">
               Already have an account? &nbsp;
@@ -131,7 +132,8 @@ const Login = () => {
           <Text color="brand.100" fontWeight="bold">
             <Link href="/login/reset"> Forgot password</Link>
           </Text>
-        </Stack>
+          </Stack>
+     
       </Grid>
     </Box>
   );
