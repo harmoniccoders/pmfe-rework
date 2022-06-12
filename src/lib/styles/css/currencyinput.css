@@ -1,0 +1,30 @@
+.currency {
+  width: 100%;
+  min-width: 0px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  transition-property: var(--chakra-transition-property-common);
+  transition-duration: var(--chakra-transition-duration-normal);
+  font-size: var(--chakra-fontSizes-md);
+  -webkit-padding-start: var(--chakra-space-4);
+  padding-inline-start: var(--chakra-space-4);
+  -webkit-padding-end: 3rem;
+  padding-inline-end: 3rem;
+  height: 3rem;
+  border-radius: 4px;
+  border: 1px solid;
+  border-color: var(--chakra-colors-brand-50);
+  background: var(--chakra-colors-white);
+  box-sizing: border-box;
+}
+.currency:focus {
+  z-index: 1;
+  border-color: var(--chakra-colors-brand-200);
+  box-shadow: 0 0 0 1px #3182ce;
+  border: 1px solid;
+}

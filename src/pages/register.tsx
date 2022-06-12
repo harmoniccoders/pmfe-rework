@@ -18,7 +18,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -60,8 +60,7 @@ const signupform = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-
-        cookies.set('user', JSON.stringify(result.data));
+        Cookies.set('userEmail', JSON.stringify(result.data.email));
         router.push('/verify');
         return;
       }

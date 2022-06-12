@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 interface PageTypes {
-  tabName: string;
+  tabName?: string;
   tabTitle: string;
 }
 function PageTabs({ tabName, tabTitle }: PageTypes) {

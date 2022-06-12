@@ -1,4 +1,4 @@
-import { Box, Stack, Grid } from '@chakra-ui/react';
+import { Box, Stack, SimpleGrid } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PropertyRequestInput, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
@@ -99,7 +99,7 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
       <Box>
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <Grid templateColumns="repeat(3,1fr)" gap={10}>
+            <SimpleGrid columns={{base: 1, md: 2, lg: 3}} gap={10}>
               <Box w="full">
                 <PrimarySelectKey<PropertyRequestInput>
                   label="Type"
@@ -168,7 +168,7 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
                   content="submit"
                 />
               </Box>
-            </Grid>
+            </SimpleGrid>
           </form>
         </Stack>
       </Box>

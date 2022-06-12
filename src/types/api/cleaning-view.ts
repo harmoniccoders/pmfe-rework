@@ -18,5 +18,5 @@ export interface CleaningView {
   dateCreated?: string;
   userId?: number;
   user?: LeanUserView;
-  cleaningQuote?: CleaningQuoteView;
+  cleaningQuote?: null | Array<CleaningQuoteView>;
 }

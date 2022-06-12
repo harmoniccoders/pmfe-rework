@@ -5,7 +5,6 @@ import { Cleaning } from 'types/api';
 import moment from 'moment';
 
 const CleanProperty = ({ requests }: { requests: Cleaning[] }) => {
-  
   return (
     <SimpleGrid
       columns={{ base: 1, md: 2, lg: 3 }}

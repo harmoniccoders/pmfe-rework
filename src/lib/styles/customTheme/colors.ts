@@ -17,9 +17,13 @@ const extendedColors: DeepPartial<
     600: '#FFC82C',
     700: '#EEFFF6',
     800: '#FF101F',
-    900: '#2FDF84',
+    // 900: '#2FDF84',
+    900: '#252427'
   },
+  
 };
+
+// green for the enquiries page completed state #2FDF84
 
 /** override chakra colors here */
 const overridenChakraColors: DeepPartial<Theme['colors']> = {};

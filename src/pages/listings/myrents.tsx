@@ -9,11 +9,13 @@ const myRents = ({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
   listings,
 }: {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any;
+  getBanks: any;
   listings: any;
 }) => {
   return (
@@ -22,6 +24,7 @@ const myRents = ({
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
       getStates={getStates}
+      getBanks={getBanks}
     />
   );
 };
@@ -56,12 +59,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       await _dataAccess.get(`/api/Property/user/created/rent?${url}`)
     ).data;
 
+    
+    const getBanks = await(
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
+
     return {
       props: {
         propertyTypes,
         propertyTitles,
         getStates,
         listings,
+        getBanks,
       },
     };
   } catch (error) {

@@ -65,14 +65,30 @@ const PropertyCard = ({ item }: Props) => {
         overflow="hidden"
         boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
       >
-        <Box w="full" h="140px" pos="relative">
-          <Image
-            src="/assets/property-img.png"
-            alt="property-image"
-            w="100%"
-            height="100%"
-            objectFit="cover"
-          />
+        <Box w="full" h="150px" pos="relative">
+          <>
+            {item.mediaFiles && item.mediaFiles?.length > 0 ? (
+              <>
+                {item.mediaFiles[0].isImage && (
+                  <Image
+                    src={item.mediaFiles[0].url as string}
+                    alt="propery-image"
+                    w="100%"
+                    height="100%"
+                    objectFit="cover"
+                  />
+                )}
+              </>
+            ) : (
+              <Image
+                src="/assets/nb.webp"
+                alt="propery-image"
+                w="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            )}
+          </>
           <Flex
             bg="brand.100"
             color="white"

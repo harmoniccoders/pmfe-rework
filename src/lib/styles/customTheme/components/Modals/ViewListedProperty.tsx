@@ -16,12 +16,16 @@ import {
   GridItem,
   HStack,
   VStack,
+  AspectRatio,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import Icons from 'lib/components/Icons';
+import checkIfImageExists from 'lib/Utils/checkImage';
 import React, { useEffect } from 'react';
 import { FaPen } from 'react-icons/fa';
+import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
+import parse from 'html-react-parser';
 
 type Props = {
   isOpen?: any;
@@ -83,23 +87,46 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
           <Box maxH="77vh" overflowY="auto" px={5}>
             <Flex w="100%" pos="relative" flexDirection="column">
               <Box w="full" h="250px" pos="relative">
-                <Image
-                  src="/assets/property-img.png"
-                  alt="propery-image"
-                  w="100%"
-                  height="100%"
-                  objectFit="cover"
-                />
+                <>
+                  {item.mediaFiles && item.mediaFiles?.length > 0 ? (
+                    <>
+                      {item.mediaFiles[0].isImage && (
+                        <Image
+                          src={item.mediaFiles[0].url as string}
+                          alt="propery-image"
+                          w="100%"
+                          height="100%"
+                          objectFit="cover"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <Image
+                      src="/assets/nb.webp"
+                      alt="propery-image"
+                      w="100%"
+                      height="100%"
+                      objectFit="cover"
+                    />
+                  )}
+                </>
+
                 <Flex
                   fontSize=".8rem"
                   fontWeight="600"
                   justify="space-between"
-                  color={item.isDraft ? 'white' : 'black'}
+                  color={
+                    item.isDraft || item.status === 'REJECTED'
+                      ? 'white'
+                      : 'black'
+                  }
                   bgColor={
                     item.isDraft
                       ? 'rgba(108,117,125,.9)'
                       : item.status === 'PENDING'
                       ? 'brand.600'
+                      : item.status === 'REJECTED'
+                      ? 'brand.800'
                       : '#96FFC9'
                   }
                   pos="absolute"
@@ -107,19 +134,38 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                   h="2rem"
                   align="center"
                   w="full"
-                  px="2rem"
+                  px="1rem"
                 >
-                  <Text>
+                  <Text textTransform="capitalize">
                     {item.isDraft
                       ? 'Only visible to you'
                       : item.status === 'PENDING'
                       ? 'Listing is pending'
+                      : item.status === 'REJECTED'
+                      ? `Rejected: ${item.rejectionReason}`
                       : 'Listing is live'}
                   </Text>
                   <HStack cursor="pointer" onClick={() => openModal()}>
                     <Text>Edit</Text>
                     <FaPen />
                   </HStack>
+                </Flex>
+                <Flex
+                  bg="brand.100"
+                  color="white"
+                  pos="absolute"
+                  w="fit-content"
+                  px="1.5rem"
+                  h="24px"
+                  top="18%"
+                  fontSize="14px"
+                  align="center"
+                  justify="center"
+                  borderRadius="4px 0 0 4px"
+                  right="0"
+                  textTransform="capitalize"
+                >
+                  {item.lga}
                 </Flex>
                 <Flex
                   bg="brand.100"
@@ -214,31 +260,76 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
             <VStack align="flex-start" spacing={5} mt="3rem">
               <Box w="100%">
                 <Heading fontSize="14px">Overview</Heading>
-                <Text>{item.description?.replaceAll(/(<([^>]+)>)/gi, '')}</Text>
+                <Text>{parse(item.description as string)}</Text>
               </Box>
 
               <Box w="100%">
                 <Heading fontSize="14px">Pictures</Heading>
-                <Grid templateColumns="repeat(4,1fr)" gap={4}>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                </Grid>
+                <>
+                  {item.mediaFiles && item.mediaFiles?.length > 0 ? (
+                    <Grid templateColumns="repeat(4,1fr)" gap={4}>
+                      <>
+                        {item.mediaFiles?.map((media) => {
+                          return (
+                            <>
+                              {media.isImage && (
+                                <SRLWrapper>
+                                  <Box w="full" h="150px" bgColor="brand.50">
+                                    <Image
+                                      src={media.url as unknown as string}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              )}
+                            </>
+                          );
+                        })}
+                      </>
+                    </Grid>
+                  ) : (
+                    'No Images found'
+                  )}
+                </>
               </Box>
 
               <Box w="100%">
-                <Heading fontSize="14px">Video tour</Heading>
-                <Grid templateColumns="repeat(2,1fr)" gap={4}>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                  <Box w="full" h="150px" bgColor="brand.50"></Box>
-                </Grid>
+                <Heading fontSize="14px">Video Tour</Heading>
+                <>
+                  {item.mediaFiles && item.mediaFiles?.length > 0 ? (
+                    <Grid templateColumns="repeat(4,1fr)" gap={4}>
+                      <>
+                        {item.mediaFiles?.map((media) => {
+                          return (
+                            <>
+                              {media.isVideo && (
+                                <SRLWrapper>
+                                  <AspectRatio maxW="150px" w="full" ratio={1}>
+                                    <iframe
+                                      title="Interactive videp"
+                                      src={media.url as string}
+                                      allowFullScreen
+                                    />
+                                  </AspectRatio>
+                                </SRLWrapper>
+                              )}
+                            </>
+                          );
+                        })}
+                      </>
+                    </Grid>
+                  ) : (
+                    'No Videos found'
+                  )}
+                </>
               </Box>
               <Box w="100%">
-                <Heading fontSize="14px">Maps/Street view</Heading>
+                <Heading fontSize="14px" mb=".5rem">
+                  Maps/Street view
+                </Heading>
                 <Box w="100%" height="250px" bg="brand.50">
                   {/* map */}
                 </Box>

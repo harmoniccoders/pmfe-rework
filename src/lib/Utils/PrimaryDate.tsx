@@ -59,6 +59,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
         </FormLabel>
         <Controller
           render={({ field }) => (
+            //@ts-ignore
             <DatePicker
               placeholderText="Select date"
               dateFormat="d MMM yyyy"

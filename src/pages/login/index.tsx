@@ -55,16 +55,11 @@ const Login = () => {
           appearance: 'success',
           autoDismiss: true,
         });
-        Cookies.set('token', result.data.token, {
-          expires: 1 / 96,
-        });
-        Cookies.set('user', JSON.stringify(result.data), {
-          expires: 1 / 96,
-        });
-        Cookies.set('userIn', 'true', {
-          expires: 1 / 96,
-        });
-        router.push('/');
+        Cookies.set('token', result.data.token);
+        Cookies.set('user', JSON.stringify(result.data));
+        Cookies.set('userIn', 'true');
+        // router.push('/');
+        window.location.href = '/';
         return;
       }
       addToast(result.message, {

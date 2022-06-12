@@ -9,7 +9,45 @@
   text-align: left;
   font-weight: 500;
   padding-left: 3rem !important;
+  opacity: 0;
+  display: none;
 }
 .uploadcare--widget {
   width: 100%;
+  display: none;
+}
+.uploadcare--powered-by {
+  display: none !important;
+}
+.uploadcare--dialog__panel {
+  width: 50% !important;
+  margin: auto !important;
+}
+.uploadcare--menu {
+  /* display: none !important; */
+  padding-right: 0 !important;
+}
+.uploadcare--text {
+  font-family: '"Baloo Bhai 2", cursive';
+  text-transform: capitalize;
+}
+.uploadcare--menu__icon
+  uploadcare--panel__icon
+  uploadcare--progress
+  uploadcare--progress_type_canvas {
+  position: absolute;
+  display: block !important;
+  right: 0%;
+  top: 0%;
+}
+.uploadcare--menu__items {
+  padding-right: 0 !important;
+  width: 1px;
+}
+.uploadcare--menu__item {
+  display: none;
+}
+.uploadcare--dialog__panel .uploadcare--menu,
+.uploadcare--dialog__panel .uploadcare--menu__item {
+  width: 0 !important;
 }

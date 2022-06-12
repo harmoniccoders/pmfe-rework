@@ -12,7 +12,7 @@ import { ToastProvider } from 'react-toast-notifications';
 import Layout from 'lib/layout';
 import { UserProvider } from 'lib/Utils/MainContext';
 import Cookies from 'js-cookie';
-import { GetServerSidePropsContext } from 'next';
+import SimpleReactLightbox from 'simple-react-lightbox';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   let headers: HeadersInit;
@@ -24,7 +24,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     const token = Cookies.get('token');
     headers = {
       cor: 'no-cors',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token ?? ''}`,
     };
   }
 
@@ -50,9 +50,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         {/* <Layout> */}
         <UserProvider>
           <ToastProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <SimpleReactLightbox>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </SimpleReactLightbox>
           </ToastProvider>
         </UserProvider>
       </OpenAPIProvider>

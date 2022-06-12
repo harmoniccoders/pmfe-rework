@@ -59,24 +59,44 @@ const ListingsCard = ({
         overflow="hidden"
         boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
       >
-        <Box w="full" h="140px" pos="relative">
-          <Image
-            src="/assets/property-img.png"
-            alt="propery-image"
-            w="100%"
-            height="100%"
-            objectFit="cover"
-          />
+        <Box w="full" h="150px" pos="relative">
+          <>
+            {item.mediaFiles && item.mediaFiles?.length > 0 ? (
+              <>
+                {item.mediaFiles[0].isImage && (
+                  <Image
+                    src={item.mediaFiles[0].url as string}
+                    alt="propery-image"
+                    w="100%"
+                    height="100%"
+                    objectFit="cover"
+                  />
+                )}
+              </>
+            ) : (
+              <Image
+                src="/assets/nb.webp"
+                alt="propery-image"
+                w="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            )}
+          </>
           <Flex
             fontSize=".8rem"
             fontWeight="600"
             justify="space-between"
-            color={item.isDraft ? 'white' : 'black'}
+            color={
+              item.isDraft || item.status === 'REJECTED' ? 'white' : 'black'
+            }
             bgColor={
               item.isDraft
                 ? 'rgba(108,117,125,.9)'
                 : item.status === 'PENDING'
                 ? 'brand.600'
+                : item.status === 'REJECTED'
+                ? 'brand.800'
                 : '#96FFC9'
             }
             pos="absolute"
@@ -86,11 +106,13 @@ const ListingsCard = ({
             w="full"
             px="1rem"
           >
-            <Text>
+            <Text textTransform="capitalize">
               {item.isDraft
                 ? 'Only visible to you'
                 : item.status === 'PENDING'
                 ? 'Listing is pending'
+                : item.status === 'REJECTED'
+                ? `Rejected: ${item.rejectionReason}`
                 : 'Listing is live'}
             </Text>
             <HStack cursor="pointer" onClick={() => setUpdateModal(true)}>

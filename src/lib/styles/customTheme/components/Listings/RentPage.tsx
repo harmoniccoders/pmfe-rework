@@ -13,11 +13,13 @@ function RentPage({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
 }: {
   data: PropertyView[];
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
   getStates: any;
+  getBanks: any;
 }) {
   return (
     <Box w="100%" mt="3rem">
@@ -41,6 +43,7 @@ function RentPage({
           propertyTypes={propertyTypes}
           propertyTitles={propertyTitles}
           getStates={getStates}
+          getBanks={getBanks}
         />
       </Box>
     </Box>
