@@ -1,17 +1,6 @@
-import {
-  useNumberInput,
-  HStack,
-  Button,
-  Input,
-  FormControl,
-  FormLabel,
-  Text,
-  NumberInputField,
-  NumberInput,
-  FormErrorMessage,
-} from '@chakra-ui/react';
+import { FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
 import WYSIWYGEditor from 'lib/components/Editor';
-import { useState } from 'react';
+import { stripHtml } from 'string-strip-html';
 
 import {
   FieldError,
@@ -64,16 +53,29 @@ export const PrimaryEditor = <TFormValues extends Record<string, any>>({
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
-        textAlign="center"
-        bg="brand.200"
+        pos="relative"
+        top={5}
+        left={4}
+        width="fit-content"
         zIndex={3}
+        bg="brand.200"
+        // fontSize={fontSize}
       >
         {label}
       </FormLabel>
       <Controller
-        render={({ field }) => <WYSIWYGEditor props={field} />}
+        render={({ field }) => <WYSIWYGEditor {...field} />}
         name={name}
         control={control}
+        rules={{
+          validate: {
+            required: (v) =>
+              (v && stripHtml(v).result.length > 0) || `${label} is required`,
+            maxLength: (v) =>
+              (v && stripHtml(v).result.length <= 2000) ||
+              'Maximum character limit is 2000',
+          },
+        }}
       />
       <FormErrorMessage fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||

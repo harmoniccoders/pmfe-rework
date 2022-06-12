@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
-import { EditorState, convertToRaw } from 'draft-js';
+import { ContentState, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+// import htmlToDraft from 'html-to-draftjs';
+const htmlToDraft =
+  typeof window === 'object' && require('html-to-draftjs').default;
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import dynamic from 'next/dynamic';
+import { EditorProps } from 'react-draft-wysiwyg';
 
 const Editor = dynamic<EditorProps>(
   //@ts-ignore
@@ -10,18 +16,27 @@ const Editor = dynamic<EditorProps>(
   { ssr: false }
 );
 
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import dynamic from 'next/dynamic';
-import { EditorProps } from 'react-draft-wysiwyg';
-
-const WYSIWYGEditor = (props: any) => {
+const WYSIWYGEditor = ({ onChange, value }: { onChange: any; value: any }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [updated, setUpdated] = useState(false);
+
+  useEffect(() => {
+    if (!updated) {
+      const defaultValue = value ? value : '';
+      const blocksFromHtml = htmlToDraft(defaultValue);
+      const contentState = ContentState.createFromBlockArray(
+        blocksFromHtml.contentBlocks,
+        blocksFromHtml.entityMap
+      );
+      const newEditorState = EditorState.createWithContent(contentState);
+      setEditorState(newEditorState);
+    }
+  }, [value]);
+
   const onEditorStateChange = (editorState: any) => {
+    setUpdated(true);
     setEditorState(editorState);
-    console.log('PROPS ==> ', props);
-    return props.onChange(
-      draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    );
+    return onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
 
   return (

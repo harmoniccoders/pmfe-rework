@@ -1,10 +1,4 @@
-import {
-  Box,
-  SimpleGrid,
-  Text,
-  VStack,
-  HStack,
-} from '@chakra-ui/react';
+import { Box, SimpleGrid, Text, VStack, HStack } from '@chakra-ui/react';
 import { FaFacebook, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 import NextLink from 'next/link';
 
@@ -91,6 +85,8 @@ const Footer = () => {
           borderBottom="1px solid"
           py="4"
           borderTop="1px solid"
+          w="full"
+          textAlign="justify"
           fontSize={{ base: '14', lg: '16' }}
         >
           PropertyMataaz is a product of PropertyMataaz Limited, a subsidiary of

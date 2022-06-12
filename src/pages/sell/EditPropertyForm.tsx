@@ -39,6 +39,9 @@ import { BiImage } from 'react-icons/bi';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Parameters } from 'openapi-client-axios';
+import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
+import Geocode from 'react-geocode';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -102,7 +105,7 @@ const EditPropertyForm = ({
       state: item.state,
       lga: item.lga,
       area: item.area,
-      address: item.description,
+      address: item.address,
       description: item.description,
       sellMyself: item.sellMyself,
       price: item.price,
@@ -259,7 +262,28 @@ const EditPropertyForm = ({
     }
   };
 
+  Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
+  Geocode.setRegion('ng');
+  //@ts-ignore
+  Geocode.setLocationType('ROOFTOP');
+  Geocode.enableDebug();
+
+  const getLongAndLat = async (values: PropertyModel) => {
+    console.log('here');
+    try {
+      const { results } = await Geocode.fromAddress(values.address);
+      // console.log(results);
+      values.latitude = results[0].geometry.location.lat;
+      values.longitude = results[0].geometry.location.lng;
+      return values;
+    } catch (error) {
+      console.error({ error });
+      return values;
+    }
+  };
+
   const onSubmit = async (data: PropertyModel) => {
+    getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
@@ -353,13 +377,13 @@ const EditPropertyForm = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimaryTextArea<PropertyModel>
-                    label="Description"
+                  <PrimaryEditor<PropertyModel>
                     name="description"
-                    error={errors.description}
-                    defaultValue=""
-                    minH="200px"
+                    control={control}
+                    label="Description"
                     register={register}
+                    defaultValue=""
+                    error={errors.description}
                   />
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
@@ -391,13 +415,14 @@ const EditPropertyForm = ({
               )}
               {formStep === 1 && (
                 <>
-                  <PrimaryInput<PropertyModel>
-                    label="Price"
-                    name="price"
-                    error={errors.price}
-                    placeholder="N0"
-                    defaultValue=""
+                  <CurrencyField<PropertyModel>
+                    placeholder="₦0.00"
+                    defaultValue={item.price}
                     register={register}
+                    error={errors.price}
+                    name={'price'}
+                    control={control}
+                    label="Price"
                   />
 
                   <Box>

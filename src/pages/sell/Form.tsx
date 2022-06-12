@@ -36,18 +36,10 @@ import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
-import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
-import dynamic from 'next/dynamic';
-import { EditorProps } from 'react-draft-wysiwyg';
-const Editor = dynamic<EditorProps>(
-  //@ts-ignore
-  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-  { ssr: false }
-);
-
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
+import Geocode from 'react-geocode';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -81,7 +73,7 @@ const Form = ({
     name: yup.string().required(),
     price: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number(),
+      then: yup.number().required(),
     }),
   });
 
@@ -104,6 +96,8 @@ const Form = ({
 
   watch('numberOfBathrooms');
   watch('numberOfBedrooms');
+
+  // console.log(watch('description'));
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -230,7 +224,28 @@ const Form = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
+  Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
+  Geocode.setRegion('ng');
+  //@ts-ignore
+  Geocode.setLocationType('ROOFTOP');
+  Geocode.enableDebug();
+
+  const getLongAndLat = async (values: PropertyModel) => {
+    console.log('here');
+    try {
+      const { results } = await Geocode.fromAddress(values.address);
+      console.log(results);
+      values.latitude = results[0].geometry.location.lat;
+      values.longitude = results[0].geometry.location.lng;
+      return values;
+    } catch (error) {
+      console.error({ error });
+      return values;
+    }
+  };
+
   const onSubmit = async (data: PropertyModel) => {
+    getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
@@ -244,7 +259,7 @@ const Form = ({
         });
         onClose();
         setFormStep(0);
-        router.reload();
+        // router.reload();
         return;
       }
       addToast(result.message, {
@@ -281,6 +296,7 @@ const Form = ({
                     options={propertyTypes}
                     placeholder="Choose a Property"
                   />
+
                   <PrimarySelectLabel<PropertyModel>
                     label="Property Title"
                     name="title"
@@ -324,15 +340,6 @@ const Form = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimaryTextArea<PropertyModel>
-                    label="Description"
-                    name="description"
-                    error={errors.description}
-                    defaultValue=""
-                    minH="200px"
-                    register={register}
-                  />
-
                   <PrimaryEditor<PropertyModel>
                     name="description"
                     control={control}
@@ -341,11 +348,6 @@ const Form = ({
                     defaultValue=""
                     error={errors.description}
                   />
-                  {/* <Editor
-                    toolbarClassName="toolbar-class"
-                    wrapperClassName="wrapper-class"
-                    editorClassName="editor-class"
-                  /> */}
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
                       name="sellMyself"
@@ -364,8 +366,14 @@ const Form = ({
                               label={'Help me sell'}
                               value={'false'}
                             />
-                            <Tooltip label="When we help you sell, your property is listed as verified.">
-                              <FaInfoCircle />
+
+                            <Tooltip
+                              placement="top"
+                              label="When we help you sell, your property is listed as verified."
+                            >
+                              <Box as="span" cursor="pointer">
+                                <FaInfoCircle />
+                              </Box>
                             </Tooltip>
                           </Flex>
                         </>
@@ -376,13 +384,14 @@ const Form = ({
               )}
               {formStep === 1 && (
                 <>
-                  <PrimaryInput<PropertyModel>
-                    label="Price"
-                    name="price"
-                    error={errors.price}
-                    placeholder="N0"
+                  <CurrencyField<PropertyModel>
+                    placeholder="₦0.00"
                     defaultValue=""
                     register={register}
+                    error={errors.price}
+                    name={'price'}
+                    control={control}
+                    label="Price"
                   />
 
                   <Box>
@@ -458,7 +467,7 @@ const Form = ({
                       borderRadius="6px" //@ts-ignore
                       onClick={() => widgetApis.current.openDialog()}
                     >
-                      <Icon as={BiImage} />
+                      <Icon as={VscDeviceCameraVideo} />
                       <Text fontWeight="500" pl="1rem">
                         Upload an Interactive Video
                       </Text>

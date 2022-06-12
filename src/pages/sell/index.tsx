@@ -37,17 +37,12 @@ const sell = ({
   getStates: any;
   listings: any;
 }) => {
-  // const requests = cleanRequests.value;
-  // console.log({ propertyTitles });
-  // console.log({ propertyTypes });
-  // console.log({ getStates });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const data = listings.value;
   console.log({ data });
 
   const result = data?.filter((property: PropertyView) => !property.isDraft);
-  // console.log({ result });
 
   return (
     <Box w="90%" mx="auto" py="4">

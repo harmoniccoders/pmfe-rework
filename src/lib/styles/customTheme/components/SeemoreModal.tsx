@@ -24,7 +24,9 @@ import ShareListingsModal from './Modals/ShareListingsModal';
 import { useRouter } from 'next/router';
 import { PropertyView } from 'types/api';
 import ReportListingModal from './Modals/ReportListingModal';
+import parse from 'html-react-parser';
 import Cookies from 'js-cookie';
+import MapView from 'lib/Utils/MapView';
 
 interface Props {
   isOpen?: any;
@@ -254,7 +256,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                 <Box w="100%">
                   <Heading fontSize="14px">Overview</Heading>
 
-                  {item.description?.replaceAll(/(<([^>]+)>)/gi, '')}
+                  {parse(item.description as string)}
                 </Box>
                 <Box w="100%">
                   <Heading fontSize="14px">Pictures</Heading>
@@ -329,8 +331,12 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   <Heading fontSize="14px" mb=".5rem">
                     Maps/Street view
                   </Heading>
-                  <Box w="100%" height="250px" bg="brand.50">
+                  <Box w="100%" height="300px" bg="brand.50">
                     {/* map */}
+                    <MapView
+                      lat={item.latitude as number}
+                      lng={item.longitude as number}
+                    />
                   </Box>
 
                   <Box my="30px" bg="blue.50" borderRadius="5px" p="1rem">

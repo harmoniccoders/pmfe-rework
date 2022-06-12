@@ -25,6 +25,7 @@ import React, { useEffect } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
+import parse from 'html-react-parser';
 
 type Props = {
   isOpen?: any;
@@ -259,7 +260,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
             <VStack align="flex-start" spacing={5} mt="3rem">
               <Box w="100%">
                 <Heading fontSize="14px">Overview</Heading>
-                <Text>{item.description?.replaceAll(/(<([^>]+)>)/gi, '')}</Text>
+                <Text>{parse(item.description as string)}</Text>
               </Box>
 
               <Box w="100%">
