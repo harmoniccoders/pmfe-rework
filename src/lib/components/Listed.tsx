@@ -18,7 +18,7 @@ import Counter from 'lib/styles/customTheme/components/Counter';
 
 import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import Icons from './Icons';
 import Pagination from './Pagination';
 
@@ -118,7 +118,10 @@ function Listed({ data }: { data: any }) {
                 type="text"
                 placeholder="Search"
                 height="40px"
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setSearchTerm(e.target.value)
+                }
+                // onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyPress}
                 value={searchTerm}
                 _placeholder={{
