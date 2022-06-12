@@ -7070,6 +7070,10 @@
           },
           "isDocument": {
             "type": "boolean"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

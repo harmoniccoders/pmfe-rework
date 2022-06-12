@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import CurrencyInput from 'react-currency-input-field';
 
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
   name: Path<TFormValues>;
@@ -26,7 +27,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   icon?: any;
 }
 
-export const PrimaryDate = <TFormValues extends Record<string, any>>({
+export const CurrencyField = <TFormValues extends Record<string, any>>({
   name,
   required = false,
   label = '',
@@ -59,14 +60,13 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
         </FormLabel>
         <Controller
           render={({ field }) => (
-            //@ts-ignore
-            <DatePicker
-              placeholderText="Select date"
-              dateFormat="d MMM yyyy"
-              minDate={minDate}
-              maxDate={new Date(2023, 10, 1)}
-              onChange={(date) => field.onChange(date)}
-              selected={field.value}
+            <CurrencyInput
+              placeholder={placeholder}
+              defaultValue={defaultValue}
+              decimalsLimit={2}
+              prefix="&#8358;"
+              className="currency"
+              onValueChange={(value) => field.onChange(value)}
             />
           )}
           name={name}

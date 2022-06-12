@@ -24,6 +24,7 @@ const enquires = ({ data }: { data: any }) => {
         align="center"
         p=".2rem"
         mb="2.5rem"
+        flex='1 1'
       >
         <PageTabs tabName="listings" tabTitle="My Listings" />
         <PageTabs tabName="enquires" tabTitle="My Enquires" />

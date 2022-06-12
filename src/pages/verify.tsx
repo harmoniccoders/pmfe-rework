@@ -11,14 +11,17 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import { returnUserData } from 'lib/Utils/userData';
+import { Parameters } from 'openapi-client-axios';
+import Cookies from 'js-cookie';
 
 const schema = yup.object().shape({
   token: yup.string().required(),
 });
 
-const verify = ({ user }: { user: UserView }) => {
+const verify = () => {
   const router = useRouter();
-  const userEmail = user.email;
+  const userEmail = Cookies.get('userEmail')?.replaceAll('"', '');
+  console.log({ userEmail });
 
   const [VerifyUser, { loading, data, error }] = useOperationMethod(
     'UserverifyUser{token}{email}'
@@ -37,8 +40,12 @@ const verify = ({ user }: { user: UserView }) => {
   const { addToast } = useToasts();
 
   const onSubmit = async (data: UserverifyUserTokenEmailParameters) => {
+    const params: Parameters = {
+      token: data.token as string,
+      email: data.email as string,
+    };
     try {
-      const result = await (await VerifyUser(undefined, data)).data;
+      const result = await (await VerifyUser(params)).data;
       console.log({ data });
       if (result.status) {
         addToast('Verification Complete', {
@@ -170,24 +177,24 @@ const verify = ({ user }: { user: UserView }) => {
 
 export default verify;
 
-export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  const userData = JSON.parse(user);
+// export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
+//   const {
+//     data: { user, redirect },
+//   } = returnUserData(ctx);
+//   const userData = JSON.parse(user);
 
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+//   if (redirect)
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: '/login',
+//       },
+//       props: {},
+//     };
 
-  return {
-    props: {
-      user: userData,
-    },
-  };
-};
+//   return {
+//     props: {
+//       user: userData,
+//     },
+//   };
+// };

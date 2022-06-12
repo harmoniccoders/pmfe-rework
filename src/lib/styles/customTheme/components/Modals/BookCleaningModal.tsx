@@ -18,10 +18,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CleaningModel, PropertyType } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import cookies from 'js-cookie';
 import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { useState } from 'react';
@@ -34,9 +32,6 @@ const schema = yup.object().shape({
   buildingState: yup.string(),
   propertyTypeId: yup.number().required(),
   dateNeeded: yup.string().required(),
-  numberOfBedrooms: yup.number(),
-  numberOfBathrooms: yup.number().required(),
-  numberOfFloors: yup.number().required(),
 });
 
 const BookCleaningModal = ({
@@ -91,7 +86,7 @@ const BookCleaningModal = ({
 
     try {
       const result = await (await RequestCleaning(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Application created sucessfully', {
           appearance: 'success',
@@ -107,10 +102,7 @@ const BookCleaningModal = ({
       });
       closeModal();
       return;
-    } catch (err) {
-      console.log(err);
-      console.log('errr');
-    }
+    } catch (err) {}
   };
   return (
     <Modal
@@ -125,12 +117,9 @@ const BookCleaningModal = ({
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['full', '80%']}
         overflowY="scroll"
         maxH="100vh"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
       >
         <ModalHeader>
           <Flex

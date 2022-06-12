@@ -28,23 +28,26 @@ import {
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
+import EditRentModal from 'lib/styles/customTheme/components/Modals/EditRentModal';
 
 type Props = {
   item: PropertyView;
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   getStates: any;
+  getBanks: any;
 };
 
 const iconStyle = {
   color: '#0042ff',
 };
 
-const ListingsCard = ({
+const RentListingsCard = ({
   item,
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
@@ -232,16 +235,17 @@ const ListingsCard = ({
         onClose={() => setShowModal(false)}
         item={item}
       />
-      <EditPropertyModal
+      <EditRentModal
         item={item as PropertyModel}
         isOpen={updateModal}
         onClose={() => setUpdateModal(false)}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
         getStates={getStates}
+        getBanks={getBanks}
       />
     </>
   );
 };
 
-export default ListingsCard;
+export default RentListingsCard;

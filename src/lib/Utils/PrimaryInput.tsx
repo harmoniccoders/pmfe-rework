@@ -35,10 +35,12 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   onChange?: any;
   iconClass?: string | undefined;
   changePasswordType?: any;
+  border?: string;
 }
 
 const iconStyle = {
   color: 'rgba(0,0,0,0.5)',
+  fontWeight: 'bold',
 };
 
 export const PrimaryInput = <TFormValues extends Record<string, any>>({
@@ -55,6 +57,8 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
   defaultValue,
   iconClass,
   changePasswordType,
+  border,
+  borderColor,
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl>
@@ -80,6 +84,8 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
           {...register(name, { required, ...validate })}
           defaultValue={defaultValue}
           disabled={disableLabel}
+          border={border}
+          borderColor={borderColor}
         />
 
         <InputRightElement

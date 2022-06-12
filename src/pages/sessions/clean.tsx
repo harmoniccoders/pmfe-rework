@@ -3,11 +3,11 @@ import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 
-const sessions = ({ cleanRequests }: { cleanRequests: any }) => {
+const cleanSession = ({ cleanRequests }: { cleanRequests: any }) => {
   return <CleanSession cleanRequests={cleanRequests} />;
 };
 
-export default sessions;
+export default cleanSession;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {

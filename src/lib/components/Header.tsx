@@ -4,10 +4,10 @@ import {
   Flex,
   Stack,
   Image,
-  Link,
   useBoolean,
   Center,
   HStack,
+  Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
@@ -24,11 +24,11 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
   const router = useRouter();
 
   const getNavLinks = (name: string) => {
-    if (router.asPath === name) return 'brand.100';
+    if (router.pathname.startsWith(name)) return 'brand.100';
   };
   return (
     <NextLink href={path} passHref>
-      <Link
+      <Text
         onClick={closeMenu}
         _hover={{ color: 'brand.100' }}
         cursor="pointer"
@@ -37,7 +37,7 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
         color={getNavLinks(path)}
       >
         {name}
-      </Link>
+      </Text>
     </NextLink>
   );
 };
@@ -74,14 +74,14 @@ const DesktopView = ({ user }: { user: any }) => {
         <NavLink name="Clean" path="/clean" />
       </HStack>
       <Center>
-        <Link href="/">
+        <NextLink href="/">
           <Image
             cursor="pointer"
             src="/assets/PropertyMataaz.png"
             alt="PropertyMataaz"
             w={['52']}
           />
-        </Link>
+        </NextLink>
       </Center>
       <HStack justify="flex-end" spacing={{ md: '10px', lg: '30px' }}>
         {user ? (
@@ -112,14 +112,14 @@ const MobileView = ({ user }: { user: any }) => {
       display={['flex', 'none']}
     >
       <Box zIndex={5}>
-        <Link href="/">
+        <NextLink href="/">
           <Image
             cursor="pointer"
             src="/assets/PropertyMataaz.png"
             alt="PropertyMataaz"
             w={['52']}
           />
-        </Link>
+        </NextLink>
       </Box>
       <Box display={['block', 'none']} onClick={setIsOpened.toggle}>
         <BsBorderWidth fontSize="1.5rem" />

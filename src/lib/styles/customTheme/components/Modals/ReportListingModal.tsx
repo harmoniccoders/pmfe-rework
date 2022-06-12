@@ -38,7 +38,8 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
   });
 
   const users = Cookies.get('user') as unknown as string;
-  let loggedInUser;
+  let loggedInUser: any;
+
   if (users !== undefined) {
     loggedInUser = JSON.parse(users);
   }
@@ -50,6 +51,9 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
   } = useForm<ReportModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    // defaultValues: {
+    //   userId: item.id,
+    // },
   });
 
   const { addToast } = useToasts();
@@ -58,11 +62,13 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
   const onSubmit = async (data: ReportModel) => {
     console.log({ data });
     data.propertyId = item.id as number;
+    data.userId = loggedInUser?.id;
+    console.log(data.userId);
 
     try {
       const result = await (await reportProperty(undefined, data)).data;
       console.log({ result });
-      if (result.status) {
+      if (result.status !== 400) {
         addToast('Succesful, We will look into it and react out to you', {
           appearance: 'success',
           autoDismiss: true,
@@ -144,7 +150,7 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
                       label="User's Name"
                       name="userName"
                       error={errors.userName}
-                      defaultValue={loggedInUser ? loggedInUser?.fullName : ''}
+                      defaultValue={loggedInUser?.fullName}
                       register={register}
                     />
                   </>

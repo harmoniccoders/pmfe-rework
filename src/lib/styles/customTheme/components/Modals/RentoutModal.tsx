@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { FaTimes } from 'react-icons/fa';
 
 interface RentoutProps {
@@ -18,6 +19,10 @@ interface RentoutProps {
   openModal: () => void;
 }
 const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
+  const router = useRouter()
+  const getHelp = () => {
+    router.push('/contact');
+  }
   return (
     <Modal
       isOpen={isOpen}
@@ -72,6 +77,7 @@ const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
                 color="gray.600"
                 fontWeight="500"
                 fontSize=".9rem"
+                onClick={getHelp}
               >
                 Get help listing property
               </Button>

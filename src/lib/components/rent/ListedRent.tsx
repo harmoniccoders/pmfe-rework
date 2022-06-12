@@ -14,17 +14,18 @@ import {
   HStack,
   Button,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Counter from 'lib/styles/customTheme/components/Counter';
 
 import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
-import { useEffect, useState } from 'react';
-import { PropertyView } from 'types/api';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Icons from '../Icons';
 import Pagination from '../Pagination';
 
 function ListedRent({ data }: { data: any }) {
   const result = data.value;
+
+  const router = useRouter();
 
   const [filterOptions, setFilterOptions] = useState({
     isResidential: false,
@@ -41,36 +42,25 @@ function ListedRent({ data }: { data: any }) {
   const [bathroomCounter, setBathroomCounter] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchedResult, setSearchedResult] = useState([]);
-  const getSearchedResult = async () => {
-    try {
-      const result = await (
-        await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASEURL}/api/Property/list?search=${searchTerm}`
-        )
-      ).data;
 
-      if (result.status) {
-        setSearchedResult(
-          result.data.value.filter((property: PropertyView) => {
-            return (
-              property.isForRent === true && property.status === 'VERIFIED'
-            );
-          })
-        );
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const getSearchedResult = async () => {
+    router.push({
+      query: {
+        search: searchTerm,
+      },
+    });
   };
   const handleKeyPress = (e: any) => {
     if (e.key === 'Enter') {
       getSearchedResult();
     }
   };
-  const clearSearch = async () => {
-    setSearchTerm('');
-    setSearchedResult(result);
+  const clearSearch = () => {
+    router.push({
+      query: {
+        search: '',
+      },
+    });
   };
 
   const getFilteredData = async () => {
@@ -83,43 +73,24 @@ function ListedRent({ data }: { data: any }) {
     filterOptions.isTerrace = filterOptions.isTerrace;
     filterOptions.bedrooms = bedroomCounter;
     filterOptions.bathrooms = bathroomCounter;
-    try {
-      const url = `Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`;
-      const result = await (
-        await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASEURL}/api/Property/list/rent?${url}`
-        )
-      ).data;
-      if (result.status) {
-        setSearchedResult(result.data.value);
-
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const clearFilteredData = () => {
-    setFilterOptions({
-      isResidential: false,
-      isCommercial: false,
-      isMixed: false,
-      isFlat: false,
-      isBungalow: false,
-      isDuplex: false,
-      isTerrace: false,
-      bedrooms: 0,
-      bathrooms: 0,
+    const url = `Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`;
+    router.push({
+      query: {
+        filter: url,
+      },
     });
-    setBedroomCounter(0);
-    setBathroomCounter(0);
-    setSearchedResult(result);
   };
 
-  useEffect(() => {
-    setSearchedResult(result);
-  }, []);
+  //use url parameter resetting all to default or use ''
+  // const url = `Residential=false&Commercial=false&Mixed=false&Bungalow=false&Flat=false&Duplex=false&Terrace=false&Bathrooms=0&Bedrooms=0`;
+  const clearFilteredData = () => {
+    router.push({
+      query: {
+        filter: '',
+      },
+    });
+  };
+
   return (
     <SimpleGrid columns={4} gap={10}>
       <GridItem colSpan={[4, 2, 2, 1]}>
@@ -345,7 +316,7 @@ function ListedRent({ data }: { data: any }) {
         </VStack>
       </GridItem>
       <GridItem colSpan={[4, 2, 2, 3]}>
-        <ListedProperties searched={searchedResult} />
+        <ListedProperties result={result} />
       </GridItem>
       <GridItem colSpan={4} colStart={2} colEnd={4} my="2rem">
         <Pagination data={data} />

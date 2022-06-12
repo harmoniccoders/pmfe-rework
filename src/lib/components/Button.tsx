@@ -9,19 +9,18 @@ interface Props {
 
 const ButtonComponent = ({ content, isValid, loading }: Props) => {
   return (
-    <Box w="100%" h="50px" mt="25px" mb="25px">
-      <Button
-        type="submit"
-        w="100%"
-        h="100%"
-        variant="solid"
-        textTransform="capitalize"
-        disabled={isValid ? false : true}
-        isLoading={loading}
-      >
-        {content}
-      </Button>
-    </Box>
+    <Button
+      type="submit"
+      w="100%"
+      h="50px"
+      my="25px"
+      variant="solid"
+      textTransform="capitalize"
+      disabled={isValid ? false : true}
+      isLoading={loading}
+    >
+      {content}
+    </Button>
   );
 };
 

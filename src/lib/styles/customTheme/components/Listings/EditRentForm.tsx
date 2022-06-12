@@ -3,19 +3,19 @@ import {
   Text,
   Stack,
   Button,
-  Image,
   Flex,
   HStack,
   Tooltip,
   Icon,
   AspectRatio,
+  Image,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
-  MediaModel,
   PropertyModel,
   PropertyTitle,
   PropertyType,
+  MediaModel,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { useEffect, useRef, useState } from 'react';
@@ -31,34 +31,42 @@ import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
+import { incomeBracket } from 'lib/Utils/IncomeBracket';
+import { rentFrequency } from 'lib/Utils/RentFrequency';
+import { tenantTypes } from 'lib/Utils/TenantType';
+import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
-import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
-import { CurrencyField } from 'lib/Utils/CurrencyInput';
-import Geocode from 'react-geocode';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  getBanks: any[];
   formStep: number;
+  item: PropertyModel;
   setFormStep: any;
   onClose: () => void;
+  // isClosed: () => void;
 }
-const Form = ({
+
+const EditRentForm = ({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
   formStep,
   setFormStep,
+  item,
   onClose,
-}: Props) => {
-  const [PropertyCreate, { loading: isLoading, data, error }] =
-    useOperationMethod('Propertycreate');
+}: // isClosed,
+Props) => {
+  const [PropertyUser, { loading, data, error }] =
+    useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
@@ -69,11 +77,24 @@ const Form = ({
     lga: yup.string().required(),
     state: yup.string().required(),
     propertyTypeId: yup.number().required(),
+    rentCollectionTypeId: yup.number(),
+    tenantTypeId: yup.number(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
+    bank: yup.string(),
+    accountNumber: yup.string(),
+    budget: yup.number(),
+    numberOfBathrooms: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
     price: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number().required(),
+      then: yup.number(),
+    }),
+    numberOfBedrooms: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
     }),
   });
 
@@ -90,14 +111,34 @@ const Form = ({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      isForSale: true,
+      id: item.id,
+      isActive: item.isActive,
+      isForSale: item.isForSale,
+      isDraft: item.isDraft,
+      isForRent: item.isForRent,
+      name: item.name,
+      propertyTypeId: item.propertyTypeId,
+      rentCollectionTypeId: item.rentCollectionTypeId,
+      tenantTypeId: item.tenantTypeId,
+      title: item.title,
+      state: item.state,
+      lga: item.lga,
+      area: item.area,
+      address: item.description,
+      description: item.description,
+      bank: item.bank,
+      accountNumber: item.accountNumber,
+      budget: item.budget,
+      sellMyself: item.sellMyself,
+      price: item.price,
+      numberOfBathrooms: item.numberOfBathrooms,
+      numberOfBedrooms: item.numberOfBedrooms,
     },
   });
 
-  watch('numberOfBathrooms');
   watch('numberOfBedrooms');
-
-  // console.log(watch('description'));
+  watch('numberOfBathrooms');
+  watch('sellMyself');
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -107,6 +148,7 @@ const Form = ({
   const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
+  const [selectedId, setSelectedId] = useState<Number>();
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -134,46 +176,52 @@ const Form = ({
   const RenderButton = () => {
     if (formStep === 0) {
       return (
-        <Box onClick={completeFormStep}>
-          <Button
-            type="button"
-            w="100%"
-            h="100%"
-            variant="solid"
-            textTransform="capitalize"
-            disabled={isValid ? false : true}
-          >
-            Next
-          </Button>
-        </Box>
+        <>
+          {
+            //@ts-ignore
+            getValues('sellMyself') === 'true' ? (
+              <ButtonComponent
+                content="Submit"
+                isValid={isValid}
+                loading={loading}
+              />
+            ) : (
+              <Box onClick={completeFormStep}>
+                <Button
+                  type="button"
+                  w="100%"
+                  h="100%"
+                  variant="solid"
+                  textTransform="capitalize"
+                  disabled={isValid ? false : true}
+                  isLoading={loading}
+                >
+                  Next
+                </Button>
+              </Box>
+            )
+          }
+        </>
       );
     } else if (formStep === 1) {
       return (
         <Box>
-          <HStack spacing={3}>
-            <Button
-              w="50%"
-              type="submit"
-              variant="outline"
-              onClick={async () => {
-                await setValue('isDraft', true);
-                await setValue('isForSale', false);
-              }}
-              isLoading={getValues('isForSale') ? false : isLoading}
-            >
-              Save as Draft
-            </Button>
+          <HStack spacing={3} pt="5">
             <Box w="50%">
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={getValues('isDraft') ? !isLoading : isLoading}
+                loading={loading}
               />
             </Box>
+            <Button
+              w="50%"
+              variant="outline"
+              onClick={() => clearPreviewData()}
+            >
+              Cancel
+            </Button>
           </HStack>
-          <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
-            Cancel
-          </Button>
         </Box>
       );
     } else {
@@ -183,13 +231,10 @@ const Form = ({
 
   let uploaded;
   const onChangeImg = async (info: any, type: boolean) => {
-    console.log('Upload completed:', info);
     uploaded = await groupInfo(info.uuid);
 
     let newArr = [info.count];
 
-    console.log(newArr.length);
-    console.log({ uploaded });
     let medias: MediaModel[] = [];
 
     uploaded.files.forEach((file: any) => {
@@ -224,42 +269,39 @@ const Form = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
-  Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
-  Geocode.setRegion('ng');
-  //@ts-ignore
-  Geocode.setLocationType('ROOFTOP');
-  Geocode.enableDebug();
+  //  const [deleteItem, { loading, data: isData, error: isError }] =
+  //    useOperationMethod('Media{id}');
 
-  const getLongAndLat = async (values: PropertyModel) => {
-    console.log('here');
-    try {
-      const { results } = await Geocode.fromAddress(values.address);
-      console.log(results);
-      values.latitude = results[0].geometry.location.lat;
-      values.longitude = results[0].geometry.location.lng;
-      return values;
-    } catch (error) {
-      console.error({ error });
-      return values;
-    }
+  const deleteMedia = async () => {
+    //  const params: Parameters = {
+    //    id: selectedId as number,
   };
 
+  //    try {
+  //      const result = await (await deleteItem(params)).data;
+  //      if (result.status) {
+  //        console.log({ result });
+  //      }
+  //    } catch (err) {
+  //      console.log(err);
+  //    }
+  //  };
+
   const onSubmit = async (data: PropertyModel) => {
-    getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
-    console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
-      const result = await (await PropertyCreate(undefined, data)).data;
-      console.log({ result });
-      if (result.status != 400) {
-        addToast('Property Added', {
+      const result = await (await PropertyUser(undefined, data)).data;
+
+      if (result.status !== 400) {
+        addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
+       
         onClose();
         setFormStep(0);
-        // router.reload();
+        router.reload();
         return;
       }
       addToast(result.message, {
@@ -277,7 +319,7 @@ const Form = ({
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <>
-              {formStep === 0 && (
+              {formStep == 0 && (
                 <>
                   <PrimaryInput<PropertyModel>
                     label="Name"
@@ -296,7 +338,6 @@ const Form = ({
                     options={propertyTypes}
                     placeholder="Choose a Property"
                   />
-
                   <PrimarySelectLabel<PropertyModel>
                     label="Property Title"
                     name="title"
@@ -323,9 +364,10 @@ const Form = ({
                       error={errors.lga}
                       control={control}
                       options={lgas}
-                      placeholder="Which state in Nigeria is your property located"
+                      placeholder="Choose a Local Government"
                     />
                   ) : null}
+
                   <PrimaryInput<PropertyModel>
                     label="Area"
                     name="area"
@@ -340,60 +382,23 @@ const Form = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimaryEditor<PropertyModel>
-                    name="description"
-                    control={control}
+                  <PrimaryTextArea<PropertyModel>
                     label="Description"
-                    register={register}
-                    defaultValue=""
+                    name="description"
                     error={errors.description}
+                    defaultValue=""
+                    minH="200px"
+                    register={register}
                   />
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
-                      defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to sell myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me sell'}
-                              value={'false'}
-                            />
-
-                            <Tooltip
-                              placement="top"
-                              label="When we help you sell, your property is listed as verified."
-                            >
-                              <Box as="span" cursor="pointer">
-                                <FaInfoCircle />
-                              </Box>
-                            </Tooltip>
-                          </Flex>
-                        </>
-                      }
-                    />
-                  </Box>
-                </>
-              )}
-              {formStep === 1 && (
-                <>
-                  <CurrencyField<PropertyModel>
-                    placeholder="₦0.00"
+                  <PrimaryInput<PropertyModel>
+                    label="Rent (Per year)"
+                    name="price"
+                    error={errors.price}
+                    placeholder="₦00.00"
+                    type="number"
                     defaultValue=""
                     register={register}
-                    error={errors.price}
-                    name={'price'}
-                    control={control}
-                    label="Price"
                   />
-
                   <Box>
                     <Flex
                       w="full"
@@ -424,9 +429,73 @@ const Form = ({
                       //@ts-ignore
                       ref={widgetApi}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
                           {uploadedMedia
                             .filter((m) => m.isImage)
                             .map((item: any) => {
@@ -439,6 +508,7 @@ const Form = ({
                                     bgColor="brand.50"
                                     flexShrink={0}
                                     overflow="hidden"
+                                    pos="relative"
                                   >
                                     <Image
                                       src={item.url}
@@ -467,7 +537,7 @@ const Form = ({
                       borderRadius="6px" //@ts-ignore
                       onClick={() => widgetApis.current.openDialog()}
                     >
-                      <Icon as={VscDeviceCameraVideo} />
+                      <Icon as={BiImage} />
                       <Text fontWeight="500" pl="1rem">
                         Upload an Interactive Video
                       </Text>
@@ -485,6 +555,56 @@ const Form = ({
                       //@ts-ignore
                       ref={widgetApis}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box role="group" pos="relative">
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <video width="150px" height="150px">
+                                      <source
+                                        src={item.url as string}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support this video
+                                    </video>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
                         <HStack w="full" spacing="1rem" overflow="auto">
@@ -535,6 +655,98 @@ const Form = ({
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />
+                  <Box my="1.3em">
+                    <RadioButton<PropertyModel>
+                      name="sellMyself"
+                      register={register}
+                      defaultValue=""
+                      error={errors.sellMyself}
+                      control={control}
+                      radios={
+                        <>
+                          <RadioInput
+                            label={'I want to manage the tenant myself'}
+                            value={'true'}
+                          />
+                          <Flex align="center" gap="1" pos="relative">
+                            <RadioInput
+                              label={'Help me manage my tenant'}
+                              value={'false'}
+                            />
+                            <Tooltip
+                              label="We help you rent out your property."
+                              aria-label="A tooltip"
+                            >
+                              <FaInfoCircle />
+                            </Tooltip>
+                          </Flex>
+                        </>
+                      }
+                    />
+                  </Box>
+                </>
+              )}
+              {formStep === 1 && (
+                <>
+                  <Box>
+                    <Text fontWeight="600" fontSize="sm">
+                      What kind of tenants do you want?
+                    </Text>
+                    <PrimarySelectKey<PropertyModel>
+                      label="Type"
+                      name="tenantTypeId"
+                      register={register}
+                      error={errors.tenantTypeId}
+                      control={control}
+                      options={tenantTypes}
+                      fontSize="sm"
+                      placeholder="Choose an option"
+                    />
+                    <PrimarySelectKey<PropertyModel>
+                      label="Annual Income Bracket"
+                      name="budget"
+                      register={register}
+                      error={errors.budget}
+                      control={control}
+                      options={incomeBracket}
+                      placeholder="Choose a property type"
+                      fontSize="sm"
+                    />
+                  </Box>
+                  <Box mt="8">
+                    <Text fontWeight="600" fontSize="sm">
+                      Rent Collection
+                    </Text>
+                    <PrimarySelectKey<PropertyModel>
+                      label="How Frequently do you want to collect rent?"
+                      name="rentCollectionTypeId"
+                      register={register}
+                      error={errors.rentCollectionTypeId}
+                      control={control}
+                      options={rentFrequency}
+                      fontSize="sm"
+                      placeholder="Choose option: weekly, monthly, yearly"
+                    />
+                    <PrimarySelectKey<PropertyModel>
+                      label="Your Bank"
+                      name="bank"
+                      register={register}
+                      error={errors.bank}
+                      control={control}
+                      options={getBanks}
+                      placeholder="Choose your bank"
+                      fontSize="sm"
+                    />
+                    <PrimaryInput<PropertyModel>
+                      label="Your Account Number"
+                      name="accountNumber"
+                      placeholder="Enter your bank account number"
+                      defaultValue=""
+                      register={register}
+                      error={errors.accountNumber}
+                      fontSize="sm"
+                    />
+                  </Box>
                 </>
               )}
               {RenderButton()}
@@ -546,4 +758,4 @@ const Form = ({
   );
 };
 
-export default Form;
+export default EditRentForm;

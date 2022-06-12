@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -9,17 +8,17 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import ListingsCard from 'lib/components/ListingsCard';
 import Pagination from 'lib/components/Pagination';
+import RentListingsCard from 'lib/components/RentListingsCard';
 import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import PageTabs from '../Generics/PageTabs';
-import AddPropertyModal from '../Modals/AddPropertyModal';
 
 interface ListingTypes {
   data: any;
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
   getStates: any;
+  getBanks: any
 }
 
 function MyRents({
@@ -27,6 +26,7 @@ function MyRents({
   propertyTitles,
   propertyTypes,
   getStates,
+  getBanks,
 }: ListingTypes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const result = data.value;
@@ -60,11 +60,12 @@ function MyRents({
                   return (
                     <>
                       <GridItem key={item.id}>
-                        <ListingsCard
+                        <RentListingsCard
                           item={item}
                           propertyTypes={propertyTypes}
                           propertyTitles={propertyTitles}
                           getStates={getStates}
+                          getBanks={getBanks}
                         />
                       </GridItem>
                     </>
@@ -84,13 +85,6 @@ function MyRents({
           </Heading>
         )}
       </Box>
-      <AddPropertyModal
-        isOpen={isOpen}
-        onClose={onClose}
-        propertyTypes={propertyTypes}
-        propertyTitles={propertyTitles}
-        getStates={getStates}
-      />
     </Box>
   );
 }

@@ -1,0 +1,10 @@
+.rdw-editor-wrapper {
+  border: 1px solid #f1f1f1;
+  min-height: 350px;
+}
+.rdw-editor-toolbar {
+  padding: 15px 5px 0;
+}
+.rdw-editor-main {
+  padding: 0 1rem;
+}

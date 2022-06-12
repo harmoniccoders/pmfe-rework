@@ -48,7 +48,7 @@ const Services = () => {
             List your property on PropertyMataaz and get the attention of
             thousands of propspective buyers with the best offers in the market.
           </Text>
-          <Link href="sell">
+          <Link href="/sell">
             <Button
               variant="outline"
               fontSize="14"
@@ -170,7 +170,7 @@ const Services = () => {
             and janitorial services
           </Heading>
           <Text fontSize="sm">Professional cleaning services</Text>
-          <Link href="clean">
+          <Link href="/clean">
             <Button
               variant="outline"
               fontSize="14"

@@ -7,4 +7,5 @@ export interface MediaModel {
   isImage?: boolean;
   isVideo?: boolean;
   isDocument?: boolean;
+  url?: null | string;
 }
