@@ -18,7 +18,7 @@ import axios from 'axios';
 import Counter from 'lib/styles/customTheme/components/Counter';
 
 import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { PropertyView } from 'types/api';
 import Icons from './Icons';
 import Pagination from './Pagination';
@@ -131,7 +131,10 @@ function Listed({ data }: { data: any }) {
                 type="text"
                 placeholder="Search"
                 height="40px"
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setSearchTerm(e.target.value)
+                }
+                // onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyPress}
                 value={searchTerm}
                 _placeholder={{

@@ -5,3 +5,12 @@
 @import url('css/radiocheckbox.css');
 @import url('css/uploadcare.css');
 @import url('css/scrollbar.css');
+
+.react-multiple-carousel__arrow::before{
+  color: #0042ff !important;
+  
+}
+
+.react-multiple-carousel__arrow{
+  background: transparent !important; 
+}
