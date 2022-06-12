@@ -7,10 +7,12 @@ import {
   Box,
   Icon,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
+import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
 
 type Props = {};
 
@@ -19,6 +21,8 @@ const iconStyle = {
 };
 
 const StepTwo = (props: Props) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   return (
     <>
       <Flex h="100%" justifyContent="space-between" width="100%">
@@ -50,6 +54,7 @@ const StepTwo = (props: Props) => {
             role="group"
             display="flex"
             alignItems="center"
+            onClick={onOpen}
           >
             <Box
               pr="10px"
@@ -86,6 +91,8 @@ const StepTwo = (props: Props) => {
           </Button>
         </VStack>
       </Flex>
+
+      <SubmitApplicationModal onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

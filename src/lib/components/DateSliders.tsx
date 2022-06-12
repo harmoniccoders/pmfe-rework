@@ -17,7 +17,7 @@ import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 
 type Props = {
   item?: any;
-  date?: InspectionDateView | any;
+  date: InspectionDateView | any;
   inspectionTime?: InspectionTimeView;
 };
 
