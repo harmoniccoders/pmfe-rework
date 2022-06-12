@@ -1,0 +1,12 @@
+.react-multi-carousel-list {
+  height: 100vh;
+}
+.react-multi-carousel-dot-list {
+  bottom: 20% !important;
+}
+.react-multi-carousel-dot button {
+  border-color: white !important;
+}
+.react-multi-carousel-dot--active button {
+  background-color: white !important;
+}

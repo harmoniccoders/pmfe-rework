@@ -1,4 +1,15 @@
-import { Box, Text, VStack, SimpleGrid, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  VStack,
+  SimpleGrid,
+  Stack,
+  Image,
+  HStack,
+  Flex,
+  Circle,
+  keyframes,
+} from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,8 +20,10 @@ import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
-import { FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaInstagram, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { GrMail } from 'react-icons/gr';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const schema = yup.object().shape({
   firstname: yup.string().required(),
@@ -48,8 +61,216 @@ const ContactPage = () => {
       return;
     } catch (err) {}
   };
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+  const responsives = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+
   return (
-    <Stack minH="calc(100vh - 77px)" justify="center" w="90%" mx="auto">
+    <Stack h="100vh" direction="row">
+      <Flex
+        w="50%"
+        bgColor="brand.100"
+        h="full"
+        align="center"
+        justify="center"
+        display="block"
+        overflow="hidden"
+      >
+        <Carousel
+          responsive={responsive}
+          showDots
+          arrows={false}
+          autoPlay
+          infinite
+        >
+          <Box
+            w="400px"
+            h="300px"
+            overflow="hidden"
+            borderRadius="8px"
+            bgColor="white"
+            mx="auto"
+            p="2rem"
+            // transform="rotate(-3deg)"
+          >
+            <Image
+              src="/assets/Buy_illustration.png"
+              h="full"
+              w="full"
+              objectFit="cover"
+            />
+          </Box>
+          <Box
+            w="400px"
+            h="300px"
+            overflow="hidden"
+            borderRadius="8px"
+            bgColor="white"
+            p="2rem"
+            mx="auto"
+            // transform="rotate(3deg)"
+          >
+            <Image
+              src="/assets/Clean_illustration.png"
+              h="full"
+              w="full"
+              objectFit="cover"
+            />
+          </Box>
+          <Box
+            w="400px"
+            h="300px"
+            overflow="hidden"
+            borderRadius="8px"
+            bgColor="white"
+            p="2rem"
+            mx="auto"
+            // transform="rotate(-3deg)"
+          >
+            <Image
+              src="/assets/Clean_illustration.png"
+              h="full"
+              w="full"
+              objectFit="cover"
+            />
+          </Box>
+        </Carousel>
+      </Flex>
+      <Flex w="50%" align="center">
+        <Box w="70%" mx="auto">
+          <Box>
+            <Image />
+          </Box>
+          <VStack spacing={0}>
+            <Text
+              fontWeight={600}
+              textAlign="center"
+              fontSize="2rem"
+              color="brand.100"
+            >
+              Hi there!
+            </Text>
+            <Text fontSize=".8rem" color="#33333" w="80%" textAlign="center">
+              Let's help you with anything related to our platform as we
+              promised nothing but outstanding customer services
+            </Text>
+          </VStack>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <PrimaryInput<Register>
+              label="Name"
+              name="firstName"
+              error={errors.firstName}
+              defaultValue=""
+              register={register}
+            />
+            <PrimaryInput<Register>
+              label="Email "
+              name="email"
+              error={errors.email}
+              defaultValue=""
+              register={register}
+            />
+            <PrimaryTextArea<Register>
+              label="Message"
+              name="lastName"
+              error={errors.lastName}
+              defaultValue=""
+              minH="100px"
+              register={register}
+            />
+
+            <ButtonComponent
+              content="Send"
+              isValid={isValid}
+              loading={loading}
+            />
+          </form>
+
+          <Box display="none">
+            <HStack spacing={8} justify="center" px="2rem">
+              <Flex align="center">
+                <Circle
+                  bgColor="brand.100"
+                  // p=".1rem"
+                  color="white"
+                  size="1.3rem"
+                >
+                  <FaPhone fontSize=".5rem" />
+                </Circle>
+                <Box pl=".5rem">
+                  <Text fontSize=".8rem" fontWeight="600">
+                    09090002394
+                  </Text>
+                </Box>
+              </Flex>
+
+              <Flex align="center">
+                <Box pr=".5rem">
+                  <Text fontSize=".8rem" fontWeight="600">
+                    @PropertyMataaz
+                  </Text>
+                </Box>
+                <Circle
+                  bgColor="brand.100"
+                  // p=".1rem"
+                  color="white"
+                  size="1.3rem"
+                >
+                  <FaInstagram fontSize=".5rem" />
+                </Circle>
+              </Flex>
+              <Flex align="center">
+                <Circle
+                  bgColor="brand.100"
+                  // p=".1rem"
+                  color="white"
+                  size="1.3rem"
+                >
+                  <GrMail fontSize=".5rem" />
+                </Circle>
+                <Box pl=".5rem">
+                  <Text fontSize=".8rem" fontWeight="600">
+                    hello@propertymataaz.com
+                  </Text>
+                </Box>
+              </Flex>
+            </HStack>
+          </Box>
+        </Box>
+      </Flex>
+    </Stack>
+  );
+};
+
+export default ContactPage;
+{
+  /* <Stack minH="calc(100vh - 77px)" justify="center" w="90%" mx="auto">
       <Text
         fontWeight={600}
         textAlign="center"
@@ -127,8 +348,5 @@ const ContactPage = () => {
           </form>
         </Box>
       </SimpleGrid>
-    </Stack>
-  );
-};
-
-export default ContactPage;
+    </Stack> */
+}

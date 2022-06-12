@@ -161,7 +161,14 @@ const ListingsCard = ({
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w="150px"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {`${item.numberOfBedrooms} ${
                     item.numberOfBedrooms
                       ? item.numberOfBedrooms > 1
@@ -198,7 +205,14 @@ const ListingsCard = ({
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w="150px"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {item.title}
                 </Text>
               </Flex>
