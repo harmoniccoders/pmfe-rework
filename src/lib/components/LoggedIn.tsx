@@ -17,7 +17,7 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
   const router = useRouter();
 
   const getNavLinks = (name: string) => {
-    if (router.asPath === name) return 'brand.100';
+    if (router.pathname.startsWith(name)) return 'brand.100';
   };
   return (
     <NextLink href={path} passHref>
