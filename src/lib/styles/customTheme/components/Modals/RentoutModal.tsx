@@ -21,7 +21,7 @@ interface RentoutProps {
 const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
   const router = useRouter()
   const getHelp = () => {
-    router.push('/rent/get-help-listing');
+    router.push('/contact');
   }
   return (
     <Modal

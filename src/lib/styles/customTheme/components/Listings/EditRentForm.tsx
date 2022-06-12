@@ -31,7 +31,7 @@ import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
@@ -48,23 +48,25 @@ interface Props {
   getStates: any[];
   getBanks: any[];
   formStep: number;
+  item: PropertyModel;
   setFormStep: any;
   onClose: () => void;
-  isClosed: () => void;
+  // isClosed: () => void;
 }
 
-const RentForm = ({
+const EditRentForm = ({
   propertyTitles,
   propertyTypes,
   getStates,
   getBanks,
   formStep,
   setFormStep,
+  item,
   onClose,
-  isClosed,
-}: Props) => {
+}: // isClosed,
+Props) => {
   const [PropertyUser, { loading, data, error }] =
-    useOperationMethod('Propertycreate');
+    useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
@@ -109,9 +111,28 @@ const RentForm = ({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      isForRent: true,
-      isDraft: false,
-      isForSale: false,
+      id: item.id,
+      isActive: item.isActive,
+      isForSale: item.isForSale,
+      isDraft: item.isDraft,
+      isForRent: item.isForRent,
+      name: item.name,
+      propertyTypeId: item.propertyTypeId,
+      rentCollectionTypeId: item.rentCollectionTypeId,
+      tenantTypeId: item.tenantTypeId,
+      title: item.title,
+      state: item.state,
+      lga: item.lga,
+      area: item.area,
+      address: item.description,
+      description: item.description,
+      bank: item.bank,
+      accountNumber: item.accountNumber,
+      budget: item.budget,
+      sellMyself: item.sellMyself,
+      price: item.price,
+      numberOfBathrooms: item.numberOfBathrooms,
+      numberOfBedrooms: item.numberOfBedrooms,
     },
   });
 
@@ -127,6 +148,7 @@ const RentForm = ({
   const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
+  const [selectedId, setSelectedId] = useState<Number>();
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -247,6 +269,24 @@ const RentForm = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
+  //  const [deleteItem, { loading, data: isData, error: isError }] =
+  //    useOperationMethod('Media{id}');
+
+  const deleteMedia = async () => {
+    //  const params: Parameters = {
+    //    id: selectedId as number,
+  };
+
+  //    try {
+  //      const result = await (await deleteItem(params)).data;
+  //      if (result.status) {
+  //        console.log({ result });
+  //      }
+  //    } catch (err) {
+  //      console.log(err);
+  //    }
+  //  };
+
   const onSubmit = async (data: PropertyModel) => {
     data.sellMyself = data.sellMyself as boolean;
     data.mediaFiles = uploadedMedia;
@@ -254,14 +294,14 @@ const RentForm = ({
       const result = await (await PropertyUser(undefined, data)).data;
 
       if (result.status !== 400) {
-        addToast('Property Added', {
+        addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
-        isClosed();
+       
         onClose();
         setFormStep(0);
-        router.push('/listings/myrents');
+        router.reload();
         return;
       }
       addToast(result.message, {
@@ -389,9 +429,73 @@ const RentForm = ({
                       //@ts-ignore
                       ref={widgetApi}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
                           {uploadedMedia
                             .filter((m) => m.isImage)
                             .map((item: any) => {
@@ -404,6 +508,7 @@ const RentForm = ({
                                     bgColor="brand.50"
                                     flexShrink={0}
                                     overflow="hidden"
+                                    pos="relative"
                                   >
                                     <Image
                                       src={item.url}
@@ -450,6 +555,56 @@ const RentForm = ({
                       //@ts-ignore
                       ref={widgetApis}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box role="group" pos="relative">
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                          deleteMedia();
+                                        }}
+                                      />
+                                    </Box>
+                                    <video width="150px" height="150px">
+                                      <source
+                                        src={item.url as string}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support this video
+                                    </video>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
                         <HStack w="full" spacing="1rem" overflow="auto">
@@ -603,4 +758,4 @@ const RentForm = ({
   );
 };
 
-export default RentForm;
+export default EditRentForm;

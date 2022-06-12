@@ -1,10 +1,4 @@
-import {
-  Box,
-  SimpleGrid,
-  Text,
-  VStack,
-  HStack,
-} from '@chakra-ui/react';
+import { Box, SimpleGrid, Text, VStack, HStack } from '@chakra-ui/react';
 import { FaFacebook, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 import NextLink from 'next/link';
 
@@ -23,7 +17,7 @@ const Footer = () => {
           </Text>
           <VStack align="start" fontSize=".9rem">
             <NextLink href="/">About Us </NextLink>
-            <NextLink href="/">Contact Us</NextLink>
+            <NextLink href="/contact">Contact Us</NextLink>
             <NextLink href="/">Careers </NextLink>
             <NextLink href="/">CSR </NextLink>
           </VStack>
@@ -33,7 +27,7 @@ const Footer = () => {
             Legal
           </Text>
           <VStack align="start" fontSize=".9rem">
-            <NextLink href="/">Privacy Policy</NextLink>
+            <NextLink href="/privacy-policy">Privacy Policy</NextLink>
             <NextLink href="/">Terms & Conditions</NextLink>
           </VStack>
         </VStack>
