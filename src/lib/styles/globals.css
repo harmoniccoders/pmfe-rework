@@ -7,13 +7,4 @@
 @import url('css/scrollbar.css');
 @import url('css/wysiwyg.css');
 @import url('css/currencyinput.css');
-
-.react-multiple-carousel__arrow::before{
-  color: #0042ff !important;
-  
-}
-
-.react-multiple-carousel__arrow{
-  background: transparent !important; 
-}
-
+@import url('css/carousel.css');

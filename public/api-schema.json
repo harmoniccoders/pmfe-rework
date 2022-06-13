@@ -2369,15 +2369,15 @@
         }
       }
     },
-    "/api/Media/{id}": {
+    "/api/Media/delete/{id}": {
       "delete": {
         "tags": [
           "Media"
         ],
-        "operationId": "Media{id}",
+        "operationId": "Mediadelete{id}",
         "parameters": [
           {
-            "name": "Id",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {

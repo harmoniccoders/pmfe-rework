@@ -8,13 +8,16 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import DateSliders from './DateSliders';
-import { InspectionDateView } from 'types/api';
+import { InspectionDateView, PropertyView } from 'types/api';
 
 type Props = {
   date?: InspectionDateView | undefined;
+  item?: PropertyView;
+  close: any;
+  setStep: any;
 };
 
-const ScheduleTabs = ({ date }: Props) => {
+const ScheduleTabs = ({ date, item, close, setStep }: Props) => {
   return (
     <>
       <Tabs isFitted variant="enclosed" width="100%" defaultIndex={0}>
@@ -44,9 +47,16 @@ const ScheduleTabs = ({ date }: Props) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
-            <Text fontWeight={600}>Select date</Text>
-            <DateSliders date={date} />
+          <TabPanel mt="2rem">
+            <Text fontWeight={600} mb="1rem">
+              Select date
+            </Text>
+            <DateSliders
+              date={date}
+              item={item}
+              close={close}
+              setStep={setStep}
+            />
           </TabPanel>
           <TabPanel>video chat</TabPanel>
         </TabPanels>

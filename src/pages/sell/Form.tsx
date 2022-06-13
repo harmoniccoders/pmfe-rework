@@ -40,6 +40,7 @@ import { SRLWrapper } from 'simple-react-lightbox';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -245,7 +246,8 @@ const Form = ({
   };
 
   const onSubmit = async (data: PropertyModel) => {
-    getLongAndLat(data);
+    await getLongAndLat(data);
+    console.log(data.latitude);
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
@@ -253,13 +255,13 @@ const Form = ({
       const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
       if (result.status != 400) {
-        addToast('Property Added', {
+        addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
         });
         onClose();
         setFormStep(0);
-        // router.reload();
+        router.reload();
         return;
       }
       addToast(result.message, {
@@ -287,43 +289,64 @@ const Form = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimarySelectKey<PropertyModel>
-                    label="Type"
-                    name="propertyTypeId"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.propertyTypeId}
-                    control={control}
-                    options={propertyTypes}
+                    label="Type"
                     placeholder="Choose a Property"
+                    name="propertyTypeId"
+                    options={
+                      <>
+                        {propertyTypes.map((x: PropertyType) => {
+                          return <option value={x.id}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
-
-                  <PrimarySelectLabel<PropertyModel>
-                    label="Property Title"
-                    name="title"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.title}
-                    control={control}
-                    options={propertyTitles}
+                    label="Property Title"
                     placeholder="Certificate of Occupancy, Governor's Consent ..."
+                    name="title"
+                    options={
+                      <>
+                        {propertyTitles.map((x: PropertyType) => {
+                          return (
+                            <option value={x.name as string}>{x.name}</option>
+                          );
+                        })}
+                      </>
+                    }
                   />
-                  <StateSelect<PropertyModel>
-                    label="State"
-                    name="state"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
-                    control={control}
-                    options={getStates}
+                    label="State"
                     placeholder="Which state in Nigeria is your property located"
+                    name="state"
+                    options={
+                      <>
+                        {getStates.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
                   {getValues('state') !== undefined ? (
-                    <StateSelect<PropertyModel>
-                      label="LGA"
-                      name="lga"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.lga}
-                      control={control}
-                      options={lgas}
-                      placeholder="Which state in Nigeria is your property located"
+                      label="LGA"
+                      placeholder="Local Government Area"
+                      name="lga"
+                      options={
+                        <>
+                          {lgas.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                   ) : null}
                   <PrimaryInput<PropertyModel>

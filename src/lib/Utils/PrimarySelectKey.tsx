@@ -58,7 +58,7 @@ export const PrimarySelectKey = <TFormValues extends Record<string, any>>({
           zIndex={3}
           bg="brand.200"
         >
-          {label}
+        {label}
         </FormLabel>
         <Controller
           render={({ field }) => (
@@ -70,10 +70,10 @@ export const PrimarySelectKey = <TFormValues extends Record<string, any>>({
               options={options}
               customKeys={{
                 key: 'id',
-                label: 'name',
+              label: 'time',
               }}
               onChange={(value: { key: number; label: string }) =>
-                field.onChange(value.key)
+                field.onChange(value.label)
               }
             />
           )}

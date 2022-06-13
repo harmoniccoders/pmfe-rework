@@ -51,7 +51,11 @@ const sell = ({
           </Flex>
 
           <Grid
-            templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
+            templateColumns={[
+              'repeat(1,1fr)',
+              'repeat(2,1fr)',
+              'repeat(3,1fr)',
+            ]}
             columnGap="8"
             rowGap={5}
           >

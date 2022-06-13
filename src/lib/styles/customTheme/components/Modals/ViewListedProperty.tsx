@@ -26,6 +26,7 @@ import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
 import parse from 'html-react-parser';
+import MapView from 'lib/Utils/MapView';
 
 type Props = {
   isOpen?: any;
@@ -332,9 +333,12 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                 <Heading fontSize="14px" mb=".5rem">
                   Maps/Street view
                 </Heading>
-                <Box w="100%" height="250px" bg="brand.50">
+                <Box w="100%" height="300px" bg="brand.50">
                   {/* map */}
-                  
+                  <MapView
+                    lat={item.latitude as number}
+                    lng={item.longitude as number}
+                  />
                 </Box>
               </Box>
             </VStack>
