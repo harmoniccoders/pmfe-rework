@@ -27,22 +27,18 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
-import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
-import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -147,7 +143,6 @@ Props) => {
   watch('sellMyself');
 
   console.log(item)
-
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
@@ -337,42 +332,65 @@ Props) => {
                     defaultValue=""
                     register={register}
                   />
-                  <PrimarySelectKey<PropertyModel>
-                    label="Type"
-                    name="propertyTypeId"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.propertyTypeId}
-                    control={control}
-                    options={propertyTypes}
+                    label="Type"
                     placeholder="Choose a Property"
+                    name="propertyTypeId"
+                    options={
+                      <>
+                        {propertyTypes.map((x: PropertyType) => {
+                          return <option value={x.id}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
-                  <PrimarySelectLabel<PropertyModel>
-                    label="Property Title"
-                    name="title"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.title}
-                    control={control}
-                    options={propertyTitles}
+                    label="Property Title"
                     placeholder="Certificate of Occupancy, Governor's Consent ..."
+                    name="title"
+                    options={
+                      <>
+                        {propertyTitles.map((x: PropertyType) => {
+                          return (
+                            <option value={x.name as string}>{x.name}</option>
+                          );
+                        })}
+                      </>
+                    }
                   />
-                  <StateSelect<PropertyModel>
-                    label="State"
-                    name="state"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
-                    control={control}
-                    options={getStates}
+                    label="State"
                     placeholder="Which state in Nigeria is your property located"
+                    name="state"
+                    options={
+                      <>
+                        {getStates.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
+
                   {getValues('state') !== undefined ? (
-                    <StateSelect<PropertyModel>
-                      label="LGA"
-                      name="lga"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.lga}
-                      control={control}
-                      options={lgas}
-                      placeholder="Choose a Local Government"
+                      label="LGA"
+                      placeholder="Local Government Area"
+                      name="lga"
+                      options={
+                        <>
+                          {lgas.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                   ) : null}
 
@@ -654,14 +672,12 @@ Props) => {
                     setValue={setValue}
                     getValues={getValues}
                     label="Number of Bedrooms"
-                    fontSize="sm"
                   />
                   <NumberCounter
                     valueName="numberOfBathrooms"
                     setValue={setValue}
                     getValues={getValues}
                     label="Number of Bathrooms"
-                    fontSize="sm"
                   />
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
@@ -697,53 +713,67 @@ Props) => {
               {formStep === 1 && (
                 <>
                   <Box>
-                    <Text fontWeight="600" fontSize="sm">
+                    <Text fontWeight="600">
                       What kind of tenants do you want?
                     </Text>
-                    <PrimarySelectKey<PropertyModel>
-                      label="Type"
-                      name="tenantTypeId"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.tenantTypeId}
-                      control={control}
-                      options={propertyTenants}
-                      fontSize="sm"
+                      label="Type"
                       placeholder="Choose an option"
+                      name="tenantTypeId"
+                      options={
+                        <>
+                          {propertyTenants.map((x: TenantType) => {
+                            return <option value={x.id}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
-                    <PrimarySelectKey<PropertyModel>
-                      label="Annual Income Bracket"
-                      name="budget"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.budget}
-                      control={control}
-                      options={incomeBracket}
-                      placeholder="Choose a property type"
-                      fontSize="sm"
+                      label="Annual Income Bracket"
+                      placeholder="Choose an option"
+                      name="budget"
+                      options={
+                        <>
+                          {incomeBracket.map((x: any) => {
+                            return <option value={x.id}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                   </Box>
                   <Box mt="8">
-                    <Text fontWeight="600" fontSize="sm">
-                      Rent Collection
-                    </Text>
-                    <PrimarySelectKey<PropertyModel>
-                      label="How Frequently do you want to collect rent?"
-                      name="rentCollectionTypeId"
+                    <Text fontWeight="600">Rent Collection</Text>
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.rentCollectionTypeId}
-                      control={control}
-                      options={propertyCollection}
-                      fontSize="sm"
+                      label="How Frequently do you want to collect rent?"
                       placeholder="Choose option: weekly, monthly, yearly"
+                      name="rentCollectionTypeId"
+                      options={
+                        <>
+                          {propertyCollection.map((x: RentCollectionType) => {
+                            return <option value={x.id}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
-                    <PrimarySelectKey<PropertyModel>
-                      label="Your Bank"
-                      name="bank"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.bank}
-                      control={control}
-                      options={getBanks}
+                      label="Your Bank"
                       placeholder="Choose your bank"
-                      fontSize="sm"
+                      name="bank"
+                      options={
+                        <>
+                          {getBanks.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                     <PrimaryInput<PropertyModel>
                       label="Your Account Number"
@@ -752,7 +782,6 @@ Props) => {
                       defaultValue=""
                       register={register}
                       error={errors.accountNumber}
-                      fontSize="sm"
                     />
                   </Box>
                 </>
