@@ -20,44 +20,6 @@ type Props = {
   isOpen: boolean;
   data: PropertyModel;
 };
-//  py={5}
-//           borderRadius="0"
-//           w={['88%', '80%']}
-//           overflow="hidden"
-//           maxH="100vh"
-//           maxW="50%"
-//           h="100%"
-//           pos="fixed"
-//           mt="0rem"
-//           mb="0rem"
-
-{
-  /* <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      motionPreset="slideInBottom"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        pos="fixed"
-        mt="1rem"
-        mb="1rem"
-      >
-        <ModalHeader textAlign="center">
-          <Text fontSize="1.1rem" fontWeight="bold">
-            Are you sure you want to delete this listing?
-          </Text>
-          <Text color="red" fontSize=".8rem">
-            Please note, action cannot be reversed
-          </Text> */
-}
 
 const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
   return (

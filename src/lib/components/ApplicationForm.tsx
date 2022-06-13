@@ -6,21 +6,33 @@ import * as yup from 'yup';
 import { useOperationMethod } from 'react-openapi-client';
 import { ApplicationModel, Register } from 'types/api';
 import { Button, Text } from '@chakra-ui/react';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 type Props = {};
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
-  firstName: yup.string().required(),
-  middleName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required(),
-  phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-  address: yup.string().required(),
-  dateOfBirth: yup.string().required(),
-  occupation: yup.string().required(),
-  companyName: yup.string().required(),
-  workAddress: yup.string().required(),
-  relationship: yup.string().required(),
+  register: yup.object({
+    firstName: yup.string().required(),
+    middleName: yup.string().required(),
+    lastName: yup.string().required(),
+    email: yup.string().email().required(),
+    phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+    dateOfBirth: yup.string().required(),
+    occupation: yup.string().required(),
+    companyName: yup.string().required(),
+    workAddress: yup.string().required(),
+    nationality: yup.string().required(),
+    maritalStatus: yup.string().required(),
+  }),
+
+  nextOfKin: yup.object({
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    email: yup.string().email().required(),
+    phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+    address: yup.string().required(),
+    relationship: yup.string().required(),
+  }),
 });
 
 const ApplicationForm = (props: Props) => {
@@ -109,6 +121,25 @@ const ApplicationForm = (props: Props) => {
             type="date"
             register={register}
           />
+
+          {/* <PrimarySelect<ApplicationModel>
+            label="nationality"
+            name="register.nationality"
+            error={error.register?.marital}
+            placeholder="Select your nationality"
+            register={register}
+            options={['Nigerian']}
+          />
+
+          <PrimarySelect<ApplicationModel>
+            label="marital status"
+            name="register.maritalStatus"
+            error={error.register?.maritalStatus}
+            placeholder="Select your nationality"
+            register={register}
+            options={['Single', 'Married']}
+
+          /> */}
 
           <Button
             onClick={() => setFormStep(formStep + 1)}
