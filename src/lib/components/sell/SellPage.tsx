@@ -4,6 +4,7 @@ import {
   Grid,
   Stack,
   Text,
+  Center,
   Image,
   useDisclosure,
   GridItem,
@@ -80,17 +81,19 @@ const sell = ({
         <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
           <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
             <Box
-              w={['90%', '38vw']}
-              h={['35vh']}
+              w={['90%', '100%','75%']}
+              h={['100%', '100%','75%']}
               mt={{ base: '2rem', lg: '4.5rem' }}
               borderRadius="8px"
             >
-              <Image
+              <Center>
+                <Image
                 src="/assets/admin.png"
                 h="100%"
                 w="100%"
                 objectFit="contain"
               />
+              </Center>
             </Box>
             <Text textAlign="center">
               You have no current property listed for sale.
