@@ -1,10 +1,12 @@
 import { Box, Text, VStack, Flex } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import DateCarousel from './Carousel';
 import {
   InspectionDateView,
+  InspectionModel,
   InspectionTimeModel,
   InspectionTimeView,
+  InspectionView,
 } from 'types/api';
 import moment from 'moment';
 import ButtonComponent from './Button';
@@ -12,88 +14,137 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import Cookies from 'js-cookie';
 
 type Props = {
   item?: any;
-  date: InspectionDateView | any;
-  inspectionTime?: InspectionTimeView;
+  date: InspectionView | any;
+  close: any;
+  setStep: any;
 };
 
 const schema = yup.object().shape({
-  availableTime: yup.string().required(),
+  inspectionDateId: yup.number().required(),
+  inspectionTimeId: yup.number().required(),
 });
 
-const DateSliders = ({ item, date, inspectionTime }: Props) => {
-  const [CreateInspectionTime, { loading, data, error }] = useOperationMethod(
-    'Propertyinspectiontimecreate'
+const DateSliders = ({ item, date, close, setStep }: Props) => {
+  const users = Cookies.get('user') as unknown as string;
+  let user;
+  if (users !== undefined) {
+    user = JSON.parse(users);
+  }
+
+  const [scheduleInspection, { loading, data, error }] = useOperationMethod(
+    'Propertyinspectionsschedule'
   );
   const {
     register,
     handleSubmit,
-    control,
-    watch,
-    getValues,
     setValue,
     formState: { errors, isValid },
-  } = useForm<InspectionTimeModel>({
+  } = useForm<InspectionModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      propertyId: item.id,
+      userId: user.id,
+    },
   });
 
-  const onSubmit = async (data: InspectionTimeModel) => {
+  const [selctedDate, setSelectedDate] = useState(null);
+  setValue('inspectionDateId', selctedDate?.id);
+
+  const onSubmit = async (data: InspectionModel) => {
+    close();
+
     try {
-      const result = await (await CreateInspectionTime(undefined, data)).data;
+      const result = await (await scheduleInspection(undefined, data)).data;
       console.log({ result });
+      if (result.status) {
+        setStep(1);
+        close();
+        return;
+      }
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <DateCarousel
-        item={date.map((item: any, index: any) => {
-          return (
-            <Flex
-              border="1px solid #DCE1E7"
-              height="90px"
-              w="90px"
-              mx="auto"
-              key={index}
-              align="center"
-              borderRadius="5px"
-            >
-              <VStack
-                spacing={2}
-                justifyContent="center"
-                width="100%"
-                height="100%"
+      <Box w="89%" mx="auto">
+        <DateCarousel
+          item={date.map((item: any, index: any) => {
+            return (
+              <Box
+                w="fit-content"
+                cursor="pointer"
+                onClick={() => setSelectedDate(item)}
               >
-                <Text fontWeight={600} fontSize="16px">
-                  WED
-                  {/* {moment(item.date).day()} */}
-                </Text>
-                <Text fontWeight={600} fontSize="16px">
-                  {moment(item.date).format('MMMM DD')}
-                </Text>
-              </VStack>
-            </Flex>
-          );
-        })}
-      />
+                <Flex
+                  border="1px solid"
+                  borderColor={
+                    selctedDate?.id === item.id ? 'brand.100' : '#DCE1E7'
+                  }
+                  height="90px"
+                  bgColor={selctedDate?.id === item.id ? '#edf6ff' : 'unset'}
+                  w="90px"
+                  key={index}
+                  borderRadius="5px"
+                >
+                  <VStack
+                    spacing={2}
+                    justifyContent="center"
+                    width="100%"
+                    height="100%"
+                  >
+                    <Text
+                      fontWeight={600}
+                      fontSize="16px"
+                      textTransform="uppercase"
+                    >
+                      {moment(item.date).format('ddd')}
+                    </Text>
+                    <Text fontWeight={600} fontSize="16px">
+                      {moment(item.date).format('MMM DD')}
+                    </Text>
+                  </VStack>
+                </Flex>
+              </Box>
+            );
+          })}
+        />
+        {selctedDate && (
+          <Box w="full">
+            <PrimarySelect<InspectionModel>
+              register={register}
+              error={errors.inspectionTimeId}
+              label="Select a time"
+              placeholder="Select a conveinent time"
+              name="inspectionTimeId"
+              options={
+                <>
+                  {selctedDate.times.map((x: InspectionTimeView) => {
+                    return (
+                      <option value={x.id}>
+                        {moment(x.time).format('LT')}
+                      </option>
+                    );
+                  })}
+                </>
+              }
+            />
+          </Box>
+        )}
+      </Box>
 
-      <PrimarySelectKey<InspectionTimeModel>
-        label="Select a time"
-        name="availableTime"
-        register={register}
-        error={errors.availableTime}
-        control={control}
-        options={inspectionTime}
-        placeholder="9:00a.m"
+      <ButtonComponent
+        content="Request Time"
+        isValid={isValid}
+        loading={loading}
       />
-
-      <ButtonComponent content="Request Time" isValid={true} loading={false} />
     </form>
   );
 };

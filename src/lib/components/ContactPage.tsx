@@ -24,6 +24,7 @@ import { FaInstagram, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { GrMail } from 'react-icons/gr';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import Link from 'next/link';
 
 const schema = yup.object().shape({
   firstname: yup.string().required(),
@@ -76,20 +77,6 @@ const ContactPage = () => {
       items: 1,
     },
   };
-  const responsives = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 5,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
 
   return (
     <Stack h="100vh" direction="row">
@@ -101,7 +88,22 @@ const ContactPage = () => {
         justify="center"
         display="block"
         overflow="hidden"
+        pos="relative"
       >
+        <Link href="/" passHref>
+          <Image
+            cursor="pointer"
+            src="/assets/PropertyMataaz-white.png"
+            alt="PropertyMataaz"
+            w={['52']}
+            pos="absolute"
+            top="15%"
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex={9}
+            // p="1rem"
+          />
+        </Link>
         <Carousel
           responsive={responsive}
           showDots
@@ -154,7 +156,24 @@ const ContactPage = () => {
             // transform="rotate(-3deg)"
           >
             <Image
-              src="/assets/Clean_illustration.png"
+              src="/assets/Sell illustration.png"
+              h="full"
+              w="full"
+              objectFit="cover"
+            />
+          </Box>
+          <Box
+            w="400px"
+            h="300px"
+            overflow="hidden"
+            borderRadius="8px"
+            bgColor="white"
+            p="2rem"
+            mx="auto"
+            // transform="rotate(-3deg)"
+          >
+            <Image
+              src="/assets/Rent_illustration.png"
               h="full"
               w="full"
               objectFit="cover"
@@ -212,8 +231,8 @@ const ContactPage = () => {
             />
           </form>
 
-          <Box display="none">
-            <HStack spacing={8} justify="center" px="2rem">
+          <Box display="block">
+            <HStack spacing={3} justify="center" px="2rem">
               <Flex align="center">
                 <Circle
                   bgColor="brand.100"
@@ -231,21 +250,6 @@ const ContactPage = () => {
               </Flex>
 
               <Flex align="center">
-                <Box pr=".5rem">
-                  <Text fontSize=".8rem" fontWeight="600">
-                    @PropertyMataaz
-                  </Text>
-                </Box>
-                <Circle
-                  bgColor="brand.100"
-                  // p=".1rem"
-                  color="white"
-                  size="1.3rem"
-                >
-                  <FaInstagram fontSize=".5rem" />
-                </Circle>
-              </Flex>
-              <Flex align="center">
                 <Circle
                   bgColor="brand.100"
                   // p=".1rem"
@@ -257,6 +261,21 @@ const ContactPage = () => {
                 <Box pl=".5rem">
                   <Text fontSize=".8rem" fontWeight="600">
                     hello@propertymataaz.com
+                  </Text>
+                </Box>
+              </Flex>
+              <Flex align="center">
+                <Circle
+                  bgColor="brand.100"
+                  // p=".1rem"
+                  color="white"
+                  size="1.3rem"
+                >
+                  <FaInstagram fontSize=".5rem" />
+                </Circle>
+                <Box pl=".5rem">
+                  <Text fontSize=".8rem" fontWeight="600">
+                    @PropertyMataaz
                   </Text>
                 </Box>
               </Flex>

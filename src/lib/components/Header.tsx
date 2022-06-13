@@ -51,7 +51,11 @@ const Header = () => {
       h="4.8rem"
       justifyContent="space-between"
       align="center"
-      display={router.asPath === '/contact' ? 'none' : 'flex'}
+      display={
+        router.asPath === '/contact' || router.asPath === '/payment/validate'
+          ? 'none'
+          : 'flex'
+      }
     >
       <DesktopView user={user} />
       <MobileView user={user} />

@@ -10,3 +10,19 @@
 .react-multi-carousel-dot--active button {
   background-color: white !important;
 }
+.react-multiple-carousel__arrow::before {
+  color: #0042ff !important;
+}
+
+.react-multiple-carousel__arrow {
+  background: transparent !important;
+}
+.dateslider {
+  height: fit-content;
+}
+/* .react-multiple-carousel__arrow {
+  left: calc(-4% + 1px) !important;
+}
+.react-multiple-carousel__arrow--right {
+  right: calc(-100% + 1px) !important;
+} */

@@ -27,6 +27,7 @@ import ReportListingModal from './Modals/ReportListingModal';
 import parse from 'html-react-parser';
 import Cookies from 'js-cookie';
 import MapView from 'lib/Utils/MapView';
+import { SRLWrapper } from 'simple-react-lightbox';
 
 interface Props {
   isOpen?: any;
@@ -268,15 +269,17 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                             return (
                               <>
                                 {media.isImage && (
-                                  <Box w="full" h="150px" bgColor="brand.50">
-                                    <Image
-                                      src={media.url as unknown as string}
-                                      alt="propery-image"
-                                      w="100%"
-                                      height="100%"
-                                      objectFit="cover"
-                                    />
-                                  </Box>
+                                  <SRLWrapper>
+                                    <Box w="full" h="150px" bgColor="brand.50">
+                                      <Image
+                                        src={media.url as unknown as string}
+                                        alt="propery-image"
+                                        w="100%"
+                                        height="100%"
+                                        objectFit="cover"
+                                      />
+                                    </Box>
+                                  </SRLWrapper>
                                 )}
                               </>
                             );
@@ -299,13 +302,19 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                             return (
                               <>
                                 {media.isVideo && (
-                                  <AspectRatio maxW="150px" w="full" ratio={1}>
-                                    <iframe
-                                      title="Interactive videp"
-                                      src={media.url as string}
-                                      allowFullScreen
-                                    />
-                                  </AspectRatio>
+                                  <SRLWrapper>
+                                    <AspectRatio
+                                      maxW="150px"
+                                      w="full"
+                                      ratio={1}
+                                    >
+                                      <iframe
+                                        title="Interactive videp"
+                                        src={media.url as string}
+                                        allowFullScreen
+                                      />
+                                    </AspectRatio>
+                                  </SRLWrapper>
                                   // <Box w="full" h="150px" bgColor="brand.50">
                                   //   <video w="full" h="full">
                                   //     <source
