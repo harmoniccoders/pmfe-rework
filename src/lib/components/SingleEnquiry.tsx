@@ -23,7 +23,7 @@ type Props = {
 };
 
 const SingleEnquiry = ({ data, date }: Props) => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   return (
     <HStack w="90%" mx="auto" alignItems="flex-start" py="1rem">
       <Box w="28%">

@@ -67,6 +67,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
               maxDate={new Date(2023, 10, 1)}
               onChange={(date) => field.onChange(date)}
               selected={field.value}
+              
             />
           )}
           name={name}
