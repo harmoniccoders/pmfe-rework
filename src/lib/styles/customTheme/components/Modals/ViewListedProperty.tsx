@@ -237,26 +237,28 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
               </GridItem>
             </Grid>
 
-            <Flex
-              px="4rem"
-              h="3rem"
-              bg="brand.700"
-              align="center"
-              justify="space-between"
-              borderRadius="4px"
-              border="1px solid #96FFC9"
-              mb="2rem"
-            >
-              <Flex align="center" cursor="pointer">
-                <Icons iconClass="fa-scroll" style={{ fontSize: '20px' }} />
-                <Text fontSize="14px" mx="3rem" fontWeight="bold">
-                  Payment
+            {item.isForSale && (
+              <Flex
+                px="4rem"
+                h="3rem"
+                bg="brand.700"
+                align="center"
+                justify="space-between"
+                borderRadius="4px"
+                border="1px solid #96FFC9"
+                mb="2rem"
+              >
+                <Flex align="center" cursor="pointer">
+                  <Icons iconClass="fa-scroll" style={{ fontSize: '20px' }} />
+                  <Text fontSize="14px" mx="3rem" fontWeight="bold">
+                    Payment
+                  </Text>
+                </Flex>
+                <Text fontSize="14px" fontWeight="500">
+                  Pending sale
                 </Text>
               </Flex>
-              <Text fontSize="14px" fontWeight="500">
-                Pending sale
-              </Text>
-            </Flex>
+            )}
 
             <VStack align="flex-start" spacing={5} mt="3rem">
               <Box w="100%">

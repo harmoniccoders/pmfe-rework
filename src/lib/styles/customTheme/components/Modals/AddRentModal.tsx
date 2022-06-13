@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import RentForm from 'lib/components/rent/RentForm';
 import { useState } from 'react';
-import { PropertyTitle, PropertyType } from 'types/api';
+import { PropertyTitle, PropertyType, RentCollectionType, TenantType } from 'types/api';
 
 interface AddRentProps {
   isOpen: boolean;
@@ -18,6 +18,8 @@ interface AddRentProps {
   isClosed: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any[];
   getBanks: any[];
 }
@@ -27,6 +29,8 @@ function AddRentModal({
   onClose,
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
   isClosed,
@@ -100,6 +104,8 @@ function AddRentModal({
             <RentForm
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
+              propertyTenants={propertyTenants}
+              propertyCollection={propertyCollection}
               getStates={getStates}
               getBanks={getBanks}
               formStep={formStep}
