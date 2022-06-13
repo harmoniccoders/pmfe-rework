@@ -31,7 +31,7 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
               );
             })}
           </>
-        </Grid>
+      1  </Grid>
       ) : (
         <Heading fontSize="16px" lineHeight={1.5}>
           Sorry! There's no property at this time please check back later
