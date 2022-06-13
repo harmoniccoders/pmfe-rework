@@ -13,6 +13,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   label?: string;
   fontSize?: string;
   options: any;
+  defaultValue?: any;
 }
 export const PrimarySelect = <TFormValues extends Record<string, any>>({
   name,
@@ -24,6 +25,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
   label = '',
   fontSize = '1rem',
   options,
+  defaultValue,
 }: FormInputProps<TFormValues>) => {
   return (
     <>
@@ -47,6 +49,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         borderRadius="0"
         height="3rem"
         fontSize=".9rem"
+        defaultValue={defaultValue}
         icon={<Icons iconClass="fa-angle-right" />}
       >
         <option disabled>{placeholder}</option>

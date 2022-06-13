@@ -12,16 +12,19 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import ApplicationForm from 'lib/components/ApplicationForm';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { PropertyModel } from 'types/api';
 
 type Props = {
   onClose: any;
   isOpen: boolean;
   data: PropertyModel;
+  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
+const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
+  const [formStep, setFormStep] = useState<number>(0);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
@@ -43,7 +46,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
             width="100%"
           >
             <Text
-              onClick={onClose}
+              onClick={formStep < 1 ? onClose : () => setFormStep(formStep - 1)}
               display="flex"
               alignItems="center"
               fontSize="14px"
@@ -79,7 +82,12 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
               Application form
             </Text>
 
-            <ApplicationForm />
+            <ApplicationForm
+              formStep={formStep}
+              setFormStep={setFormStep}
+              setStep={setStep}
+              close={onClose}
+            />
           </VStack>
         </ModalBody>
       </ModalContent>

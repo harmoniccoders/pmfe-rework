@@ -12,3 +12,6 @@
   border-radius: 4px;
   /* box-shadow: 0px 0px 9px rgb(0 127 130 / 37%) !important; */
 }
+.react-datepicker-popper {
+  z-index: 9 !important;
+}

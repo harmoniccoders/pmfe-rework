@@ -14,13 +14,9 @@ import {
   Box,
 } from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
-import Icons from 'lib/components/Icons';
-
-import ScheduleTabs from 'lib/components/ScheduleTabs';
-import React, { useState } from 'react';
-import { useOperationMethod } from 'react-openapi-client';
-import { PaymentModel, PropertyView } from 'types/api';
+import { PropertyView } from 'types/api';
 import naira from '../Generics/Naira';
+import InstructionModal from './InstructionModals';
 
 type Props = {
   open: boolean;
@@ -30,9 +26,8 @@ type Props = {
 };
 
 const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const price = item?.price;
-
-  const [redirect, setRedirect] = useState(false);
 
   let fees, tax, total;
   if (price !== undefined) {
@@ -40,30 +35,6 @@ const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
     tax = (7.5 / 100) * price;
     total = price + fees + tax;
   }
-
-  const payData = {
-    propertyId: item?.id,
-    amount: total,
-  };
-
-  const [initiatePay, { loading, data, error }] =
-    useOperationMethod('Paymentinitiate');
-
-  const InitiatePayment = async () => {
-    try {
-      const result = await (await initiatePay(undefined, payData)).data;
-      console.log({ result });
-      if (result.status) {
-        setRedirect(true);
-        setTimeout(() => {
-          window.open(result.message);
-        }, 3000);
-        close();
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <Modal
       isOpen={open}
@@ -141,19 +112,23 @@ const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
                 <Text>{naira(total as number)}</Text>
               </Flex>
             </VStack>
-            <Box onClick={() => InitiatePayment()}>
+            <Box onClick={() => onOpen()}>
               <ButtonComponent
                 content="Pay Securely"
                 isValid={true}
-                loading={loading}
+                loading={false}
               />
             </Box>
-            {redirect && (
-              <Text textAlign="center">You will be redirected shortly!...</Text>
-            )}
           </Box>
         </ModalBody>
       </ModalContent>
+      <InstructionModal
+        open={isOpen}
+        close={onClose}
+        total={total}
+        item={item}
+        setStep={setStep}
+      />
     </Modal>
   );
 };

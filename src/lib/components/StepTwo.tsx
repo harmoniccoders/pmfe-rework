@@ -116,7 +116,12 @@ const StepTwo = ({ step, setStep, data }: Props) => {
         </VStack>
       </Flex>
 
-      <SubmitApplicationModal onClose={onClose} isOpen={isOpen} data={data} />
+      <SubmitApplicationModal
+        onClose={onClose}
+        isOpen={isOpen}
+        data={data}
+        setStep={setStep}
+      />
       <PaySecurelyModal
         open={open}
         close={close}
