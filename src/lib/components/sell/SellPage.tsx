@@ -65,6 +65,9 @@ const sell = ({
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
                         getStates={getStates}
+                        propertyTenants={[]}
+                        getBanks={undefined}
+                        propertyCollection={[]}
                       />
                     </GridItem>
                   </>
@@ -89,11 +92,10 @@ const sell = ({
                 objectFit="contain"
               />
               </Center>
-            </Box>
+              </Box>
             <Text textAlign="center">
               You have no current property listed for sale.
             </Text>
-
             <Button
               bg="brand.100"
               onClick={onOpen}
