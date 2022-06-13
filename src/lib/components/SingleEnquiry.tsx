@@ -8,7 +8,7 @@ import {
   Text,
   HStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { PropertyModel } from 'types/api';
 import Icons from './Icons';
 import StepOne from './StepOne';
@@ -23,9 +23,10 @@ type Props = {
 };
 
 const SingleEnquiry = ({ data, date }: Props) => {
+  const [step, setStep] = useState(2);
   return (
     <HStack w="90%" mx="auto" alignItems="flex-start" py="1rem">
-      <Box w="40%">
+      <Box w="28%">
         <VStack
           w="100%"
           alignItems="flex-start"
@@ -33,9 +34,9 @@ const SingleEnquiry = ({ data, date }: Props) => {
           // borderLeft="2px solid #DCE1E7"
           px="1.2rem"
         >
-          <StepOne date={date} />
-          <StepTwo data={data} />
-          <StepThree />
+          <StepOne date={date} data={data} step={step} setStep={setStep} />
+          <StepTwo step={step} setStep={setStep} data={data} />
+          <StepThree step={step} />
         </VStack>
 
         <Button
@@ -49,7 +50,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
         </Button>
       </Box>
 
-      <Box w="65%" borderLeft="2px solid #DCE1E7">
+      <Box w="72%" borderLeft="2px solid #DCE1E7">
         <PropertyInfo data={data} />
       </Box>
     </HStack>

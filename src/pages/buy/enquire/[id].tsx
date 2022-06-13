@@ -14,7 +14,7 @@ interface Props {
 const index = ({ data, date }: Props) => {
   const router = useRouter();
   console.log(data);
-  console.log(date);
+  console.log({ date });
 
   const { id } = router.query;
 

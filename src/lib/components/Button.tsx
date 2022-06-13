@@ -3,8 +3,8 @@ import React from 'react';
 
 interface Props {
   content: string;
-  isValid: boolean;
-  loading: boolean;
+  isValid?: boolean;
+  loading?: boolean;
 }
 
 const ButtonComponent = ({ content, isValid, loading }: Props) => {

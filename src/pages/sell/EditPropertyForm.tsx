@@ -42,6 +42,7 @@ import { Parameters } from 'openapi-client-axios';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -245,22 +246,26 @@ const EditPropertyForm = ({
   const router = useRouter();
 
   const [deleteItem, { loading, data: isData, error: isError }] =
-    useOperationMethod('Media{id}');
+    useOperationMethod('Mediadelete{id}');
 
-  const deleteMedia = async () => {
-    const params: Parameters = {
-      id: selectedId as number,
-    };
+  useEffect(() => {
+    const deleteMedia = async () => {
+      const params: Parameters = {
+        id: selectedId as number,
+      };
 
-    try {
-      const result = await (await deleteItem(params)).data;
-      if (result.status) {
-        console.log({ result });
+      try {
+        const result = await (await deleteItem(params)).data;
+        if (result.status) {
+          console.log({ result });
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    };
+    deleteMedia();
+    getValues('mediaFiles');
+  }, [selectedId]);
 
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
@@ -325,42 +330,65 @@ const EditPropertyForm = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimarySelectKey<PropertyModel>
-                    label="Type"
-                    name="propertyTypeId"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.propertyTypeId}
-                    control={control}
-                    options={propertyTypes}
+                    label="Type"
                     placeholder="Choose a Property"
+                    name="propertyTypeId"
+                    options={
+                      <>
+                        {propertyTypes.map((x: PropertyType) => {
+                          return <option value={x.id}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
-                  <PrimarySelectLabel<PropertyModel>
-                    label="Property Title"
-                    name="title"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.title}
-                    control={control}
-                    options={propertyTitles}
+                    label="Property Title"
                     placeholder="Certificate of Occupancy, Governor's Consent ..."
+                    name="title"
+                    options={
+                      <>
+                        {propertyTitles.map((x: PropertyType) => {
+                          return (
+                            <option value={x.name as string}>{x.name}</option>
+                          );
+                        })}
+                      </>
+                    }
                   />
-                  <StateSelect<PropertyModel>
-                    label="State"
-                    name="state"
+                  <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
-                    control={control}
-                    options={getStates}
+                    label="State"
                     placeholder="Which state in Nigeria is your property located"
+                    name="state"
+                    options={
+                      <>
+                        {getStates.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
+
                   {getValues('state') !== undefined ? (
-                    <StateSelect<PropertyModel>
-                      label="LGA"
-                      name="lga"
+                    <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.lga}
-                      control={control}
-                      options={lgas}
-                      placeholder="Which state in Nigeria is your property located"
+                      label="LGA"
+                      placeholder="Local Government Area"
+                      name="lga"
+                      options={
+                        <>
+                          {lgas.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                   ) : null}
                   <PrimaryInput<PropertyModel>
@@ -496,7 +524,6 @@ const EditPropertyForm = ({
                                         fontSize="1rem"
                                         onClick={() => {
                                           setSelectedId(item.id);
-                                          deleteMedia();
                                         }}
                                       />
                                     </Box>
@@ -613,7 +640,6 @@ const EditPropertyForm = ({
                                         fontSize="1rem"
                                         onClick={() => {
                                           setSelectedId(item.id);
-                                          deleteMedia();
                                         }}
                                       />
                                     </Box>

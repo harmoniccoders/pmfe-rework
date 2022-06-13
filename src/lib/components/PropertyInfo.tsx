@@ -7,10 +7,13 @@ import {
   Grid,
   GridItem,
   Text,
+  AspectRatio,
 } from '@chakra-ui/react';
+import MapView from 'lib/Utils/MapView';
 import React from 'react';
 import { PropertyModel } from 'types/api';
 import Icons from './Icons';
+import parse from 'html-react-parser';
 
 type Props = {
   data: PropertyModel;
@@ -23,36 +26,52 @@ const iconStyle = {
 const PropertyInfo = ({ data }: Props) => {
   return (
     <>
-      <VStack pl="2rem" w="100%" spacing={5} alignItems="flex-start">
-        <Box w="100%" pos="relative">
-          <Box w="100%" h="250px">
-            <Image
-              src="/assets/property-img.png"
-              width="100%"
-              height="100%"
-              objectFit="cover"
-            />
+      <VStack pl="3rem" w="90%" spacing={5} alignItems="flex-start">
+        <Flex w="100%" pos="relative" flexDirection="column">
+          <Box w="full" h="250px" pos="relative">
+            <>
+              {data.mediaFiles && data.mediaFiles?.length > 0 ? (
+                <>
+                  {data.mediaFiles[0].isImage && (
+                    <Image
+                      src={data.mediaFiles[0].url as string}
+                      alt="propery-image"
+                      w="100%"
+                      height="100%"
+                      objectFit="cover"
+                    />
+                  )}
+                </>
+              ) : (
+                <Image
+                  src="/assets/nb.webp"
+                  alt="propery-image"
+                  w="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+              )}
+            </>
+
+            <Flex
+              bg="brand.100"
+              color="white"
+              pos="absolute"
+              w="fit-content"
+              px="1.5rem"
+              h="24px"
+              top="15%"
+              fontSize="14px"
+              align="center"
+              justify="center"
+              borderRadius="4px 0 0 4px"
+              right="0"
+              textTransform="capitalize"
+            >
+              {data.lga}
+            </Flex>
           </Box>
-
-          <Flex
-            bg="brand.100"
-            color="white"
-            pos="absolute"
-            w="fit-content"
-            px="1.5rem"
-            h="24px"
-            top="15%"
-            fontSize="14px"
-            align="center"
-            justify="center"
-            borderRadius="4px 0 0 4px"
-            right="0"
-            textTransform="capitalize"
-          >
-            {data.lga}
-          </Flex>
-        </Box>
-
+        </Flex>
         <Heading fontSize="16px" my="30px">
           {data.name}
         </Heading>
@@ -100,38 +119,84 @@ const PropertyInfo = ({ data }: Props) => {
         <Heading fontSize="14px">Overview</Heading>
 
         <Text fontSize="14px" lineHeight={1.5}>
-          Beautiful And Unique 3 Bedroom, 2.5 Bath Home Has Been Totally
-          Transformed With Blends Of Creativity, Taste And Comfort. Bright &amp;
-          Open Concept Main Living Area. Lovely Main Floor Master With Ensuite
-          And Walk-In Closet. Step Down Patio To Backyard With Gardens. Natural
-          Gas Heat And Central Air. A Bonus 20'X25' Insulated Shop With Concrete
-          Floor, Hydro And Additional Lean-To For Extra Storage. Be Sure To
-          Watch Property Tour On Video.
+          {parse(data.description as string)}
         </Text>
 
         <Heading fontSize="14px">Pictures</Heading>
 
-        <Grid templateColumns="repeat(4,1fr)" w="100%" gap={3}>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="152px"></GridItem>
-        </Grid>
+        <>
+          {data.mediaFiles && data.mediaFiles?.length > 0 ? (
+            <Grid templateColumns="repeat(4,1fr)" gap={4}>
+              <>
+                {data.mediaFiles?.map((media) => {
+                  return (
+                    <>
+                      {media.isImage && (
+                        <Box w="full" h="150px" bgColor="brand.50">
+                          <Image
+                            src={media.url as unknown as string}
+                            alt="propery-image"
+                            w="100%"
+                            height="100%"
+                            objectFit="cover"
+                          />
+                        </Box>
+                      )}
+                    </>
+                  );
+                })}
+              </>
+            </Grid>
+          ) : (
+            'No Images found'
+          )}
+        </>
 
         <Heading fontSize="14px">Video Tour</Heading>
 
-        <Grid templateColumns="repeat(2,1fr)" w="100%" gap={3}>
-          <GridItem bg="brand.50" width="full" height="250px"></GridItem>
-          <GridItem bg="brand.50" width="full" height="250px"></GridItem>
-        </Grid>
+        <>
+          {data.mediaFiles && data.mediaFiles?.length > 0 ? (
+            <Grid templateColumns="repeat(4,1fr)" gap={4}>
+              <>
+                {data.mediaFiles?.map((media) => {
+                  return (
+                    <>
+                      {media.isVideo && (
+                        <AspectRatio maxW="150px" w="full" ratio={1}>
+                          <iframe
+                            title="Interactive videp"
+                            src={media.url as string}
+                            allowFullScreen
+                          />
+                        </AspectRatio>
+                        // <Box w="full" h="150px" bgColor="brand.50">
+                        //   <video w="full" h="full">
+                        //     <source
+                        //       src={media.url as string}
+                        //       type="video.mp4"
+                        //     />
+                        //     Your browser does not support this video.
+                        //   </video>
+                        // </Box>
+                      )}
+                    </>
+                  );
+                })}
+              </>
+            </Grid>
+          ) : (
+            'No Videos found'
+          )}
+        </>
 
         <Heading fontSize="14px">Maps/Street view</Heading>
 
         <Box w="100%" height="300px" bg="brand.50">
           {/* map */}
+          <MapView
+            lat={data.latitude as number}
+            lng={data.longitude as number}
+          />
         </Box>
       </VStack>
     </>

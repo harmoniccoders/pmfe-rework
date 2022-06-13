@@ -16,17 +16,20 @@ import Icons from './Icons';
 import { FaCheck } from 'react-icons/fa';
 import LiveInspectionModal from 'lib/styles/customTheme/components/Modals/LiveInspectionModal';
 import InteractiveVideoModal from 'lib/styles/customTheme/components/Modals/InteractiveVideoModal';
-import { InspectionDateView } from 'types/api';
+import { InspectionDateView, PropertyView } from 'types/api';
 
 type Props = {
   date?: InspectionDateView;
+  data: PropertyView;
+  step: number;
+  setStep: any;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepOne = ({ date }: Props) => {
+const StepOne = ({ date, data, step, setStep }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -45,10 +48,23 @@ const StepOne = ({ date }: Props) => {
     <>
       <Flex h="100%" justifyContent="space-between" width="100%">
         <VStack w="8px" spacing="0.5rem">
-          <Circle size="2rem" border="1px solid #DCE1E7" p="0.2rem">
-            <Icon as={FaCheck} w="100%" color="brand.50" />
+          <Circle
+            size="2rem"
+            border={step >= 0 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
+            bgColor={step >= 0 ? '#2fdf84' : '#DCE1E7'}
+            p="0.2rem"
+          >
+            <Icon
+              as={FaCheck}
+              w="100%"
+              color={step >= 0 ? 'white' : 'brand.50'}
+            />
           </Circle>
-          <Box h="100%" w="2px" bgColor="#DCE1E7"></Box>
+          <Box
+            h="100%"
+            w="2px"
+            bgColor={step >= 0 ? '#2fdf84' : '#DCE1E7'}
+          ></Box>
         </VStack>
         <VStack
           // borderLeft="2px solid #DCE1E7"
@@ -64,7 +80,7 @@ const StepOne = ({ date }: Props) => {
           <Button
             variant="outline"
             width="100%"
-            fontSize="15px"
+            fontSize="13px"
             color="brand.900"
             justifyContent="flex-start"
             role="group"
@@ -85,7 +101,7 @@ const StepOne = ({ date }: Props) => {
           <Button
             variant="outline"
             width="100%"
-            fontSize="15px"
+            fontSize="13px"
             color="brand.900"
             justifyContent="flex-start"
             role="group"
@@ -113,15 +129,19 @@ const StepOne = ({ date }: Props) => {
           >
             <Box>
               <Box
-                width="70px"
-                height="70px"
+                width="40px"
+                height="40px"
                 borderRadius="50%"
                 border="1px solid #DCE1E7"
                 mr="5px"
                 overflow="hidden"
               >
                 <Image
-                  src="/assets/user-icon.png"
+                  src={
+                    (data.representative
+                      ?.profilePicture as unknown as string) ||
+                    '/assets/user-icon.png'
+                  }
                   alt="rep-image"
                   w="100%"
                   h="100%"
@@ -130,29 +150,29 @@ const StepOne = ({ date }: Props) => {
               </Box>
             </Box>
             <VStack width="100%" align="flex-start" spacing={2} pl="5px">
-              <Text fontSize="16px" fontWeight={500}>
+              <Text fontSize="13px" fontWeight={500}>
                 Speak with a representative
               </Text>
 
-              <Text fontSize="16px" fontWeight={600}>
-                Toluwani
+              <Text fontSize="13px" fontWeight={600}>
+                {data.representative?.firstName || 'No rep assigned yet'}
               </Text>
 
               <Text
                 as="a"
-                href="tel: +2348047848939"
-                fontSize="14px"
+                href={`tel: ${data.representative?.phoneNumber}`}
+                fontSize="13px"
                 color="brand.100"
               >
-                +2348047848939
+                {data.representative?.phoneNumber}
               </Text>
               <Text
                 as="a"
-                href="mailto: toluwani@propertymataaz.com"
-                fontSize="14px"
+                href={`mailto: ${data.representative?.email}`}
+                fontSize="13px"
                 color="brand.100"
               >
-                toluwani@propertymataaz.com
+                {data.representative?.email}
               </Text>
             </VStack>
           </HStack>
@@ -162,7 +182,13 @@ const StepOne = ({ date }: Props) => {
       {openModal ? (
         <InteractiveVideoModal open={isOpen} close={onClose} />
       ) : (
-        <LiveInspectionModal open={isOpen} close={onClose} date={date} />
+        <LiveInspectionModal
+          open={isOpen}
+          close={onClose}
+          date={date}
+          item={data}
+          setStep={setStep}
+        />
       )}
     </>
   );

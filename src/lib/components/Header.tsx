@@ -22,7 +22,6 @@ interface NavProps {
 
 const NavLink = ({ path, name, closeMenu }: NavProps) => {
   const router = useRouter();
-
   const getNavLinks = (name: string) => {
     if (router.pathname.startsWith(name)) return 'brand.100';
   };
@@ -43,6 +42,7 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
 };
 
 const Header = () => {
+  const router = useRouter();
   const user = Cookies.get('user');
   return (
     <Flex
@@ -51,6 +51,11 @@ const Header = () => {
       h="4.8rem"
       justifyContent="space-between"
       align="center"
+      display={
+        router.asPath === '/contact' || router.asPath === '/payment/validate'
+          ? 'none'
+          : 'flex'
+      }
     >
       <DesktopView user={user} />
       <MobileView user={user} />

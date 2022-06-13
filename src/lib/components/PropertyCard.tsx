@@ -22,7 +22,8 @@ import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
 import { Parameters } from 'openapi-client-axios';
 import { useOperationMethod } from 'react-openapi-client';
 import { useRouter } from 'next/router';
-import { PropertyView } from 'types/api';
+import { PropertyView, UserView } from 'types/api';
+import Cookies from 'js-cookie';
 
 type Props = {
   item: PropertyView;
@@ -31,6 +32,11 @@ type Props = {
 const iconStyle = {
   color: '#0042ff',
 };
+const users = Cookies.get('user') as unknown as string;
+let user: UserView;
+if (users !== undefined) {
+  user = JSON.parse(users);
+}
 
 const PropertyCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,6 +61,29 @@ const PropertyCard = ({ item }: Props) => {
   const router = useRouter();
   const curPage = router.asPath;
   const enquiry = router.asPath == '/enquires';
+
+  const [addEnquiry, { loading: isLoading, data: isData, error: isError }] =
+    useOperationMethod('Propertyaddenquiries{Id}');
+
+  const AddEnquireView = async () => {
+    const params: Parameters = {
+      Id: item.id as number,
+    };
+    try {
+      const result = await (await addEnquiry(params)).data;
+      console.log({ result });
+
+      if (result.status) {
+        enquiry && item.isForRent
+          ? router.push(`/rent/enquire/${item.id}`)
+          : enquiry && item.isForSale
+          ? router.push(`/buy/enquire/${item.id}`)
+          : router.push(`${curPage}/enquire/${item.id}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -210,13 +239,8 @@ const PropertyCard = ({ item }: Props) => {
                 variant="solid"
                 height="40px"
                 w="full"
-                onClick={
-                  enquiry && item.isForRent
-                    ? () => router.push(`/rent/enquire/${item.id}`)
-                    : enquiry && item.isForSale
-                    ? () => router.push(`/buy/enquire/${item.id}`)
-                    : () => router.push(`${curPage}/enquire/${item.id}`)
-                }
+                disabled={item.createdByUser?.id == user?.id ? true : false}
+                onClick={() => AddEnquireView()}
               >
                 Enquire
               </Button>
