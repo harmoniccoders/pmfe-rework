@@ -213,7 +213,8 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                 >
                   {item.createdByUser?.id == user?.id
                     ? 'Cannot contact self on owned property'
-                    : 'Contact seller'}
+                    : (item.isForSale && 'Contact seller') ||
+                      (item.isForRent && 'Contact landlord')}
                 </Button>
               ) : (
                 <Button

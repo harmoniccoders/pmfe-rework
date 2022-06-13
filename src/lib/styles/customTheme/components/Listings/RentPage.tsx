@@ -4,6 +4,8 @@ import {
   PropertyTitle,
   PropertyType,
   PropertyView,
+  RentCollectionType,
+  TenantType,
 } from 'types/api';
 import PageTabs from '../Generics/PageTabs';
 import MyRents from './MyRents';
@@ -12,12 +14,16 @@ function RentPage({
   data,
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
 }: {
   data: PropertyView[];
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any;
   getBanks: any;
 }) {
@@ -42,6 +48,8 @@ function RentPage({
           data={data}
           propertyTypes={propertyTypes}
           propertyTitles={propertyTitles}
+          propertyTenants={propertyTenants}
+          propertyCollection={propertyCollection}
           getStates={getStates}
           getBanks={getBanks}
         />

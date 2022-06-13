@@ -24,6 +24,8 @@ import {
   PropertyTitle,
   PropertyType,
   PropertyView,
+  RentCollectionType,
+  TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
@@ -33,6 +35,9 @@ type Props = {
   item: PropertyView;
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
+  getBanks: any;
   getStates: any;
 };
 
@@ -44,7 +49,10 @@ const ListingsCard = ({
   item,
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
+  getBanks,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
@@ -238,6 +246,9 @@ const ListingsCard = ({
         onClose={() => setUpdateModal(false)}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
+        propertyTenants={propertyTenants}
+        propertyCollection={propertyCollection}
+        getBanks={getBanks}
         getStates={getStates}
       />
     </>

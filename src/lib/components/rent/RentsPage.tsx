@@ -2,18 +2,22 @@ import { Box, Heading, SimpleGrid, useDisclosure } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { PropertyType, PropertyTitle } from 'types/api';
+import { PropertyType, PropertyTitle, RentCollectionType, TenantType } from 'types/api';
 import AddRentModal from 'lib/styles/customTheme/components/Modals/AddRentModal';
 import RentoutModal from 'lib/styles/customTheme/components/Modals/RentoutModal';
 
 const RentsPage = ({
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
 }: {
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any;
   getBanks: any;
 }) => {
@@ -57,6 +61,8 @@ const RentsPage = ({
         isClosed={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
+        propertyTenants={propertyTenants}
+        propertyCollection={propertyCollection}
         getStates={getStates}
         getBanks={getBanks}
       />

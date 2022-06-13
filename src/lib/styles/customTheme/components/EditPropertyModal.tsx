@@ -19,13 +19,17 @@ import {
 import EditPropertyForm from 'pages/sell/EditPropertyForm';
 import Form from 'pages/sell/Form';
 import { useState } from 'react';
-import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
+import { PropertyModel, PropertyTitle, PropertyType, RentCollectionType, TenantType } from 'types/api';
+import EditRentForm from './Listings/EditRentForm';
 
 interface EditPropertyProps {
   isOpen: boolean;
   onClose: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
+  getBanks: any[];
   getStates: any[];
   item: PropertyModel;
 }
@@ -35,6 +39,9 @@ function EditPropertyModal({
   onClose,
   propertyTitles,
   propertyTypes,
+  getBanks,
+  propertyTenants,
+  propertyCollection,
   getStates,
   item,
 }: EditPropertyProps) {
@@ -105,15 +112,31 @@ function EditPropertyModal({
 
         <ModalBody>
           <Box maxH="77vh" overflowY="auto" px={5}>
-            <EditPropertyForm
-              propertyTypes={propertyTypes}
-              propertyTitles={propertyTitles}
-              getStates={getStates}
-              formStep={formStep}
-              setFormStep={setFormStep}
-              onClose={onClose}
-              item={item}
-            />
+            {item.isForSale && (
+              <EditPropertyForm
+                propertyTypes={propertyTypes}
+                propertyTitles={propertyTitles}
+                getStates={getStates}
+                formStep={formStep}
+                setFormStep={setFormStep}
+                onClose={onClose}
+                item={item}
+              />
+            )}
+            {item.isForRent && (
+              <EditRentForm
+                propertyTypes={propertyTypes}
+                propertyTitles={propertyTitles}
+                propertyTenants={propertyTenants}
+                propertyCollection={propertyCollection}
+                getStates={getStates}
+                getBanks={getBanks}
+                formStep={formStep}
+                setFormStep={setFormStep}
+                onClose={onClose}
+                item={item}
+              />
+            )}
           </Box>
         </ModalBody>
       </ModalContent>

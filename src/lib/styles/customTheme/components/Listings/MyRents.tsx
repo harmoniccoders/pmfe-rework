@@ -8,23 +8,27 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import ListingsCard from 'lib/components/ListingsCard';
 import Pagination from 'lib/components/Pagination';
-import RentListingsCard from 'lib/components/RentListingsCard';
-import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
+import { PropertyTitle, PropertyType, PropertyView, RentCollectionType, TenantType } from 'types/api';
 import PageTabs from '../Generics/PageTabs';
 
 interface ListingTypes {
   data: any;
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any;
-  getBanks: any
+  getBanks: any;
 }
 
 function MyRents({
   data,
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
 }: ListingTypes) {
@@ -60,10 +64,12 @@ function MyRents({
                   return (
                     <>
                       <GridItem key={item.id}>
-                        <RentListingsCard
+                        <ListingsCard
                           item={item}
                           propertyTypes={propertyTypes}
                           propertyTitles={propertyTitles}
+                          propertyTenants={propertyTenants}
+                          propertyCollection={propertyCollection}
                           getStates={getStates}
                           getBanks={getBanks}
                         />

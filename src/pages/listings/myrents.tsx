@@ -3,17 +3,21 @@ import RentPage from 'lib/styles/customTheme/components/Listings/RentPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyTitle, PropertyType } from 'types/api';
+import { PropertyTitle, PropertyType, RentCollectionType, TenantType } from 'types/api';
 
 const myRents = ({
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
   listings,
 }: {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any;
   getBanks: any;
   listings: any;
@@ -23,6 +27,8 @@ const myRents = ({
       data={listings}
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
+      propertyTenants={propertyTenants}
+      propertyCollection={propertyCollection}
       getStates={getStates}
       getBanks={getBanks}
     />
@@ -51,6 +57,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
     const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
+     const propertyTenants = (
+       await _dataAccess.get('/api/Property/tenants/types')
+     ).data;
+     const propertyCollection = (
+       await _dataAccess.get('/api/Property/collection/types')
+     ).data;
     const getStates = (
       await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
@@ -70,6 +82,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       props: {
         propertyTypes,
         propertyTitles,
+        propertyTenants,
+        propertyCollection,
         getStates,
         listings,
         getBanks,

@@ -7,17 +7,26 @@ import {
   VStack,
   Link,
   OrderedList,
+  Heading,
+  SimpleGrid,
+  ListIcon,
+  List,
 } from '@chakra-ui/react';
-
+import { MdOutlinePrivacyTip } from 'react-icons/md';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
 import NextLink from 'next/link';
 
 const PrivacyPolicy = () => {
   return (
     <Box w="90%" mx="auto" py="5" textAlign="justify">
-      <Text>PRIVACY POLICY</Text>
+      <Heading color="brand.100" fontSize="2rem" display="flex" gap="3">
+        PRIVACY POLICY <MdOutlinePrivacyTip />
+      </Heading>
       <Divider my="5" borderColor="black" />
       <Box>
-        <Text mb="4">INTRODUCTION</Text>
+        <Text mb="4" fontWeight="600">
+          INTRODUCTION
+        </Text>
         <Text fontSize=".94rem" lineHeight="7">
           Welcome to Property mataaz! We are committed to protecting your
           personal information and ensuring your information is kept private and
@@ -41,7 +50,9 @@ const PrivacyPolicy = () => {
         </Text>
       </Box>
       <Box>
-        <Text mt="5">SUMMARY</Text>
+        <Text mt="5" fontWeight="600">
+          SUMMARY
+        </Text>
         <Box>
           <Text textDecoration="underline" my="4">
             Information that we collect from you
@@ -51,7 +62,7 @@ const PrivacyPolicy = () => {
             spacing="3"
             color="gray.700"
             lineHeight="7"
-            ml={["5" ,"10"]}
+            ml={['5', '10']}
           >
             <ListItem>
               We collect device-related information, server log information,
@@ -75,7 +86,7 @@ const PrivacyPolicy = () => {
             Why we collect your personal information
           </Text>
           <UnorderedList
-            ml={["5" ,"10"]}
+            ml={['5', '10']}
             fontSize=".94rem"
             spacing="1"
             color="gray.700"
@@ -97,7 +108,7 @@ const PrivacyPolicy = () => {
             Who we share your personal information with
           </Text>
           <UnorderedList
-            ml={["5" ,"10"]}
+            ml={['5', '10']}
             fontSize=".94rem"
             spacing="3"
             color="gray.700"
@@ -111,7 +122,9 @@ const PrivacyPolicy = () => {
           </UnorderedList>
         </Box>
         <Box>
-          <Text my="4">HOW YOU ACCEPT THIS POLICY</Text>
+          <Text my="4" fontWeight="600">
+            HOW YOU ACCEPT THIS POLICY
+          </Text>
           <Text fontSize=".94rem" lineHeight="7">
             By choosing to use the Platform, or otherwise providing us with
             Registration Information, you hereby consent to the processing of
@@ -125,59 +138,80 @@ const PrivacyPolicy = () => {
       </Box>
       <Box mt={['10', '16']}>
         <Box>
-          <Text mb="4">INFORMATION WE COLLECT AND WHY</Text>
+          <Text mb="4" fontWeight="600">
+            INFORMATION WE COLLECT AND WHY
+          </Text>
           <Text fontSize=".94rem" lineHeight="7">
             In order to provide a high-quality service, Property mataaz collects
             various types of information when you visit the Platform or sign-up
             as a User.
           </Text>
         </Box>
-        <Box fontSize=".94rem" my="4" lineHeight="7">
-          <Text textDecoration="underline" mb="4">
-            As a Visitor
-          </Text>
-          <Text>
-            We collect various types of anonymous information about visitors to
-            the Platform, such as device related information (browser type, IP
-            address) and server log information (date and time of day of your
-            visit). We also collect information that you input into the
-            Platform. We use this information to better understand our visitors
-            and our business and to enhance the Platform.
-          </Text>
-        </Box>
-        <Box fontSize=".94rem" my="4" lineHeight="7">
-          <Text textDecoration="underline" mb="4">
-            As a User
-          </Text>
-          <Text>
-            When you choose to create an account on the Platform, we will also
-            collect certain personal information such as:
-          </Text>
-          <OrderedList ml={["5" ,"10"]} fontSize=".98rem" my="4" color="gray.600">
-            <ListItem>First Name;</ListItem>
-            <ListItem>Last Name;</ListItem>
-            <ListItem>Phone Number;</ListItem>
-            <ListItem>Email;</ListItem>
-            <ListItem>Password;</ListItem>
-            <ListItem>Company name.</ListItem>
-          </OrderedList>
-          <Text>Collectively known as "Registration Information".</Text>
-        </Box>
-        <Box fontSize=".94rem" my="4" lineHeight="7">
-          <Text textDecoration="underline" mb="4">
-            Non-Registration Information
-          </Text>
-          <Text>
-            We may collect non-registration information about Users whenever
-            they interact with the Platform. Non-registration information may
-            include the browser name, the type of computer and technical
-            information about Users means of connection to the Platform, such as
-            the operating system and the Internet service providers utilized and
-            other similar information.
-          </Text>
-        </Box>
+        <SimpleGrid columns={[1, 2, 2, 3]} spacing="8" my="5">
+          <Box fontSize=".94rem" lineHeight="7" shadow="lg" p="7">
+            <Text
+              textDecoration="underline"
+              fontWeight="500"
+              color="brand.100"
+              mb="4"
+            >
+              As a Visitor
+            </Text>
+            <Text>
+              We collect various types of anonymous information about visitors
+              to the Platform, such as device related information (browser type,
+              IP address) and server log information (date and time of day of
+              your visit). We also collect information that you input into the
+              Platform. We use this information to better understand our
+              visitors and our business and to enhance the Platform.
+            </Text>
+          </Box>
+          <Box fontSize=".94rem" lineHeight="7" shadow="lg" p="7">
+            <Text
+              textDecoration="underline"
+              fontWeight="500"
+              color="brand.100"
+              mb="4"
+            >
+              As a User
+            </Text>
+            <Text>
+              When you choose to create an account on the Platform, we will also
+              collect certain personal information such as:
+            </Text>
+            <OrderedList ml={['5', '10']} fontSize=".98rem" color="gray.600">
+              <ListItem>First Name;</ListItem>
+              <ListItem>Last Name;</ListItem>
+              <ListItem>Phone Number;</ListItem>
+              <ListItem>Email;</ListItem>
+              <ListItem>Password;</ListItem>
+              <ListItem>Company name.</ListItem>
+            </OrderedList>
+            <Text>Collectively known as "Registration Information".</Text>
+          </Box>
+          <Box fontSize=".94rem" lineHeight="7" shadow="lg" p="7">
+            <Text
+              textDecoration="underline"
+              fontWeight="500"
+              color="brand.100"
+              mb="4"
+            >
+              Non-Registration Information
+            </Text>
+            <Text>
+              We may collect non-registration information about Users whenever
+              they interact with the Platform. Non-registration information may
+              include the browser name, the type of computer and technical
+              information about Users means of connection to the Platform, such
+              as the operating system and the Internet service providers
+              utilized and other similar information.
+            </Text>
+          </Box>
+        </SimpleGrid>
         <Box>
-          <Text mb="4">COOKIES & PIXELS</Text>
+          <Text my="4" fontWeight="600">
+            COOKIES & PIXELS
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -218,7 +252,9 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">HOW WE USE YOUR REGISTRATION INFORMATION</Text>
+          <Text my="4" fontWeight="600">
+            HOW WE USE YOUR REGISTRATION INFORMATION
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -243,7 +279,9 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">WHEN WE SHARE YOUR INFORMATION</Text>
+          <Text my="4" fontWeight="600">
+            WHEN WE SHARE YOUR INFORMATION
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -288,7 +326,9 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">CHILDREN</Text>
+          <Text my="4" fontWeight="600">
+            CHILDREN
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -316,7 +356,7 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">
+          <Text my="4" fontWeight="600">
             HOW YOU CAN ACCESS OR CHANGE YOUR REGISTRATION INFORMATION THAT WE
             HAVE COLLECTED
           </Text>
@@ -341,7 +381,9 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">PROTECTION OF REGISTRATION INFORMATION</Text>
+          <Text my="4" fontWeight="600">
+            PROTECTION OF REGISTRATION INFORMATION
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -368,7 +410,7 @@ const PrivacyPolicy = () => {
                 your Registration Information shall be:
               </Text>
               <UnorderedList
-                ml={["5" ,"10"]}
+                ml={['5', '10']}
                 spacing="3"
                 fontSize=".94rem"
                 my="4"
@@ -397,7 +439,9 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4">YOUR RIGHTS AS A USER</Text>
+          <Text my="4" fontWeight="600">
+            YOUR RIGHTS AS A USER
+          </Text>
           <VStack
             align="flex-start"
             fontSize=".94rem"
@@ -406,48 +450,55 @@ const PrivacyPolicy = () => {
           >
             <Box>
               <Text>Users of the Platform possess the following rights:</Text>
-              <UnorderedList
-                ml={["5" ,"10"]}
+              <List
+                ml={['5', '10']}
                 spacing="3"
                 fontSize=".94rem"
                 my="4"
                 color="gray.600"
               >
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request from Propertymataaz access to and
                   rectification or erasure of your Registration Information;
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to withdraw consent at any time which shall not affect
                   the processing of your
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Registration Information provided with consent before its
                   withdrawal;
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to lodge a complaint with the National Information
                   Technology Development Agency (NITDA);
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to object to the processing of your Registration
                   Information for the purpose of marketing;
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request for the deletion of your Registration
                   Information;
                 </ListItem>
                 <ListItem>
+                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request for your Registration Information which will
                   be provided in a structured, commonly used and
                   machine-readable format.
                 </ListItem>
-              </UnorderedList>
+              </List>
             </Box>
           </VStack>
         </Box>
         <Box>
-          <Text>THIRD PARTY WEBSITES</Text>
+          <Text fontWeight="600">THIRD PARTY WEBSITES</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             Users may find other content on our Platform that links to the sites
             and services of our partners, or other third parties. We do not
@@ -462,7 +513,7 @@ const PrivacyPolicy = () => {
           </Text>
         </Box>
         <Box>
-          <Text>ADVERTISING</Text>
+          <Text fontWeight="600">ADVERTISING</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             Ads appearing on the Platform may be delivered to Users by
             advertising partners, who may set cookies. These cookies allow the
@@ -475,7 +526,7 @@ const PrivacyPolicy = () => {
           </Text>
         </Box>
         <Box>
-          <Text>CHANGES TO THE POLICY</Text>
+          <Text fontWeight="600">CHANGES TO THE POLICY</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             We may modify this Privacy Policy over time. Any changes to the
             Privacy Policy will be reflected on this page and will become
@@ -489,7 +540,7 @@ const PrivacyPolicy = () => {
           </Text>
         </Box>
         <Box>
-          <Text>INTERNATIONAL VISITORS</Text>
+          <Text fontWeight="600">INTERNATIONAL VISITORS</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             This Service is hosted in Nigeria. If you are an international
             visitor, you should note that by providing your personal
@@ -501,7 +552,7 @@ const PrivacyPolicy = () => {
           </Text>
         </Box>
         <Box>
-          <Text>YOUR ACCEPTANCE OF THESE TERMS</Text>
+          <Text fontWeight="600">YOUR ACCEPTANCE OF THESE TERMS</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             By using the Platform, you signify your acceptance of this Privacy
             Policy. If you do not agree to this Privacy Policy, please do not
@@ -511,7 +562,7 @@ const PrivacyPolicy = () => {
           </Text>
         </Box>
         <Box pb="4">
-          <Text>CONTACTING US</Text>
+          <Text fontWeight="600">CONTACTING US</Text>
           <Text my="4" fontSize=".94rem" lineHeight="7">
             If you have any questions about this Privacy Policy, the practices
             of the Platform, or your dealings with the Platform, please contact

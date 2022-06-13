@@ -16,6 +16,8 @@ import {
   PropertyTitle,
   PropertyType,
   MediaModel,
+  RentCollectionType,
+  TenantType,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { useEffect, useRef, useState } from 'react';
@@ -37,14 +39,16 @@ import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
-import { rentFrequency } from 'lib/Utils/RentFrequency';
-import { tenantTypes } from 'lib/Utils/TenantType';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
+import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
   getStates: any[];
   getBanks: any[];
   formStep: number;
@@ -56,6 +60,8 @@ interface Props {
 const RentForm = ({
   propertyTitles,
   propertyTypes,
+  propertyTenants,
+  propertyCollection,
   getStates,
   getBanks,
   formStep,
@@ -342,22 +348,22 @@ const RentForm = ({
                     defaultValue=""
                     register={register}
                   />
-                  <PrimaryTextArea<PropertyModel>
-                    label="Description"
+                  <PrimaryEditor<PropertyModel>
                     name="description"
+                    control={control}
+                    label="Description"
+                    register={register}
+                    defaultValue=""
                     error={errors.description}
-                    defaultValue=""
-                    minH="200px"
-                    register={register}
                   />
-                  <PrimaryInput<PropertyModel>
-                    label="Rent (Per year)"
-                    name="price"
-                    error={errors.price}
-                    placeholder="₦00.00"
-                    type="number"
+                  <CurrencyField<PropertyModel>
+                    placeholder="₦0.00"
                     defaultValue=""
                     register={register}
+                    error={errors.price}
+                    name={'price'}
+                    control={control}
+                    label="Rent (Per year)"
                   />
                   <Box>
                     <Flex
@@ -543,10 +549,11 @@ const RentForm = ({
                       register={register}
                       error={errors.tenantTypeId}
                       control={control}
-                      options={tenantTypes}
+                      options={propertyTenants}
                       fontSize="sm"
                       placeholder="Choose an option"
                     />
+
                     <PrimarySelectKey<PropertyModel>
                       label="Annual Income Bracket"
                       name="budget"
@@ -568,7 +575,7 @@ const RentForm = ({
                       register={register}
                       error={errors.rentCollectionTypeId}
                       control={control}
-                      options={rentFrequency}
+                      options={propertyCollection}
                       fontSize="sm"
                       placeholder="Choose option: weekly, monthly, yearly"
                     />
