@@ -51,11 +51,7 @@ const sell = ({
           </Flex>
 
           <Grid
-            templateColumns={[
-              'repeat(1,1fr)',
-              'repeat(2,1fr)',
-              'repeat(3,1fr)',
-            ]}
+            templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
             columnGap="8"
             rowGap={5}
           >
@@ -81,16 +77,15 @@ const sell = ({
         <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
           <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
             <Box
-              w={['90%', '100%','75%']}
-              h={['100%', '100%','75%']}
-              mt={{ base: '2rem', lg: '4.5rem' }}
+              w={['90%', '75%','50%']}
+              h={['100%', '75%','48%']}
+              mt={{ base: '2rem', lg: '.5rem' }}
+              mb={['0','0','4rem']}
               borderRadius="8px"
             >
               <Center>
                 <Image
                 src="/assets/admin.png"
-                h="100%"
-                w="100%"
                 objectFit="contain"
               />
               </Center>
