@@ -26,8 +26,8 @@ const LiveInspectionModal = ({ open, close, date }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Modal isOpen={open} onClose={close}>
-      <ModalOverlay />
-      <ModalContent>
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
+      <ModalContent borderRadius="0px">
         <ModalHeader>
           <Flex width="100%" alignItems="center" justifyContent="space-between">
             <Text color="brand.100">Schedule Inspection</Text>

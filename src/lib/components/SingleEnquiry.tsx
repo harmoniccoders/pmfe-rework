@@ -34,7 +34,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
           px="1.2rem"
         >
           <StepOne date={date} />
-          <StepTwo />
+          <StepTwo data={data} />
           <StepThree />
         </VStack>
 

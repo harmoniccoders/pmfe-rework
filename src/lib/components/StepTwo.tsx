@@ -13,14 +13,17 @@ import React from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
 import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
+import { PropertyModel } from 'types/api';
 
-type Props = {};
+type Props = {
+  data: PropertyModel;
+};
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepTwo = (props: Props) => {
+const StepTwo = ({ data }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
@@ -92,7 +95,7 @@ const StepTwo = (props: Props) => {
         </VStack>
       </Flex>
 
-      <SubmitApplicationModal onClose={onClose} isOpen={isOpen} />
+      <SubmitApplicationModal onClose={onClose} isOpen={isOpen} data={data} />
     </>
   );
 };
