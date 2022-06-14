@@ -1,6 +1,5 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import CleanProperty from '../clean/CleanProperty';
 
 function Landlord({ data }: { data: any }) {

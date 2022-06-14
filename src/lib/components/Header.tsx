@@ -93,7 +93,7 @@ const DesktopView = ({ user }: { user: any }) => {
           <LoggedIn />
         ) : (
           <>
-            <NavLink name="Get Rent Loan" path="/get-rent-loan" />
+            <NavLink name="Get Rent Loan" path="/contact" />
             <NavLink name="Login" path="/login" />
             <NavLink name="Sign Up" path="/register" />
           </>

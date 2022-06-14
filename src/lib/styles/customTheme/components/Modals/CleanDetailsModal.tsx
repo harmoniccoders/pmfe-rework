@@ -10,7 +10,6 @@ import {
   Text,
   Image,
   Box,
-  Badge,
   Heading,
   Grid,
   GridItem,
@@ -47,7 +46,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     const params: Parameters = {
       id: item.id as number,
     };
-    console.log(params);
+
     try {
       const result = await (await reject(params)).data;
       if (result.status) {
@@ -65,10 +64,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       });
       onClose();
       return;
-    } catch (err) {
-      //   onClose();
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const AcceptQuote = async () => {
     const params: Parameters = {
@@ -92,10 +88,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       });
       onClose();
       return;
-    } catch (err) {
-      //   onClose();
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -104,8 +97,6 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-
-      // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
@@ -156,7 +147,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                 <Text fontSize=".8rem" fontWeight="400">
                   <>
                     {naira(
-                      (item?.cleaningQuote.quote as unknown as number) || 0
+                      (item?.cleaningQuote?.quote as unknown as number) || 0
                     )}
                   </>
                 </Text>

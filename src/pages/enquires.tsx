@@ -1,9 +1,7 @@
 import { Box, Flex, Grid, GridItem, Heading, HStack } from '@chakra-ui/react';
-import axios from 'axios';
 import Pagination from 'lib/components/Pagination';
 import PropertyCard from 'lib/components/PropertyCard';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
@@ -11,7 +9,6 @@ import { PropertyView, UserEnquiry } from 'types/api';
 
 const enquires = ({ data }: { data: any }) => {
   const result = data.value;
-  console.log({ result });
 
   return (
     <Box w="90%" mx="auto" mt="3rem">

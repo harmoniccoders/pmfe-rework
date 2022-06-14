@@ -5,25 +5,8 @@ import { GetServerSideProps } from 'next';
 import { PropertyTitle, PropertyType } from 'types/api';
 import MyRequests from 'lib/components/my-rent/MyRequests';
 
-const requests = ({
-  propertyTitles,
-  propertyTypes,
-  getStates,
-  sessions,
-}: {
-  propertyTitles: PropertyTitle[];
-  propertyTypes: PropertyType[];
-  getStates: any;
-  sessions: any;
-}) => {
-  return (
-    <MyRequests
-      data={sessions}
-      propertyTypes={propertyTypes}
-      propertyTitles={propertyTitles}
-      getStates={getStates}
-    />
-  );
+const requests = ({ data }: { data: any }) => {
+  return <MyRequests data={data} />;
 };
 
 export default requests;
@@ -46,29 +29,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
-    const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
-    const getStates = (
-      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
-    ).data;
-
-    const sessions = (
-      await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
+    const data = (
+      await _dataAccess.get(`/api/PropertyRequest/list/user?${url}`)
     ).data;
 
     return {
       props: {
-        propertyTypes,
-        propertyTitles,
-        getStates,
-        sessions,
+        data,
       },
     };
   } catch (error) {
     return {
       props: {
         propertyTypes: {},
-        sessions: [],
+        data: [],
       },
     };
   }
