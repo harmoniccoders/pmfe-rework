@@ -18,7 +18,6 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
           columnGap="3"
           rowGap={5}
           width="100%"
-          border="2px solid blue"
         >
           <>
             {result.map((item) => {
