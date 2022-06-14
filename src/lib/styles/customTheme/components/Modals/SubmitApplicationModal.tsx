@@ -141,7 +141,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       const result = await (await SubmitApplication(undefined, data)).data;
       console.log({ result });
 
-      if (result.status !== 400) {
+      if (result.status) {
         setStep(2);
         // setGetResult(result.data);
         addToast(result.message, {
