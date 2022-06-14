@@ -80,8 +80,8 @@ const sell = ({
         <Grid templateColumns="repeat(1, 1fr)" w="100%" h="100%">
           <Stack alignItems="center" justifyContent="center" spacing={[3, 6]}>
             <Box
-              w={['90%', '75%','50%']}
-              h={['100%', '75%','48%']}
+              w={['90%', '75%','45%']}
+              h={['100%', '75%','45%']}
               mt={{ base: '2rem', lg: '.5rem' }}
               mb={['0','0','4rem']}
               borderRadius="8px"

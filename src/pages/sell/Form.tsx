@@ -224,7 +224,6 @@ const Form = ({
 
   const { addToast } = useToasts();
   const router = useRouter();
-
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
