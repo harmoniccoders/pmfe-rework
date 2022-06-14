@@ -65,11 +65,13 @@ function MyRents({
             </Flex>
 
             <Grid
-              templateColumns={{
-                base: 'repeat(1,1fr)',
-                md: 'repeat(2,1fr)',
-                lg: 'repeat(3,1fr)',
-              }}
+              templateColumns={[
+                'repeat(1,1fr)',
+                'repeat(1,1fr)',
+                'repeat(3,1fr)',
+              
+              ]}
+              
               columnGap="6"
               rowGap={5}
             >
@@ -89,11 +91,11 @@ function MyRents({
                 );
               })}
             </Grid>
-              <Box my="2rem" >
-                <Flex justifyContent="center">
-                  <Pagination data={data} />
-                </Flex>
-              </Box>
+            <Box my="2rem">
+              <Flex justifyContent="center">
+                <Pagination data={data} />
+              </Flex>
+            </Box>
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>

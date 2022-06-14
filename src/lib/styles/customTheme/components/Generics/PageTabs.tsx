@@ -18,6 +18,7 @@ function PageTabs({ tabName, tabTitle }: PageTypes) {
       justify="center"
       cursor="pointer"
       fontWeight="bold"
+      fontSize={['.9rem', 'normal']}
       borderRadius="8px"
       color={
         router.pathname.startsWith(`/${tabName}`) ? 'brand.100' : 'inherit'

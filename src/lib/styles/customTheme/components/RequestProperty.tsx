@@ -15,6 +15,7 @@ import axios from 'axios';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTypes: PropertyType[];
@@ -86,7 +87,7 @@ const Form = ({ propertyTypes, getStates }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/listings/requests');
+        router.push('/requests');
         return;
       }
       addToast(result.message, {
@@ -106,34 +107,50 @@ const Form = ({ propertyTypes, getStates }: Props) => {
               gap={[2, 10]}
             >
               <Box w="full">
-                <PrimarySelectKey<PropertyRequestInput>
-                  label="Type"
-                  name="propertyTypeId"
+                <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.propertyTypeId}
-                  control={control}
-                  options={propertyTypes}
+                  label="Type"
                   placeholder="Choose a Property"
+                  name="propertyTypeId"
+                  options={
+                    <>
+                      {propertyTypes.map((x: PropertyType) => {
+                        return <option value={x.id}>{x.name}</option>;
+                      })}
+                    </>
+                  }
                 />
 
-                <StateSelect<PropertyRequestInput>
-                  label="State"
-                  name="state"
+                <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.state}
-                  control={control}
-                  options={getStates}
+                  label="State"
                   placeholder="Which state in Nigeria is your property located"
+                  name="state"
+                  options={
+                    <>
+                      {getStates.map((x: any) => {
+                        return <option value={x.name}>{x.name}</option>;
+                      })}
+                    </>
+                  }
                 />
+
                 {getValues('state') !== undefined ? (
-                  <StateSelect<PropertyRequestInput>
-                    label="Area"
-                    name="lga"
+                  <PrimarySelect<PropertyRequestInput>
                     register={register}
                     error={errors.lga}
-                    control={control}
-                    options={lgas}
-                    placeholder="Choose a Local Government"
+                    label="LGA"
+                    placeholder="Local Government Area"
+                    name="lga"
+                    options={
+                      <>
+                        {lgas.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
                 ) : null}
                 <PrimaryTextArea<PropertyRequestInput>

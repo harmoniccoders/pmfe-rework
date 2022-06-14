@@ -16,8 +16,7 @@ const Services = () => {
   return (
     <Grid
       templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)']}
-      // flexWrap="wrap"
-      // justifyContent="center"
+      
       py={[5, 14]}
       w="90%"
       mx="auto"
