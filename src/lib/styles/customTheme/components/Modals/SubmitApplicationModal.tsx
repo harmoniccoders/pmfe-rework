@@ -40,6 +40,8 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
 
   const [formStep, setFormStep] = useState<number>(0);
 
+  // const [getResult, setGetResult] = useState([]);
+
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
     register: yup.object({
@@ -141,6 +143,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
 
       if (result.status !== 400) {
         setStep(2);
+        // setGetResult(result.data);
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
