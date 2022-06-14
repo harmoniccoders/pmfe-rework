@@ -30,13 +30,14 @@ import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 type Props = {
   onClose: any;
   isOpen: boolean;
-  data: PropertyModel;
+  data: any;
   setStep: Dispatch<SetStateAction<number>>;
 };
 
 const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
+  // console.log({ data });
 
   const [formStep, setFormStep] = useState<number>(0);
 
@@ -82,6 +83,8 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   if (users !== undefined) {
     user = JSON.parse(users);
   }
+
+  let propertyId = data.id;
 
   const {
     register,
@@ -136,6 +139,8 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
           data.register?.dateOfBirth as unknown as Date
         ).toLocaleDateString())
       : null;
+    data.propertyId = propertyId;
+    data.applicationTypeId = 1;
     console.log({ data });
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
@@ -155,6 +160,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
         appearance: 'error',
         autoDismiss: true,
       });
+      onClose();
       return;
     } catch (error) {
       console.log(error);
@@ -174,7 +180,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
     },
     {
       id: 3,
-      name: 'Status',
+      name: 'Divorced',
     },
     {
       id: 4,
@@ -182,7 +188,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
     },
     {
       id: 5,
-      name: "Can't say",
+      name: 'Others',
     },
   ];
 
