@@ -102,7 +102,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />
           <NavLink
             name="Get Rent Loan"
-            path="/get-rent-loan"
+            path="/contact"
             closeMenu={closeMenu}
           />
         </VStack>

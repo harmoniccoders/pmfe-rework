@@ -42,25 +42,26 @@ function EditPropertyModal({
   getStates,
   item,
 }: EditPropertyProps) {
-  // console.log({ propertyTypes });
+  
   const [formStep, setFormStep] = useState(0);
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       motionPreset="slideInBottom"
+      size="lg"
       isCentered
-      // scrollBehavior="outside"
+      
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['100%','75%', '80%']}
-        overflow="hidden"
+        
+        overflowY="scroll"
         maxH="100vh"
-        maxW={['100%',"40%"]}
+        
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -108,7 +109,7 @@ function EditPropertyModal({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box px={5}>
             {item.isForSale && (
               <EditPropertyForm
                 propertyTypes={propertyTypes}

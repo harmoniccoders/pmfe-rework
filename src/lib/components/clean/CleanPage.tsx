@@ -14,8 +14,7 @@ const CleanPage = ({
 }) => {
   const [isOpen, setIsopen] = useState<boolean>(false);
   const requests = cleanRequests.value;
-  console.log(requests);
-
+  
   const closeModal = () => {
     setIsopen(false);
   };

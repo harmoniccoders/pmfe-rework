@@ -156,7 +156,12 @@ function Listed({ data }: { data: any }) {
             align="flex-start"
             spacing={5}
             transition="all .5s ease"
-            display={openFilter ? 'flex' : 'none'}
+            display={{
+              base: openFilter ? 'flex' : 'none',
+              md: openFilter ? 'flex' : 'none',
+              lg: 'flex',
+              xl: 'flex',
+            }}
           >
             <Grid
               templateColumns="repeat(4,1fr)"

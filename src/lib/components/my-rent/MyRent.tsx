@@ -1,24 +1,19 @@
-import { Box, Center, Flex, Heading, HStack, Text } from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import MyListings from 'lib/styles/customTheme/components/Listings/MyListings';
 import {
-  PropertyModel,
-  PropertyTitle,
-  PropertyType,
-  PropertyView,
-} from 'types/api';
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  Text,
+} from '@chakra-ui/react';
+import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
+import { PropertyView, UserEnquiry } from 'types/api';
+import Pagination from '../Pagination';
+import PropertyCard from '../PropertyCard';
 
-function MyRent({
-  data,
-  propertyTitles,
-  propertyTypes,
-  getStates,
-}: {
-  data: PropertyView[];
-  propertyTypes: PropertyType[];
-  propertyTitles: PropertyTitle[];
-  getStates: any;
-}) {
+function MyRent({ data }: { data: any }) {
+  const result = data.value;
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">
@@ -37,19 +32,39 @@ function MyRent({
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>
-        {/* <Listed data={data} type="" /> */}
-        <Box>
-          <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
-            Enquiries
-          </Text>
-          {/* {requests.length > 0 ? (
-            <CleanProperty requests={requests} />
-          ) : ( */}
-          <Text mt="3" fontWeight="medium" fontSize=".9rem">
-            You currently do not have any enquiries listed...
-          </Text>
-          {/* )} */}
-        </Box>
+        <>
+          {result?.length <= 0 ? (
+            <Heading fontSize="16px" lineHeight={1.5}>
+              Sorry! There's no property at this time please check back later
+            </Heading>
+          ) : (
+            <Box>
+              <Grid
+                templateColumns={[
+                  'repeat(1,1fr)',
+                  'repeat(1,1fr)',
+                  'repeat(2,1fr)',
+                  'repeat(3,1fr)',
+                ]}
+                columnGap="6"
+                rowGap={5}
+              >
+                {result.map((item: UserEnquiry) => {
+                  return (
+                    <GridItem key={item.id}>
+                      <PropertyCard item={item.property as PropertyView} />
+                    </GridItem>
+                  );
+                })}
+              </Grid>
+              <GridItem my="2rem" colStart={1} colEnd={4}>
+                <Flex justifyContent="center">
+                  <Pagination data={data} />
+                </Flex>
+              </GridItem>
+            </Box>
+          )}
+        </>
       </Box>
     </Box>
   );
