@@ -22,7 +22,7 @@ import { PropertyView } from 'types/api';
 
 const index = ({ data }: { data: any }) => {
   const result = data.value;
-  console.log({ result });
+  // console.log({ result });
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearch, setIsSearch] = useState(false);
   const router = useRouter();

@@ -51,6 +51,7 @@ const Header = () => {
       h="4.8rem"
       justifyContent="space-between"
       align="center"
+      // bgColor="#fafbff"
       display={
         router.asPath === '/contact' || router.asPath === '/payment/validate'
           ? 'none'
