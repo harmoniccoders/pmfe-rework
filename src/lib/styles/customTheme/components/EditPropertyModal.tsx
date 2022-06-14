@@ -3,23 +3,20 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
-  Button,
   Text,
-  Image,
   Box,
-  Badge,
-  Heading,
-  Grid,
-  GridItem,
-  VStack,
 } from '@chakra-ui/react';
-import EditPropertyForm from 'pages/sell/EditPropertyForm';
-import Form from 'pages/sell/Form';
+import EditPropertyForm from 'lib/components/sell/EditPropertyForm';
 import { useState } from 'react';
-import { PropertyModel, PropertyTitle, PropertyType, RentCollectionType, TenantType } from 'types/api';
+import {
+  PropertyModel,
+  PropertyTitle,
+  PropertyType,
+  RentCollectionType,
+  TenantType,
+} from 'types/api';
 import EditRentForm from './Listings/EditRentForm';
 
 interface EditPropertyProps {

@@ -50,7 +50,11 @@ const drafts = ({
             </Text>
           </Flex>
 
-          <Grid templateColumns={["repeat(1,1fr)","repeat(3,1fr)"]} columnGap={["4","8"]} rowGap={5}>
+          <Grid
+            templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
+            columnGap={['4', '8']}
+            rowGap={5}
+          >
             <>
               {result.map((item: PropertyView) => {
                 return (
@@ -61,6 +65,8 @@ const drafts = ({
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
                         getStates={getStates}
+                        propertyTenants={[]}
+                        propertyCollection={[]}
                       />
                     </GridItem>
                   </>

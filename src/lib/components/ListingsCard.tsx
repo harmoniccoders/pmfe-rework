@@ -37,8 +37,8 @@ type Props = {
   propertyTypes: PropertyTitle[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getBanks: any;
-  getStates: any;
+  getBanks?: any;
+  getStates?: any;
 };
 
 const iconStyle = {

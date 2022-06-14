@@ -80,6 +80,8 @@ function MyListings({
                           propertyTypes={propertyTypes}
                           propertyTitles={propertyTitles}
                           getStates={getStates}
+                          propertyTenants={[]}
+                          propertyCollection={[]}
                         />
                       </GridItem>
                     </>

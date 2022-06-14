@@ -112,9 +112,11 @@ const ApplicationForm = ({ formStep, setFormStep, setStep, close }: Props) => {
   };
 
   const onSubmit = async (data: ApplicationModel) => {
-    data.register.dateOfBirth = new Date(
-      data.register?.dateOfBirth as unknown as Date
-    ).toLocaleDateString();
+    data.register
+      ? (data.register.dateOfBirth = new Date(
+          data.register?.dateOfBirth as unknown as Date
+        ).toLocaleDateString())
+      : null;
     console.log({ data });
     try {
       const result = await (await SubmitApplication(undefined, data)).data;

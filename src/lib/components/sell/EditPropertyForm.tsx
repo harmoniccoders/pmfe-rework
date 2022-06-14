@@ -25,18 +25,16 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
+import { Parameters } from 'openapi-client-axios';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
@@ -46,20 +44,22 @@ interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   getStates: any[];
+  item: PropertyModel;
   formStep: number;
   setFormStep: any;
   onClose: () => void;
 }
-const Form = ({
+const EditPropertyForm = ({
   propertyTitles,
   propertyTypes,
   getStates,
   formStep,
   setFormStep,
+  item,
   onClose,
 }: Props) => {
   const [PropertyCreate, { loading: isLoading, data, error }] =
-    useOperationMethod('Propertycreate');
+    useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
@@ -74,7 +74,7 @@ const Form = ({
     name: yup.string().required(),
     price: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number().required(),
+      then: yup.number(),
     }),
   });
 
@@ -91,14 +91,28 @@ const Form = ({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      isForSale: true,
+      id: item.id,
+      isActive: item.isActive,
+      isForSale: item.isForSale,
+      isDraft: item.isDraft,
+      isForRent: item.isForRent,
+      name: item.name,
+      propertyTypeId: item.propertyTypeId,
+      title: item.title,
+      state: item.state,
+      lga: item.lga,
+      area: item.area,
+      address: item.address,
+      description: item.description,
+      sellMyself: item.sellMyself,
+      price: item.price,
+      numberOfBathrooms: item.numberOfBathrooms,
+      numberOfBedrooms: item.numberOfBedrooms,
     },
   });
 
   watch('numberOfBathrooms');
   watch('numberOfBedrooms');
-
-  // console.log(watch('description'));
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -108,6 +122,8 @@ const Form = ({
   const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
+  const [selectedId, setSelectedId] = useState<Number>();
+  console.log({ selectedId });
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -225,6 +241,28 @@ const Form = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
+  const [deleteItem, { loading, data: isData, error: isError }] =
+    useOperationMethod('Mediadelete{id}');
+
+  useEffect(() => {
+    const deleteMedia = async () => {
+      const params: Parameters = {
+        id: selectedId as number,
+      };
+
+      try {
+        const result = await (await deleteItem(params)).data;
+        if (result.status) {
+          console.log({ result });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    deleteMedia();
+    getValues('mediaFiles');
+  }, [selectedId]);
+
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -235,7 +273,7 @@ const Form = ({
     console.log('here');
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      console.log(results);
+      // console.log(results);
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       return values;
@@ -246,8 +284,7 @@ const Form = ({
   };
 
   const onSubmit = async (data: PropertyModel) => {
-    await getLongAndLat(data);
-    console.log(data.latitude);
+    getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
@@ -255,7 +292,7 @@ const Form = ({
       const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
       if (result.status != 400) {
-        addToast(result.message, {
+        addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -333,6 +370,7 @@ const Form = ({
                       </>
                     }
                   />
+
                   {getValues('state') !== undefined ? (
                     <PrimarySelect<PropertyModel>
                       register={register}
@@ -389,14 +427,8 @@ const Form = ({
                               label={'Help me sell'}
                               value={'false'}
                             />
-
-                            <Tooltip
-                              placement="top"
-                              label="When we help you sell, your property is listed as verified."
-                            >
-                              <Box as="span" cursor="pointer">
-                                <FaInfoCircle />
-                              </Box>
+                            <Tooltip label="When we help you sell, your property is listed as verified.">
+                              <FaInfoCircle />
                             </Tooltip>
                           </Flex>
                         </>
@@ -409,7 +441,7 @@ const Form = ({
                 <>
                   <CurrencyField<PropertyModel>
                     placeholder="₦0.00"
-                    defaultValue=""
+                    defaultValue={item.price}
                     register={register}
                     error={errors.price}
                     name={'price'}
@@ -447,9 +479,72 @@ const Form = ({
                       //@ts-ignore
                       ref={widgetApi}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                        }}
+                                      />
+                                    </Box>
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
                           {uploadedMedia
                             .filter((m) => m.isImage)
                             .map((item: any) => {
@@ -462,6 +557,7 @@ const Form = ({
                                     bgColor="brand.50"
                                     flexShrink={0}
                                     overflow="hidden"
+                                    pos="relative"
                                   >
                                     <Image
                                       src={item.url}
@@ -508,6 +604,55 @@ const Form = ({
                       //@ts-ignore
                       ref={widgetApis}
                     />
+                    <>
+                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {item.mediaFiles
+                            .filter((m) => m.isVideo)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box role="group" pos="relative">
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setSelectedId(item.id);
+                                        }}
+                                      />
+                                    </Box>
+                                    <video width="150px" height="150px">
+                                      <source
+                                        src={item.url as string}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support this video
+                                    </video>
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      )}
+                    </>
                     {uploadedMedia.length > 0 && (
                       <>
                         <HStack w="full" spacing="1rem" overflow="auto">
@@ -569,4 +714,4 @@ const Form = ({
   );
 };
 
-export default Form;
+export default EditPropertyForm;

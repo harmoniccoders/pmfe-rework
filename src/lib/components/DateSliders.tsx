@@ -53,7 +53,7 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
     },
   });
 
-  const [selctedDate, setSelectedDate] = useState(null);
+  const [selctedDate, setSelectedDate] = useState<InspectionDateView>();
   setValue('inspectionDateId', selctedDate?.id);
 
   const onSubmit = async (data: InspectionModel) => {
@@ -126,13 +126,15 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
               name="inspectionTimeId"
               options={
                 <>
-                  {selctedDate.times.map((x: InspectionTimeView) => {
-                    return (
-                      <option value={x.id}>
-                        {moment(x.time).format('LT')}
-                      </option>
-                    );
-                  })}
+                  {selctedDate.times
+                    ? selctedDate.times.map((x: InspectionTimeView) => {
+                        return (
+                          <option value={x.id}>
+                            {moment(x.time).format('LT')}
+                          </option>
+                        );
+                      })
+                    : null}
                 </>
               }
             />

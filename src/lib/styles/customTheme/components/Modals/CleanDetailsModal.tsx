@@ -25,11 +25,12 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { Parameters } from 'openapi-client-axios';
+import naira from '../Generics/Naira';
 
 type Props = {
   isOpen?: any;
   onClose?: any;
-  item: CleaningView;
+  item: CleaningView | any;
 };
 
 const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
@@ -153,8 +154,11 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   Quote
                 </Text>
                 <Text fontSize=".8rem" fontWeight="400">
-                  &#8358;
-                  {item.cleaningQuote !== null ? item.cleaningQuote?.quote : 0}
+                  <>
+                    {naira(
+                      (item?.cleaningQuote.quote as unknown as number) || 0
+                    )}
+                  </>
                 </Text>
               </Box>
               <Box>

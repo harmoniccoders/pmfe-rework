@@ -3,20 +3,12 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
-  Button,
   Text,
-  Image,
   Box,
-  Badge,
-  Heading,
-  Grid,
-  GridItem,
-  VStack,
 } from '@chakra-ui/react';
-import Form from 'pages/sell/Form';
+import Form from 'lib/components/sell/Form';
 import { useState } from 'react';
 import { PropertyTitle, PropertyType } from 'types/api';
 
@@ -35,7 +27,6 @@ function AddPropertyModal({
   propertyTypes,
   getStates,
 }: AddPropertyProps) {
-  // console.log({ propertyTypes });
   const [formStep, setFormStep] = useState(0);
   return (
     <Modal
@@ -43,7 +34,6 @@ function AddPropertyModal({
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-      // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
