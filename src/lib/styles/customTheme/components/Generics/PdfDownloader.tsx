@@ -20,7 +20,11 @@ const PdfDownloader = ({ rootElementId, downloadFileName }: props) => {
   };
 
   return (
-    <Button variant="outline" color="white" onClick={downloadPdfDocument}>
+    <Button
+      variant="outline"
+      color={['brand.100', 'white']}
+      onClick={downloadPdfDocument}
+    >
       Download Receipt
     </Button>
   );

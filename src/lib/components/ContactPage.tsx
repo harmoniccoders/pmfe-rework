@@ -86,7 +86,7 @@ const ContactPage = () => {
         h="full"
         align="center"
         justify="center"
-        display="block"
+        display={['none', 'block']}
         overflow="hidden"
         pos="relative"
       >
@@ -181,8 +181,8 @@ const ContactPage = () => {
           </Box>
         </Carousel>
       </Flex>
-      <Flex w="50%" align="center">
-        <Box w="70%" mx="auto">
+      <Flex w={['full', '50%']} align="center">
+        <Box w={['80%', '70%']} mx="auto">
           <Box>
             <Image />
           </Box>
@@ -232,7 +232,7 @@ const ContactPage = () => {
           </form>
 
           <Box display="block">
-            <HStack spacing={3} justify="center" px="2rem">
+            <HStack spacing={3} justify="center" px="2rem" flexWrap="wrap">
               <Flex align="center">
                 <Circle
                   bgColor="brand.100"

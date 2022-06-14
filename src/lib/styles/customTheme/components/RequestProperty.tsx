@@ -14,6 +14,7 @@ import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
 
 interface Props {
   propertyTypes: PropertyType[];
@@ -145,12 +146,14 @@ const Form = ({ propertyTypes, getStates }: Props) => {
                 />
               </Box>
               <Box w="full">
-                <PrimaryInput<PropertyRequestInput>
-                  label="Budget"
-                  name="budget"
-                  error={errors.budget}
+                <CurrencyField<PropertyRequestInput>
+                  placeholder="₦0.00"
                   defaultValue=""
                   register={register}
+                  error={errors.budget}
+                  name={'budget'}
+                  control={control}
+                  label="Budget"
                 />
                 <NumberCounter
                   valueName="numberOfBedRooms"

@@ -18,6 +18,7 @@ function RequestPage({
           lineHeight={1.5}
           mb="2rem"
           opacity="0"
+          display={['none', 'block']}
           pointerEvents="none"
         >
           Find a property to buy with the safety of 103% money back guarantee

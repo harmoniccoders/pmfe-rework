@@ -77,6 +77,7 @@ function Validate() {
             justify="center"
             pl="2rem"
             zIndex="2"
+            display={['none', 'flex']}
             flexDirection="column"
           >
             <Image src="/assets/paids.gif" w="70%" />
@@ -100,40 +101,13 @@ function Validate() {
             bgColor="brand.100"
             left="37%"
             zIndex="1"
+            display={['none', 'block']}
           />
 
-          <Box w="60%" mx="auto" id="receipt">
-            <Receipt
-              name={`${transaction?.user?.firstName || ''}  ${
-                transaction?.user?.lastName || ''
-              }`}
-              amount={(transaction?.amount as unknown as number) || 0}
-              price={transaction?.property?.price || 0}
-              txRef={transaction?.paymentLog?.transactionReference || ''}
-              property={`1. ${transaction?.property?.name || ''} - ${
-                transaction?.property?.lga || ''
-              }`}
-              date={`${
-                moment(transaction?.paymentLog?.createdAt).format(
-                  'Do MMM YYYY'
-                ) || ''
-              } - ${
-                moment(
-                  new Date(
-                    transaction?.paymentLog?.createdAt as string
-                  ).getTime()
-                ).format('LT') || ''
-              }`}
-              card={`${transaction?.paymentLog?.card?.type || ''} - ${
-                transaction?.paymentLog?.card?.last4Digits || ''
-              }`}
-            />
-          </Box>
-
-          <div style={{ display: 'none' }}>
-            <Box w="90%" mx="auto" ref={componentRef}>
+          <Box w={['full', '60%']}>
+            <Box w="full" mx="auto" id="receipt">
               <Receipt
-                mr="auto"
+                mr={['auto', 'unset']}
                 name={`${transaction?.user?.firstName || ''}  ${
                   transaction?.user?.lastName || ''
                 }`}
@@ -144,9 +118,9 @@ function Validate() {
                   transaction?.property?.lga || ''
                 }`}
                 date={`${
-                  moment(transaction?.paymentLog?.createdAt).format(
-                    'Do MMM YYYY'
-                  ) || ''
+                  moment(
+                    new Date(transaction?.paymentLog?.createdAt as string)
+                  ).format('Do MMM YYYY') || ''
                 } - ${
                   moment(
                     new Date(
@@ -159,7 +133,57 @@ function Validate() {
                 }`}
               />
             </Box>
-          </div>
+
+            <div style={{ display: 'none' }}>
+              <Box w="90%" mx="auto" ref={componentRef}>
+                <Receipt
+                  mr="auto"
+                  name={`${transaction?.user?.firstName || ''}  ${
+                    transaction?.user?.lastName || ''
+                  }`}
+                  amount={(transaction?.amount as unknown as number) || 0}
+                  price={transaction?.property?.price || 0}
+                  txRef={transaction?.paymentLog?.transactionReference || ''}
+                  property={`1. ${transaction?.property?.name || ''} - ${
+                    transaction?.property?.lga || ''
+                  }`}
+                  date={`${
+                    moment(
+                      new Date(transaction?.paymentLog?.createdAt as string)
+                    ).format('Do MMM YYYY') || ''
+                  } - ${
+                    moment(
+                      new Date(
+                        transaction?.paymentLog?.createdAt as string
+                      ).getTime()
+                    ).format('LT') || ''
+                  }`}
+                  card={`${transaction?.paymentLog?.card?.type || ''} - ${
+                    transaction?.paymentLog?.card?.last4Digits || ''
+                  }`}
+                />
+              </Box>
+            </div>
+            <HStack
+              gap={6}
+              justify="space-between"
+              mb="2rem"
+              w="full"
+              px={8}
+              display={['flex', 'none']}
+            >
+              <PdfDownloader
+                rootElementId="receipt"
+                downloadFileName={`${transaction?.property?.name || ''}-${
+                  transaction?.paymentLog?.transactionReference || ''
+                }`}
+              />
+
+              <Button variant="solid" color="white" onClick={handlePrint}>
+                Print
+              </Button>
+            </HStack>
+          </Box>
         </Flex>
       )}
     </>

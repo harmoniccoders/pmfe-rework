@@ -87,8 +87,9 @@ const verify = () => {
               }}
               lineHeight={1.5}
               mb={['1.8rem', '2.4rem']}
-              fontSize={['1.6rem', '1.875rem', '2.3rem']}
+              fontSize={['1.8rem', '1.875rem', '2.3rem']}
               w={['100%', '60%', '100%']}
+              textAlign={['center', 'left']}
             >
               enter your very own property one-stop shop!
             </Heading>

@@ -109,7 +109,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
         w={['88%', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW="40%"
+        maxW={['full', '40%']}
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -129,7 +129,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
                 register={register}
                 changePasswordType={changePasswordType}
                 type={passwordType ? 'password' : 'text'}
-                iconClass={passwordType ? 'fa-eye-slash' : 'fa-eye'}
+                iconClass={passwordType ? 'fa-eye' : 'fa-eye-slash'}
               />
               <PrimaryInput<PasswordResetModel>
                 label="New Password"
@@ -139,7 +139,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
                 error={errors.newPassword}
                 changePasswordType={changePasswordField}
                 type={showPassword ? 'password' : 'text'}
-                iconClass={showPassword ? 'fa-eye-slash' : 'fa-eye'}
+                iconClass={showPassword ? 'fa-eye' : 'fa-eye-slash'}
               />
               {err && (
                 <Text color="red" fontSize=".8rem" textAlign="center" mt="1rem">

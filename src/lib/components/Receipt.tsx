@@ -24,7 +24,7 @@ type ReceiptProps = {
   property: any;
   date: any;
   card: string;
-  mr?: string;
+  mr?: string | [string, string];
 };
 function Receipt({
   name,
@@ -38,12 +38,12 @@ function Receipt({
 }: ReceiptProps) {
   return (
     <Box
-      w="93%"
+      w={['full', '93%']}
       ml="auto"
       mr={mr}
       p="3rem 2rem 2rem"
-      mb="1.5rem"
-      //   h="100vh"
+      mb={['1rem', '0rem']}
+      h="100vh"
       overflow="hidden"
     >
       <Link href="/" passHref>
@@ -135,7 +135,7 @@ function Receipt({
           <Flex
             justifyContent="space-between"
             align="center"
-            w="30%"
+            w={['full', '30%']}
             ml="auto"
             h="3rem"
             px="2rem"

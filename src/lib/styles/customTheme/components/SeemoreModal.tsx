@@ -71,7 +71,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
           w={['88%', '80%']}
           overflow="hidden"
           maxH="100vh"
-          maxW="50%"
+          maxW={['full', '50%']}
           h="100%"
           pos="fixed"
           mt="0rem"
@@ -271,7 +271,11 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                               <>
                                 {media.isImage && (
                                   <SRLWrapper>
-                                    <Box w="full" h="150px" bgColor="brand.50">
+                                    <Box
+                                      w="full"
+                                      h={['70px', '150px']}
+                                      bgColor="brand.50"
+                                    >
                                       <Image
                                         src={media.url as unknown as string}
                                         alt="propery-image"
@@ -305,7 +309,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                                 {media.isVideo && (
                                   <SRLWrapper>
                                     <AspectRatio
-                                      maxW="150px"
+                                      maxH={['70px', '150px']}
                                       w="full"
                                       ratio={1}
                                     >
@@ -341,7 +345,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   <Heading fontSize="14px" mb=".5rem">
                     Maps/Street view
                   </Heading>
-                  <Box w="100%" height="300px" bg="brand.50">
+                  <Box w="100%" height={['300px', '400px']} bg="brand.50">
                     {/* map */}
                     <MapView
                       lat={item.latitude as number}

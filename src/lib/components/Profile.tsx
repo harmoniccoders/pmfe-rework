@@ -106,8 +106,9 @@ function Profile() {
       w="85%"
       mx="auto"
       overflow="hidden"
+      align="center"
     >
-      <Box w="full" h="full" m="1rem unset">
+      <Box w="full" h="full" m="1rem unset" mt={['2rem', '1rem']}>
         <Flex align="flex-end" color="white">
           <Circle
             size="8rem"
@@ -116,6 +117,7 @@ function Profile() {
             role="group"
             pos="relative"
             overflow="hidden"
+            mx={['auto', 'unset']}
           >
             <Box
               pos="absolute"
@@ -169,7 +171,7 @@ function Profile() {
           <VStack
             align="flex-start"
             gap={0}
-            w="70%"
+            w={['full', '70%']}
             //   p="2rem"
           >
             <Box w="full">
@@ -265,7 +267,7 @@ function Profile() {
           </VStack>
         </form>
       </Box>
-      <Box w="full" h="full" mt="2rem !important">
+      <Box w="full" h="full" mt="2rem !important" display={['none', 'block']}>
         <Image src="/assets/Buy_illustration.png" w="full" />
       </Box>
     </Stack>

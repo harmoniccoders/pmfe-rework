@@ -46,8 +46,13 @@ const StepOne = ({ date, data, step, setStep }: Props) => {
 
   return (
     <>
-      <Flex h="100%" justifyContent="space-between" width="100%">
-        <VStack w="8px" spacing="0.5rem">
+      <Flex
+        h={[step !== 0 ? '3rem' : '100%', '100%']}
+        justifyContent="space-between"
+        width="100%"
+        overflow={'hidden'}
+      >
+        <VStack w={['fit-content', '8px']} spacing="0.5rem">
           <Circle
             size="2rem"
             border={step >= 0 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
@@ -72,7 +77,9 @@ const StepOne = ({ date, data, step, setStep }: Props) => {
           spacing={3}
           width="100%"
           ml="2rem"
-          pb="3.5rem"
+          pb={[step !== 0 ? '0' : '3.5rem', '3.5rem']}
+          h={[step !== 0 ? '1rem' : '100%', ' 100%']}
+          overflow="hidden"
         >
           <Heading fontSize="1rem" lineHeight={1.5}>
             Step 1-enquiries

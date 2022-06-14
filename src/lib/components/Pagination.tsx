@@ -55,7 +55,7 @@ function Pagination({ data }: { data: PagedCollection }) {
           <Icons iconClass="fa-angle-left" style={iconStyle} />
           {/* <Icon as={FiChevronLeft} color="#323232" fontSize="1.2rem" /> */}
         </Square>
-        <Text fontSize="14px" px="1.5rem" color="black">
+        <Text fontSize="14px" px="1.5rem" color="black" whiteSpace="nowrap">
           {`${currentPage} of ${totalPages}`}
         </Text>
         <Square
@@ -72,7 +72,7 @@ function Pagination({ data }: { data: PagedCollection }) {
         </Square>
       </Flex>
 
-      <Text fontSize="14px" color="black" ml="1rem">
+      <Text fontSize="14px" color="black" ml="1rem" whiteSpace="nowrap">
         {`${data.size || 0} items`}
       </Text>
     </Flex>
