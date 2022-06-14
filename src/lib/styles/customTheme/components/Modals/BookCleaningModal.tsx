@@ -26,6 +26,7 @@ import { useState } from 'react';
 import { buildingState } from 'lib/Utils/BuildingStates';
 import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 const schema = yup.object().shape({
   buildingType: yup.string(),
@@ -173,26 +174,37 @@ const BookCleaningModal = ({
                   </Button>
                 </HStack>
               </Box>
-              <PrimarySelectKey<CleaningModel>
-                label="What type of building is it?"
-                name="propertyTypeId"
+              <PrimarySelect<CleaningModel>
                 register={register}
                 error={errors.propertyTypeId}
-                control={control}
-                options={result}
-                fontSize="sm"
+                label="What type of building is it?"
                 placeholder="Choose an option"
+                name="propertyTypeId"
+                fontSize="sm"
+                options={
+                  <>
+                    {result.map((x: PropertyType) => {
+                      return <option value={x.id}>{x.name}</option>;
+                    })}
+                  </>
+                }
               />
-              <PrimarySelectLabel<CleaningModel>
-                label=" What is the state of the building?"
-                name="buildingState"
+              <PrimarySelect<CleaningModel>
                 register={register}
                 error={errors.buildingState}
-                control={control}
-                options={buildingState}
-                fontSize="sm"
+                label=" What is the state of the building?"
                 placeholder="Choose an option"
+                name="buildingState"
+                fontSize="sm"
+                options={
+                  <>
+                    {buildingState.map((x: any) => {
+                      return <option value={x.name}>{x.name}</option>;
+                    })}
+                  </>
+                }
               />
+
               <PrimaryDate<CleaningModel>
                 label="When do you want the cleaning done?"
                 name="dateNeeded"

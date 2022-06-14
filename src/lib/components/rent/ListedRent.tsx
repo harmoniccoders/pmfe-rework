@@ -42,7 +42,7 @@ function ListedRent({ data }: { data: any }) {
   const [bathroomCounter, setBathroomCounter] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [openFilter, setOpenFilter] = useState(false);
+  const [openFilter, setOpenFilter] = useState(true);
 
   const getSearchedResult = async () => {
     router.push({
