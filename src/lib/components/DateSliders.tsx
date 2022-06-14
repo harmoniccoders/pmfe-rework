@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import Cookies from 'js-cookie';
+import { useToasts } from 'react-toast-notifications';
 
 type Props = {
   item?: any;
@@ -56,6 +57,8 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
   const [selctedDate, setSelectedDate] = useState<InspectionDateView>();
   setValue('inspectionDateId', selctedDate?.id);
 
+  const { addToast } = useToasts();
+
   const onSubmit = async (data: InspectionModel) => {
     close();
 
@@ -64,9 +67,20 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
       console.log({ result });
       if (result.status) {
         setStep(1);
+        addToast(result.message, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
         close();
         return;
       }
+
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      close();
+      return;
     } catch (err) {
       console.log(err);
     }
