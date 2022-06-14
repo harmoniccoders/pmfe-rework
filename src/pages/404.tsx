@@ -1,3 +1,5 @@
+import NoPage from 'lib/layout/404';
+
 export default function NotFound() {
-  return <div>404</div>;
+  return <NoPage />;
 }
