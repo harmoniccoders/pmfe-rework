@@ -7,14 +7,17 @@ import {
   Image,
   Text,
   VStack,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
 const Services = () => {
   return (
-    <Flex
-      flexWrap="wrap"
-      justifyContent="center"
+    <Grid
+      templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)']}
+      // flexWrap="wrap"
+      // justifyContent="center"
       py={[5, 14]}
       w="90%"
       mx="auto"
@@ -23,7 +26,6 @@ const Services = () => {
       <Stack
         direction={['column', 'row']}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -64,7 +66,6 @@ const Services = () => {
       <Stack
         direction={['column', 'row']}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -105,7 +106,6 @@ const Services = () => {
       <Stack
         direction={['column', 'row']}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -147,7 +147,6 @@ const Services = () => {
       <Stack
         direction={['column', 'row']}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -183,7 +182,7 @@ const Services = () => {
           </Link>
         </VStack>
       </Stack>
-    </Flex>
+    </Grid>
   );
 };
 
