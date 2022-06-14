@@ -48,10 +48,10 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
+        w={['100%', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW="50%"
+        maxW={["100%",'75%',"50%"]}
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -194,9 +194,9 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
 
             <Grid
               w="100%"
-              templateColumns="repeat(2, 1fr)"
+              templateColumns={['repeat(1,1fr)','repeat(1,1fr)',"repeat(2, 1fr)"]}
               margin="10px auto 5px"
-              columnGap={8}
+              columnGap={[16,8]}
               padding="10px 0"
             >
               <GridItem

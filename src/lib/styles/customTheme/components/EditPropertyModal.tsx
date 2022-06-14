@@ -57,10 +57,10 @@ function EditPropertyModal({
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
+        w={['100%','75%', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW="40%"
+        maxW={['100%',"40%"]}
         pos="fixed"
         mt="1rem"
         mb="1rem"
