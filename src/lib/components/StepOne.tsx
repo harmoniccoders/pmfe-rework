@@ -52,7 +52,7 @@ const StepOne = ({ date, data, step, setStep }: Props) => {
         width="100%"
         overflow={'hidden'}
       >
-        <VStack w={['fit-content', '8px']} spacing="0.5rem">
+        <VStack w={['fit-content']} spacing="0.5rem">
           <Circle
             size="2rem"
             border={step >= 0 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}

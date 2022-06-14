@@ -30,7 +30,7 @@ const StepThree = ({ step }: Props) => {
         justifyContent="space-between"
         width="100%"
       >
-        <VStack w={['fit-content', '8px']} spacing="0.5rem">
+        <VStack w={['fit-content']} spacing="0.5rem">
           <Circle
             size="2rem"
             p="0.2rem"
