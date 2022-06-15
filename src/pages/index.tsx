@@ -49,7 +49,11 @@ const index = ({ data }: { data: any }) => {
             >
               You searched for: {searchTerm}
             </Heading>
-            <Button height="3rem" onClick={() => goHome()}>
+            <Button
+              height={['2.5rem', '3rem']}
+              width={['150px', '200px', '11rem']}
+              onClick={() => goHome()}
+            >
               Go back
             </Button>
           </Flex>
