@@ -94,8 +94,6 @@ const EditPropertyForm = ({
     defaultValues: {
       id: item.id,
       isActive: item.isActive,
-      isForSale: item.isForSale,
-      isDraft: item.isDraft,
       isForRent: item.isForRent,
       name: item.name,
       propertyTypeId: item.propertyTypeId,
@@ -174,18 +172,24 @@ const EditPropertyForm = ({
               type="submit"
               variant="outline"
               onClick={async () => {
-                await setValue('isDraft', true);
                 await setValue('isForSale', false);
+                await setValue('isDraft', q);
               }}
               isLoading={getValues('isForSale') ? false : isLoading}
             >
-              Save as Draft
+              {item.isDraft ? 'Update Draft' : 'Move to Draft'}
             </Button>
-            <Box w="50%">
+            <Box
+              w="50%"
+              onClick={() => {
+                setValue('isDraft', false);
+                setValue('isForSale', true);
+              }}
+            >
               <ButtonComponent
-                content="Submit"
+                content={item.isForSale ? 'Update Listing' : 'Publish Listing'}
                 isValid={isValid}
-                loading={getValues('isDraft') ? !isLoading : isLoading}
+                loading={getValues('isDraft') ? false : false}
               />
             </Box>
           </HStack>
@@ -245,24 +249,23 @@ const EditPropertyForm = ({
   const [deleteItem, { loading, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  useEffect(() => {
-    const deleteMedia = async () => {
-      const params: Parameters = {
-        id: selectedId as number,
-      };
+  // useEffect(() => {
+  //   const deleteMedia = async () => {
+  //     const params: Parameters = {
+  //       id: selectedId as number,
+  //     };
 
-      try {
-        const result = await (await deleteItem(params)).data;
-        if (result.status) {
-          console.log({ result });
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    deleteMedia();
-    getValues('mediaFiles');
-  }, [selectedId]);
+  //     try {
+  //       const result = await (await deleteItem(params)).data;
+  //       if (result.status) {
+  //         console.log({ result });
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   deleteMedia();
+  // }, [selectedId]);
 
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');

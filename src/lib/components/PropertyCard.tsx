@@ -78,7 +78,7 @@ const PropertyCard = ({ item }: Props) => {
           ? router.push(`/rent/enquire/${item.id}`)
           : enquiry && item.isForSale
           ? router.push(`/buy/enquire/${item.id}`)
-          : router.push(`${curPage}/enquire/${item.id}`);
+          : router.push(`buy/enquire/${item.id}`);
       }
     } catch (err) {
       console.log(err);
