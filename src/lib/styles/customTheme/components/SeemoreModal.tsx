@@ -375,7 +375,6 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   variant="outline"
                   width="100%"
                   height="40px"
-                  color="brand.50"
                   fontWeight={600}
                   textTransform="capitalize"
                   onClick={reportModal}
@@ -387,7 +386,6 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   variant="outline"
                   width="100%"
                   height="40px"
-                  color="brand.50"
                   fontWeight={600}
                   textTransform="capitalize"
                   onClick={openModal}
