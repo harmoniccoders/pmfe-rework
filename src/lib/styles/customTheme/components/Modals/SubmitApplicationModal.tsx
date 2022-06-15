@@ -147,7 +147,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       console.log({ result });
 
       if (result.status) {
-        setStep(2);
+        // setStep(2);
         // setGetResult(result.data);
         addToast(result.message, {
           appearance: 'success',

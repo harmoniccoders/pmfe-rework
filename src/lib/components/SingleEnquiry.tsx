@@ -1,16 +1,11 @@
 import {
   Box,
   Button,
-  Flex,
-  Heading,
-  Image,
   VStack,
-  Text,
   HStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { PropertyModel } from 'types/api';
-import Icons from './Icons';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
 import StepTwo from './StepTwo';
@@ -28,19 +23,19 @@ type Props = {
 
 const SingleEnquiry = ({ data, date }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
-    'Propertyenquirycancel{propertyId}'
+    'Userenquirecancel{PropertyId}'
   );
   const { addToast } = useToasts();
   const router = useRouter();
 
   const CancelEnquiry = async () => {
     const params: Parameters = {
-      propertyId: data.id as number,
+      PropertyId: data.id as number,
     };
 
     try {
       const result = await (await cancel(params)).data;
-
+console.log({result})
       if (result.status) {
         addToast(result.message, {
           appearance: 'success',
@@ -69,10 +64,9 @@ const SingleEnquiry = ({ data, date }: Props) => {
       mx="auto"
       alignItems="flex-start"
       py="1rem"
-      
       flexDirection={{ base: 'column', lg: 'row' }}
     >
-      <Box w={{ base: 'full',md: "full", lg: '45%', xl: '28%' }}>
+      <Box w={{ base: 'full', md: 'full', lg: '45%', xl: '28%' }}>
         <VStack
           w="100%"
           alignItems="flex-start"
@@ -91,7 +85,6 @@ const SingleEnquiry = ({ data, date }: Props) => {
           fontSize="15px"
           color="brand.900"
           variant="outline"
-          display={['none', 'block']}
           onClick={() => CancelEnquiry()}
           isLoading={loading}
         >

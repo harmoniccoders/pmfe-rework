@@ -63,16 +63,16 @@ const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom">
+      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" isCentered size="lg">
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
           py={5}
           borderRadius="0"
-          w={['88%', '80%']}
+          // w={['88%', '80%']}
           overflow="hidden"
           maxH="100vh"
-          maxW={['full', '50%']}
+          // maxW={['full', '50%']}
           h="100%"
           pos="fixed"
           mt="0rem"

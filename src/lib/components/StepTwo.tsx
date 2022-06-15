@@ -9,13 +9,15 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
 import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
 import { FaCheck } from 'react-icons/fa';
 import PaySecurelyModal from 'lib/styles/customTheme/components/Modals/PaySecurelyModal';
 import { PropertyModel } from 'types/api';
+import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
 
 type Props = {
   step: number;
@@ -30,6 +32,24 @@ const iconStyle = {
 const StepTwo = ({ step, setStep, data }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
+
+  const [getApplication, { loading: isLoading, data: isData, error: isError }] =
+    useOperationMethod('Applicationget{id}');
+
+  useEffect(() => {
+    const GetApplication = async () => {
+      const params: Parameters = {
+        id: data.id as number,
+      };
+      try {
+        const result = await (await getApplication(params)).data;
+        console.log({ result });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    GetApplication();
+  }, []);
 
   return (
     <>

@@ -73,6 +73,30 @@ const PropertyCard = ({ item }: Props) => {
       const result = await (await addEnquiry(params)).data;
       console.log({ result });
 
+      // if (result.status) {
+      //   enquiry && item.isForRent
+      //     ? router.push(`/rent/enquire/${item.id}`)
+      //     : enquiry && item.isForSale
+      //     ? router.push(`/buy/enquire/${item.id}`)
+      //     : router.pathname.startsWith('/rent')
+      //     ? router.push(`/rent/enquire/${item.id}`)
+      //     : router.push(`buy/enquire/${item.id}`);
+      // }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const [createEnquiry, { loading: isLoad, data: isDatas, error: isErrors }] =
+    useOperationMethod('Userenquire{PropertyId}');
+  let result;
+  const CreateEnquireView = async () => {
+    const params: Parameters = {
+      PropertyId: item.id as number,
+    };
+    try {
+      result = await (await createEnquiry(params)).data;
+      console.log({ result });
+      AddEnquireView();
       if (result.status) {
         enquiry && item.isForRent
           ? router.push(`/rent/enquire/${item.id}`)
@@ -256,7 +280,7 @@ const PropertyCard = ({ item }: Props) => {
                 height="40px"
                 w="full"
                 disabled={item.createdByUser?.id == user?.id ? true : false}
-                onClick={() => AddEnquireView()}
+                onClick={() => CreateEnquireView()}
               >
                 Enquire
               </Button>
@@ -266,7 +290,7 @@ const PropertyCard = ({ item }: Props) => {
       </Box>
       <SeemoreModal
         isOpen={isOpen}
-        AddEnquireView={AddEnquireView}
+        AddEnquireView={CreateEnquireView}
         onClose={onClose}
         item={item}
       />
