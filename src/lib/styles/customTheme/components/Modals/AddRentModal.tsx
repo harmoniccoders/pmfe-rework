@@ -10,7 +10,12 @@ import {
 } from '@chakra-ui/react';
 import RentForm from 'lib/components/rent/RentForm';
 import { useState } from 'react';
-import { PropertyTitle, PropertyType, RentCollectionType, TenantType } from 'types/api';
+import {
+  PropertyTitle,
+  PropertyType,
+  RentCollectionType,
+  TenantType,
+} from 'types/api';
 
 interface AddRentProps {
   isOpen: boolean;
@@ -48,14 +53,10 @@ function AddRentModal({
 
       <ModalContent
         py={5}
-        borderRadius="0"
-        w={['full', '80%']}
-        // overflow="hidden"
         overflowY="scroll"
-        maxH="100vh"
+        borderRadius="0"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
+        maxH="100vh"
       >
         <ModalHeader>
           {formStep === 0 ? (

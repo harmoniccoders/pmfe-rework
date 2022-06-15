@@ -21,7 +21,7 @@ const enquires = ({ data }: { data: any }) => {
         align="center"
         p=".2rem"
         mb="2.5rem"
-        flex='1 1'
+        flex="1 1"
       >
         <PageTabs tabName="listings" tabTitle="My Listings" />
         <PageTabs tabName="enquires" tabTitle="My Enquires" />
@@ -33,17 +33,17 @@ const enquires = ({ data }: { data: any }) => {
             Sorry! There's no property at this time please check back later
           </Heading>
         ) : (
-          <Grid
-            templateColumns={[
-              'repeat(1,1fr)',
-              'repeat(1,1fr)',
-              'repeat(2,1fr)',
-              'repeat(3,1fr)',
-            ]}
-            columnGap="6"
-            rowGap={5}
-          >
-            <>
+          <Box>
+            <Grid
+              templateColumns={[
+                'repeat(1,1fr)',
+                'repeat(1,1fr)',
+                'repeat(2,1fr)',
+                'repeat(3,1fr)',
+              ]}
+              columnGap="7"
+              rowGap={6}
+            >
               {result.map((item: UserEnquiry) => {
                 return (
                   <GridItem key={item.id}>
@@ -51,13 +51,14 @@ const enquires = ({ data }: { data: any }) => {
                   </GridItem>
                 );
               })}
-            </>
+            </Grid>
+
             <GridItem my="2rem" colStart={1} colEnd={4}>
               <Flex justifyContent="center">
                 <Pagination data={data} />
               </Flex>
             </GridItem>
-          </Grid>
+          </Box>
         )}
       </>
     </Box>

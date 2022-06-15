@@ -19,7 +19,12 @@ import NextLink from 'next/link';
 const PrivacyPolicy = () => {
   return (
     <Box w="90%" mx="auto" py="5" textAlign="justify">
-      <Heading color="brand.100" fontSize="2rem" display="flex" gap="3">
+      <Heading
+        color="brand.100"
+        fontSize={['1.2rem', '2rem']}
+        display="flex"
+        gap="3"
+      >
         PRIVACY POLICY <MdOutlinePrivacyTip />
       </Heading>
       <Divider my="5" borderColor="black" />
@@ -147,7 +152,7 @@ const PrivacyPolicy = () => {
             as a User.
           </Text>
         </Box>
-        <SimpleGrid columns={[1, 2, 2, 3]} spacing="8" my="5">
+        <SimpleGrid columns={[1, 2, 2, 3]} spacing="8" mt="4" mb="7">
           <Box fontSize=".94rem" lineHeight="7" shadow="lg" p="7">
             <Text
               textDecoration="underline"
@@ -356,7 +361,7 @@ const PrivacyPolicy = () => {
           </VStack>
         </Box>
         <Box>
-          <Text my="4" fontWeight="600">
+          <Text my="4" fontWeight="600" textAlign="start">
             HOW YOU CAN ACCESS OR CHANGE YOUR REGISTRATION INFORMATION THAT WE
             HAVE COLLECTED
           </Text>
@@ -450,7 +455,7 @@ const PrivacyPolicy = () => {
           >
             <Box>
               <Text>Users of the Platform possess the following rights:</Text>
-              <List
+              <UnorderedList
                 ml={['5', '10']}
                 spacing="3"
                 fontSize=".94rem"
@@ -458,42 +463,35 @@ const PrivacyPolicy = () => {
                 color="gray.600"
               >
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request from Propertymataaz access to and
                   rectification or erasure of your Registration Information;
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to withdraw consent at any time which shall not affect
                   the processing of your
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Registration Information provided with consent before its
                   withdrawal;
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to lodge a complaint with the National Information
                   Technology Development Agency (NITDA);
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to object to the processing of your Registration
                   Information for the purpose of marketing;
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request for the deletion of your Registration
                   Information;
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={BsFillCheckCircleFill} color="brand.100" />
                   Right to request for your Registration Information which will
                   be provided in a structured, commonly used and
                   machine-readable format.
                 </ListItem>
-              </List>
+              </UnorderedList>
             </Box>
           </VStack>
         </Box>

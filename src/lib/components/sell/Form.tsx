@@ -346,10 +346,11 @@ const Form = ({
                     />
                   ) : null}
                   <PrimaryInput<PropertyModel>
-                    label="Area"
+                    label="Landmark"
                     name="area"
+                    placeholder=""
                     error={errors.area}
-                    defaultValue=""
+                    defaultValue="Nearest Landmark"
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>
