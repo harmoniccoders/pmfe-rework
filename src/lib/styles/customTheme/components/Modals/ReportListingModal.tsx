@@ -91,20 +91,17 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         motionPreset="slideInBottom"
-        // scrollBehavior="outside"
+        size="lg"
+        
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
           py={5}
+          overflowY="scroll"
           borderRadius="0"
-          w={['88%', '80%']}
-          overflow="hidden"
-          maxH="100vh"
-          maxW="40%"
           pos="fixed"
-          mt="0"
-          //   mb="1rem"
+          maxH="100vh"
         >
           <ModalHeader>
             <Flex justifyContent="space-between" alignItems="center">
@@ -135,7 +132,7 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
           </ModalHeader>
 
           <ModalBody>
-            <Box h="100vh" overflowY="auto" px={5}>
+            <Box px={5}>
               <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
                 <PrimaryInput<ReportModel>
                   label="Property Name"

@@ -32,6 +32,7 @@ function AddPropertyModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      size="lg"
       motionPreset="slideInBottom"
       isCentered
     >
@@ -39,14 +40,10 @@ function AddPropertyModal({
 
       <ModalContent
         py={5}
+        overflowY="scroll"
         borderRadius="0"
-        w={['100%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        maxW={['100%','75%',"40%"]}
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
+        maxH="100vh"
       >
         <ModalHeader>
           {formStep === 0 ? (
@@ -91,7 +88,7 @@ function AddPropertyModal({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box px={5}>
             <Form
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}

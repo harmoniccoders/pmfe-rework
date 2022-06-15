@@ -94,7 +94,7 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
   };
   return (
     <>
-      <Box>
+      <Box pb="10">
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={10}>

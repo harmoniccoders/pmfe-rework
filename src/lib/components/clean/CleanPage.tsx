@@ -22,7 +22,7 @@ const CleanPage = ({
     setIsopen(true);
   };
   return (
-    <Box w="90%" mx="auto" py="4">
+    <Box w="90%" mx="auto" py="5">
       <SimpleGrid columns={{base: 1, md: 2, xl:3}} spacing={8}>
         <CardButton
           img="/assets/cleanProperty.png"

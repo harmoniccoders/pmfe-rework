@@ -12,13 +12,13 @@ function RequestRentPage({
   getStates: any;
 }) {
   return (
-    <Box w="100%" mt="30px">
-      <Box w="90%" mx="auto">
+    <Box w="100%">
+      <Box w="90%" mx="auto" mt={'30px'}>
         <Heading
           fontSize="16px"
           lineHeight={1.5}
           mb="2rem"
-          opacity="0"
+          // opacity="0"
           pointerEvents="none"
         >
           Find the perfect property to rent from our wide range of options
@@ -33,13 +33,19 @@ function RequestRentPage({
           p=".2rem"
           mb="1rem"
         >
-          <PageTabs tabName="rent/listed-property" tabTitle="Listed Properties" />
+          <PageTabs
+            tabName="rent/listed-property"
+            tabTitle="Listed Properties"
+          />
           <PageTabs
             tabName="rent/request-property"
             tabTitle="Request Property"
           />
         </HStack>
-        <RequestRentProperty propertyTypes={propertyTypes} getStates={getStates} />
+        <RequestRentProperty
+          propertyTypes={propertyTypes}
+          getStates={getStates}
+        />
       </Box>
     </Box>
   );

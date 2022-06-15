@@ -35,7 +35,6 @@ function Profile() {
   if (users !== undefined) {
     user = JSON.parse(users);
   }
-  console.log({ user });
 
   const [updateUser, { loading, data, error }] =
     useOperationMethod('Userupdate');
@@ -56,12 +55,9 @@ function Profile() {
 
   const onChange = (info: any) => {
     setUrl(info.originalUrl);
-    console.log('Uploaded', info);
   };
 
   const onSubmit = async (data: UpdateUserModel) => {
-    console.log(url);
-
     if (!data.profilePicture) {
       let media: MediaModel = {
         url: url,
@@ -78,11 +74,10 @@ function Profile() {
     data.profilePicture.url = url as string;
 
     data.id = user.id as number;
-    console.log({ data });
 
     try {
       const result = await (await updateUser(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Update succesful, Please login again!', {
           appearance: 'success',
@@ -102,7 +97,7 @@ function Profile() {
     <Stack
       direction="row"
       justify="center"
-      h="89vh"
+      minH="89vh"
       w="85%"
       mx="auto"
       overflow="hidden"
@@ -168,12 +163,7 @@ function Profile() {
           Personal Information
         </Text>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          <VStack
-            align="flex-start"
-            gap={0}
-            w={['full', '70%']}
-            //   p="2rem"
-          >
+          <VStack align="flex-start" gap={0} w={['full', '70%']}>
             <Box w="full">
               <FormLabel
                 textTransform="capitalize"
@@ -267,7 +257,12 @@ function Profile() {
           </VStack>
         </form>
       </Box>
-      <Box w="full" h="full" mt="2rem !important" display={['none', 'block']}>
+      <Box
+        w="full"
+        h="full"
+        mt="2rem !important"
+        display={{ base: 'none', lg: 'block' }}
+      >
         <Image src="/assets/Buy_illustration.png" w="full" />
       </Box>
     </Stack>

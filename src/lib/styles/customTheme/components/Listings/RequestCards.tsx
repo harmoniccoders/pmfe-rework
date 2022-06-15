@@ -94,15 +94,6 @@ const RequestCard = ({ item }: Props) => {
           <Divider borderColor="brand.50" />
           <HStack px=".8rem" spacing={4} w="full">
             <Button
-              variant="outline"
-              height="40px"
-              width="full"
-              color="rgb(37,36,39)"
-              onClick={() => setShowModal(true)}
-            >
-              Cancel
-            </Button>
-            <Button
               variant="solid"
               height="40px"
               width="full"

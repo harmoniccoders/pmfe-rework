@@ -224,7 +224,7 @@ const ContactPage = () => {
           </form>
 
           <Box display="block">
-            <HStack spacing={3} justify="center" px="2rem" flexWrap="wrap">
+            <HStack spacing={4} justify="center" px="2rem" flexWrap="wrap">
               <Flex align="center">
                 <Circle bgColor="brand.100" color="white" size="1.3rem">
                   <FaPhone fontSize=".5rem" />

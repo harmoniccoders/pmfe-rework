@@ -40,8 +40,8 @@ const request = ({ data }: { data: any }) => {
                 'repeat(2,1fr)',
                 'repeat(3,1fr)',
               ]}
-              columnGap="6"
-              rowGap={5}
+              columnGap="8"
+              rowGap={7}
             >
               {result.map((item: PropertyRequestView) => {
                 return (

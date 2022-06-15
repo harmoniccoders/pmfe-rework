@@ -1,11 +1,10 @@
-import axios from 'axios';
-import MyRent from 'lib/components/my-rent/MyRent';
+import Enquiries from 'lib/components/my-rent/Enquiries';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 
 const enquiries = ({ data }: { data: any }) => {
-  return <MyRent data={data} />;
+  return <Enquiries data={data} />;
 };
 
 export default enquiries;
