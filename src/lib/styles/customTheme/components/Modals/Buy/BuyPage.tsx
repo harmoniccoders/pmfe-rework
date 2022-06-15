@@ -18,7 +18,7 @@ function BuyPage({ data }: { data: PropertyModel[] }) {
           spacing={0}
           align="center"
           p=".2rem"
-          mb="2.5rem"
+          mb={['1.5rem', '2.5rem']}
         >
           <PageTabs tabName="buy" tabTitle="Listed Properties" />
           <PageTabs tabName="request" tabTitle="Request Property" />

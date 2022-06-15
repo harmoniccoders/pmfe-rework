@@ -24,9 +24,15 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
+
   return (
     <>
-      <VStack pl="3rem" w="90%" spacing={5} alignItems="flex-start">
+      <VStack
+        pl={['0', '3rem']}
+        w={['95%', '90%']}
+        spacing={5}
+        alignItems="flex-start"
+      >
         <Flex w="100%" pos="relative" flexDirection="column">
           <Box w="full" h="250px" pos="relative">
             <>
@@ -76,7 +82,7 @@ const PropertyInfo = ({ data }: Props) => {
           {data.name}
         </Heading>
 
-        <Grid w="100%" templateColumns="repeat(4, 1fr)">
+        <Grid w="100%" templateColumns={['repeat(2, 1fr)', 'repeat(4, 1fr)']}>
           <GridItem mb="5px" display="flex" alignItems="center">
             <Icons iconClass="fa-bed" style={iconStyle} />
             <Text fontSize="13px" ml="4px">
@@ -132,7 +138,7 @@ const PropertyInfo = ({ data }: Props) => {
                   return (
                     <>
                       {media.isImage && (
-                        <Box w="full" h="150px" bgColor="brand.50">
+                        <Box w="full" h={['70px', '150px']} bgColor="brand.50">
                           <Image
                             src={media.url as unknown as string}
                             alt="propery-image"
@@ -162,7 +168,11 @@ const PropertyInfo = ({ data }: Props) => {
                   return (
                     <>
                       {media.isVideo && (
-                        <AspectRatio maxW="150px" w="full" ratio={1}>
+                        <AspectRatio
+                          maxH={['70px', '150px']}
+                          w="full"
+                          ratio={1}
+                        >
                           <iframe
                             title="Interactive videp"
                             src={media.url as string}
@@ -191,7 +201,7 @@ const PropertyInfo = ({ data }: Props) => {
 
         <Heading fontSize="14px">Maps/Street view</Heading>
 
-        <Box w="100%" height="300px" bg="brand.50">
+        <Box w="100%" height={['300px', '400px']} bg="brand.50">
           {/* map */}
           <MapView
             lat={data.latitude as number}

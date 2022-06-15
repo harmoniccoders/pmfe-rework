@@ -1,18 +1,15 @@
-import { Box, Grid, GridItem, SimpleGrid, Heading } from '@chakra-ui/react';
+import { Grid, GridItem, Heading } from '@chakra-ui/react';
 import PropertyCard from 'lib/components/PropertyCard';
 import React from 'react';
-import { PropertyModel, PropertyView } from 'types/api';
+import { PropertyView } from 'types/api';
 
 const ListedProperties = ({ result }: { result: PropertyView[] }) => {
-  // console.log(data);
-  // console.log({ searched });
-  // console.log({ result });
-
   return (
     <>
       {result?.length > 0 ? (
         <Grid
           templateColumns={[
+            'repeat(1,1fr)',
             'repeat(1,1fr)',
             'repeat(1,1fr)',
             'repeat(1,1fr)',
@@ -31,7 +28,7 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
               );
             })}
           </>
-      1  </Grid>
+        </Grid>
       ) : (
         <Heading fontSize="16px" lineHeight={1.5}>
           Sorry! There's no property at this time please check back later

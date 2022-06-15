@@ -1,5 +1,4 @@
 import { Box, Stack, SimpleGrid } from '@chakra-ui/react';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PropertyRequestInput, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { useEffect, useState } from 'react';
@@ -9,11 +8,11 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTypes: PropertyType[];
@@ -74,17 +73,16 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
   const router = useRouter();
 
   const onSubmit = async (data: PropertyRequestInput) => {
-    console.log({ data });
-
+    
     try {
       const result = await (await requestProperty(undefined, data)).data;
-      console.log({ result });
+      
       if (result.status) {
         addToast('Request Succesful', {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('rent/request-property');
+        router.push('/my-rent/requests');
         return;
       }
       addToast(result.message, {
@@ -96,41 +94,58 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
   };
   return (
     <>
-      <Box>
+      <Box pb="10">
         <Stack>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <SimpleGrid columns={{base: 1, md: 2, lg: 3}} gap={10}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={10}>
               <Box w="full">
-                <PrimarySelectKey<PropertyRequestInput>
-                  label="Type"
-                  name="propertyTypeId"
+                <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.propertyTypeId}
-                  control={control}
-                  options={propertyTypes}
+                  label="Type"
                   placeholder="Choose a Property"
+                  name="propertyTypeId"
+                  options={
+                    <>
+                      {propertyTypes.map((x: PropertyType) => {
+                        return <option value={x.id}>{x.name}</option>;
+                      })}
+                    </>
+                  }
                 />
 
-                <StateSelect<PropertyRequestInput>
-                  label="State"
-                  name="state"
+                <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.state}
-                  control={control}
-                  options={getStates}
+                  label="State"
                   placeholder="Which state in Nigeria is your property located"
+                  name="state"
+                  options={
+                    <>
+                      {getStates.map((x: any) => {
+                        return <option value={x.name}>{x.name}</option>;
+                      })}
+                    </>
+                  }
                 />
+
                 {getValues('state') !== undefined ? (
-                  <StateSelect<PropertyRequestInput>
-                    label="Area"
-                    name="lga"
+                  <PrimarySelect<PropertyRequestInput>
                     register={register}
                     error={errors.lga}
-                    control={control}
-                    options={lgas}
-                    placeholder="Choose a Local Government"
+                    label="LGA"
+                    placeholder="Local Government Area"
+                    name="lga"
+                    options={
+                      <>
+                        {lgas.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
                   />
                 ) : null}
+
                 <PrimaryTextArea<PropertyRequestInput>
                   label="Comments"
                   name="comment"
@@ -141,12 +156,14 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
                 />
               </Box>
               <Box w="full">
-                <PrimaryInput<PropertyRequestInput>
-                  label="Budget"
-                  name="budget"
-                  error={errors.budget}
+                <CurrencyField<PropertyRequestInput>
+                  placeholder="₦0.00"
                   defaultValue=""
                   register={register}
+                  error={errors.budget}
+                  name={'budget'}
+                  control={control}
+                  label="Budget"
                 />
                 <NumberCounter
                   valueName="numberOfBedRooms"

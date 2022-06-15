@@ -36,9 +36,12 @@ import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
 import { SRLWrapper } from 'simple-react-lightbox';
+import { Parameters } from 'openapi-client-axios';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import { VscDeviceCameraVideo } from 'react-icons/vsc';
+import Geocode from 'react-geocode';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -51,7 +54,7 @@ interface Props {
   item: PropertyModel;
   setFormStep: any;
   onClose: () => void;
-  // isClosed: () => void;
+  
 }
 
 const EditRentForm = ({
@@ -65,9 +68,9 @@ const EditRentForm = ({
   setFormStep,
   item,
   onClose,
-}: // isClosed,
+}:
 Props) => {
-  const [PropertyUser, { loading, data, error }] =
+  const [PropertyUpdate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
@@ -138,11 +141,12 @@ Props) => {
     },
   });
 
+
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
   watch('sellMyself');
 
-  console.log(item)
+
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
@@ -186,7 +190,7 @@ Props) => {
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={loading}
+                loading={isLoading}
               />
             ) : (
               <Box onClick={completeFormStep}>
@@ -197,7 +201,7 @@ Props) => {
                   variant="solid"
                   textTransform="capitalize"
                   disabled={isValid ? false : true}
-                  isLoading={loading}
+                  isLoading={isLoading}
                 >
                   Next
                 </Button>
@@ -214,7 +218,7 @@ Props) => {
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={loading}
+                loading={isLoading}
               />
             </Box>
             <Button
@@ -272,29 +276,54 @@ Props) => {
   const { addToast } = useToasts();
   const router = useRouter();
 
-  //  const [deleteItem, { loading, data: isData, error: isError }] =
-  //    useOperationMethod('Media{id}');
+    const [deleteItem, { loading, data: isData, error: isError }] =
+      useOperationMethod('Mediadelete{id}');
 
-  const deleteMedia = async () => {
-    //  const params: Parameters = {
-    //    id: selectedId as number,
+    useEffect(() => {
+      const deleteMedia = async () => {
+        const params: Parameters = {
+          id: selectedId as number,
+        };
+
+        try {
+          const result = await (await deleteItem(params)).data;
+          if (result.status) {
+            
+          }
+        } catch (err) {
+          
+        }
+      };
+      deleteMedia();
+      getValues('mediaFiles');
+    }, [selectedId]);
+  
+  Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
+  Geocode.setRegion('ng');
+  //@ts-ignore
+  Geocode.setLocationType('ROOFTOP');
+  Geocode.enableDebug();
+
+  const getLongAndLat = async (values: PropertyModel) => {
+    
+    try {
+      const { results } = await Geocode.fromAddress(values.address);
+      
+      values.latitude = results[0].geometry.location.lat;
+      values.longitude = results[0].geometry.location.lng;
+      return values;
+    } catch (error) {
+      
+      return values;
+    }
   };
-
-  //    try {
-  //      const result = await (await deleteItem(params)).data;
-  //      if (result.status) {
-  //        console.log({ result });
-  //      }
-  //    } catch (err) {
-  //      console.log(err);
-  //    }
-  //  };
-
+  
   const onSubmit = async (data: PropertyModel) => {
+    getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     data.mediaFiles = uploadedMedia;
     try {
-      const result = await (await PropertyUser(undefined, data)).data;
+      const result = await(await PropertyUpdate(undefined, data)).data;
 
       if (result.status !== 400) {
         addToast('Property Succesfully Updated', {
@@ -395,10 +424,11 @@ Props) => {
                   ) : null}
 
                   <PrimaryInput<PropertyModel>
-                    label="Area"
+                    label="Landmark"
                     name="area"
+                    placeholder=""
                     error={errors.area}
-                    defaultValue=""
+                    defaultValue="Nearest Landmark"
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>
@@ -496,7 +526,6 @@ Props) => {
                                         fontSize="1rem"
                                         onClick={() => {
                                           setSelectedId(item.id);
-                                          deleteMedia();
                                         }}
                                       />
                                     </Box>
@@ -563,7 +592,7 @@ Props) => {
                       borderRadius="6px" //@ts-ignore
                       onClick={() => widgetApis.current.openDialog()}
                     >
-                      <Icon as={BiImage} />
+                      <Icon as={VscDeviceCameraVideo} />
                       <Text fontWeight="500" pl="1rem">
                         Upload an Interactive Video
                       </Text>
@@ -613,7 +642,6 @@ Props) => {
                                         fontSize="1rem"
                                         onClick={() => {
                                           setSelectedId(item.id);
-                                          deleteMedia();
                                         }}
                                       />
                                     </Box>

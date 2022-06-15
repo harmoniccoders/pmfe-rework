@@ -51,6 +51,7 @@ const Header = () => {
       h="4.8rem"
       justifyContent="space-between"
       align="center"
+      // bgColor="#fafbff"
       display={
         router.asPath === '/contact' || router.asPath === '/payment/validate'
           ? 'none'
@@ -93,7 +94,7 @@ const DesktopView = ({ user }: { user: any }) => {
           <LoggedIn />
         ) : (
           <>
-            <NavLink name="Get Rent Loan" path="/get-rent-loan" />
+            <NavLink name="Get Rent Loan" path="/contact" />
             <NavLink name="Login" path="/login" />
             <NavLink name="Sign Up" path="/register" />
           </>
@@ -126,7 +127,7 @@ const MobileView = ({ user }: { user: any }) => {
           />
         </NextLink>
       </Box>
-      <Box display={['block', 'none']} onClick={setIsOpened.toggle}>
+      <Box zIndex={5} display={['block', 'none']} onClick={setIsOpened.toggle}>
         <BsBorderWidth fontSize="1.5rem" />
       </Box>
       <Stack

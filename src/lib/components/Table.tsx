@@ -10,6 +10,7 @@ export function TableHead({ title }: { title: string }) {
   return (
     <Th
       pl="1rem"
+      py="1rem"
       fontSize="14px"
       fontWeight="600"
       color="black"
@@ -21,7 +22,7 @@ export function TableHead({ title }: { title: string }) {
   );
 }
 
-export function TableData({ name }: { name: string }) {
+export function TableData({ name }: { name: string | number }) {
   return (
     <Td fontSize="14px" fontWeight="500" color="black" pl="1rem">
       {name}

@@ -49,7 +49,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
         w={['100%', '80%']}
         overflow="hidden"
         maxH="100vh"
-        maxW={["100%",'75%',"50%"]}
+        maxW={['100%', '75%', '50%']}
         pos="fixed"
         mt="1rem"
         mb="1rem"
@@ -192,13 +192,17 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
 
             <Grid
               w="100%"
-              templateColumns={['repeat(1,1fr)','repeat(1,1fr)',"repeat(2, 1fr)"]}
-              margin="10px auto 5px"
-              columnGap={[16,8]}
-              padding="10px 0"
+              templateColumns={[
+                'repeat(1,1fr)',
+                'repeat(1,1fr)',
+                'repeat(2, 1fr)',
+              ]}
+              margin={['0', '10px auto 5px']}
+              columnGap={[16, 8]}
+              padding={['0', '10px 0']}
             >
               <GridItem
-                mb="5px"
+                mb={['16px', '5px']}
                 display="flex"
                 alignItems="center"
                 bgColor="brand.700"
@@ -237,7 +241,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
 
             {item.isForSale && (
               <Flex
-                px="4rem"
+                px={['2rem', '4rem']}
                 h="3rem"
                 bg="brand.700"
                 align="center"
@@ -275,7 +279,11 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                             <>
                               {media.isImage && (
                                 <SRLWrapper>
-                                  <Box w="full" h="150px" bgColor="brand.50">
+                                  <Box
+                                    w="full"
+                                    h={['70px', '150px']}
+                                    bgColor="brand.50"
+                                  >
                                     <Image
                                       src={media.url as unknown as string}
                                       alt="propery-image"
@@ -308,7 +316,11 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                             <>
                               {media.isVideo && (
                                 <SRLWrapper>
-                                  <AspectRatio maxW="150px" w="full" ratio={1}>
+                                  <AspectRatio
+                                    maxH={['70px', '150px']}
+                                    w="full"
+                                    ratio={1}
+                                  >
                                     <iframe
                                       title="Interactive videp"
                                       src={media.url as string}
@@ -331,7 +343,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                 <Heading fontSize="14px" mb=".5rem">
                   Maps/Street view
                 </Heading>
-                <Box w="100%" height="300px" bg="brand.50">
+                <Box w="100%" height={['300px', '400px']} bg="brand.50">
                   {/* map */}
                   <MapView
                     lat={item.latitude as number}

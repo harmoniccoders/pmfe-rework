@@ -9,6 +9,7 @@ import {
   Tooltip,
   Icon,
   AspectRatio,
+  Radio,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -25,9 +26,6 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
@@ -36,7 +34,6 @@ import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
-import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Parameters } from 'openapi-client-axios';
 import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
@@ -392,10 +389,11 @@ const EditPropertyForm = ({
                     />
                   ) : null}
                   <PrimaryInput<PropertyModel>
-                    label="Area"
+                    label="Landmark"
                     name="area"
+                    placeholder=""
                     error={errors.area}
-                    defaultValue=""
+                    defaultValue="Nearest Landmark"
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>
@@ -590,7 +588,7 @@ const EditPropertyForm = ({
                       borderRadius="6px" //@ts-ignore
                       onClick={() => widgetApis.current.openDialog()}
                     >
-                      <Icon as={BiImage} />
+                      <Icon as={VscDeviceCameraVideo} />
                       <Text fontWeight="500" pl="1rem">
                         Upload an Interactive Video
                       </Text>

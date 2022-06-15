@@ -16,6 +16,10 @@ import StepThree from './StepThree';
 import StepTwo from './StepTwo';
 import PropertyInfo from './PropertyInfo';
 import { InspectionDateView } from 'types/api';
+import { Parameters } from 'openapi-client-axios';
+import { useToasts } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
+import { useOperationMethod } from 'react-openapi-client';
 
 type Props = {
   data: PropertyModel;
@@ -23,10 +27,48 @@ type Props = {
 };
 
 const SingleEnquiry = ({ data, date }: Props) => {
-  const [step, setStep] = useState(0);
+  const [cancel, { loading, data: isData, error }] = useOperationMethod(
+    'Propertyenquirycancel{propertyId}'
+  );
+  const { addToast } = useToasts();
+  const router = useRouter();
+
+  const CancelEnquiry = async () => {
+    const params: Parameters = {
+      propertyId: data.id as number,
+    };
+
+    try {
+      const result = await (await cancel(params)).data;
+
+      if (result.status) {
+        addToast(result.message, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        router.push('/buy');
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [step, setStep] = useState(2);
   return (
-    <HStack w="90%" mx="auto" alignItems="flex-start" py="1rem">
-      <Box w="28%">
+    <HStack
+      w="90%"
+      mx="auto"
+      alignItems="flex-start"
+      py="1rem"
+      flexDirection={['column', 'row']}
+    >
+      <Box w={['full', '28%']}>
         <VStack
           w="100%"
           alignItems="flex-start"
@@ -45,14 +87,33 @@ const SingleEnquiry = ({ data, date }: Props) => {
           fontSize="15px"
           color="brand.900"
           variant="outline"
+          display={['none', 'block']}
+          onClick={() => CancelEnquiry()}
+          isLoading={loading}
         >
           Cancel Request
         </Button>
       </Box>
 
-      <Box w="72%" borderLeft="2px solid #DCE1E7">
+      <Box
+        w={['full', '72%']}
+        borderLeft={['0', '2px solid #DCE1E7']}
+        mt={['1rem !important', '0']}
+      >
         <PropertyInfo data={data} />
       </Box>
+      <Button
+        width="100%"
+        my="40px !important"
+        fontSize="15px"
+        color="brand.900"
+        display={['block', 'none']}
+        variant="outline"
+        onClick={() => CancelEnquiry()}
+        isLoading={loading}
+      >
+        Cancel Request
+      </Button>
     </HStack>
   );
 };

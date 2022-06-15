@@ -25,9 +25,6 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
@@ -349,10 +346,11 @@ const Form = ({
                     />
                   ) : null}
                   <PrimaryInput<PropertyModel>
-                    label="Area"
+                    label="Landmark"
                     name="area"
+                    placeholder=""
                     error={errors.area}
-                    defaultValue=""
+                    defaultValue="Nearest Landmark"
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>

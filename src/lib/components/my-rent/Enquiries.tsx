@@ -5,15 +5,14 @@ import {
   GridItem,
   Heading,
   HStack,
+  Text,
 } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import RequestCard from 'lib/styles/customTheme/components/Listings/RequestCards';
-import {
-  PropertyRequestView,
-} from 'types/api';
+import { PropertyView, UserEnquiry } from 'types/api';
 import Pagination from '../Pagination';
+import PropertyCard from '../PropertyCard';
 
-function MyRequests({ data }: { data: any }) {
+function MyRent({ data }: { data: any }) {
   const result = data.value;
   return (
     <Box w="100%" mt="3rem">
@@ -33,9 +32,8 @@ function MyRequests({ data }: { data: any }) {
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>
-
         <>
-          {result.length <= 0 ? (
+          {result?.length <= 0 ? (
             <Heading fontSize="16px" lineHeight={1.5}>
               Sorry! There's no property at this time please check back later
             </Heading>
@@ -48,13 +46,13 @@ function MyRequests({ data }: { data: any }) {
                   'repeat(2,1fr)',
                   'repeat(3,1fr)',
                 ]}
-                columnGap="8"
-                rowGap={7}
+                columnGap="6"
+                rowGap={5}
               >
-                {result.map((item: PropertyRequestView) => {
+                {result.map((item: UserEnquiry) => {
                   return (
                     <GridItem key={item.id}>
-                      <RequestCard item={item} />
+                      <PropertyCard item={item.property as PropertyView} />
                     </GridItem>
                   );
                 })}
@@ -72,4 +70,4 @@ function MyRequests({ data }: { data: any }) {
   );
 }
 
-export default MyRequests;
+export default MyRent;

@@ -7,23 +7,23 @@ import {
   Image,
   Text,
   VStack,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
 const Services = () => {
   return (
-    <Flex
-      flexWrap="wrap"
-      justifyContent="center"
+    <Grid
+      templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)']}
       py={[5, 14]}
       w="90%"
       mx="auto"
       gap="8"
     >
       <Stack
-        direction={['column', 'row']}
+        direction={{ base: 'column', lg: 'row' }}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -62,9 +62,8 @@ const Services = () => {
         </VStack>
       </Stack>
       <Stack
-        direction={['column', 'row']}
+        direction={{ base: 'column', lg: 'row' }}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -103,9 +102,8 @@ const Services = () => {
         </VStack>
       </Stack>
       <Stack
-        direction={['column', 'row']}
+        direction={{ base: 'column', lg: 'row' }}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -145,9 +143,8 @@ const Services = () => {
         </VStack>
       </Stack>
       <Stack
-        direction={['column', 'row']}
+        direction={{ base: 'column', lg: 'row' }}
         spacing="5"
-        maxW="550px"
         w="full"
         boxShadow="0 2px 10px 0 rgba(0,0,0,0.16)"
         p="5"
@@ -183,7 +180,7 @@ const Services = () => {
           </Link>
         </VStack>
       </Stack>
-    </Flex>
+    </Grid>
   );
 };
 

@@ -1,29 +1,10 @@
-import axios from 'axios';
-import MyRent from 'lib/components/my-rent/MyRent';
+import Enquiries from 'lib/components/my-rent/Enquiries';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyTitle, PropertyType } from 'types/api';
 
-const enquiries = ({
-  propertyTitles,
-  propertyTypes,
-  getStates,
-  listings,
-}: {
-  propertyTitles: PropertyTitle[];
-  propertyTypes: PropertyType[];
-  getStates: any;
-  listings: any;
-}) => {
-  return (
-    <MyRent
-      data={listings}
-      propertyTypes={propertyTypes}
-      propertyTitles={propertyTitles}
-      getStates={getStates}
-    />
-  );
+const enquiries = ({ data }: { data: any }) => {
+  return <Enquiries data={data} />;
 };
 
 export default enquiries;
@@ -46,29 +27,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
-    const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
-    const getStates = (
-      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
-    ).data;
-
-    const listings = (
-      await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
-    ).data;
+    const data = (await _dataAccess.get(`/api/User/enquiries/user?${url}`))
+      .data;
 
     return {
       props: {
-        propertyTypes,
-        propertyTitles,
-        getStates,
-        listings,
+        data,
       },
     };
   } catch (error) {
     return {
       props: {
         propertyTypes: {},
-        listings: [],
+        data: [],
       },
     };
   }

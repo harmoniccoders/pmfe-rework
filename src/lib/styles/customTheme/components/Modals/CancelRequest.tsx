@@ -31,7 +31,7 @@ const CancelRequest = ({ isOpen, onClose, item }: Props) => {
     const params: Parameters = {
       id: item.id as number,
     };
-    console.log(params);
+   
     try {
       const result = await (await deleteListings(params)).data;
       if (result.status) {
@@ -50,8 +50,7 @@ const CancelRequest = ({ isOpen, onClose, item }: Props) => {
       onClose();
       return;
     } catch (err) {
-      //   onClose();
-      console.log(err);
+      
     }
   };
   return (

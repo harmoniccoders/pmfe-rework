@@ -12,12 +12,7 @@ function RadioInput({
 }) {
   return (
     <Box display="flex" color={'black'} alignItems="center">
-      <Radio
-        value={value}
-        className="radio"
-        fontSize=".8rem"
-        defaultChecked={checked}
-      >
+      <Radio value={value} className="radio" fontSize=".8rem" defaultChecked>
         {label}
       </Radio>
     </Box>

@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { Box, Avatar, Text, Flex, Stack, VStack} from '@chakra-ui/react';
+import { Box, Avatar, Text, Flex, Stack, VStack } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -42,7 +42,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
     Cookies.remove('user');
     Cookies.remove('token');
     Cookies.remove('userIn');
-    router.push('/');
+    window.location.href = '/';
   };
   const users = Cookies.get('user') as unknown as string;
   let user;
@@ -102,7 +102,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />
           <NavLink
             name="Get Rent Loan"
-            path="/get-rent-loan"
+            path="/contact"
             closeMenu={closeMenu}
           />
         </VStack>

@@ -2,10 +2,9 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   HStack,
+  SimpleGrid,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -65,33 +64,26 @@ function MyListings({
               </Button>
             </Flex>
 
-            <Grid
-              templateColumns={['repeat(1,1fr)', 'repeat(3,1fr)']}
-              columnGap="6"
-              rowGap={5}
-            >
-              <>
-                {result.map((item: PropertyView) => {
-                  return (
-                    <>
-                      <GridItem key={item.id}>
-                        <ListingsCard
-                          item={item}
-                          propertyTypes={propertyTypes}
-                          propertyTitles={propertyTitles}
-                          getStates={getStates}
-                        />
-                      </GridItem>
-                    </>
-                  );
-                })}
-                <GridItem my="2rem" colStart={1} colEnd={4}>
-                  <Flex justifyContent="center">
-                    <Pagination data={data} />
-                  </Flex>
-                </GridItem>
-              </>
-            </Grid>
+            <SimpleGrid columns={[1, 2, 2, 3]} spacing="6">
+              {result.map((item: PropertyView) => {
+                return (
+                  <ListingsCard
+                    key={item.id}
+                    item={item}
+                    propertyTypes={propertyTypes}
+                    propertyTitles={propertyTitles}
+                    getStates={getStates}
+                    propertyTenants={[]}
+                    propertyCollection={[]}
+                  />
+                );
+              })}
+            </SimpleGrid>
+            <Box my="2rem">
+              <Flex justifyContent="center">
+                <Pagination data={data} />
+              </Flex>
+            </Box>
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>

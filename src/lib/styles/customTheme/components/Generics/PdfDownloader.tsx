@@ -13,13 +13,18 @@ const PdfDownloader = ({ rootElementId, downloadFileName }: props) => {
     html2canvas(input as HTMLElement).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
+      //@ts-ignore
       pdf.addImage(imgData, 'JPEG', 0, 0);
       pdf.save(`${downloadFileName}.pdf`);
     });
   };
 
   return (
-    <Button variant="outline" color="white" onClick={downloadPdfDocument}>
+    <Button
+      variant="outline"
+      color={['brand.100', 'white']}
+      onClick={downloadPdfDocument}
+    >
       Download Receipt
     </Button>
   );

@@ -99,27 +99,24 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-      // scrollBehavior="outside"
+      size="lg"
+     
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
+        overflowY="scroll"
         borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        maxW="40%"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
+        maxH="100vh"
       >
         <ModalHeader>
           <ModalCloseButton />
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box px={5}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<PasswordResetModel>
                 label="Old Password"
@@ -129,7 +126,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
                 register={register}
                 changePasswordType={changePasswordType}
                 type={passwordType ? 'password' : 'text'}
-                iconClass={passwordType ? 'fa-eye-slash' : 'fa-eye'}
+                iconClass={passwordType ? 'fa-eye' : 'fa-eye-slash'}
               />
               <PrimaryInput<PasswordResetModel>
                 label="New Password"
@@ -139,7 +136,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
                 error={errors.newPassword}
                 changePasswordType={changePasswordField}
                 type={showPassword ? 'password' : 'text'}
-                iconClass={showPassword ? 'fa-eye-slash' : 'fa-eye'}
+                iconClass={showPassword ? 'fa-eye' : 'fa-eye-slash'}
               />
               {err && (
                 <Text color="red" fontSize=".8rem" textAlign="center" mt="1rem">

@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useOperationMethod } from 'react-openapi-client';
-import { ApplicationModel, Register } from 'types/api';
-import { Box, Button, HStack, Text } from '@chakra-ui/react';
+import { ApplicationModel } from 'types/api';
+import { Box, Button, Text } from '@chakra-ui/react';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import ButtonComponent from './Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
@@ -16,10 +16,15 @@ type Props = {
   formStep: number;
   setStep: Dispatch<SetStateAction<number>>;
   setFormStep: Dispatch<SetStateAction<number>>;
-  close: any;
+  onClose: any;
 };
 
-const ApplicationForm = ({ formStep, setFormStep, setStep, close }: Props) => {
+const ApplicationForm = ({
+  formStep,
+  setFormStep,
+  setStep,
+  onClose,
+}: Props) => {
   const [SubmitApplication, { loading, data, error }] =
     useOperationMethod('Applicationnew');
 
@@ -112,9 +117,11 @@ const ApplicationForm = ({ formStep, setFormStep, setStep, close }: Props) => {
   };
 
   const onSubmit = async (data: ApplicationModel) => {
-    data.register.dateOfBirth = new Date(
-      data.register?.dateOfBirth as unknown as Date
-    ).toLocaleDateString();
+    data.register
+      ? (data.register.dateOfBirth = new Date(
+          data.register?.dateOfBirth as unknown as Date
+        ).toLocaleDateString())
+      : null;
     console.log({ data });
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
@@ -126,7 +133,7 @@ const ApplicationForm = ({ formStep, setFormStep, setStep, close }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        close();
+        onClose();
         return;
       }
       addToast(result.message, {

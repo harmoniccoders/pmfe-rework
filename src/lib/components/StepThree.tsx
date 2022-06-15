@@ -24,8 +24,13 @@ const iconStyle = {
 const StepThree = ({ step }: Props) => {
   return (
     <>
-      <Flex h="100%" justifyContent="space-between" width="100%">
-        <VStack w="8px" spacing="0.5rem">
+      <Flex
+        h={[step !== 1 ? '3rem' : '100%', '100%']}
+        overflow="hidden"
+        justifyContent="space-between"
+        width="100%"
+      >
+        <VStack w={['fit-content']} spacing="0.5rem">
           <Circle
             size="2rem"
             p="0.2rem"
@@ -50,7 +55,9 @@ const StepThree = ({ step }: Props) => {
           spacing={3}
           width="100%"
           ml="2rem"
-          pb="3.5rem"
+          pb={[step !== 3 ? '0' : '3.5rem', '3.5rem']}
+          h={[step !== 3 ? '1rem' : '100%', ' 100%']}
+          overflow="hidden"
         >
           <Heading fontSize="1rem" lineHeight={1.5}>
             Step 3-Confirmation

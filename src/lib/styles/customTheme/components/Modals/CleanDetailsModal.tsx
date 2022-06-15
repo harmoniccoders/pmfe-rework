@@ -10,7 +10,6 @@ import {
   Text,
   Image,
   Box,
-  Badge,
   Heading,
   Grid,
   GridItem,
@@ -25,11 +24,12 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { Parameters } from 'openapi-client-axios';
+import naira from '../Generics/Naira';
 
 type Props = {
   isOpen?: any;
   onClose?: any;
-  item: CleaningView;
+  item: CleaningView | any;
 };
 
 const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
@@ -46,7 +46,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     const params: Parameters = {
       id: item.id as number,
     };
-    console.log(params);
+
     try {
       const result = await (await reject(params)).data;
       if (result.status) {
@@ -64,10 +64,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       });
       onClose();
       return;
-    } catch (err) {
-      //   onClose();
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const AcceptQuote = async () => {
     const params: Parameters = {
@@ -91,10 +88,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       });
       onClose();
       return;
-    } catch (err) {
-      //   onClose();
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -103,8 +97,6 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-
-      // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
@@ -153,8 +145,11 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   Quote
                 </Text>
                 <Text fontSize=".8rem" fontWeight="400">
-                  &#8358;
-                  {item.cleaningQuote !== null ? item.cleaningQuote?.quote : 0}
+                  <>
+                    {naira(
+                      (item?.cleaningQuote?.quote as unknown as number) || 0
+                    )}
+                  </>
                 </Text>
               </Box>
               <Box>
