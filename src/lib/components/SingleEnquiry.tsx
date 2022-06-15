@@ -46,7 +46,10 @@ const SingleEnquiry = ({ data, date }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/buy');
+        router.pathname.startsWith('/rent')
+          ? router.push('/rent/listed-property')
+          : router.push('/buy');
+        
         return;
       }
       addToast(result.message, {
@@ -66,9 +69,10 @@ const SingleEnquiry = ({ data, date }: Props) => {
       mx="auto"
       alignItems="flex-start"
       py="1rem"
-      flexDirection={['column', 'row']}
+      
+      flexDirection={{ base: 'column', lg: 'row' }}
     >
-      <Box w={['full', '28%']}>
+      <Box w={{ base: 'full',md: "full", lg: '45%', xl: '28%' }}>
         <VStack
           w="100%"
           alignItems="flex-start"
@@ -96,8 +100,8 @@ const SingleEnquiry = ({ data, date }: Props) => {
       </Box>
 
       <Box
-        w={['full', '72%']}
-        borderLeft={['0', '2px solid #DCE1E7']}
+        w={{ base: 'full', lg: '72%' }}
+        borderLeft={{ base: '0', lg: '2px solid #DCE1E7' }}
         mt={['1rem !important', '0']}
       >
         <PropertyInfo data={data} />

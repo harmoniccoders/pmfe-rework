@@ -14,6 +14,7 @@ import React from 'react';
 import { PropertyModel } from 'types/api';
 import Icons from './Icons';
 import parse from 'html-react-parser';
+import { SRLWrapper } from 'simple-react-lightbox';
 
 type Props = {
   data: PropertyModel;
@@ -24,7 +25,6 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
-
   return (
     <>
       <VStack
@@ -138,15 +138,21 @@ const PropertyInfo = ({ data }: Props) => {
                   return (
                     <>
                       {media.isImage && (
-                        <Box w="full" h={['70px', '150px']} bgColor="brand.50">
-                          <Image
-                            src={media.url as unknown as string}
-                            alt="propery-image"
-                            w="100%"
-                            height="100%"
-                            objectFit="cover"
-                          />
-                        </Box>
+                        <SRLWrapper>
+                          <Box
+                            w="full"
+                            h={['70px', '150px']}
+                            bgColor="brand.50"
+                          >
+                            <Image
+                              src={media.url as unknown as string}
+                              alt="propery-image"
+                              w="100%"
+                              height="100%"
+                              objectFit="cover"
+                            />
+                          </Box>
+                        </SRLWrapper>
                       )}
                     </>
                   );

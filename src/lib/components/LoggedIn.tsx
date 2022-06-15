@@ -34,7 +34,7 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
   );
 };
 
-const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
+const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
   const [isOpened, setIsOpened] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
@@ -61,6 +61,11 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
   useEffect(
     listenForOutsideClick(listening, setListening, dropDownB, setIsMenuOpened)
   );
+
+  const changePassword = () => {
+    closeMenu();
+    setIsOpen(true);
+  };
   return (
     <Stack
       direction={['column', 'row']}
@@ -72,7 +77,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           gap="2"
           align="center"
           cursor="pointer"
-          onClick={() => setIsOpened(true)}
+          onClick={() => setIsOpened((prev) => !prev)}
           fontWeight="bold"
           ref={dropDown}
         >
@@ -100,11 +105,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
             closeMenu={closeMenu}
           />
           <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />
-          <NavLink
-            name="Get Rent Loan"
-            path="/contact"
-            closeMenu={closeMenu}
-          />
+          <NavLink name="Get Rent Loan" path="/contact" closeMenu={closeMenu} />
         </VStack>
       </Box>
       <Box position="relative">
@@ -112,7 +113,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           gap="3"
           align="center"
           cursor="pointer"
-          onClick={() => setIsMenuOpened(true)}
+          onClick={() => setIsMenuOpened((prev) => !prev)}
           fontWeight="bold"
           ref={dropDownB}
         >
@@ -141,7 +142,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu?: () => void }) => {
           <NavLink name="Profile" path="/profile" closeMenu={closeMenu} />
           <Text
             cursor="pointer"
-            onClick={() => setIsOpen(true)}
+            onClick={() => changePassword()}
             _hover={{ color: 'brand.100' }}
           >
             Change Password

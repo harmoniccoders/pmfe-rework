@@ -73,7 +73,7 @@ const DesktopView = ({ user }: { user: any }) => {
       display={['none', 'flex']}
       fontSize={{ base: '.9rem', md: '.8rem', xl: '.9rem' }}
     >
-      <HStack justify="flex-start" spacing={{ md: '10px', lg: '30px' }}>
+      <HStack justify="flex-start" spacing={{ md: '16px', lg: '30px' }}>
         <NavLink name="Sell" path="/sell" />
         <NavLink name="Buy" path="/buy" />
         <NavLink name="Rent" path="/rent" />
@@ -91,7 +91,7 @@ const DesktopView = ({ user }: { user: any }) => {
       </Center>
       <HStack justify="flex-end" spacing={{ md: '10px', lg: '30px' }}>
         {user ? (
-          <LoggedIn />
+          <LoggedIn closeMenu={function (): void {}} />
         ) : (
           <>
             <NavLink name="Get Rent Loan" path="/contact" />

@@ -78,6 +78,8 @@ const PropertyCard = ({ item }: Props) => {
           ? router.push(`/rent/enquire/${item.id}`)
           : enquiry && item.isForSale
           ? router.push(`/buy/enquire/${item.id}`)
+          : router.pathname.startsWith('/rent')
+          ? router.push(`/rent/enquire/${item.id}`)
           : router.push(`buy/enquire/${item.id}`);
       }
     } catch (err) {
@@ -179,7 +181,14 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
-                <Text fontSize="11px" ml="4px">
+                <Text
+                  fontSize="11px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {`${item.numberOfBathrooms} ${
                     item.numberOfBathrooms
                       ? item.numberOfBathrooms > 1
@@ -202,7 +211,14 @@ const PropertyCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-award" style={iconStyle} />
-                <Text fontSize="11px" ml="4px">
+                <Text
+                  fontSize="11px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {item.title}
                 </Text>
               </Flex>
@@ -248,7 +264,12 @@ const PropertyCard = ({ item }: Props) => {
           </HStack>
         </VStack>
       </Box>
-      <SeemoreModal isOpen={isOpen} onClose={onClose} item={item} />
+      <SeemoreModal
+        isOpen={isOpen}
+        AddEnquireView={AddEnquireView}
+        onClose={onClose}
+        item={item}
+      />
     </>
   );
 };

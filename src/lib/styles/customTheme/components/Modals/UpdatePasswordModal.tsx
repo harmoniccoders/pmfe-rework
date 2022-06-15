@@ -106,7 +106,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
 
       <ModalContent
         py={5}
-        overflowY="scroll"
+        
         borderRadius="0"
         pos="fixed"
         maxH="100vh"
@@ -116,7 +116,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
         </ModalHeader>
 
         <ModalBody>
-          <Box px={5}>
+          <Box px={5} h={["100vh", 'auto']}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<PasswordResetModel>
                 label="Old Password"

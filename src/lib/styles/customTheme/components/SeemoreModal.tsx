@@ -32,13 +32,14 @@ import { SRLWrapper } from 'simple-react-lightbox';
 interface Props {
   isOpen?: any;
   onClose?: any;
+  AddEnquireView: any;
   item: PropertyView;
 }
 const iconStyle = {
   color: '#0042ff',
 };
 
-const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
+const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
@@ -224,7 +225,7 @@ const SeemoreModal = ({ isOpen, onClose, item }: Props) => {
                   height="40px"
                   width="100%"
                   disabled={item.createdByUser?.id == user?.id}
-                  onClick={() => router.push('/enquiries')}
+                  onClick={() => AddEnquireView()}
                 >
                   {item.createdByUser?.id == user?.id
                     ? 'You cannot enquire on owned property'

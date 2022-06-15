@@ -14,7 +14,6 @@ interface Props {
 const index = ({ data, date }: Props) => {
   const router = useRouter();
 
-
   const { id } = router.query;
 
   return (

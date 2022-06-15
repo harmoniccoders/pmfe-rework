@@ -321,6 +321,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
                       register={register}
                       control={control}
                       fontSize="sm"
+                      maxDate={new Date()}
                       defaultValue={user?.dateOfBirth || ''}
                     />
 
