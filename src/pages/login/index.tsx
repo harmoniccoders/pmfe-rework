@@ -95,9 +95,10 @@ const Login = () => {
           alignItems="center !important"
           justifyContent="center"
           spacing={2}
+          mt="5rem"
           w="full"
         >
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '80%' }}>
             <Stack gap={3}>
               <PrimaryInput<LoginModel>
                 label="Username"
