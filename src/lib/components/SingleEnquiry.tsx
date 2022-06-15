@@ -59,7 +59,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
     }
   };
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   return (
     <HStack
       w="90%"
