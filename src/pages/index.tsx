@@ -43,10 +43,7 @@ const index = ({ data }: { data: any }) => {
             <Heading fontSize="16px" lineHeight={1.5} color="brand.100">
               You searched for: {searchTerm}
             </Heading>
-            <Button
-              height={['2.3rem', '3rem']}
-              onClick={() => goHome()}
-            >
+            <Button height={['2.3rem', '3rem']} onClick={() => goHome()}>
               Go back
             </Button>
           </Flex>

@@ -76,11 +76,12 @@ const Login = () => {
   return (
     <Box w="90%" mx="auto" h="80vh" mt="1.5rem" overflow="hidden">
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
-        <Box
+        <Flex
           w={['90%', '100%', '40vw']}
           h={['100%', '100%', '60vh']}
           // bg="#ccc"
           justifyContent="center"
+          alignItems="center"
           textAlign="center"
           mx="1.3rem"
           borderRadius="8px"
@@ -88,8 +89,9 @@ const Login = () => {
           <Image
             src="/assets/admin.png"
             my={['1rem', '2rem !important', '5rem']}
+            objectFit="contain"
           />
-        </Box>
+        </Flex>
 
         <Stack
           alignItems="center !important"

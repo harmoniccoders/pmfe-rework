@@ -223,6 +223,9 @@ const ContactPage = () => {
             />
           </form>
 
+          
+           
+              
           <Box display="block">
             <HStack spacing={4} justify="center" px="2rem" flexWrap="wrap">
               <Flex align="center">
@@ -236,7 +239,7 @@ const ContactPage = () => {
                 </Box>
               </Flex>
 
-              <Flex align="center">
+              <Flex align="center" mb="10px">
                 <Circle bgColor="brand.100" color="white" size="1.3rem">
                   <GrMail fontSize=".5rem" />
                 </Circle>
@@ -246,7 +249,7 @@ const ContactPage = () => {
                   </Text>
                 </Box>
               </Flex>
-              <Flex align="center">
+              <Flex align="center" mb="10px">
                 <Circle bgColor="brand.100" color="white" size="1.3rem">
                   <FaInstagram fontSize=".5rem" />
                 </Circle>
@@ -255,8 +258,8 @@ const ContactPage = () => {
                     @PropertyMataaz
                   </Text>
                 </Box>
-              </Flex>
-            </HStack>
+                </Flex>
+              </HStack>          
           </Box>
         </Box>
       </Flex>
@@ -265,3 +268,20 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+{
+  /* <HStack
+              spacing={3}
+              justify={['flex-start']}
+              px="2rem"
+              flexWrap="wrap"
+              w="100%"
+            ></HStack> */
+}
+
+ {
+   /* <Flex
+              w="100%"
+              flexWrap="wrap"
+              justifyContent={['flex-start', 'flex-start', 'space-between']}
+            >*/
+ }
