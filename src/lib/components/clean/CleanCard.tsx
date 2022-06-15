@@ -39,6 +39,7 @@ const CleanCard = ({
   return (
     <>
       <Box
+        // minH="250px"
         w="full"
         py="2rem"
         px="1rem"
@@ -48,9 +49,13 @@ const CleanCard = ({
       >
         <VStack align="flex-start" spacing={4}>
           <Flex px=".8rem" mt="1rem" w="full">
-            <Text fontWeight={600} fontSize="17px" textTransform="capitalize">
-              {propertyType?.toLowerCase()}
-            </Text>
+            {propertyType ? (
+              <Text fontWeight={600} fontSize="17px" textTransform="capitalize">
+                {propertyType?.toLowerCase()}
+              </Text>
+            ) : (
+               <Text fontWeight={600} fontSize="17px" visibility="hidden" textTransform="capitalize">None</Text>
+            )}
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
             <GridItem>

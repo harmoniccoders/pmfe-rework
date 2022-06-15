@@ -51,20 +51,15 @@ function EditPropertyModal({
       motionPreset="slideInBottom"
       size="lg"
       isCentered
-      
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
-        borderRadius="0"
-        
         overflowY="scroll"
-        maxH="100vh"
-        
+        borderRadius="0"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
+        maxH="100vh"
       >
         <ModalHeader>
           {formStep === 0 ? (

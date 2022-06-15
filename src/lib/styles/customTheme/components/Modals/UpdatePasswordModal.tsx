@@ -99,27 +99,24 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
       onClose={onClose}
       motionPreset="slideInBottom"
       isCentered
-      // scrollBehavior="outside"
+      size="lg"
+     
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
+        overflowY="scroll"
         borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        maxW={['full', '40%']}
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
+        maxH="100vh"
       >
         <ModalHeader>
           <ModalCloseButton />
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box px={5}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<PasswordResetModel>
                 label="Old Password"

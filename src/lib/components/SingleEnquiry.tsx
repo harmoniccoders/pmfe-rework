@@ -30,7 +30,6 @@ const SingleEnquiry = ({ data, date }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
     'Propertyenquirycancel{propertyId}'
   );
-
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -60,7 +59,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
     }
   };
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   return (
     <HStack
       w="90%"

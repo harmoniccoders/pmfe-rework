@@ -22,7 +22,6 @@ import { PropertyView } from 'types/api';
 
 const index = ({ data }: { data: any }) => {
   const result = data.value;
-  // console.log({ result });
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearch, setIsSearch] = useState(false);
   const router = useRouter();
@@ -41,19 +40,10 @@ const index = ({ data }: { data: any }) => {
       {isSearch && router.query.search == searchTerm ? (
         <Box w="90%" mx="auto" mt="3rem">
           <Flex justify="space-between" alignItems="center" mb="2rem">
-            <Heading
-              fontSize="16px"
-              lineHeight={1.5}
-              // mb="2rem"
-              color="brand.100"
-            >
+            <Heading fontSize="16px" lineHeight={1.5} color="brand.100">
               You searched for: {searchTerm}
             </Heading>
-            <Button
-              height={['2.5rem', '3rem']}
-              width={['150px', '200px', '11rem']}
-              onClick={() => goHome()}
-            >
+            <Button height={['2.3rem', '3rem']} onClick={() => goHome()}>
               Go back
             </Button>
           </Flex>

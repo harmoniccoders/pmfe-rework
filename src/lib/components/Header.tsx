@@ -127,7 +127,7 @@ const MobileView = ({ user }: { user: any }) => {
           />
         </NextLink>
       </Box>
-      <Box display={['block', 'none']} onClick={setIsOpened.toggle}>
+      <Box zIndex={5} display={['block', 'none']} onClick={setIsOpened.toggle}>
         <BsBorderWidth fontSize="1.5rem" />
       </Box>
       <Stack

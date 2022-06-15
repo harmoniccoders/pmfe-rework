@@ -1,10 +1,9 @@
 import {
   Box,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   HStack,
+  SimpleGrid,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -64,36 +63,27 @@ function MyRents({
               </Text>
             </Flex>
 
-            <Grid
-              templateColumns={{
-                base: 'repeat(1,1fr)',
-                md: 'repeat(2,1fr)',
-                lg: 'repeat(3,1fr)',
-              }}
-              columnGap="6"
-              rowGap={5}
-            >
+            <SimpleGrid columns={[1, 2, 2, 3]} spacing="6">
               {result.map((item: PropertyView) => {
                 return (
-                  <GridItem key={item.id}>
-                    <ListingsCard
-                      item={item}
-                      propertyTypes={propertyTypes}
-                      propertyTitles={propertyTitles}
-                      propertyTenants={propertyTenants}
-                      propertyCollection={propertyCollection}
-                      getStates={getStates}
-                      getBanks={getBanks}
-                    />
-                  </GridItem>
+                  <ListingsCard
+                    key={item.id}
+                    item={item}
+                    propertyTypes={propertyTypes}
+                    propertyTitles={propertyTitles}
+                    propertyTenants={propertyTenants}
+                    propertyCollection={propertyCollection}
+                    getStates={getStates}
+                    getBanks={getBanks}
+                  />
                 );
               })}
-            </Grid>
-              <Box my="2rem" >
-                <Flex justifyContent="center">
-                  <Pagination data={data} />
-                </Flex>
-              </Box>
+            </SimpleGrid>
+            <Box my="2rem">
+              <Flex justifyContent="center">
+                <Pagination data={data} />
+              </Flex>
+            </Box>
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>
