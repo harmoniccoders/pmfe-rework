@@ -1,16 +1,11 @@
 import {
   Box,
   Button,
-  Flex,
-  Heading,
-  Image,
   VStack,
-  Text,
   HStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { PropertyModel } from 'types/api';
-import Icons from './Icons';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
 import StepTwo from './StepTwo';
@@ -28,25 +23,28 @@ type Props = {
 
 const SingleEnquiry = ({ data, date }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
-    'Propertyenquirycancel{propertyId}'
+    'Userenquirecancel{PropertyId}'
   );
   const { addToast } = useToasts();
   const router = useRouter();
 
   const CancelEnquiry = async () => {
     const params: Parameters = {
-      propertyId: data.id as number,
+      PropertyId: data.id as number,
     };
 
     try {
       const result = await (await cancel(params)).data;
-
+console.log({result})
       if (result.status) {
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/buy');
+        router.pathname.startsWith('/rent')
+          ? router.push('/rent/listed-property')
+          : router.push('/buy');
+        
         return;
       }
       addToast(result.message, {
@@ -59,16 +57,16 @@ const SingleEnquiry = ({ data, date }: Props) => {
     }
   };
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   return (
     <HStack
       w="90%"
       mx="auto"
       alignItems="flex-start"
       py="1rem"
-      flexDirection={['column', 'row']}
+      flexDirection={{ base: 'column', lg: 'row' }}
     >
-      <Box w={['full', '28%']}>
+      <Box w={{ base: 'full', md: 'full', lg: '45%', xl: '28%' }}>
         <VStack
           w="100%"
           alignItems="flex-start"
@@ -87,7 +85,6 @@ const SingleEnquiry = ({ data, date }: Props) => {
           fontSize="15px"
           color="brand.900"
           variant="outline"
-          display={['none', 'block']}
           onClick={() => CancelEnquiry()}
           isLoading={loading}
         >
@@ -96,8 +93,8 @@ const SingleEnquiry = ({ data, date }: Props) => {
       </Box>
 
       <Box
-        w={['full', '72%']}
-        borderLeft={['0', '2px solid #DCE1E7']}
+        w={{ base: 'full', lg: '72%' }}
+        borderLeft={{ base: '0', lg: '2px solid #DCE1E7' }}
         mt={['1rem !important', '0']}
       >
         <PropertyInfo data={data} />

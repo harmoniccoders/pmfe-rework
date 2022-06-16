@@ -309,7 +309,6 @@ const RentForm = ({
                     placeholder="Give your listing a name that makes it able to find"
                     defaultValue=""
                     register={register}
-                    
                   />
                   <PrimarySelect<PropertyModel>
                     register={register}
@@ -317,7 +316,6 @@ const RentForm = ({
                     label="Type"
                     placeholder="Choose a Property"
                     name="propertyTypeId"
-                    
                     options={
                       <>
                         {propertyTypes.map((x: PropertyType) => {
@@ -332,7 +330,6 @@ const RentForm = ({
                     label="Property Title"
                     placeholder="Certificate of Occupancy, Governor's Consent ..."
                     name="title"
-                    
                     options={
                       <>
                         {propertyTitles.map((x: PropertyType) => {
@@ -349,7 +346,6 @@ const RentForm = ({
                     label="State"
                     placeholder="Which state in Nigeria is your property located"
                     name="state"
-                    
                     options={
                       <>
                         {getStates.map((x: any) => {
@@ -366,7 +362,6 @@ const RentForm = ({
                       label="LGA"
                       placeholder="Local Government Area"
                       name="lga"
-                      
                       options={
                         <>
                           {lgas.map((x: any) => {
@@ -380,11 +375,10 @@ const RentForm = ({
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"
-                    placeholder=''
+                    placeholder="Nearest Landmark"
                     error={errors.area}
-                    defaultValue="Nearest Landmark"
+                    defaultValue=""
                     register={register}
-                    
                   />
                   <PrimaryInput<PropertyModel>
                     label="Address"
@@ -392,7 +386,6 @@ const RentForm = ({
                     error={errors.address}
                     defaultValue=""
                     register={register}
-                    
                   />
                   <PrimaryEditor<PropertyModel>
                     name="description"
@@ -410,7 +403,6 @@ const RentForm = ({
                     name={'price'}
                     control={control}
                     label="Rent (Per year)"
-                    
                   />
                   <Box>
                     <Flex
@@ -544,14 +536,12 @@ const RentForm = ({
                     setValue={setValue}
                     getValues={getValues}
                     label="Number of Bedrooms"
-                    
                   />
                   <NumberCounter
                     valueName="numberOfBathrooms"
                     setValue={setValue}
                     getValues={getValues}
                     label="Number of Bathrooms"
-                    
                   />
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
@@ -596,7 +586,6 @@ const RentForm = ({
                       label="Type"
                       placeholder="Choose an option"
                       name="tenantTypeId"
-                      
                       options={
                         <>
                           {propertyTenants.map((x: TenantType) => {
@@ -611,7 +600,6 @@ const RentForm = ({
                       label="Annual Income Bracket"
                       placeholder="Choose an option"
                       name="budget"
-                      
                       options={
                         <>
                           {incomeBracket.map((x: any) => {
@@ -629,7 +617,6 @@ const RentForm = ({
                       label="How Frequently do you want to collect rent?"
                       placeholder="Choose option: weekly, monthly, yearly"
                       name="rentCollectionTypeId"
-                      
                       options={
                         <>
                           {propertyCollection.map((x: RentCollectionType) => {
@@ -644,7 +631,6 @@ const RentForm = ({
                       label="Your Bank"
                       placeholder="Choose your bank"
                       name="bank"
-                      
                       options={
                         <>
                           {getBanks.map((x: any) => {
@@ -661,7 +647,6 @@ const RentForm = ({
                       defaultValue=""
                       register={register}
                       error={errors.accountNumber}
-                      
                     />
                   </Box>
                 </>

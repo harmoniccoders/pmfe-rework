@@ -1,20 +1,8 @@
-import {
-  Box,
-  Text,
-  Grid,
-  Stack,
-  FormLabel,
-  Image,
-  Input,
-  Button,
-  InputGroup,
-  Flex,
-  Divider,
-} from '@chakra-ui/react';
+import { Box, Text, Grid, Stack, Image, Flex, Divider } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { LoginModel } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -74,13 +62,14 @@ const Login = () => {
   };
 
   return (
-    <Box w="90%" mx="auto" h="80vh" mt="1.5rem" overflow="hidden">
+    <Box w="90%" mx="auto" minH="80vh" mt="1.5rem" overflow="hidden" pb="5">
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
-        <Box
+        <Flex
           w={['90%', '100%', '40vw']}
           h={['100%', '100%', '60vh']}
           // bg="#ccc"
           justifyContent="center"
+          alignItems="center"
           textAlign="center"
           mx="1.3rem"
           borderRadius="8px"
@@ -88,19 +77,21 @@ const Login = () => {
           <Image
             src="/assets/admin.png"
             my={['1rem', '2rem !important', '5rem']}
+            objectFit="contain"
           />
-        </Box>
+        </Flex>
 
         <Stack
           alignItems="center !important"
           justifyContent="center"
           spacing={2}
+          mt="5rem"
           w="full"
         >
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '80%' }}>
             <Stack gap={3}>
               <PrimaryInput<LoginModel>
-                label="Username"
+                label="Email"
                 name="email"
                 error={errors.email}
                 defaultValue=""

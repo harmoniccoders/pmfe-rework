@@ -83,7 +83,7 @@ function Profile() {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/login');
+        router.reload();
         return;
       }
       addToast(result.message, {
@@ -111,32 +111,23 @@ function Profile() {
             mb="1rem"
             role="group"
             pos="relative"
-            overflow="hidden"
             mx={['auto', 'unset']}
           >
+           
             <Box
               pos="absolute"
-              left="50%"
-              top="50%"
-              w="full"
-              h="full"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              transition=".5s ease all"
-              opacity="0"
-              cursor="pointer"
-              transform="translate(-50%, -50%)"
-              _groupHover={{ opacity: 1, bgColor: 'rgba(0,0,0,.3)' }}
+              top="0"
+              right="0"
               //@ts-ignore
               onClick={() => widgetApi.current.openDialog()}
             >
-              <FaCamera color="white" fontSize="2rem" />
+              <FaCamera color="#0042ff" fontSize="1.5rem" />
             </Box>
             <Image
               src={user?.profilePicture || '/assets/user-icon.png'}
               w="full"
               h="full"
+              borderRadius="50%"
               objectFit="cover"
               overflow="hidden"
             />

@@ -25,6 +25,7 @@ import Pagination from './Pagination';
 
 function Listed({ data }: { data: any }) {
   const result = data.value;
+  console.log({result})
 
   const router = useRouter();
 

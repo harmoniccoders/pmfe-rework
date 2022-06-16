@@ -58,7 +58,9 @@ const ScheduleTabs = ({ date, item, close, setStep }: Props) => {
               setStep={setStep}
             />
           </TabPanel>
-          <TabPanel>video chat</TabPanel>
+          <TabPanel>
+            <Text>Have a live session with a representative</Text>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
