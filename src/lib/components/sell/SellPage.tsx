@@ -93,7 +93,7 @@ const sell = ({
               />
               </Center>
               </Box>
-            <Text textAlign="center">
+            <Text textAlign="center" display='block' mt={['0','0','2rem']}>
               You have no current property listed for sale.
             </Text>
             <Button
