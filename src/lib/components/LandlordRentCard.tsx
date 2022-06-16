@@ -4,7 +4,7 @@ import Icons from './Icons';
 const LandlordRentCard = () =>{
     return(
         <>
-        <Box  w={['85vw', '50%','50%']}
+        <Box  w={['85vw', '50%','35%']}
         borderRadius="8px"
         overflow="hidden"
         boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)" p='1.2rem' minH='150px'>
