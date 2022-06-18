@@ -18,9 +18,7 @@ import {
   VStack,
   AspectRatio,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Icons from 'lib/components/Icons';
-import checkIfImageExists from 'lib/Utils/checkImage';
 import React, { useEffect } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
