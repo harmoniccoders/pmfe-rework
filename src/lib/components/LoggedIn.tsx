@@ -24,6 +24,7 @@ const NavLink = ({ path, name, closeMenu }: NavProps) => {
       <Text
         onClick={closeMenu}
         _hover={{ color: 'brand.100' }}
+        w="full"
         cursor="pointer"
         whiteSpace="nowrap"
         color={getNavLinks(path)}
@@ -143,11 +144,13 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
           <Text
             cursor="pointer"
             onClick={() => changePassword()}
+            w="full"
             _hover={{ color: 'brand.100' }}
           >
             Change Password
           </Text>
           <Text
+            w="full"
             cursor="pointer"
             _hover={{ color: 'brand.100' }}
             onClick={() => LogUserOut()}

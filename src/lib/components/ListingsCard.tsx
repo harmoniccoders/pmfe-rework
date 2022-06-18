@@ -28,6 +28,7 @@ import {
   TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
+import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 
@@ -250,12 +251,22 @@ const ListingsCard = ({
           </HStack>
         </VStack>
       </Box>
-      <ViewListedProperty
-        isOpen={isOpen}
-        onClose={onClose}
-        item={item}
-        openModal={() => setUpdateModal(true)}
-      />
+      {item.isForSale && (
+        <ViewListedProperty
+          isOpen={isOpen}
+          onClose={onClose}
+          item={item}
+          openModal={() => setUpdateModal(true)}
+        />
+      )}
+      {item.isForRent && (
+        <ViewListedRentProperty
+          isOpen={isOpen}
+          onClose={onClose}
+          item={item}
+          openModal={() => setUpdateModal(true)}
+        />
+      )}
       <DeleteListings
         isOpen={showModal}
         onClose={() => setShowModal(false)}
