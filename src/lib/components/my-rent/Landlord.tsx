@@ -1,6 +1,7 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import CleanProperty from '../clean/CleanProperty';
+import LandlordRentCard from 'lib/components/LandlordRentCard'
 
 function Landlord({ data }: { data: any }) {
   return (
@@ -50,11 +51,11 @@ function Landlord({ data }: { data: any }) {
               <CleanProperty requests={data} />
             ) : (
               <>
-              <Text mt="3" fontWeight="medium" fontSize=".9rem">
+              {/* <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...                
-              </Text>
+              </Text> */}
              
-
+                <LandlordRentCard/>
               </>
             )}
           </Box>
