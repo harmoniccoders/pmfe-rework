@@ -74,34 +74,40 @@ Props) => {
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
-  const schema = yup.object().shape({
-    address: yup.string().required(),
-    description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    rentCollectionTypeId: yup.number(),
-    tenantTypeId: yup.number(),
-    sellMyself: yup.string().required(),
-    name: yup.string().required(),
-    bank: yup.string(),
-    accountNumber: yup.string(),
-    budget: yup.number(),
-    numberOfBathrooms: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    price: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    numberOfBedrooms: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-  });
+ const schema = yup.object().shape({
+   address: yup.string().required(),
+   description: yup.string().required(),
+   title: yup.string().required(),
+   area: yup.string().required(),
+   lga: yup.string().required(),
+   state: yup.string().required(),
+   propertyTypeId: yup.number().required(),
+   sellMyself: yup.string().required(),
+   name: yup.string().required(),
+   numberOfBathrooms: yup.number().required(),
+   numberOfBedrooms: yup.number().required(),
+   price: yup.number().required(),
+   budget: yup.number().when('name', {
+     is: () => formStep === 1,
+     then: yup.number(),
+   }),
+   rentCollectionTypeId: yup.number().when('name', {
+     is: () => formStep === 1,
+     then: yup.number(),
+   }),
+   tenantTypeId: yup.number().when('name', {
+     is: () => formStep === 1,
+     then: yup.number(),
+   }),
+   bank: yup.string().when('name', {
+     is: () => formStep === 1,
+     then: yup.string(),
+   }),
+   accountNumber: yup.string().when('name', {
+     is: () => formStep === 1,
+     then: yup.string(),
+   }),
+ });
 
   const {
     register,
@@ -434,6 +440,7 @@ Props) => {
                   <PrimaryInput<PropertyModel>
                     label="Address"
                     name="address"
+                    placeholder="Enter your address"
                     error={errors.address}
                     defaultValue=""
                     register={register}

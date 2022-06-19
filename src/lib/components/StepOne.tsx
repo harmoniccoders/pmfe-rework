@@ -187,7 +187,7 @@ const StepOne = ({ date, data, step, setStep }: Props) => {
       </Flex>
 
       {openModal ? (
-        <InteractiveVideoModal open={isOpen} close={onClose} />
+        <InteractiveVideoModal open={isOpen} close={onClose} data={data} />
       ) : (
         <LiveInspectionModal
           open={isOpen}

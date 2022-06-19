@@ -1,7 +1,11 @@
 import React from 'react';
 import {
+  AspectRatio,
+  Box,
   Button,
   Flex,
+  Grid,
+  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,18 +16,23 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { PropertyView } from 'types/api/property-view';
+import { SRLWrapper } from 'simple-react-lightbox';
 
 type Props = {
   open: boolean;
   close: any;
+  data: PropertyView;
 };
 
-const InteractiveVideoModal = ({ open, close }: Props) => {
+const InteractiveVideoModal = ({ open, close, data }: Props) => {
+  
   return (
     <Modal
       isOpen={open}
       onClose={close}
       motionPreset="slideInBottom"
+      size="lg"
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
@@ -31,12 +40,9 @@ const InteractiveVideoModal = ({ open, close }: Props) => {
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
+        overflowY="auto"
+        h="100vh"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
       >
         <ModalHeader textAlign="center">
           <Text fontSize="1.1rem" fontWeight="bold">
@@ -46,18 +52,50 @@ const InteractiveVideoModal = ({ open, close }: Props) => {
         </ModalHeader>
 
         <ModalBody>
-          <Text fontSize="1rem" textAlign="justify">
-            Hi there! We advise you watch the interactive videos embeded on this
-            property so as to be sure of what you want. All Videos are rightfull
-            owned by <strong>PropertyMattaz</strong>
-          </Text>
+          <Box>
+            <Text fontSize="15px" textAlign="justify">
+              Hi there! We advise you watch the interactive videos embeded on
+              this property so as to be sure of what you want. All Videos are
+              rightfull owned by <strong>PropertyMattaz</strong>.
+            </Text>
+            <Box mt="5">
+              <Heading fontSize="1rem" mb="1">
+                Video Tour
+              </Heading>
+              <>
+                {data.mediaFiles && data.mediaFiles?.length > 0 ? (
+                  <Grid templateColumns="repeat(4,1fr)" gap={4}>
+                    <>
+                      {data.mediaFiles?.map((media) => {
+                        return (
+                          <>
+                            {media.isVideo && (
+                              <SRLWrapper>
+                                <AspectRatio
+                                  maxH={['70px', '150px']}
+                                  w="full"
+                                  ratio={1}
+                                >
+                                  <iframe
+                                    title="Interactive videp"
+                                    src={media.url as string}
+                                    allowFullScreen
+                                  />
+                                </AspectRatio>
+                              </SRLWrapper>
+                            )}
+                          </>
+                        );
+                      })}
+                    </>
+                  </Grid>
+                ) : (
+                  <Text fontSize="15px">No Videos found</Text>
+                )}
+              </>
+            </Box>
+          </Box>
         </ModalBody>
-
-        <ModalFooter>
-          <Button onClick={close} variant="outline" w="full">
-            Got it!
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

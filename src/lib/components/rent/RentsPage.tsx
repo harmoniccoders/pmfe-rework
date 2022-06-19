@@ -2,9 +2,15 @@ import { Box, Heading, SimpleGrid, useDisclosure } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { PropertyType, PropertyTitle, RentCollectionType, TenantType } from 'types/api';
+import {
+  PropertyType,
+  PropertyTitle,
+  RentCollectionType,
+  TenantType,
+} from 'types/api';
 import AddRentModal from 'lib/styles/customTheme/components/Modals/AddRentModal';
 import RentoutModal from 'lib/styles/customTheme/components/Modals/RentoutModal';
+import RentReliefModal from 'lib/styles/customTheme/components/Modals/RentReliefModal';
 
 const RentsPage = ({
   propertyTitles,
@@ -27,12 +33,13 @@ const RentsPage = ({
     router.push('/rent/listed-property');
   };
 
-  const openRentRelief = () => {
-    router.push('/rent-relief');
-  };
+  // const openRentRelief = () => {
+  //   router.push('/rent-relief');
+  // };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [openRelief, setOpenRelief] = useState<boolean>(false);
   const closeModal = () => {
     setShowModal(false);
   };
@@ -60,7 +67,7 @@ const RentsPage = ({
           img="/assets/rentRelief.png"
           title="Get Rent Relief"
           text="Get an instant, low interest loan to pay your rent"
-          onClick={openRentRelief}
+          onClick={() => setOpenRelief(true)}
         />
       </SimpleGrid>
 
@@ -75,6 +82,10 @@ const RentsPage = ({
         propertyCollection={propertyCollection}
         getStates={getStates}
         getBanks={getBanks}
+      />
+      <RentReliefModal
+        onClose={() => setOpenRelief(false)}
+        isOpen={openRelief}
       />
     </Box>
   );
