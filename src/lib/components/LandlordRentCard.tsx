@@ -3,8 +3,10 @@ import Icons from './Icons';
 import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
 
 
+
 const LandlordRentCard = () =>{
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     return(
         <>
             <Box  w={['85vw', '50%','35%']}
@@ -19,8 +21,6 @@ const LandlordRentCard = () =>{
                 <Divider mt='1rem' display='block' w='100% !important'/>
                 <Button onClick={onOpen} border='1px solid gray' color='gray' bg='#fff !important' mt='.5rem' mb='.75rem' cursor='pointer' w={['90%','']} >View Details</Button>
             </Box>
-
-            
             
             <LandlordModal  isOpen={isOpen} onClose={onClose} />
         </>
