@@ -27,6 +27,10 @@ const RentsPage = ({
     router.push('/rent/listed-property');
   };
 
+  const openRentRelief = () => {
+    router.push('/rent-relief');
+  };
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState<boolean>(false);
   const closeModal = () => {
@@ -51,6 +55,12 @@ const RentsPage = ({
           title="Rent a property"
           text="Find the perfect property from a wide range of options"
           onClick={openRentProperty}
+        />
+        <CardButton
+          img="/assets/rentRelief.png"
+          title="Get Rent Relief"
+          text="Get an instant, low interest loan to pay your rent"
+          onClick={openRentRelief}
         />
       </SimpleGrid>
 

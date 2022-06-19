@@ -4,6 +4,7 @@ import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 
 const index = ({ data }: { data: any }) => {
+  console.log(data);
   return <Tenant data={data} />;
 };
 
