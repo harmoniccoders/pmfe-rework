@@ -39,6 +39,7 @@ function MyRents({
 }: ListingTypes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const result = data.value;
+  
   return (
     <Box w="95%" mx="auto" pb="5">
       <HStack

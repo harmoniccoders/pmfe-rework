@@ -74,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
       )
     ).data;
+
     return {
       props: {
         propertyTypes,

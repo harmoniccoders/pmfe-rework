@@ -3,6 +3,7 @@ import { FaFacebook, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 import NextLink from 'next/link';
 
 const Footer = () => {
+  const date = new Date().getFullYear()
   return (
     <Box w="90%" mx="auto" py={['3rem', '5rem']}>
       <SimpleGrid
@@ -97,7 +98,7 @@ const Footer = () => {
           and financial information are kept safe at all times.
         </Text>
         <Text fontSize="14">
-          © 2020 PropertyMataaz Limited. All rights reserved.
+          © {date} PropertyMataaz Limited. All rights reserved.
         </Text>
       </VStack>
     </Box>

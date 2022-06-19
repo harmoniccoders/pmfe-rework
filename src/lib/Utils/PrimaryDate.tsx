@@ -21,6 +21,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   control: Control<TFormValues>;
   radios?: any;
   minDate?: any;
+  maxDate?: any;
   placeholder?: string;
   fontSize?: string;
   icon?: any;
@@ -40,6 +41,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
   placeholder,
   fontSize,
   minDate,
+  maxDate,
 }: FormInputProps<TFormValues>) => {
   return (
     <GridItem>
@@ -64,7 +66,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
               placeholderText="Select date"
               dateFormat="d MMM yyyy"
               minDate={minDate}
-              maxDate={new Date(2023, 10, 1)}
+              maxDate={maxDate}
               onChange={(date) => field.onChange(date)}
               selected={field.value}
               

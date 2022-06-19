@@ -67,17 +67,17 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         motionPreset="slideInBottom"
-        // scrollBehavior="outside"
+       size="lg"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
           py={5}
           borderRadius="0"
-          w={['88%', '80%']}
+          // w={['88%', '80%']}
           overflow="hidden"
-          maxH="100vh"
-          maxW="40%"
+          // maxH="100vh"
+          // maxW="40%"
           pos="fixed"
           mt="0"
           //   mb="1rem"

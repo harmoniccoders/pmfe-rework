@@ -1,20 +1,8 @@
-import {
-  Box,
-  Text,
-  Grid,
-  Stack,
-  FormLabel,
-  Image,
-  Input,
-  Button,
-  InputGroup,
-  Flex,
-  Divider,
-} from '@chakra-ui/react';
+import { Box, Text, Grid, Stack, Image, Flex, Divider } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { LoginModel } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -74,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <Box w="90%" mx="auto" h="80vh" mt="1.5rem" overflow="hidden">
+    <Box w="90%" mx="auto" minH="80vh" mt="1.5rem" overflow="hidden" pb="5">
       <Grid templateColumns={['repeat(1,1fr)', 'repeat(2,1fr)']} gap={5}>
         <Flex
           w={['90%', '100%', '40vw']}
@@ -103,7 +91,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '80%' }}>
             <Stack gap={3}>
               <PrimaryInput<LoginModel>
-                label="Username"
+                label="Email"
                 name="email"
                 error={errors.email}
                 defaultValue=""

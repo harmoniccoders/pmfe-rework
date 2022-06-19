@@ -90,45 +90,55 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box w="89%" mx="auto">
         <DateCarousel
-          item={date.map((item: any, index: any) => {
-            return (
-              <Box
-                w="fit-content"
-                cursor="pointer"
-                onClick={() => setSelectedDate(item)}
-              >
-                <Flex
-                  border="1px solid"
-                  borderColor={
-                    selctedDate?.id === item.id ? 'brand.100' : '#DCE1E7'
-                  }
-                  height="90px"
-                  bgColor={selctedDate?.id === item.id ? '#edf6ff' : 'unset'}
-                  w="90px"
-                  key={index}
-                  borderRadius="5px"
-                >
-                  <VStack
-                    spacing={2}
-                    justifyContent="center"
-                    width="100%"
-                    height="100%"
+          item={
+            date.length > 0 ? (
+              date.map((item: any, index: any) => {
+                return (
+                  <Box
+                    w="fit-content"
+                    cursor="pointer"
+                    onClick={() => setSelectedDate(item)}
                   >
-                    <Text
-                      fontWeight={600}
-                      fontSize="16px"
-                      textTransform="uppercase"
+                    <Flex
+                      border="1px solid"
+                      borderColor={
+                        selctedDate?.id === item.id ? 'brand.100' : '#DCE1E7'
+                      }
+                      height="90px"
+                      bgColor={
+                        selctedDate?.id === item.id ? '#edf6ff' : 'unset'
+                      }
+                      w="90px"
+                      key={index}
+                      borderRadius="5px"
                     >
-                      {moment(item.date).format('ddd')}
-                    </Text>
-                    <Text fontWeight={600} fontSize="16px">
-                      {moment(item.date).format('MMM DD')}
-                    </Text>
-                  </VStack>
-                </Flex>
-              </Box>
-            );
-          })}
+                      <VStack
+                        spacing={2}
+                        justifyContent="center"
+                        width="100%"
+                        height="100%"
+                      >
+                        <Text
+                          fontWeight={600}
+                          fontSize="16px"
+                          textTransform="uppercase"
+                        >
+                          {moment(item.date).format('ddd')}
+                        </Text>
+                        <Text fontWeight={600} fontSize="16px">
+                          {moment(item.date).format('MMM DD')}
+                        </Text>
+                      </VStack>
+                    </Flex>
+                  </Box>
+                );
+              })
+            ) : (
+              <Text fontWeight={600} w="250px" textAlign="center">
+                No date currently available.
+              </Text>
+            )
+          }
         />
         {selctedDate && (
           <Box w="full">
@@ -166,3 +176,42 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
 };
 
 export default DateSliders;
+// date.map((item: any, index: any) => {
+//             return (
+//               <Box
+//                 w="fit-content"
+//                 cursor="pointer"
+//                 onClick={() => setSelectedDate(item)}
+//               >
+//                 <Flex
+//                   border="1px solid"
+//                   borderColor={
+//                     selctedDate?.id === item.id ? 'brand.100' : '#DCE1E7'
+//                   }
+//                   height="90px"
+//                   bgColor={selctedDate?.id === item.id ? '#edf6ff' : 'unset'}
+//                   w="90px"
+//                   key={index}
+//                   borderRadius="5px"
+//                 >
+//                   <VStack
+//                     spacing={2}
+//                     justifyContent="center"
+//                     width="100%"
+//                     height="100%"
+//                   >
+//                     <Text
+//                       fontWeight={600}
+//                       fontSize="16px"
+//                       textTransform="uppercase"
+//                     >
+//                       {moment(item.date).format('ddd')}
+//                     </Text>
+//                     <Text fontWeight={600} fontSize="16px">
+//                       {moment(item.date).format('MMM DD')}
+//                     </Text>
+//                   </VStack>
+//                 </Flex>
+//               </Box>
+//             );
+//           })
