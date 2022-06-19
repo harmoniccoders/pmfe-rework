@@ -69,6 +69,8 @@ const PropertyCard = ({ item }: Props) => {
     const params: Parameters = {
       Id: item.id as number,
     };
+    console.log({ data });
+
     try {
       const result = await (await addEnquiry(params)).data;
       console.log({ result });
