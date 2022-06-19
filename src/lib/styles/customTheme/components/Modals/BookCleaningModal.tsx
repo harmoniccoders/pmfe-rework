@@ -212,6 +212,7 @@ const BookCleaningModal = ({
                 register={register}
                 control={control}
                 minDate={new Date()}
+                maxDate={new Date(2023, 10, 1)}
                 fontSize="sm"
               />
 

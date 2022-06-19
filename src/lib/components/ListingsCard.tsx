@@ -28,6 +28,7 @@ import {
   TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
+import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 
@@ -190,7 +191,14 @@ const ListingsCard = ({
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {`${item.numberOfBathrooms} ${
                     item.numberOfBathrooms
                       ? item.numberOfBathrooms > 1
@@ -216,7 +224,7 @@ const ListingsCard = ({
                 <Text
                   fontSize="13px"
                   ml="4px"
-                  w="150px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
                   whiteSpace="nowrap"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -243,12 +251,22 @@ const ListingsCard = ({
           </HStack>
         </VStack>
       </Box>
-      <ViewListedProperty
-        isOpen={isOpen}
-        onClose={onClose}
-        item={item}
-        openModal={() => setUpdateModal(true)}
-      />
+      {item.isForSale && (
+        <ViewListedProperty
+          isOpen={isOpen}
+          onClose={onClose}
+          item={item}
+          openModal={() => setUpdateModal(true)}
+        />
+      )}
+      {item.isForRent && (
+        <ViewListedRentProperty
+          isOpen={isOpen}
+          onClose={onClose}
+          item={item}
+          openModal={() => setUpdateModal(true)}
+        />
+      )}
       <DeleteListings
         isOpen={showModal}
         onClose={() => setShowModal(false)}

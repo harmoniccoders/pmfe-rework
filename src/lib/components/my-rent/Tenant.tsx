@@ -53,6 +53,7 @@ function Tenant({ data }: { data: any }) {
             ) : (
               <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...
+
               </Text>
             )} */}
           </Box>

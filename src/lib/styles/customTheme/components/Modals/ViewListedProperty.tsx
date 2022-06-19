@@ -18,15 +18,17 @@ import {
   VStack,
   AspectRatio,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Icons from 'lib/components/Icons';
-import checkIfImageExists from 'lib/Utils/checkImage';
 import React, { useEffect } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
 import parse from 'html-react-parser';
 import MapView from 'lib/Utils/MapView';
+
+const iconStyle = {
+  color: '#0042ff',
+};
 
 type Props = {
   isOpen?: any;
@@ -41,6 +43,8 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
       isOpen={isOpen}
       onClose={onClose}
       motionPreset="slideInBottom"
+      size="lg"
+      isCentered
       // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
@@ -48,13 +52,9 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['100%', '80%']}
-        overflow="hidden"
+        overflowY="scroll"
         maxH="100vh"
-        maxW={['100%', '75%', '50%']}
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
       >
         <ModalHeader>
           <Flex justifyContent="space-between" alignItems="center">
@@ -85,7 +85,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5}>
+          <Box px={5}>
             <Flex w="100%" pos="relative" flexDirection="column">
               <Box w="full" h="250px" pos="relative">
                 <>
@@ -241,29 +241,97 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
               </GridItem>
             </Grid>
 
-            {item.isForSale && (
-              <Flex
-                px={['2rem', '4rem']}
-                h="3rem"
-                bg="brand.700"
-                align="center"
-                justify="space-between"
-                borderRadius="4px"
-                border="1px solid #96FFC9"
-                mb="2rem"
-              >
-                <Flex align="center" cursor="pointer">
-                  <Icons iconClass="fa-scroll" style={{ fontSize: '20px' }} />
-                  <Text fontSize="14px" mx="3rem" fontWeight="bold">
-                    Payment
-                  </Text>
-                </Flex>
-                <Text fontSize="14px" fontWeight="500">
-                  Pending sale
+            <Flex
+              px={['2rem', '4rem']}
+              h="3rem"
+              bg="brand.700"
+              align="center"
+              justify="space-between"
+              borderRadius="4px"
+              border="1px solid #96FFC9"
+              mb="2rem"
+            >
+              <Flex align="center" cursor="pointer">
+                <Icons iconClass="fa-scroll" style={{ fontSize: '20px' }} />
+                <Text fontSize="14px" mx="3rem" fontWeight="bold">
+                  Payment
                 </Text>
               </Flex>
-            )}
+              <Text fontSize="14px" fontWeight="500">
+                Pending sale
+              </Text>
+            </Flex>
 
+            <Grid w="full" templateColumns="repeat(2, 1fr)" gap={4}>
+              <GridItem>
+                <Flex alignItems="center">
+                  <Icons iconClass="fa-bed" style={iconStyle} />
+                  <Text
+                    fontSize="13px"
+                    ml="4px"
+                    w="150px"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                  >
+                    {`${item.numberOfBedrooms} ${
+                      item.numberOfBedrooms
+                        ? item.numberOfBedrooms > 1
+                          ? 'Bedrooms'
+                          : 'Bedroom'
+                        : null
+                    }`}
+                  </Text>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex alignItems="center">
+                  <Icons iconClass="fa-toilet" style={iconStyle} />
+                  <Text
+                    fontSize="13px"
+                    ml="4px"
+                    w={{ base: '100px', lg: '50px', xl: '100px' }}
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                  >
+                    {`${item.numberOfBathrooms} ${
+                      item.numberOfBathrooms
+                        ? item.numberOfBathrooms > 1
+                          ? 'Bathrooms'
+                          : 'Bathroom'
+                        : null
+                    }`}
+                  </Text>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex alignItems="center">
+                  <Icons iconClass="fa-tags" style={iconStyle} />
+                  <Text fontSize="13px" ml="4px">
+                    &#8358;
+                    {item.price
+                      ?.toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  </Text>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex alignItems="center">
+                  <Icons iconClass="fa-award" style={iconStyle} />
+                  <Text
+                    fontSize="13px"
+                    ml="4px"
+                    w={{ base: '100px', lg: '50px', xl: '100px' }}
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                  >
+                    {item.title}
+                  </Text>
+                </Flex>
+              </GridItem>
+            </Grid>
             <VStack align="flex-start" spacing={5} mt="3rem">
               <Box w="100%">
                 <Heading fontSize="14px">Overview</Heading>
