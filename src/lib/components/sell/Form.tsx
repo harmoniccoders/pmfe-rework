@@ -236,20 +236,18 @@ const Form = ({
       values.longitude = results[0].geometry.location.lng;
       return values;
     } catch (error) {
-      console.error({ error });
       return values;
     }
   };
 
   const onSubmit = async (data: PropertyModel) => {
     await getLongAndLat(data);
-    console.log(data.latitude);
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
       const result = await (await PropertyCreate(undefined, data)).data;
-      console.log({ result });
+      
       if (result.status != 400) {
         addToast(result.message, {
           appearance: 'success',

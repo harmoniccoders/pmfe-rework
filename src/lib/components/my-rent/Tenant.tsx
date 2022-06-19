@@ -1,7 +1,8 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, Grid, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import CleanProperty from '../clean/CleanProperty';
+import MyTenancy from './MyTenancy';
 
 function Tenant({ data }: { data: any }) {
   return (
@@ -44,14 +45,17 @@ function Tenant({ data }: { data: any }) {
             <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
               For Tenant
             </Text>
-            {data.length > 0 ? (
+
+            <MyTenancy />
+
+            {/* {data.length > 0 ? (
               <CleanProperty requests={data} />
             ) : (
               <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...
 
               </Text>
-            )}
+            )} */}
           </Box>
         </Box>
       </Box>
