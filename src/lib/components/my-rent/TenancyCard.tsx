@@ -20,11 +20,14 @@ type Props = {
 
 const TenancyCard = ({ category, data }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const iconStyle = {
+    color: '#0042ff',
+  };
   return (
     <Box
       w="100%"
       boxShadow="0 20px 25px 4px rgba(0,0,0,0.14)"
-      py="25px"
+      py="15px"
       borderRadius="8px"
     >
       <Box w="100%">
@@ -42,7 +45,7 @@ const TenancyCard = ({ category, data }: Props) => {
           </Text>
 
           <HStack w="100%">
-            <Icons iconClass="fa-calendar-day" />
+            <Icons iconClass="fa-calendar-day" style={iconStyle} />
 
             <Text>Next rent is due in 365 days</Text>
           </HStack>

@@ -86,11 +86,7 @@ const LandlordOptions = ({ onClose }: Props) => {
   return (
     <>
       {formStep === 0 && (
-        <Box
-          w={['95%', '50vw', '30vw']}
-          borderRadius="8px !important"
-          boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
-        >
+        <Box w="100%" borderRadius="8px !important">
           <Box w="full" h="150px" pos="relative">
             <Image
               src="/assets/nb.webp"
@@ -118,25 +114,17 @@ const LandlordOptions = ({ onClose }: Props) => {
             </Flex>
           </Box>
 
-          <VStack mt=".5rem">
-            <Text
-              textAlign="left"
-              fontWeight="700"
-              fontSize={['1em', '1.2em', '1.5em']}
-              whiteSpace="nowrap"
-            >
+          <VStack my="1.5rem" alignItems="flex-start">
+            <Text fontWeight="600" whiteSpace="nowrap" fontSize="1.2rem">
               4 Bedroom Duplex with BQ
             </Text>
-            <HStack float="left" mt=".75rem">
+            <HStack>
               <Icons iconClass="fa-calendar" />
-              <Text fontWeight="400" fontSize={['.75em', '1em']}>
-                Next rent is due in 365 days
-              </Text>
+              <Text fontWeight="400">Next rent is due in 365 days</Text>
             </HStack>
           </VStack>
           <Grid
             mt={['.5rem', '.75rem']}
-            p=".5rem"
             alignItems="center !important"
             justifyContent="center !important"
             templateColumns={['repeat(1,1fr)', 'repeat(1,1fr)']}
@@ -167,7 +155,7 @@ const LandlordOptions = ({ onClose }: Props) => {
               cursor="pointer"
             >
               <HStack>
-                <Icons iconClass="fa-bill" />
+                <Icons iconClass="fa-money-bill-wave" />
                 <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
                   Payments
                 </Text>
@@ -213,7 +201,7 @@ const LandlordOptions = ({ onClose }: Props) => {
               cursor="pointer"
             >
               <HStack>
-                <Icons iconClass="fa-world" />
+                <Icons iconClass="fa-life-ring" />
                 <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
                   Renew Tenancy
                 </Text>
@@ -224,8 +212,8 @@ const LandlordOptions = ({ onClose }: Props) => {
       )}
       {formStep === 1 && (
         <>
-          <Box w="full" >
-            <Stack spacing={3} onClick={() => setFormStep(2)} cursor='pointer'>
+          <Box w="full">
+            <Stack spacing={3} onClick={() => setFormStep(2)} cursor="pointer">
               <Text fontWeight="600" fontSize={['1rem', '']}>
                 Structural Damage
               </Text>
@@ -282,9 +270,17 @@ const LandlordOptions = ({ onClose }: Props) => {
       {formStep === 3 && (
         <>
           <Box w="full">
-            <Center><Text mt='1rem' color='#545454'>Total Rent Remitted</Text></Center>
-            <Center><Text mb='1rem'  fontWeight='700' fontSize='2rem' >#0.00</Text></Center>
-            
+            <Center>
+              <Text mt="1rem" color="#545454">
+                Total Rent Remitted
+              </Text>
+            </Center>
+            <Center>
+              <Text mb="1rem" fontWeight="700" fontSize="2rem">
+                #0.00
+              </Text>
+            </Center>
+
             <Stack mt="1rem">
               <Text fontWeight="700" fontSize={['1rem', '']}>
                 Upcoming Remitance
@@ -299,7 +295,7 @@ const LandlordOptions = ({ onClose }: Props) => {
                 mb="1rem"
               >
                 <Text textAlign="left">#2,500,000</Text>
-                <Spacer/>
+                <Spacer />
                 <Text textAlign="right">30 Jun 2021</Text>
               </Flex>
               <Button
@@ -355,23 +351,27 @@ const LandlordOptions = ({ onClose }: Props) => {
                   Update
                 </Button>
               </form>
-              <Stack >
-                <Text mt="1.5rem !important" fontWeight="700" fontSize={['1rem', '']}>
+              <Stack>
+                <Text
+                  mt="1.5rem !important"
+                  fontWeight="700"
+                  fontSize={['1rem', '']}
+                >
                   Payment History
                 </Text>
-                <Flex
-                  w="full"
-                  p=".55rem"
-                  mb="1rem"
-                >
+                <Flex w="full" p=".55rem" mb="1rem">
                   <Box textAlign="left">
-                    <Text color='#3F931D'>Rent Remittance</Text>
-                    <Text color='#545454'><small>23 April 2021</small></Text>
+                    <Text color="#3F931D">Rent Remittance</Text>
+                    <Text color="#545454">
+                      <small>23 April 2021</small>
+                    </Text>
                   </Box>
-                  <Spacer/>
+                  <Spacer />
                   <Box textAlign="right">
-                    <Text fontWeight='700'>#2,500,000</Text>
-                    <Text color='#545454'><small>GTB Account</small></Text>
+                    <Text fontWeight="700">#2,500,000</Text>
+                    <Text color="#545454">
+                      <small>GTB Account</small>
+                    </Text>
                   </Box>
                 </Flex>
               </Stack>
@@ -382,28 +382,50 @@ const LandlordOptions = ({ onClose }: Props) => {
       {formStep === 4 && (
         <>
           <Box>
-            <Text fontWeight='700' fontSize='1.25em'>Tenancy Agreement</Text>
-            <Text fontSize='1.25em'>Between</Text>
-            <Text fontWeight='700' fontSize='1.25em'>Gideon Oluwasegun Emokpae</Text>
-            <Text  fontSize='1.35em'>And</Text>
-            <Text fontWeight='700' fontSize='1.35em'>PropertyMataaz Limited</Text>
-            <Stack fontSize='.95em' mt='1rem'>
-              <Text >
-              In respect of the 4 Bedroom Duplex at No. 16 Admiralty Way, lekki Phase 1, lekki, Lagos, Nigeria
+            <Text fontWeight="700" fontSize="1.25em">
+              Tenancy Agreement
+            </Text>
+            <Text fontSize="1.25em">Between</Text>
+            <Text fontWeight="700" fontSize="1.25em">
+              Gideon Oluwasegun Emokpae
+            </Text>
+            <Text fontSize="1.35em">And</Text>
+            <Text fontWeight="700" fontSize="1.35em">
+              PropertyMataaz Limited
+            </Text>
+            <Stack fontSize=".95em" mt="1rem">
+              <Text>
+                In respect of the 4 Bedroom Duplex at No. 16 Admiralty Way,
+                lekki Phase 1, lekki, Lagos, Nigeria
               </Text>
               <Text>
-                <span style={{textTransform:'uppercase'}}  >THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021
-                BETWEEN</span><br/>
-                <span style={{textTransform:'uppercase',fontWeight:'600'}}>GIDEON OLUWASEGUN EMOKPAE</span> of 10 Adebayo Titilope Street, Omole Phase 4,  Ikeja, Lagos,
-                Nigeria (hereinafter to referred to as The Tenant which expression shall where the 
-                context so admit include his successors in title and assigns) of the one part
-                <br/><br/>
-               <span textTransform='uppercase'> AND</span>
-                <br/><br/>
-                <span style={{textTransform:'uppercase',fontWeight:'600'}}>PROPERTYMATAAZ LIMITED</span>, a company incorporated in nigeria having its registered 
-                office at Km 24 Lekki Epe Expressway, oko Ado, Lagos, Nigeria
-                <br/><br/>
-                <span style={{textTransform:'uppercase',fontWeight:'600'}}>WHEREAS</span>:
+                <span style={{ textTransform: 'uppercase' }}>
+                  THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021 BETWEEN
+                </span>
+                <br />
+                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
+                  GIDEON OLUWASEGUN EMOKPAE
+                </span>{' '}
+                of 10 Adebayo Titilope Street, Omole Phase 4, Ikeja, Lagos,
+                Nigeria (hereinafter to referred to as The Tenant which
+                expression shall where the context so admit include his
+                successors in title and assigns) of the one part
+                <br />
+                <br />
+                <span style={{ textTransform: 'uppercase' }}> and</span>
+                <br />
+                <br />
+                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
+                  PROPERTYMATAAZ LIMITED
+                </span>
+                , a company incorporated in nigeria having its registered office
+                at Km 24 Lekki Epe Expressway, oko Ado, Lagos, Nigeria
+                <br />
+                <br />
+                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
+                  WHEREAS
+                </span>
+                :
               </Text>
             </Stack>
           </Box>
