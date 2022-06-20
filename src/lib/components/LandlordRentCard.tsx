@@ -13,7 +13,7 @@ const LandlordRentCard = () =>{
             borderRadius="8px"
             overflow="hidden"
             boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)" p='1.2rem' minH='150px'>
-                <Text fontWeight='700' fontSize={['1.2em','1.2em','1.5em']} whiteSpace='nowrap'>4 Bedroom Duplex with BQ</Text>
+                <Text fontWeight='700' fontSize={['1.2em','1.2em','1.1em']} whiteSpace='nowrap'>4 Bedroom Duplex with BQ</Text>
                 <HStack mt='.75rem'>
                     <Icons iconClass="fa-calendar" />
                     <Text fontWeight='400'>Next rent is due in 365 days</Text>
