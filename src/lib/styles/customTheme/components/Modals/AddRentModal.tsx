@@ -46,6 +46,7 @@ function AddRentModal({
       isOpen={isOpen}
       onClose={onClose}
       size="lg"
+      closeOnOverlayClick={false}
       motionPreset="slideInBottom"
       isCentered
     >

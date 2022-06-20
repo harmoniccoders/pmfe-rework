@@ -23,7 +23,7 @@ function CleanSession({ cleanRequests }: { cleanRequests: any }) {
           <PageTabs tabName="sessions/verify" tabTitle="Verify" />
         </HStack>
 
-        <Box>
+        <Box pb="14">
           <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
             Clean
           </Text>

@@ -47,7 +47,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   const schema = yup.object().shape({
     register: yup.object({
       firstName: yup.string().required(),
-      middleName: yup.string().required(),
+      middleName: yup.string(),
       lastName: yup.string().required(),
       email: yup.string().email().required(),
       phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
@@ -193,18 +193,21 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="lg"
+      closeOnOverlayClick={false}
+      isCentered
+    >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
         overflowY="scroll"
         maxH="100vh"
         pos="fixed"
-        mt="0rem"
-        mb="1rem"
       >
         <ModalHeader>
           <HStack
@@ -395,7 +398,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
                       fontSize="14px"
                       fontWeight={600}
                       lineHeight={1.5}
-                      my="1rem"
+                      mt="1.5rem"
                     >
                       Next of kin
                     </Text>

@@ -10,6 +10,15 @@ import {
 import PageTabs from '../Generics/PageTabs';
 import MyRents from './MyRents';
 
+type Props = {
+  data: PropertyView[];
+  propertyTypes: PropertyType[];
+  propertyTitles: PropertyTitle[];
+  propertyTenants: TenantType[];
+  propertyCollection: RentCollectionType[];
+  getStates: any;
+  getBanks: any;
+};
 function RentPage({
   data,
   propertyTitles,
@@ -18,15 +27,8 @@ function RentPage({
   propertyCollection,
   getStates,
   getBanks,
-}: {
-  data: PropertyView[];
-  propertyTypes: PropertyType[];
-  propertyTitles: PropertyTitle[];
-  propertyTenants: TenantType[];
-  propertyCollection: RentCollectionType[];
-  getStates: any;
-  getBanks: any;
-}) {
+}: Props) {
+  console.log({ data });
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">

@@ -78,24 +78,30 @@ const RentForm = ({
     lga: yup.string().required(),
     state: yup.string().required(),
     propertyTypeId: yup.number().required(),
-    rentCollectionTypeId: yup.number(),
-    tenantTypeId: yup.number(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
-    bank: yup.string(),
-    accountNumber: yup.string(),
-    budget: yup.number(),
-    numberOfBathrooms: yup.number().when('name', {
+    numberOfBathrooms: yup.number().required(),
+    numberOfBedrooms: yup.number().required(),
+    price: yup.number().required(),
+    budget: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number(),
     }),
-    price: yup.number().when('name', {
+    rentCollectionTypeId: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number(),
     }),
-    numberOfBedrooms: yup.number().when('name', {
+    tenantTypeId: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number(),
+    }),
+    bank: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
+    }),
+    accountNumber: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
     }),
   });
 
@@ -383,6 +389,7 @@ const RentForm = ({
                   <PrimaryInput<PropertyModel>
                     label="Address"
                     name="address"
+                    placeholder="Enter your address"
                     error={errors.address}
                     defaultValue=""
                     register={register}
@@ -405,6 +412,7 @@ const RentForm = ({
                     label="Rent (Per year)"
                   />
                   <Box>
+                    
                     <Flex
                       w="full"
                       border="1px solid grey"
