@@ -2,10 +2,18 @@ import Tenant from 'lib/components/my-rent/Tenant';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
+import { ComplaintsCategory } from 'types/api';
 
-const index = ({ data }: { data: any }) => {
+const index = ({
+  data,
+  category,
+}: {
+  data: any;
+  category: ComplaintsCategory[];
+}) => {
   console.log(data);
-  return <Tenant data={data} />;
+  console.log(category);
+  return <Tenant data={data} category={category} />;
 };
 
 export default index;
@@ -29,9 +37,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   url = 'limit=8&offset=0';
   try {
     const data = (await _dataAccess.get(`/api/Tenancy/user?${url}`)).data;
+    const category = (await _dataAccess.get(`/api/Complaints/categories/list`))
+      .data;
     return {
       props: {
         data,
+        category,
       },
     };
   } catch (error) {

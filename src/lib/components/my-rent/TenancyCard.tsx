@@ -11,10 +11,14 @@ import {
 } from '@chakra-ui/react';
 import Icons from '../Icons';
 import TenancyModal from 'lib/styles/customTheme/components/Modals/my-rent/TenancyModal';
+import { ComplaintsCategory } from 'types/api';
 
-type Props = {};
+type Props = {
+  category: ComplaintsCategory[];
+  data: any;
+};
 
-const TenancyCard = (props: Props) => {
+const TenancyCard = ({ category, data }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
@@ -33,7 +37,8 @@ const TenancyCard = (props: Props) => {
             fontWeight={600}
             lineHeight={1.5}
           >
-            4 Bedroom duplex with BQ
+            {/* 4 Bedroom duplex with BQ */}
+            {data.userName}
           </Text>
 
           <HStack w="100%">
@@ -58,7 +63,7 @@ const TenancyCard = (props: Props) => {
         </Box>
       </Box>
 
-      <TenancyModal isOpen={isOpen} onClose={onClose} />
+      <TenancyModal isOpen={isOpen} onClose={onClose} category={category} />
     </Box>
   );
 };

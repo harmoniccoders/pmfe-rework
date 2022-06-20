@@ -1,10 +1,14 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
+import { ComplaintsCategory } from 'types/api';
 import TenancyCard from './TenancyCard';
 
-type Props = {};
+type Props = {
+  category: ComplaintsCategory[];
+  data: any;
+};
 
-const MyTenancy = (props: Props) => {
+const MyTenancy = ({ category, data }: Props) => {
   return (
     <Grid
       width="100%"
@@ -13,10 +17,9 @@ const MyTenancy = (props: Props) => {
       rowGap={8}
       mt="25px"
     >
-      <TenancyCard />
-      <TenancyCard />
-      <TenancyCard />
-      <TenancyCard />
+      {data.map((item: any) => {
+        return <TenancyCard category={category} data={item} key={item.id} />;
+      })}
     </Grid>
   );
 };
