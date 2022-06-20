@@ -113,23 +113,39 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     handleSubmit,
     control,
     getValues,
+    watch,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
-  let reliefAmount = getValues('reliefAmount') || 0;
-  let payBackDate = getValues('payBackDate') || moment().format('YYYY-MM-DD');
-  let repaymentFrequencyValue = getValues('repaymentFrequency') || 'monthly';
+  let reliefAmount = getValues('reliefAmount') as number;
+  reliefAmount = +reliefAmount || 0;
+  let payBackDate = moment(getValues('payBackDate')) as any;
+  let repaymentFrequencyValue = getValues('repaymentFrequency');
+  const getRepayment = () => {
+    let value;
+    if (repaymentFrequencyValue === 'month') value = 'monthly';
+    else if (repaymentFrequencyValue === 'weeks') value = 'weekly';
+    else {
+      value = 'one-off';
+    }
+    return value;
+  };
   const startDate = moment().format('YYYY-MM-DD');
   const interestRate = 15;
   const interest = (interestRate / 100) * reliefAmount;
   const totalPayment = interest + reliefAmount;
-  // const payments = payBackDate
-  //   .format('YYYY-MM-DD')
-  //   .diff(startDate, repaymentFrequencyValue);
-  // const installments = totalPayment / payments;
+  const payments =
+    repaymentFrequencyValue === 'once'
+      ? 1
+      : payBackDate.diff(startDate, repaymentFrequencyValue);
+  const installments = totalPayment / payments;
+
+  watch('reliefAmount');
+  watch('payBackDate');
+  watch('repaymentFrequency');
 
   let uploadPassport;
   let uploadId;
@@ -287,15 +303,15 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
 
   const repaymentFrequency = [
     {
-      id: 1,
+      id: 'weeks',
       name: 'Weekly',
     },
     {
-      id: 2,
+      id: 'month',
       name: 'Monthly',
     },
     {
-      id: 3,
+      id: 'once',
       name: 'One-off',
     },
   ];
@@ -698,7 +714,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                         <>
                           {repaymentFrequency.map((x: any) => {
                             return (
-                              <option value={x.name} key={x.id}>
+                              <option value={x.id} key={x.id}>
                                 {x.name}
                               </option>
                             );
@@ -710,28 +726,41 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       <Heading fontSize="18px" pb="5">
                         Preview
                       </Heading>
+
                       <SimpleGrid columns={2} spacing="3">
                         <Box>
                           <Text>Loan Amount</Text>
                           <Text fontWeight="600">
-                            ₦{getValues('reliefAmount')}
+                            ₦
+                            {reliefAmount.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                           </Text>
                         </Box>
                         <Box>
                           <Text>Interest </Text>
-                          <Text fontWeight="600">
-                            15% {getValues('repaymentFrequency')}
-                          </Text>
+                          <Text fontWeight="600">15%</Text>
                         </Box>
                         <Box>
                           <Text>Total Repayment</Text>
-                          <Text fontWeight="600">₦{totalPayment}</Text>
+                          <Text fontWeight="600">
+                            ₦
+                            {totalPayment.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </Text>
                         </Box>
                         <Box>
                           <Text>Installments</Text>
                           <Text fontWeight="600">
-                            ₦ 30,555
-                            {/* {installments}/{getValues('repaymentFrequency')} */}
+                            ₦
+                            {installments.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                            /{getRepayment()}
                           </Text>
                         </Box>
                       </SimpleGrid>

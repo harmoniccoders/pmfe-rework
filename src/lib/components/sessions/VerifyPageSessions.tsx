@@ -4,7 +4,6 @@ import LandSearchModal from 'lib/styles/customTheme/components/Modals/LandSearch
 import { useState } from 'react';
 import { LandSearchView } from 'types/api';
 import CardButton from '../CardButton';
-import CleanProperty from '../clean/CleanProperty';
 import LandSearchCard from '../LandSearchCard';
 
 function VerifySession({ data }: { data: any }) {
