@@ -17,7 +17,7 @@ import {
   RentCollectionType,
   TenantType,
 } from 'types/api';
-import EditRentForm from './Listings/EditRentForm';
+import EditRentForm from 'lib/components/rent/EditRentForm'
 
 interface EditPropertyProps {
   isOpen: boolean;
