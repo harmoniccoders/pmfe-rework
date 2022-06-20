@@ -126,10 +126,10 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const interestRate = 15;
   const interest = (interestRate / 100) * reliefAmount;
   const totalPayment = interest + reliefAmount;
-  const payments = payBackDate
-    .format('YYYY-MM-DD')
-    .diff(startDate, repaymentFrequencyValue);
-  const installments = totalPayment / payments;
+  // const payments = payBackDate
+  //   .format('YYYY-MM-DD')
+  //   .diff(startDate, repaymentFrequencyValue);
+  // const installments = totalPayment / payments;
 
   let uploadPassport;
   let uploadId;
@@ -730,7 +730,8 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                         <Box>
                           <Text>Installments</Text>
                           <Text fontWeight="600">
-                            ₦{installments}/{getValues('repaymentFrequency')}
+                            ₦ 30,555
+                            {/* {installments}/{getValues('repaymentFrequency')} */}
                           </Text>
                         </Box>
                       </SimpleGrid>
