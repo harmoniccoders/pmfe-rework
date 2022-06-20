@@ -57,7 +57,7 @@ console.log({result})
     }
   };
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   return (
     <HStack
       w="90%"

@@ -34,101 +34,151 @@ import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
+// import loanDetails from 'lib/Utils/loanDetails';
+import moment from 'moment';
 
 type Props = {
   onClose: any;
   isOpen: boolean;
-  //   data: any;
-  //   setStep: Dispatch<SetStateAction<number>>;
 };
-
+type LoanDetails = {
+  reliefAmount: number;
+  payBackDate: any;
+  startDate: any;
+};
 const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const [RentRelief, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
   // console.log({ data });
- const router = useRouter();
+  const router = useRouter();
   const [formStep, setFormStep] = useState<number>(0);
+  const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
+  const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
 
-  // const [getResult, setGetResult] = useState([]);
+  const widgetApiss = useRef();
+  const widgetApis = useRef();
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
-    // reliefAmount: yup.number(),
-    // payBackDate: yup.string(),
-    // repaymentFrequency: yup.string(),
-    register: yup.object({
-      firstName: yup.string().required(),
-      middleName: yup.string(),
-      lastName: yup.string().required(),
-      email: yup.string().email().required(),
-      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      dateOfBirth: yup.string().required(),
-      occupation: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      companyName: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      annualIncome: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      workAddress: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-
-      nationality: yup.string(),
-      maritalStatus: yup.string()
-    }),
-
-    // nextOfKin: yup.object({
+    // register: yup.object({
     //   firstName: yup.string().required(),
+    //   middleName: yup.string(),
     //   lastName: yup.string().required(),
     //   email: yup.string().email().required(),
     //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   address: yup.string().required(),
-    //   relationship: yup.string().required(),
+    //   dateOfBirth: yup.string().required(),
+    //   passportPhotograph: yup.string().required(),
+    //   workId: yup.string().required(),
+    //   occupation: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string().required(),
+    //   }),
+    //   companyName: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string().required(),
+    //   }),
+    //   annualIncome: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string().required(),
+    //   }),
+    //   workAddress: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string().required(),
+    //   }),
+    //   nationality: yup.string().required(),
+    //   maritalStatus: yup.string().required(),
     // }),
-    //  reliefAmount: yup.number().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.number()
-    //   }),
-    //   payBackDate: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
-    //   repaymentFrequency: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
+    // reliefAmount: yup.number().when('firstName', {
+    //   is: () => formStep === 2,
+    //   then: yup.number().required(),
+    // }),
+    // payBackDate: yup.string().when('firstName', {
+    //   is: () => formStep === 2,
+    //   then: yup.string().required(),
+    // }),
+    // repaymentFrequency: yup.string().when('firstName', {
+    //   is: () => formStep === 2,
+    //   then: yup.string().required(),
+    // }),
   });
 
-  //   const users = Cookies.get('user') as unknown as string;
-  //   let user;
-  //   if (users !== undefined) {
-  //     user = JSON.parse(users);
-  //     }
   const users = Cookies.get('user') as unknown as string;
   let user: any;
   if (users !== undefined) {
     user = JSON.parse(users);
   }
 
-  //   let propertyId = data.id;
-
   const {
     register,
     handleSubmit,
     control,
-    setValue,
+    getValues,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
+
+  let reliefAmount = getValues('reliefAmount') || 0;
+  let payBackDate = getValues('payBackDate') || moment().format('YYYY-MM-DD');
+  let repaymentFrequencyValue = getValues('repaymentFrequency') || 'monthly';
+  const startDate = moment().format('YYYY-MM-DD');
+  const interestRate = 15;
+  const interest = (interestRate / 100) * reliefAmount;
+  const totalPayment = interest + reliefAmount;
+  const payments = payBackDate
+    .format('YYYY-MM-DD')
+    .diff(startDate, repaymentFrequencyValue);
+  const installments = totalPayment / payments;
+
+  let uploadPassport;
+  let uploadId;
+  const onChangePassport = async (info: any) => {
+    uploadPassport = await groupInfo(info.uuid);
+    let medias: MediaModel[] = [];
+
+    uploadPassport.files.forEach((file: any) => {
+      let newMedia: MediaModel = {
+        url: file.original_file_url,
+        isImage: true,
+        isVideo: false,
+        name: '',
+        extention: '',
+        base64String: '',
+      };
+      medias.push(newMedia);
+    });
+    setUploadedPassport([...uploadedPassport, ...medias]);
+  };
+  const onChangeId = async (info: any) => {
+    uploadId = await groupInfo(info.uuid);
+    let medias: MediaModel[] = [];
+    uploadId.files.forEach((file: any) => {
+      let newMedia: MediaModel = {
+        url: file.original_file_url,
+        isImage: true,
+        isVideo: false,
+        name: '',
+        extention: '',
+        base64String: '',
+      };
+      medias.push(newMedia);
+    });
+    setUploadedId([...uploadedId, ...medias]);
+  };
+
+  const groupInfo = async (uuid: string) => {
+    const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
+      headers: {
+        Accept: 'application/vnd.uploadcare-v0.5+json',
+        authorization:
+          'Uploadcare.Simple fda3a71102659f95625f:dcdc4ba3595b6be5fc0d',
+      },
+    });
+
+    let res = await result.json();
+    return res;
+  };
 
   const { addToast } = useToasts();
 
@@ -136,10 +186,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     setFormStep((cur: number) => cur + 1);
   };
 
-  const widgetApi = useRef();
-  const widgetApis = useRef();
-  let uploaded;
- 
   const RenderButton = () => {
     if (formStep === 0 || formStep === 1) {
       return (
@@ -178,16 +224,20 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
           data.register?.dateOfBirth as unknown as Date
         ).toLocaleDateString())
       : null;
-    // data.propertyId = propertyId;
-    // data.applicationTypeId = 1;
-    // data.register?.passportPhotograph = uploadedPassport;
+    data.payBackDate = new Date(
+      data.payBackDate as unknown as Date
+    ).toLocaleDateString();
+
+    data.applicationTypeId = 5;
+    // data.register!.passportPhotograph= uploadedPassport;
+    // data.register!.workId = uploadedId;
 
     console.log({ data });
     try {
       const result = await (await RentRelief(undefined, data)).data;
       console.log({ result });
 
-      if (result.status) {
+      if (result.status != 400) {
         addToast(
           'Your application has been submitted. You will be notified when your rent Relief is disbursed',
           {
@@ -241,26 +291,30 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
       name: 'Weekly',
     },
     {
-      id: 1,
+      id: 2,
       name: 'Monthly',
     },
     {
-      id: 1,
+      id: 3,
       name: 'One-off',
     },
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
+    <Modal
+      isOpen={isOpen}
+      closeOnOverlayClick={false}
+      onClose={onClose}
+      size="lg"
+      isCentered
+    >
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
       <ModalContent
         py={5}
         borderRadius="0"
         overflowY="auto"
         h="100vh"
         pos="fixed"
-        
       >
         <ModalHeader>
           <HStack
@@ -282,35 +336,13 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
               ></span>
               Back
             </Text>
-
-            <Box w="150px" h="40px">
-              <Image
-                src="/assets/PropertyMataaz.png"
-                alt="company-logo"
-                w="100%"
-                h="100%"
-                objectFit="contain"
-              />
-            </Box>
           </HStack>
         </ModalHeader>
-
         <ModalBody>
           <VStack alignItems="flex-start" spacing={3} width="100%">
-            <Text fontWeight={600} fontSize="16px">
-              {/* {data.name} */}
-            </Text>
-
             <Text fontWeight={600} color="brand.100" textTransform="capitalize">
               Rent Relief form
             </Text>
-
-            {/* <ApplicationForm
-              formStep={formStep}
-              setFormStep={setFormStep}
-              setStep={setStep}
-              onClose={onClose}
-            /> */}
 
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
               <>
@@ -428,21 +460,11 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="employer"
                       name="register.companyName"
                       error={errors.register?.companyName}
                       placeholder="Type in your companyName"
-                      defaultValue=""
-                      register={register}
-                    />
-
-                    <PrimaryInput<ApplicationModel>
-                      label="what is your annual income"
-                      name="register.annualIncome"
-                      error={errors.register?.annualIncome}
-                      placeholder="This can be your annual salary of an estimated income "
                       defaultValue=""
                       register={register}
                     />
@@ -454,7 +476,137 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-                   
+                    <CurrencyField<ApplicationModel>
+                      label="what is your annual income"
+                      defaultValue=""
+                      register={register}
+                      error={errors.register?.annualIncome}
+                      name="register.annualIncome"
+                      control={control}
+                      placeholder="This can be your annual salary of an estimated income "
+                    />
+                    <Box>
+                      <Flex
+                        w="full"
+                        border="1px solid grey"
+                        height="3rem"
+                        px="1rem"
+                        align="center"
+                        my="1.5rem"
+                        cursor="pointer"
+                        borderRadius="6px" //@ts-ignore
+                        onClick={() => widgetApiss.current.openDialog()}
+                      >
+                        <Icon as={BiImage} />
+                        <Text fontWeight="500" pl="1rem">
+                          Upload Passport Photograph
+                        </Text>
+                      </Flex>
+                      <Widget
+                        publicKey="fda3a71102659f95625f"
+                        //@ts-ignore
+                        id="file"
+                        multiple
+                        imageShrink="640x480"
+                        multipleMax={1}
+                        imagePreviewMaxSize={9}
+                        imagesOnly
+                        onChange={(info) => onChangePassport(info)}
+                        //@ts-ignore
+                        ref={widgetApiss}
+                      />
+                      {uploadedPassport.length > 0 && (
+                        <>
+                          <HStack w="full" spacing="1rem" overflow="auto">
+                            {uploadedPassport
+                              .filter((m) => m.isImage)
+                              .map((item: any) => {
+                                return (
+                                  <SRLWrapper>
+                                    <Box
+                                      w="90px"
+                                      h="90px"
+                                      borderRadius="5px"
+                                      bgColor="brand.50"
+                                      flexShrink={0}
+                                      overflow="hidden"
+                                    >
+                                      <Image
+                                        src={item.url}
+                                        alt="propery-image"
+                                        w="100%"
+                                        height="100%"
+                                        objectFit="cover"
+                                      />
+                                    </Box>
+                                  </SRLWrapper>
+                                );
+                              })}
+                          </HStack>
+                        </>
+                      )}
+                    </Box>
+                    <Box>
+                      <Flex
+                        w="full"
+                        border="1px solid grey"
+                        height="3rem"
+                        px="1rem"
+                        align="center"
+                        my="1.5rem"
+                        cursor="pointer"
+                        borderRadius="6px" //@ts-ignore
+                        onClick={() => widgetApis.current.openDialog()}
+                      >
+                        <Icon as={BiImage} />
+                        <Text fontWeight="500" pl="1rem">
+                          Upload a Work ID
+                        </Text>
+                      </Flex>
+                      <Widget
+                        publicKey="fda3a71102659f95625f"
+                        //@ts-ignore
+                        id="file"
+                        imageShrink="640x480"
+                        imagePreviewMaxSize={9}
+                        imagesOnly
+                        multiple
+                        multipleMax={1}
+                        onChange={(info) => onChangeId(info)}
+                        //@ts-ignore
+                        ref={widgetApis}
+                      />
+                      {uploadedId.length > 0 && (
+                        <>
+                          <HStack w="full" spacing="1rem" overflow="auto">
+                            {uploadedId
+                              .filter((m) => m.isImage)
+                              .map((item: any) => {
+                                return (
+                                  <SRLWrapper>
+                                    <Box
+                                      w="90px"
+                                      h="90px"
+                                      borderRadius="5px"
+                                      bgColor="brand.50"
+                                      flexShrink={0}
+                                      overflow="hidden"
+                                    >
+                                      <Image
+                                        src={item.url}
+                                        alt="propery-image"
+                                        w="100%"
+                                        height="100%"
+                                        objectFit="cover"
+                                      />
+                                    </Box>
+                                  </SRLWrapper>
+                                );
+                              })}
+                          </HStack>
+                        </>
+                      )}
+                    </Box>
 
                     <Text
                       fontSize="14px"
@@ -472,7 +624,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="last name"
                       name="nextOfKin.lastName"
@@ -481,7 +632,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="mobile number"
                       name="nextOfKin.phoneNumber"
@@ -490,7 +640,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="email"
                       name="nextOfKin.email"
@@ -500,7 +649,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       type="email"
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="work address"
                       name="nextOfKin.address"
@@ -509,7 +657,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-
                     <PrimaryInput<ApplicationModel>
                       label="relationship"
                       name="nextOfKin.relationship"
@@ -522,7 +669,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                 )}
                 {formStep === 2 && (
                   <>
-                    {/* <CurrencyField<ApplicationModel>
+                    <CurrencyField<ApplicationModel>
                       placeholder="How much Rent Relief do you need?"
                       defaultValue=""
                       register={register}
@@ -549,41 +696,41 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       options={
                         <>
-                          {repaymentFrequency.map((item: any, i: number) => {
+                          {repaymentFrequency.map((x: any) => {
                             return (
-                              <option value={item} key={i}>
-                                {item}
+                              <option value={x.name} key={x.id}>
+                                {x.name}
                               </option>
                             );
                           })}
                         </>
                       }
-                    />*/}
+                    />
                     <Box my="10">
-                      <Heading fontSize="18px" pb="5">Preview</Heading>
+                      <Heading fontSize="18px" pb="5">
+                        Preview
+                      </Heading>
                       <SimpleGrid columns={2} spacing="3">
                         <Box>
                           <Text>Loan Amount</Text>
-                          <Text fontWeight="600" >
-                            ₦4,500,000
+                          <Text fontWeight="600">
+                            ₦{getValues('reliefAmount')}
                           </Text>
                         </Box>
                         <Box>
                           <Text>Interest </Text>
-                          <Text fontWeight="600" >
-                            15% monthly
+                          <Text fontWeight="600">
+                            15% {getValues('repaymentFrequency')}
                           </Text>
                         </Box>
                         <Box>
                           <Text>Total Repayment</Text>
-                          <Text fontWeight="600" >
-                            ₦4,782,372
-                          </Text>
+                          <Text fontWeight="600">₦{totalPayment}</Text>
                         </Box>
                         <Box>
                           <Text>Installments</Text>
-                          <Text fontWeight="600" >
-                            ₦797,062/Monthly
+                          <Text fontWeight="600">
+                            ₦{installments}/{getValues('repaymentFrequency')}
                           </Text>
                         </Box>
                       </SimpleGrid>

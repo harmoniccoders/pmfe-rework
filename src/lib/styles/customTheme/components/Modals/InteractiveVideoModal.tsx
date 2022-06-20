@@ -58,7 +58,7 @@ const InteractiveVideoModal = ({ open, close, data }: Props) => {
               this property so as to be sure of what you want. All Videos are
               rightfull owned by <strong>PropertyMattaz</strong>.
             </Text>
-            <Box mt="5">
+            <Box mt="8">
               <Heading fontSize="1rem" mb="1">
                 Video Tour
               </Heading>

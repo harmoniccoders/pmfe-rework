@@ -193,18 +193,21 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="lg"
+      closeOnOverlayClick={false}
+      isCentered
+    >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
         borderRadius="0"
-      
         overflowY="scroll"
         maxH="100vh"
         pos="fixed"
-        // mt="0rem"
-        // mb="1rem"
       >
         <ModalHeader>
           <HStack

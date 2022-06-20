@@ -56,7 +56,7 @@ const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
         </ModalHeader>
 
         <ModalBody>
-          <Box h={['100vh','auto']} py="3" overflowY="auto">
+          <Box h={['100vh', 'auto']} py="3" overflowY="auto">
             <Text fontWeight="600" color="black" fontSize="14">
               Choose an option to continue
             </Text>

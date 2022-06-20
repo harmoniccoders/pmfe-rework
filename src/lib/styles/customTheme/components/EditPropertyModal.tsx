@@ -48,6 +48,7 @@ function EditPropertyModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnOverlayClick={false}
       motionPreset="slideInBottom"
       size="lg"
       isCentered
