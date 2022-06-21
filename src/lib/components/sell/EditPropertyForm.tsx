@@ -123,8 +123,6 @@ const EditPropertyForm = ({
   const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
-  const [selectedId, setSelectedId] = useState<Number>();
-  console.log({ selectedId });
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -251,24 +249,20 @@ const EditPropertyForm = ({
   const [deleteItem, { loading, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  // useEffect(() => {
-  //   const deleteMedia = async () => {
-  //     const params: Parameters = {
-  //       id: selectedId as number,
-  //     };
+  const deleteMedia = async (mediaId: any) => {
+    const params: Parameters = {
+      id: mediaId,
+    };
 
-  //     try {
-  //       const result = await (await deleteItem(params)).data;
-  //       if (result.status) {
-  //         console.log({ result });
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   deleteMedia();
-  // }, [selectedId]);
-
+    try {
+      const result = await (await deleteItem(params)).data;
+      if (result.status) {
+        console.log({ result });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -535,7 +529,7 @@ const EditPropertyForm = ({
                                         color="white"
                                         fontSize="1rem"
                                         onClick={() => {
-                                          setSelectedId(item.id);
+                                          deleteMedia(item.id);
                                         }}
                                       />
                                     </Box>
@@ -651,7 +645,7 @@ const EditPropertyForm = ({
                                         color="white"
                                         fontSize="1rem"
                                         onClick={() => {
-                                          setSelectedId(item.id);
+                                          deleteMedia(item.id);
                                         }}
                                       />
                                     </Box>
