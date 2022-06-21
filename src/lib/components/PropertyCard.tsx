@@ -69,21 +69,9 @@ const PropertyCard = ({ item }: Props) => {
     const params: Parameters = {
       Id: item.id as number,
     };
-    console.log({ data });
 
     try {
       const result = await (await addEnquiry(params)).data;
-      console.log({ result });
-
-      // if (result.status) {
-      //   enquiry && item.isForRent
-      //     ? router.push(`/rent/enquire/${item.id}`)
-      //     : enquiry && item.isForSale
-      //     ? router.push(`/buy/enquire/${item.id}`)
-      //     : router.pathname.startsWith('/rent')
-      //     ? router.push(`/rent/enquire/${item.id}`)
-      //     : router.push(`buy/enquire/${item.id}`);
-      // }
     } catch (err) {
       console.log(err);
     }

@@ -51,7 +51,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
   const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
 
-
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
     // reliefAmount: yup.number(),
@@ -121,6 +120,9 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      // propertyId: data.id
+    },
   });
 
   let reliefAmount = getValues('reliefAmount') as number;
@@ -153,9 +155,9 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const onChangePassport = async (info: any) => {
     // uploadPassport = await groupInfo(info.uuid);
     const passportUrl = info.originalUrl;
-    
+
     let newMedia: MediaModel = {
-      url: passportUrl ,
+      url: passportUrl,
       isImage: true,
       isVideo: false,
       name: '',
@@ -163,25 +165,24 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
       base64String: '',
       isDocument: false,
     };
-    
+
     setUploadedPassport([newMedia]);
   };
   const onChangeId = async (info: any) => {
-   const idUrl  = info.originalUrl;
-    
-      let newMedia: MediaModel = {
-        url: idUrl,
-        isImage: true,
-        isVideo: false,
-        name: '',
-        extention: '',
-        base64String: '',
-        isDocument: false,
-      };
-     
+    const idUrl = info.originalUrl;
+
+    let newMedia: MediaModel = {
+      url: idUrl,
+      isImage: true,
+      isVideo: false,
+      name: '',
+      extention: '',
+      base64String: '',
+      isDocument: false,
+    };
+
     setUploadedId([newMedia]);
   };
-
 
   const { addToast } = useToasts();
 
@@ -189,7 +190,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     setFormStep((cur: number) => cur + 1);
   };
 
-  const widgetApi = useRef();
+  const widgetApiss = useRef();
   const widgetApis = useRef();
   let uploaded;
 
@@ -579,7 +580,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                         imageShrink="640x480"
                         imagePreviewMaxSize={9}
                         imagesOnly
-                       
                         onChange={(info) => onChangeId(info)}
                         //@ts-ignore
                         ref={widgetApis}
