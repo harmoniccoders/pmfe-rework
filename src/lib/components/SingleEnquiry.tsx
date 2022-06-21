@@ -1,9 +1,4 @@
-import {
-  Box,
-  Button,
-  VStack,
-  HStack,
-} from '@chakra-ui/react';
+import { Box, Button, VStack, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { PropertyModel } from 'types/api';
 import StepOne from './StepOne';
@@ -35,7 +30,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
 
     try {
       const result = await (await cancel(params)).data;
-console.log({result})
+      console.log({ result });
       if (result.status) {
         addToast(result.message, {
           appearance: 'success',
@@ -44,7 +39,7 @@ console.log({result})
         router.pathname.startsWith('/rent')
           ? router.push('/rent/listed-property')
           : router.push('/buy');
-        
+
         return;
       }
       addToast(result.message, {
@@ -57,7 +52,7 @@ console.log({result})
     }
   };
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   return (
     <HStack
       w="90%"

@@ -11,23 +11,31 @@ import {
   VStack,
   HStack,
   Button,
+  FormControl,
+  Select,
+  FormLabel,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import ButtonComponent from 'lib/components/Button';
+import { useOperationMethod } from 'react-openapi-client';
+import { ComplaintsCategory, ComplaintsModel } from 'types/api';
 
 type Props = {
   isOpen: boolean;
   onClose: any;
+  category: ComplaintsCategory[];
 };
 
-const TenancyModal = ({ isOpen, onClose }: Props) => {
+const TenancyModal = ({ isOpen, onClose, category }: Props) => {
   const [showForm, setShowForm] = useState<number>(0);
+  const [CreateComplaint, { loading, data, error }] =
+    useOperationMethod('Complaintscreate');
 
   const complaints = [
     {
@@ -47,8 +55,8 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
   ];
 
   const schema = yup.object().shape({
-    category: yup.string().required(),
-    subcategory: yup.string().required(),
+    complaintsCategory: yup.string().required(),
+    complaintsSubCategoryId: yup.number().required(),
     comment: yup.string().required(),
   });
 
@@ -58,12 +66,12 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
     control,
     setValue,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<ComplaintsModel>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: ComplaintsModel) => {
     console.log(data);
   };
 
@@ -102,17 +110,50 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
         <ModalBody>
           {showForm === 1 ? (
             <form onSubmit={handleSubmit(onSubmit)}>
-              <PrimarySelect
-                label="choose a category"
-                name="category"
-                error={errors?.category}
-                placeholder="choose your category"
+              <FormControl>
+                <FormLabel
+                  textTransform="capitalize"
+                  pos="relative"
+                  top={5}
+                  left={4}
+                  width="fit-content"
+                  zIndex={3}
+                  bg="brand.200"
+                >
+                  choose a category
+                </FormLabel>
+                <Select
+                  w="full"
+                  border="1px solid grey"
+                  borderRadius="0"
+                  height="3rem"
+                  fontSize=".9rem"
+                  icon={<Icons iconClass="fa-angle-right" />}
+                >
+                  <option disabled>choose a category </option>
+                  <option>
+                    {category.map((item: any) => {
+                      return (
+                        <option value={item.name} key={item.id}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                  </option>
+                </Select>
+              </FormControl>
+
+              <PrimarySelect<ComplaintsModel>
+                label="choose a subcategory"
+                name="complaintsSubCategoryId"
+                error={errors?.complaintsSubCategoryId}
+                placeholder="choose your subcategory"
                 register={register}
                 options={
                   <>
-                    {complaints.map((item, index) => {
+                    {category.map((item: any) => {
                       return (
-                        <option value={item.name} key={index}>
+                        <option value={item.id} key={item.id}>
                           {item.name}
                         </option>
                       );
@@ -121,26 +162,7 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                 }
               />
 
-              <PrimarySelect
-                label="choose a subcategory"
-                name="subcategory"
-                error={errors?.subcategory}
-                placeholder="choose your subcategory"
-                register={register}
-                options={
-                  <>
-                    {['bungalow', 'terrace'].map((item, index) => {
-                      return (
-                        <option value={item} key={index}>
-                          {item}
-                        </option>
-                      );
-                    })}
-                  </>
-                }
-              />
-
-              <PrimaryTextArea
+              <PrimaryTextArea<ComplaintsModel>
                 label="comments"
                 name="comment"
                 minH="150px"
@@ -255,9 +277,9 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                       color: 'white',
                     }}
                   >
-                    <Icons iconClass="fa-calendar" />
+                    <Icons iconClass="fa-life-ring" />
                   </Box>
-                  <Text>rent relief</Text>
+                  <Text>Rent Relief</Text>
                 </Button>
 
                 <Button
@@ -276,9 +298,9 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                       color: 'white',
                     }}
                   >
-                    <Icons iconClass="fa-house-person-leave" />
+                    <Icons iconClass="fa-house-leave" />
                   </Box>
-                  <Text>Terminate tenancy</Text>
+                  <Text>Terminate Tenancy</Text>
                 </Button>
 
                 <Button
@@ -299,7 +321,7 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                   >
                     <Icons iconClass="fa-scroll" />
                   </Box>
-                  <Text>receipts </Text>
+                  <Text>Receipts </Text>
                 </Button>
 
                 <Button
@@ -320,7 +342,7 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                   >
                     <Icons iconClass="fa-file-minus" />
                   </Box>
-                  <Text> tenancy agreement </Text>
+                  <Text> Tenancy Agreement </Text>
                 </Button>
 
                 <Button
@@ -339,9 +361,9 @@ const TenancyModal = ({ isOpen, onClose }: Props) => {
                       color: 'white',
                     }}
                   >
-                    <Icons iconClass="fa-calendar" />
+                    <Icons iconClass="fa-life-ring" />
                   </Box>
-                  <Text>renew tenancy</Text>
+                  <Text>Renew Tenancy</Text>
                 </Button>
               </VStack>
             </Box>

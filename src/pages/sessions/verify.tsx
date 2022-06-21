@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
 
     const data = (
-      await _dataAccess.get(`?${url}`)
+      await _dataAccess.get(`/api/LandSearch/user/list?${url}`)
     ).data;
 
     return {

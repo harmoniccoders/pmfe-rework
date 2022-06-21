@@ -13,7 +13,8 @@ const CardButton = ({ img, title, text, onClick }: Props) => {
       cursor="pointer"
       border="1px solid"
       borderColor="gray.300"
-      p="6"
+      py='6'
+      px="4"
       spacing="4"
       rounded="md"
       onClick={onClick}

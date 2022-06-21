@@ -93,7 +93,7 @@ function ListedRent({ data }: { data: any }) {
 
   return (
     <Box>
-      <SimpleGrid columns={4} gap={7}>
+      <SimpleGrid columns={4} gap={9}>
         <GridItem colSpan={[4, 4, 2, 2, 1]}>
           <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
             <Box w="full">

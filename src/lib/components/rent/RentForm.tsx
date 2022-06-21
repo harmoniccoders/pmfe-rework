@@ -412,6 +412,7 @@ const RentForm = ({
                     label="Rent (Per year)"
                   />
                   <Box>
+                    
                     <Flex
                       w="full"
                       border="1px solid grey"

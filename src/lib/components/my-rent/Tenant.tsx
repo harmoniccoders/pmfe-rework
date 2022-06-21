@@ -1,10 +1,21 @@
 import { Box, Grid, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
+import {
+  ComplaintsCategory,
+  PropertyTitle,
+  PropertyType,
+  PropertyView,
+} from 'types/api';
 import CleanProperty from '../clean/CleanProperty';
 import MyTenancy from './MyTenancy';
 
-function Tenant({ data }: { data: any }) {
+function Tenant({
+  data,
+  category,
+}: {
+  data: any;
+  category: ComplaintsCategory[];
+}) {
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">
@@ -46,16 +57,13 @@ function Tenant({ data }: { data: any }) {
               For Tenant
             </Text>
 
-            <MyTenancy />
-
-            {/* {data.length > 0 ? (
-              <CleanProperty requests={data} />
+            {data.length > 0 ? (
+              <MyTenancy category={category} data={data} />
             ) : (
               <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...
-
               </Text>
-            )} */}
+            )}
           </Box>
         </Box>
       </Box>

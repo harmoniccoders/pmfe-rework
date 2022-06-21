@@ -11,16 +11,23 @@ import {
 } from '@chakra-ui/react';
 import Icons from '../Icons';
 import TenancyModal from 'lib/styles/customTheme/components/Modals/my-rent/TenancyModal';
+import { ComplaintsCategory } from 'types/api';
 
-type Props = {};
+type Props = {
+  category: ComplaintsCategory[];
+  data: any;
+};
 
-const TenancyCard = (props: Props) => {
+const TenancyCard = ({ category, data }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const iconStyle = {
+    color: '#0042ff',
+  };
   return (
     <Box
       w="100%"
       boxShadow="0 20px 25px 4px rgba(0,0,0,0.14)"
-      py="25px"
+      py="15px"
       borderRadius="8px"
     >
       <Box w="100%">
@@ -33,11 +40,12 @@ const TenancyCard = (props: Props) => {
             fontWeight={600}
             lineHeight={1.5}
           >
-            4 Bedroom duplex with BQ
+            {/* 4 Bedroom duplex with BQ */}
+            {data.userName}
           </Text>
 
           <HStack w="100%">
-            <Icons iconClass="fa-calendar-day" />
+            <Icons iconClass="fa-calendar-day" style={iconStyle} />
 
             <Text>Next rent is due in 365 days</Text>
           </HStack>
@@ -58,7 +66,7 @@ const TenancyCard = (props: Props) => {
         </Box>
       </Box>
 
-      <TenancyModal isOpen={isOpen} onClose={onClose} />
+      <TenancyModal isOpen={isOpen} onClose={onClose} category={category} />
     </Box>
   );
 };

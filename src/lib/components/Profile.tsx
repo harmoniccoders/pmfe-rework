@@ -79,7 +79,7 @@ function Profile() {
       const result = await (await updateUser(undefined, data)).data;
 
       if (result.status) {
-        addToast('Update succesful, Please login again!', {
+        addToast('Update succesful!', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -103,6 +103,7 @@ function Profile() {
       overflow="hidden"
       align="center"
     >
+      
       <Box w="full" h="full" m="1rem unset" mt={['2rem', '1rem']}>
         <Flex align="flex-end" color="white">
           <Circle
@@ -137,8 +138,8 @@ function Profile() {
               publicKey="fda3a71102659f95625f"
               imageShrink="480x480"
               imagesOnly
-              onChange={onChange}
               previewStep
+              onChange={onChange}
               //@ts-ignore
               ref={widgetApi}
             />

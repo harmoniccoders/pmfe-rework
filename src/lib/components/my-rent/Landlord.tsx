@@ -1,7 +1,7 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, Grid, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import CleanProperty from '../clean/CleanProperty';
-import LandlordRentCard from 'lib/components/LandlordRentCard'
+import LandlordRentCard from 'lib/components/LandlordRentCard';
 
 function Landlord({ data }: { data: any }) {
   return (
@@ -33,10 +33,7 @@ function Landlord({ data }: { data: any }) {
             p=".2rem"
             mb="1rem"
           >
-            <PageTabs
-              tabName="my-rent/tenancy/tenant"
-              tabTitle="For Tenant"
-            />
+            <PageTabs tabName="my-rent/tenancy/tenant" tabTitle="For Tenant" />
             <PageTabs
               tabName="my-rent/tenancy/landlord"
               tabTitle="For Landlord"
@@ -51,11 +48,24 @@ function Landlord({ data }: { data: any }) {
               <CleanProperty requests={data} />
             ) : (
               <>
-              {/* <Text mt="3" fontWeight="medium" fontSize=".9rem">
+                {/* <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...                
               </Text> */}
-             
-                <LandlordRentCard/>
+
+                <Grid
+                  templateColumns={[
+                    'repeat(1,1fr)',
+                    'repeat(2,1fr)',
+                    'repeat(3,1fr)',
+                  ]}
+                  columnGap={6}
+                  rowGap={8}
+                >
+                  <LandlordRentCard />
+                  <LandlordRentCard />
+                  <LandlordRentCard />
+                  <LandlordRentCard />
+                </Grid>
               </>
             )}
           </Box>

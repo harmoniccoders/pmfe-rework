@@ -1,8 +1,9 @@
 import { Box, Flex, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useState } from 'react';
+import { ApplicationView } from 'types/api';
 import ViewRentRelief from './ViewRentRelief';
 
-const ReliefCard = () => {
+const ReliefCard = ({ items }: {items: ApplicationView}) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   return (
     <Box

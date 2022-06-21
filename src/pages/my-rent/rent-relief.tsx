@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   url = 'limit=8&offset=0';
   try {
 
-    const data = (await _dataAccess.get(`/api/Relief/user?${url}`)).data;
+    const data = (await _dataAccess.get(`/api/Relief/user?${url}`));
 
     return {
       props: {
