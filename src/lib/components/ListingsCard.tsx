@@ -50,9 +50,9 @@ const ListingsCard = ({
   item,
   propertyTitles,
   propertyTypes,
+  getStates,
   propertyTenants,
   propertyCollection,
-  getStates,
   getBanks,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

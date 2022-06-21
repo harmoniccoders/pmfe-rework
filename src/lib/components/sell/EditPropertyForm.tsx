@@ -62,6 +62,8 @@ const EditPropertyForm = ({
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const [draftLoading, setDraftLoading] = useState<boolean>(false);
+  const [liveLoading, setLiveLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -171,11 +173,11 @@ const EditPropertyForm = ({
               w="50%"
               type="submit"
               variant="outline"
-              onClick={async () => {
-                await setValue('isForSale', false);
-                await setValue('isDraft', q);
+              onClick={() => {
+                setValue('isForSale', false);
+                setValue('isDraft', true);
               }}
-              isLoading={getValues('isForSale') ? false : isLoading}
+              isLoading={draftLoading}
             >
               {item.isDraft ? 'Update Draft' : 'Move to Draft'}
             </Button>
@@ -189,7 +191,7 @@ const EditPropertyForm = ({
               <ButtonComponent
                 content={item.isForSale ? 'Update Listing' : 'Publish Listing'}
                 isValid={isValid}
-                loading={getValues('isDraft') ? false : false}
+                loading={liveLoading}
               />
             </Box>
           </HStack>
@@ -293,9 +295,16 @@ const EditPropertyForm = ({
     console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
+      if (data.sellMyself) {
+        setLiveLoading(true);
+      } else {
+        setDraftLoading(true);
+      }
       const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
       if (result.status != 400) {
+        setLiveLoading(false);
+        setDraftLoading(false);
         addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
@@ -305,6 +314,8 @@ const EditPropertyForm = ({
         router.reload();
         return;
       }
+      setLiveLoading(false);
+      setDraftLoading(false);
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,

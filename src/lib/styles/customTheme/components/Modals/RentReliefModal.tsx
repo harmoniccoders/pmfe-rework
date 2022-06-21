@@ -46,7 +46,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const [RentRelief, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
   // console.log({ data });
- const router = useRouter();
+  const router = useRouter();
   const [formStep, setFormStep] = useState<number>(0);
 
   // const [getResult, setGetResult] = useState([]);
@@ -56,34 +56,32 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     // reliefAmount: yup.number(),
     // payBackDate: yup.string(),
     // repaymentFrequency: yup.string(),
-    register: yup.object({
-      firstName: yup.string().required(),
-      middleName: yup.string(),
-      lastName: yup.string().required(),
-      email: yup.string().email().required(),
-      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      dateOfBirth: yup.string().required(),
-      occupation: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      companyName: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      annualIncome: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-      workAddress: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string()
-      }),
-
-      nationality: yup.string(),
-      maritalStatus: yup.string()
-    }),
-
+    // register: yup.object({
+    //   firstName: yup.string().required(),
+    //   middleName: yup.string(),
+    //   lastName: yup.string().required(),
+    //   email: yup.string().email().required(),
+    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+    //   dateOfBirth: yup.string().required(),
+    //   occupation: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string(),
+    //   }),
+    //   companyName: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string(),
+    //   }),
+    //   annualIncome: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string(),
+    //   }),
+    //   workAddress: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string(),
+    //   }),
+    //   nationality: yup.string(),
+    //   maritalStatus: yup.string(),
+    // }),
     // nextOfKin: yup.object({
     //   firstName: yup.string().required(),
     //   lastName: yup.string().required(),
@@ -139,7 +137,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   const widgetApi = useRef();
   const widgetApis = useRef();
   let uploaded;
- 
+
   const RenderButton = () => {
     if (formStep === 0 || formStep === 1) {
       return (
@@ -260,7 +258,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
         overflowY="auto"
         h="100vh"
         pos="fixed"
-        
       >
         <ModalHeader>
           <HStack
@@ -454,7 +451,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-                   
 
                     <Text
                       fontSize="14px"
@@ -522,7 +518,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                 )}
                 {formStep === 2 && (
                   <>
-                    {/* <CurrencyField<ApplicationModel>
+                    <CurrencyField<ApplicationModel>
                       placeholder="How much Rent Relief do you need?"
                       defaultValue=""
                       register={register}
@@ -537,8 +533,9 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       error={errors.payBackDate}
                       register={register}
                       control={control}
+                      fontSize="sm"
                       minDate={new Date()}
-                      maxDate={new Date(2023, 10, 1)}
+                      defaultValue={user?.dateOfBirth || ''}
                     />
                     <PrimarySelect<ApplicationModel>
                       label="How do you want to pay back?"
@@ -549,42 +546,33 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       options={
                         <>
-                          {repaymentFrequency.map((item: any, i: number) => {
-                            return (
-                              <option value={item} key={i}>
-                                {item}
-                              </option>
-                            );
+                          {repaymentFrequency.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
                           })}
                         </>
                       }
-                    />*/}
+                    />
+
                     <Box my="10">
-                      <Heading fontSize="18px" pb="5">Preview</Heading>
+                      <Heading fontSize="18px" pb="5">
+                        Preview
+                      </Heading>
                       <SimpleGrid columns={2} spacing="3">
                         <Box>
                           <Text>Loan Amount</Text>
-                          <Text fontWeight="600" >
-                            ₦4,500,000
-                          </Text>
+                          <Text fontWeight="600">₦4,500,000</Text>
                         </Box>
                         <Box>
                           <Text>Interest </Text>
-                          <Text fontWeight="600" >
-                            15% monthly
-                          </Text>
+                          <Text fontWeight="600">15% monthly</Text>
                         </Box>
                         <Box>
                           <Text>Total Repayment</Text>
-                          <Text fontWeight="600" >
-                            ₦4,782,372
-                          </Text>
+                          <Text fontWeight="600">₦4,782,372</Text>
                         </Box>
                         <Box>
                           <Text>Installments</Text>
-                          <Text fontWeight="600" >
-                            ₦797,062/Monthly
-                          </Text>
+                          <Text fontWeight="600">₦797,062/Monthly</Text>
                         </Box>
                       </SimpleGrid>
                     </Box>
