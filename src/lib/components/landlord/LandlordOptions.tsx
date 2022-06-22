@@ -15,7 +15,7 @@ import {
 import Icons from '../Icons';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
-import { Tenancy, RentCollectionType } from 'types/api';
+import { Tenancy, RentCollectionType, ComplaintsCategory, ComplaintsModel } from 'types/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,16 +28,34 @@ interface Props {
   formStep: number;
   setFormStep: any;
   Tenancylandlord: any;
+  getBanks: any[];
+  category: ComplaintsCategory[];
   onClose: () => void;
 }
 
-const LandlordOptions = ({ onClose }: Props) => {
-  const [Tenancylandlord, { loading: isLoading, data, error }] =
+const LandlordOptions = ({ onClose ,getBanks,}: Props) => {
+  const [ViewTenancylandlord, { loading: isLoading, data, error }] =
     useOperationMethod('Tenancylandlord');
+
+    // const [CreateComplaint, { loading, data, error }] =
+    // useOperationMethod('Complaintscreate');
+    const complaints = [
+      {
+        id: 1,
+        name: 'structural damage',
+      },
+    ];
 
   const schema = yup.object().shape({
     name: yup.string().required(),
-    accountNumber: yup.string().required(),
+    bank: yup.string().when('name', {
+      is: () => formStep === 3,
+      then: yup.string(),
+    }),
+    accountNumber: yup.string().when('name', {
+      is: () => formStep === 3,
+      then: yup.string(),
+    }),
   });
 
   const [formStep, setFormStep] = useState<number>(0);
@@ -46,7 +64,7 @@ const LandlordOptions = ({ onClose }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<Tenancylandlord>({
+  } = useForm<Tenancy>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
@@ -56,14 +74,14 @@ const LandlordOptions = ({ onClose }: Props) => {
   };
   const clearPreviewData = () => {
     setFormStep(0);
-    onClose();
+    
   };
 
   const { addToast } = useToasts();
 
-  const onSubmit = async (data: Tenancylandlord) => {
+  const onSubmit = async (data: Tenancy) => {
     try {
-      const result = await (await Tenancylandlord(undefined, data)).data;
+      const result = await (await ViewTenancylandlord(undefined, data)).data;
       //console to be removed, take note
       console.log({ result });
       //remove the line above
@@ -325,19 +343,25 @@ const LandlordOptions = ({ onClose }: Props) => {
                   register={register}
                   options={['Anually', 'Monthly', 'Daily']}
                 />
-                <PrimarySelect<RentCollectionType>
+                <PrimarySelect<Tenancy>
                   label="Your Bank"
-                  name="name"
-                  error={errors.name}
+                  name="bank"
+                  error={errors.bank}
                   placeholder="Your Bank"
                   defaultValue=""
                   register={register}
-                  options={['GTB', 'Union bank', 'FCMB']}
+                  options={
+                    <>
+                      {getBanks.map((x: any) => {
+                        return <option value={x.name}>{x.name}</option>;
+                      })}
+                    </>
+                  }
                 />
-                <PrimaryInput<RentCollectionType>
+                <PrimaryInput<Tenancy>
                   label="Your account number"
-                  name="name"
-                  error={errors.name}
+                  name="accountNumber"
+                  error={errors.accountNumber}
                   placeholder="Your account number"
                   defaultValue=""
                   register={register}
