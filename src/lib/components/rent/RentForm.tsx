@@ -570,7 +570,7 @@ const RentForm = ({
                               value={'false'}
                             />
                             <Tooltip
-                              label="We help you rent out your property."
+                              onClick={() => setFormStep(2)}
                               aria-label="A tooltip"
                             >
                               <FaInfoCircle />
@@ -657,6 +657,25 @@ const RentForm = ({
                       error={errors.accountNumber}
                     />
                   </Box>
+                </>
+              )}
+               {formStep === 2 && (
+                <>
+                  <Text fontSize='18px' fontWeight='600'>Benefits of letting us help you sell your property</Text>
+                  <ol>
+                    <li>
+                      <Text>1. Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
+                        your property faster as buyers will feel more confident to buy.</Text>
+                    </li>
+                    <li>
+                      <Text>2. Your property will be shown prominently in search results.</Text>
+                    </li>
+                    <li>
+                      <Text>
+                      3. Your property will feature the verification badge.
+                      </Text>
+                    </li>
+                  </ol>
                 </>
               )}
               {RenderButton()}

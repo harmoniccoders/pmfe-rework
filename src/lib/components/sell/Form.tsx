@@ -101,6 +101,8 @@ const Form = ({
     setFormStep((cur: number) => cur + 1);
   };
 
+ 
+
   const widgetApi = useRef();
   const widgetApis = useRef();
 
@@ -387,7 +389,7 @@ const Form = ({
 
                             <Tooltip
                               placement="top"
-                              label="When we help you sell, your property is listed as verified."
+                              onClick={() => setFormStep(2)}
                             >
                               <Box as="span" cursor="pointer">
                                 <FaInfoCircle />
@@ -553,6 +555,25 @@ const Form = ({
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />
+                </>
+              )}
+              {formStep === 2 && (
+                <>
+                  <Text fontSize='18px' fontWeight='600'>Benefits of letting us help you sell your property</Text>
+                  <ol>
+                    <li>
+                      <Text>1. Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
+                        your property faster as buyers will feel more confident to buy.</Text>
+                    </li>
+                    <li>
+                      <Text>2. Your property will be shown prominently in search results.</Text>
+                    </li>
+                    <li>
+                      <Text>
+                      3. Your property will feature the verification badge.
+                      </Text>
+                    </li>
+                  </ol>
                 </>
               )}
               {RenderButton()}
