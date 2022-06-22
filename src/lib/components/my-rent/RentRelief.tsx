@@ -1,14 +1,16 @@
 import { Box, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import ReliefCard from 'lib/styles/customTheme/components/Modals/ReliefCard';
+import { useOperationMethod } from 'react-openapi-client';
 import { ApplicationView } from 'types/api';
-import CleanProperty from '../clean/CleanProperty';
+import { Parameters } from 'openapi-client-axios';
 
 function RentRelief({ data }: { data: any }) {
-  console.log({data})
-  const result = data?.value
+  // console.log({data})
+  const reliefs = data?.value;
+
   return (
-    <Box w="100%" mt="3rem">
+    <Box w="100%" my="3rem">
       <Box w="90%" mx="auto">
         <HStack
           w="full"
@@ -29,11 +31,11 @@ function RentRelief({ data }: { data: any }) {
           <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
             Rent Relief
           </Text>
-          {data.length === 0 ? (
+          {reliefs?.length > 0 ? (
             <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="3">
-              {result?.map((items: ApplicationView) => (
-                <ReliefCard items={items} />
-              ))}
+              {reliefs.map((item: ApplicationView) => (
+                  <ReliefCard item={item} />
+                ))}
             </SimpleGrid>
           ) : (
             <Text mt="3" fontWeight="medium" fontSize=".9rem">

@@ -3,30 +3,25 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
   Button,
   Text,
   Image,
   Box,
-  Badge,
   Heading,
   Grid,
   GridItem,
   HStack,
   VStack,
   AspectRatio,
-  useDisclosure,
   SimpleGrid,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Icons from 'lib/components/Icons';
-import checkIfImageExists from 'lib/Utils/checkImage';
 import React, { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
-import { PropertyView } from 'types/api';
+import { Application, PropertyView } from 'types/api';
 import parse from 'html-react-parser';
 import MapView from 'lib/Utils/MapView';
 import TenantInfo from 'lib/components/TenantInfo';
@@ -40,16 +35,24 @@ type Props = {
   onClose?: any;
   openModal: () => void;
   item: PropertyView;
+  applications: Application[];
 };
 
 const ViewListedRentProperty = ({
   isOpen,
   onClose,
   item,
+  applications,
   openModal,
 }: Props) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
-  const application: any[] = [1, 2];
+  const application: Application[] = applications.filter(
+    (item) => item.applicationType === 'RENT'
+  );
+  const noAccepted: Application[] = application.filter(
+    (item) => item !== 'ACCEPTED'
+  );
+  console.log(application);
   return (
     <Modal
       isOpen={isOpen}
@@ -245,7 +248,7 @@ const ViewListedRentProperty = ({
               >
                 <Icons iconClass="fa-comments" style={{ fontSize: '20px' }} />
                 <Text fontSize="14px" mx="2rem" fontWeight="bold">
-                  {item.enquiries}
+                  {application.length}
                 </Text>
                 <Text fontSize="14px" fontWeight="500">
                   Applications
@@ -253,32 +256,45 @@ const ViewListedRentProperty = ({
               </GridItem>
             </Grid>
             {application.length > 0 ? (
-              // <VStack align="flex-start" spacing="5" mt="5">
-              //   <Heading fontSize="15px">Tenant Applications</Heading>
-              //   <SimpleGrid spacing="5" w="full">
-              //     {application.map((item) => (
-              //       <TenantInfo key={item} />
-              //     ))}
-              //   </SimpleGrid>
-              // </VStack>
-              <Box>
+              noAccepted.length === 0 ? (
                 <VStack align="flex-start" spacing="5" mt="5">
-                  <Heading fontSize="15px">Accepted Tenant</Heading>
+                  <Heading fontSize="15px">Tenant Applications</Heading>
                   <SimpleGrid spacing="5" w="full">
                     {application.map((item) => (
-                      <TenantInfo key={item} />
+                      <TenantInfo key={item.id} item={item} />
                     ))}
                   </SimpleGrid>
                 </VStack>
-                <VStack align="flex-start" spacing="5" mt="7">
-                  <Heading fontSize="15px">Other Applicants</Heading>
-                  <SimpleGrid spacing="5" w="full">
-                    {application.map((item) => (
-                      <TenantInfo key={item} />
-                    ))}
-                  </SimpleGrid>
-                </VStack>
-              </Box>
+              ) : (
+                noAccepted.length > 0 && (
+                  <Box>
+                    <VStack align="flex-start" spacing="5" mt="5">
+                      <Heading fontSize="15px">Accepted Tenant</Heading>
+                      <SimpleGrid spacing="5" w="full">
+                        {application
+                          ?.filter((item) => item?.status === 'ACCEPTED')
+                          .map((item) => (
+                            <TenantInfo key={item.id} item={item} />
+                          ))}
+                      </SimpleGrid>
+                    </VStack>
+                    <VStack align="flex-start" spacing="5" mt="7">
+                      <Heading fontSize="15px">Other Applicants</Heading>
+                      <SimpleGrid spacing="5" w="full">
+                        {application
+                          ?.filter((item) => item?.status !== 'ACCEPTED')
+                          .map((item) => (
+                            <TenantInfo
+                              key={item.id}
+                              disabled={true}
+                              item={item}
+                            />
+                          ))}
+                      </SimpleGrid>
+                    </VStack>
+                  </Box>
+                )
+              )
             ) : (
               <Heading fontSize="15px" mt="5">
                 No applications yet

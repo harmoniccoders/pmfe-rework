@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
 import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';

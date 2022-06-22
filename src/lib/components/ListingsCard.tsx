@@ -15,7 +15,7 @@ import {
   Hide,
   HStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import { FaPen } from 'react-icons/fa';
@@ -25,12 +25,15 @@ import {
   PropertyType,
   PropertyView,
   RentCollectionType,
+  Application,
   TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
+import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
 
 type Props = {
   item: PropertyView;
@@ -58,7 +61,22 @@ const ListingsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-console.log({item})
+  const [applications, setApplications] = useState <Application[]>([]);
+
+  const [GetApplication, { loading: isLoading, data: isData, error: isError }] =
+    useOperationMethod('Applicationlist{propertyId}');
+
+  const getApplication = async () => {
+    const params: Parameters = {
+      propertyId: item.id as number,
+    };
+    try {
+      const result = await (await GetApplication(params)).data;
+      setApplications(result?.data.value);
+    } catch (err) {}
+  };
+  
+
   return (
     <>
       <Box
@@ -245,7 +263,15 @@ console.log({item})
             >
               Delete
             </Button>
-            <Button variant="solid" height="40px" width="full" onClick={onOpen}>
+            <Button
+              variant="solid"
+              height="40px"
+              width="full"
+              onClick={() => {
+                getApplication();
+                onOpen();
+              }}
+            >
               Details
             </Button>
           </HStack>
@@ -265,6 +291,7 @@ console.log({item})
           onClose={onClose}
           item={item}
           openModal={() => setUpdateModal(true)}
+          applications={applications}
         />
       )}
       <DeleteListings

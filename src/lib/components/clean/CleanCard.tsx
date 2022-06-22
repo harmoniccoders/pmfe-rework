@@ -39,7 +39,7 @@ const CleanCard = ({
   return (
     <>
       <Box
-        // minH="250px"
+        
         w="full"
         py="2rem"
         px="1rem"

@@ -30,7 +30,7 @@ const enquires = ({ data }: { data: any }) => {
       <>
         {result?.length <= 0 ? (
           <Heading fontSize="16px" lineHeight={1.5}>
-            Sorry! There's no property at this time please check back later
+            You have not made any enquiries...
           </Heading>
         ) : (
           <Box>
