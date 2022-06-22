@@ -4,6 +4,7 @@ import {
   Stack,
   Button,
   Flex,
+  Center,
   HStack,
   Tooltip,
   Icon,
@@ -570,10 +571,9 @@ const RentForm = ({
                               value={'false'}
                             />
                             <Tooltip
-                              label="We help you rent out your property."
                               aria-label="A tooltip"
                             >
-                              <FaInfoCircle />
+                              <FaInfoCircle onClick={() => setFormStep(2)} />
                             </Tooltip>
                           </Flex>
                         </>
@@ -658,6 +658,27 @@ const RentForm = ({
                     />
                   </Box>
                 </>
+              )}
+               {formStep === 2 && (
+                <Box h='75vh'>
+                  <Text fontSize='18px' fontWeight='600' mb='1rem'>Benefits of letting us help you sell your property</Text>
+                  <ol>
+                    <li>
+                      <Text mt='1rem'>Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
+                        your property faster as buyers will feel more confident to buy.</Text>
+                    </li>
+                    <li>
+                      <Text mt='1rem'>Your property will be shown prominently in search results.</Text>
+                    </li>
+                    <li>
+                      <Text mt='1rem'> Your property will feature the verification badge.
+                      </Text>
+                    </li>
+                  </ol>
+                  <Center> 
+                    <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
+                  </Center>
+                </Box>
               )}
               {RenderButton()}
             </>

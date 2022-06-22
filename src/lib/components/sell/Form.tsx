@@ -6,6 +6,7 @@ import {
   Image,
   Flex,
   HStack,
+  Center,
   Tooltip,
   Icon,
   AspectRatio,
@@ -100,6 +101,8 @@ const Form = ({
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
+
+ 
 
   const widgetApi = useRef();
   const widgetApis = useRef();
@@ -403,10 +406,10 @@ const Form = ({
 
                             <Tooltip
                               placement="top"
-                              label="When we help you sell, your property is listed as verified."
+                              
                             >
                               <Box as="span" cursor="pointer">
-                                <FaInfoCircle />
+                                <FaInfoCircle onClick={() => setFormStep(2)}/>
                               </Box>
                             </Tooltip>
                           </Flex>
@@ -570,6 +573,27 @@ const Form = ({
                     fontSize="sm"
                   />
                 </>
+              )}
+              {formStep === 2 && (
+                <Box h='75vh'>
+                <Text fontSize='18px' fontWeight='600' mb='1rem'>Benefits of letting us help you sell your property</Text>
+                <ol>
+                  <li>
+                    <Text mt='1rem'>Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
+                      your property faster as buyers will feel more confident to buy.</Text>
+                  </li>
+                  <li>
+                    <Text mt='1rem'>Your property will be shown prominently in search results.</Text>
+                  </li>
+                  <li>
+                    <Text mt='1rem'> Your property will feature the verification badge.
+                    </Text>
+                  </li>
+                </ol>
+                <Center> 
+                  <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
+                </Center>
+              </Box>
               )}
               {RenderButton()}
             </>

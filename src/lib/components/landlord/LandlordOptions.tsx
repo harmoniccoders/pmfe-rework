@@ -15,7 +15,7 @@ import {
 import Icons from '../Icons';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
-import { PropertyModel, RentCollectionType } from 'types/api';
+import { Tenancy, RentCollectionType } from 'types/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,12 +27,13 @@ import axios from 'axios';
 interface Props {
   formStep: number;
   setFormStep: any;
+  Tenancylandlord: any;
   onClose: () => void;
 }
 
 const LandlordOptions = ({ onClose }: Props) => {
-  const [RentCollectionType, { loading: isLoading, data, error }] =
-    useOperationMethod('RentCollectionType');
+  const [Tenancylandlord, { loading: isLoading, data, error }] =
+    useOperationMethod('Tenancylandlord');
 
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -45,7 +46,7 @@ const LandlordOptions = ({ onClose }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<RentCollectionType>({
+  } = useForm<Tenancylandlord>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
@@ -60,9 +61,9 @@ const LandlordOptions = ({ onClose }: Props) => {
 
   const { addToast } = useToasts();
 
-  const onSubmit = async (data: RentCollectionType) => {
+  const onSubmit = async (data: Tenancylandlord) => {
     try {
-      const result = await (await RentCollectionType(undefined, data)).data;
+      const result = await (await Tenancylandlord(undefined, data)).data;
       //console to be removed, take note
       console.log({ result });
       //remove the line above
@@ -209,6 +210,7 @@ const LandlordOptions = ({ onClose }: Props) => {
             </Box>
           </Grid>
         </Box>
+        
       )}
       {formStep === 1 && (
         <>
@@ -247,7 +249,7 @@ const LandlordOptions = ({ onClose }: Props) => {
               </Text>
               <Divider />
             </Stack>
-            <Box mt="3.5rem">
+            <Box mt="4rem">
               <Button
                 type="button"
                 w="100%"
@@ -258,7 +260,7 @@ const LandlordOptions = ({ onClose }: Props) => {
               >
                 Authorize Inspection
               </Button>
-              <Text textAlign="center" color="gray" mt="1.25rem">
+              <Text  color="gray" mt="1.25rem">
                 A propertyMattaaz Representative will go and inspect the
                 reported damage and we will revert to you with proof of damage
                 as well as repair costs.
@@ -277,7 +279,7 @@ const LandlordOptions = ({ onClose }: Props) => {
             </Center>
             <Center>
               <Text mb="1rem" fontWeight="700" fontSize="2rem">
-                #0.00
+              ₦0.00
               </Text>
             </Center>
 
@@ -289,12 +291,12 @@ const LandlordOptions = ({ onClose }: Props) => {
                 w="full"
                 h="3rem"
                 borderRadius="8px"
-                bgColor="brand.50"
+                bgColor="rgba(154,167,179,0.06)"
                 align="center"
                 p=".55rem"
                 mb="1rem"
               >
-                <Text textAlign="left">#2,500,000</Text>
+                <Text textAlign="left">₦2,500,000</Text>
                 <Spacer />
                 <Text textAlign="right">30 Jun 2021</Text>
               </Flex>
@@ -309,7 +311,7 @@ const LandlordOptions = ({ onClose }: Props) => {
                 Request Payment
               </Button>
             </Stack>
-            <Stack mt="1rem">
+            <Stack mt="2rem !important">
               <Text fontWeight="700" fontSize={['1rem', '']}>
                 Rent Collection
               </Text>
@@ -368,9 +370,9 @@ const LandlordOptions = ({ onClose }: Props) => {
                   </Box>
                   <Spacer />
                   <Box textAlign="right">
-                    <Text fontWeight="700">#2,500,000</Text>
+                    <Text fontWeight="700">₦2,500,000</Text>
                     <Text color="#545454">
-                      <small>GTB Account</small>
+                      <small>GTBank Account</small>
                     </Text>
                   </Box>
                 </Flex>
@@ -394,10 +396,10 @@ const LandlordOptions = ({ onClose }: Props) => {
               PropertyMataaz Limited
             </Text>
             <Stack fontSize=".95em" mt="1rem">
-              <Text>
+              <Text fontWeight="600">
                 In respect of the 4 Bedroom Duplex at No. 16 Admiralty Way,
                 lekki Phase 1, lekki, Lagos, Nigeria
-              </Text>
+              </Text><br/>
               <Text>
                 <span style={{ textTransform: 'uppercase' }}>
                   THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021 BETWEEN
