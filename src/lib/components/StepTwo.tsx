@@ -18,6 +18,7 @@ import PaySecurelyModal from 'lib/styles/customTheme/components/Modals/PaySecure
 import { PropertyModel } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { Parameters } from 'openapi-client-axios';
+import RentApplicationModal from 'lib/styles/customTheme/components/Modals/RentApplicationModal';
 
 type Props = {
   step: number;
@@ -142,13 +143,21 @@ const StepTwo = ({ step, setStep, data }: Props) => {
           </Button>
         </VStack>
       </Flex>
-
-      <SubmitApplicationModal
-        onClose={onClose}
-        isOpen={isOpen}
-        data={data}
-        setStep={setStep}
-      />
+      {data.isForRent ? (
+        <RentApplicationModal
+          onClose={onClose}
+          isOpen={isOpen}
+          data={data}
+          setStep={setStep}
+        />
+      ) : (
+        <SubmitApplicationModal
+          onClose={onClose}
+          isOpen={isOpen}
+          data={data}
+          setStep={setStep}
+        />
+      )}
       <PaySecurelyModal
         open={open}
         close={close}

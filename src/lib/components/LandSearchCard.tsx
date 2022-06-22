@@ -13,7 +13,7 @@ import {
 import { LandSearchView } from 'types/api/land-search-view';
 
 const LandSearchCard = ({ item }: { item: LandSearchView }) => {
-  console.log({item})
+  
   return (
     <Box
       w="full"
@@ -31,7 +31,8 @@ const LandSearchCard = ({ item }: { item: LandSearchView }) => {
             </Text>
             <Text mt="3">{item?.fileNumber}</Text>
           </Box>
-          {/* <Text
+          <Text
+            fontSize="14px"
             fontWeight="600"
             bg="gray.100"
             textTransform="capitalize"
@@ -40,12 +41,13 @@ const LandSearchCard = ({ item }: { item: LandSearchView }) => {
             py="1"
           >
             {item?.status}
-          </Text> */}
+          </Text>
         </Flex>
 
         <Divider borderColor="brand.50" />
         <Flex px=".8rem" justify="space-between" w="full">
           <Button
+            isDisabled={item?.status === 'PENDING' ? true : false}
             variant="outline"
             height="40px"
             w="full"

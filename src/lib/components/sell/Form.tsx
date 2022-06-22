@@ -58,6 +58,8 @@ const Form = ({
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertycreate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const [draftLoading, setDraftLoading] = useState<boolean>(false);
+  const [liveLoading, setLiveLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -87,9 +89,7 @@ const Form = ({
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
-    defaultValues: {
-      isForSale: true,
-    },
+    defaultValues: {},
   });
 
   watch('numberOfBathrooms');
@@ -155,19 +155,25 @@ const Form = ({
               w="50%"
               type="submit"
               variant="outline"
-              onClick={async () => {
-                await setValue('isDraft', true);
-                await setValue('isForSale', false);
+              onClick={() => {
+                setValue('isDraft', true);
+                setValue('isForSale', false);
               }}
-              isLoading={getValues('isForSale') ? false : isLoading}
+              isLoading={draftLoading}
             >
               Save as Draft
             </Button>
-            <Box w="50%">
+            <Box
+              w="50%"
+              onClick={() => {
+                setValue('isDraft', false);
+                setValue('isForSale', true);
+              }}
+            >
               <ButtonComponent
                 content="Submit"
                 isValid={isValid}
-                loading={getValues('isDraft') ? !isLoading : isLoading}
+                loading={liveLoading}
               />
             </Box>
           </HStack>
@@ -247,10 +253,18 @@ const Form = ({
     data.sellMyself = data.sellMyself as boolean;
     console.log({ data });
     data.mediaFiles = uploadedMedia;
+
     try {
+      if (data.sellMyself) {
+        setLiveLoading(true);
+      } else {
+        setDraftLoading(true);
+      }
       const result = await (await PropertyCreate(undefined, data)).data;
-      
-      if (result.status != 400) {
+
+      if (result.status) {
+        setLiveLoading(false);
+        setDraftLoading(false);
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
@@ -260,6 +274,8 @@ const Form = ({
         router.reload();
         return;
       }
+      setLiveLoading(false);
+      setDraftLoading(false);
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
@@ -348,9 +364,9 @@ const Form = ({
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"
-                    placeholder=""
+                    placeholder="Nearest Landmark"
                     error={errors.area}
-                    defaultValue="Nearest Landmark"
+                    defaultValue=""
                     register={register}
                   />
                   <PrimaryInput<PropertyModel>

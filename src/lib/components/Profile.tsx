@@ -79,7 +79,7 @@ function Profile() {
       const result = await (await updateUser(undefined, data)).data;
 
       if (result.status) {
-        addToast('Update succesful, Please login again!', {
+        addToast('Update succesful!', {
           appearance: 'success',
           autoDismiss: true,
         });

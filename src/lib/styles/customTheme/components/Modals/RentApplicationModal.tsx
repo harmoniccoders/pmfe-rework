@@ -12,13 +12,10 @@ import {
   Button,
   Text,
   Icon,
-  SimpleGrid,
-  Heading,
 } from '@chakra-ui/react';
 import ApplicationForm from 'lib/components/ApplicationForm';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { MediaModel, PropertyModel } from 'types/api';
-import { useRouter } from 'next/router';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,57 +28,57 @@ import Cookies from 'js-cookie';
 import ButtonComponent from 'lib/components/Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { Widget } from '@uploadcare/react-widget';
+import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
-import { CurrencyField } from 'lib/Utils/CurrencyInput';
-// import loanDetails from 'lib/Utils/loanDetails';
-import moment from 'moment';
 
 type Props = {
   onClose: any;
   isOpen: boolean;
+  data: any;
+  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const RentReliefModal = ({ onClose, isOpen }: Props) => {
-  const [RentRelief, { loading, data: isData, error }] =
+const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
+  const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
   // console.log({ data });
-  const router = useRouter();
+
   const [formStep, setFormStep] = useState<number>(0);
-  const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
-  const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
+const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
+const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
+
+const widgetApiss = useRef();
+const widgetApis = useRef();
+  // const [getResult, setGetResult] = useState([]);
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
-    // reliefAmount: yup.number(),
-    // payBackDate: yup.string(),
-    // repaymentFrequency: yup.string(),
-    // register: yup.object({
-    //   firstName: yup.string().required(),
-    //   middleName: yup.string(),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   dateOfBirth: yup.string().required(),
-    //   occupation: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   companyName: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   annualIncome: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   workAddress: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   nationality: yup.string(),
-    //   maritalStatus: yup.string(),
-    // }),
+    register: yup.object({
+      firstName: yup.string().required(),
+      middleName: yup.string(),
+      lastName: yup.string().required(),
+      email: yup.string().email().required(),
+      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+      dateOfBirth: yup.string().required(),
+      passportPhotograph: yup.string(),
+      workId: yup.string(),
+      occupation: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string().required(),
+      }),
+      companyName: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string().required(),
+      }),
+      workAddress: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string().required(),
+      }),
+      nationality: yup.string().required(),
+      maritalStatus: yup.string().required(),
+    }),
+
     // nextOfKin: yup.object({
     //   firstName: yup.string().required(),
     //   lastName: yup.string().required(),
@@ -90,112 +87,65 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     //   address: yup.string().required(),
     //   relationship: yup.string().required(),
     // }),
-    //  reliefAmount: yup.number().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.number()
-    //   }),
-    //   payBackDate: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
-    //   repaymentFrequency: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
   });
 
   const users = Cookies.get('user') as unknown as string;
-  let user: any;
+  let user;
   if (users !== undefined) {
     user = JSON.parse(users);
   }
+
+  let propertyId = data.id;
 
   const {
     register,
     handleSubmit,
     control,
-    getValues,
-    watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
-    defaultValues: {
-      // propertyId: data.id
-    },
   });
 
-  let reliefAmount = getValues('reliefAmount') as number;
-  reliefAmount = +reliefAmount || 0;
-  let payBackDate = moment(getValues('payBackDate')) as any;
-  let repaymentFrequencyValue = getValues('repaymentFrequency');
-  const getRepayment = () => {
-    let value;
-    if (repaymentFrequencyValue === 'month') value = 'monthly';
-    else if (repaymentFrequencyValue === 'weeks') value = 'weekly';
-    else {
-      value = 'one-off';
-    }
-    return value;
-  };
-  const startDate = moment().format('YYYY-MM-DD');
-  const interestRate = 15;
-  const interest = (interestRate / 100) * reliefAmount;
-  const totalPayment = interest + reliefAmount;
-  const payments =
-    repaymentFrequencyValue === 'once'
-      ? 1
-      : payBackDate.diff(startDate, repaymentFrequencyValue);
-  const installments = totalPayment / payments;
+    const { addToast } = useToasts();
+     const onChangePassport = async (info: any) => {
+       // uploadPassport = await groupInfo(info.uuid);
+       const passportUrl = info.originalUrl;
 
-  watch('reliefAmount');
-  watch('payBackDate');
-  watch('repaymentFrequency');
+       let newMedia: MediaModel = {
+         url: passportUrl,
+         isImage: true,
+         isVideo: false,
+         name: '',
+         extention: '',
+         base64String: '',
+         isDocument: false,
+       };
 
-  const onChangePassport = async (info: any) => {
-    // uploadPassport = await groupInfo(info.uuid);
-    const passportUrl = info.originalUrl;
+       setUploadedPassport([newMedia]);
+     };
+     const onChangeId = async (info: any) => {
+       const idUrl = info.originalUrl;
 
-    let newMedia: MediaModel = {
-      url: passportUrl,
-      isImage: true,
-      isVideo: false,
-      name: '',
-      extention: '',
-      base64String: '',
-      isDocument: false,
-    };
+       let newMedia: MediaModel = {
+         url: idUrl,
+         isImage: true,
+         isVideo: false,
+         name: '',
+         extention: '',
+         base64String: '',
+         isDocument: false,
+       };
 
-    setUploadedPassport([newMedia]);
-  };
-  const onChangeId = async (info: any) => {
-    const idUrl = info.originalUrl;
-
-    let newMedia: MediaModel = {
-      url: idUrl,
-      isImage: true,
-      isVideo: false,
-      name: '',
-      extention: '',
-      base64String: '',
-      isDocument: false,
-    };
-
-    setUploadedId([newMedia]);
-  };
-
-  const { addToast } = useToasts();
+       setUploadedId([newMedia]);
+     };
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
-
-  const widgetApiss = useRef();
-  const widgetApis = useRef();
-  let uploaded;
-
   const RenderButton = () => {
-    if (formStep === 0 || formStep === 1) {
+    if (formStep === 0) {
       return (
         <Box onClick={completeFormStep}>
           <Button
@@ -211,18 +161,18 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
           </Button>
         </Box>
       );
-    } else {
+    } else if (formStep === 1) {
       return (
         <Box>
           <ButtonComponent
-            content="Apply for Rent Relief"
+            content="Submit"
             isValid={isValid}
             loading={loading}
           />
         </Box>
       );
-      // } else {
-      //   return null;
+    } else {
+      return null;
     }
   };
 
@@ -232,31 +182,24 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
           data.register?.dateOfBirth as unknown as Date
         ).toLocaleDateString())
       : null;
-    data.payBackDate
-      ? (data.payBackDate = new Date(
-          data.payBackDate as unknown as Date
-        ).toLocaleDateString())
-      : null;
-
-    data.applicationTypeId = 5;
-    data.register!.passportPhotograph = uploadedPassport[0];
-    data.register!.workId = uploadedId[0];
+    data.propertyId = propertyId;
+      data.applicationTypeId = 2;
+      data.register!.passportPhotograph = uploadedPassport[0];
+      data.register!.workId = uploadedId[0];
 
     console.log({ data });
     try {
-      const result = await (await RentRelief(undefined, data)).data;
+      const result = await (await SubmitApplication(undefined, data)).data;
       console.log({ result });
 
       if (result.status) {
-        addToast(
-          'Your application has been submitted. You will be notified when your rent Relief is disbursed',
-          {
-            appearance: 'success',
-            autoDismiss: true,
-          }
-        );
+        // setStep(2);
+        // setGetResult(result.data);
+        addToast(result.message, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
         onClose();
-        router.push('/my-rent/rent-relief');
         return;
       }
       addToast(result.message, {
@@ -295,35 +238,21 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     },
   ];
 
-  const repaymentFrequency = [
-    {
-      id: 'weeks',
-      name: 'Weekly',
-    },
-    {
-      id: 'month',
-      name: 'Monthly',
-    },
-    {
-      id: 'once',
-      name: 'One-off',
-    },
-  ];
-
   return (
     <Modal
       isOpen={isOpen}
-      closeOnOverlayClick={false}
       onClose={onClose}
       size="lg"
+      closeOnOverlayClick={false}
       isCentered
     >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
+
       <ModalContent
         py={5}
         borderRadius="0"
-        overflowY="auto"
-        h="100vh"
+        overflowY="scroll"
+        maxH="100vh"
         pos="fixed"
       >
         <ModalHeader>
@@ -346,13 +275,35 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
               ></span>
               Back
             </Text>
+
+            <Box w="150px" h="40px">
+              <Image
+                src="/assets/PropertyMataaz.png"
+                alt="company-logo"
+                w="100%"
+                h="100%"
+                objectFit="contain"
+              />
+            </Box>
           </HStack>
         </ModalHeader>
+
         <ModalBody>
           <VStack alignItems="flex-start" spacing={3} width="100%">
-            <Text fontWeight={600} color="brand.100" textTransform="capitalize">
-              Rent Relief form
+            <Text fontWeight={600} fontSize="16px">
+              {data.name}
             </Text>
+
+            <Text fontWeight={600} color="brand.100" textTransform="capitalize">
+              Application form
+            </Text>
+
+            {/* <ApplicationForm
+              formStep={formStep}
+              setFormStep={setFormStep}
+              setStep={setStep}
+              onClose={onClose}
+            /> */}
 
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
               <>
@@ -470,6 +421,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="employer"
                       name="register.companyName"
@@ -478,6 +430,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="work address"
                       name="register.workAddress"
@@ -615,7 +568,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                         </>
                       )}
                     </Box>
-
                     <Text
                       fontSize="14px"
                       fontWeight={600}
@@ -624,6 +576,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                     >
                       Next of kin
                     </Text>
+
                     <PrimaryInput<ApplicationModel>
                       label="first name"
                       name="nextOfKin.firstName"
@@ -632,6 +585,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="last name"
                       name="nextOfKin.lastName"
@@ -640,6 +594,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="mobile number"
                       name="nextOfKin.phoneNumber"
@@ -648,6 +603,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="email"
                       name="nextOfKin.email"
@@ -657,6 +613,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       type="email"
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="work address"
                       name="nextOfKin.address"
@@ -665,6 +622,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
+
                     <PrimaryInput<ApplicationModel>
                       label="relationship"
                       name="nextOfKin.relationship"
@@ -673,91 +631,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-                  </>
-                )}
-                {formStep === 2 && (
-                  <>
-                    <CurrencyField<ApplicationModel>
-                      placeholder="How much Rent Relief do you need?"
-                      defaultValue=""
-                      register={register}
-                      error={errors.reliefAmount}
-                      name={'reliefAmount'}
-                      control={control}
-                      label="Relief Amount"
-                    />
-                    <PrimaryDate<ApplicationModel>
-                      label="Choose a pay back date"
-                      name="payBackDate"
-                      error={errors.payBackDate}
-                      register={register}
-                      control={control}
-                      fontSize="sm"
-                      minDate={new Date()}
-                      defaultValue={user?.dateOfBirth || ''}
-                    />
-                    <PrimarySelect<ApplicationModel>
-                      label="How do you want to pay back?"
-                      name="repaymentFrequency"
-                      error={errors.repaymentFrequency}
-                      placeholder="Weekly, Monthly, One-off"
-                      register={register}
-                      defaultValue=""
-                      options={
-                        <>
-                          {repaymentFrequency.map((x: any) => {
-                            return (
-                              <option value={x.id} key={x.id}>
-                                {x.name}
-                              </option>
-                            );
-                          })}
-                        </>
-                      }
-                    />
-                    <Box my="10">
-                      <Heading fontSize="18px" pb="5">
-                        Preview
-                      </Heading>
-
-                      <SimpleGrid columns={2} spacing="3">
-                        <Box>
-                          <Text>Loan Amount</Text>
-                          <Text fontWeight="600">
-                            ₦
-                            {reliefAmount.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text>Interest </Text>
-                          <Text fontWeight="600">15%</Text>
-                        </Box>
-                        <Box>
-                          <Text>Total Repayment</Text>
-                          <Text fontWeight="600">
-                            ₦
-                            {totalPayment.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text>Installments</Text>
-                          <Text fontWeight="600">
-                            ₦
-                            {installments.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                            /{getRepayment()}
-                          </Text>
-                        </Box>
-                      </SimpleGrid>
-                    </Box>
                   </>
                 )}
                 {RenderButton()}
@@ -770,4 +643,4 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   );
 };
 
-export default RentReliefModal;
+export default RentApplicationModal;

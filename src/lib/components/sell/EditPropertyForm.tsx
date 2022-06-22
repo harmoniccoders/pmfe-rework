@@ -62,6 +62,8 @@ const EditPropertyForm = ({
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const [draftLoading, setDraftLoading] = useState<boolean>(false);
+  const [liveLoading, setLiveLoading] = useState<boolean>(false);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -121,8 +123,6 @@ const EditPropertyForm = ({
   const widgetApis = useRef();
 
   const [lgas, setLgas] = useState([]);
-  const [selectedId, setSelectedId] = useState<Number>();
-  console.log({ selectedId });
 
   useEffect(() => {
     const getLga = async (state: string) => {
@@ -171,11 +171,11 @@ const EditPropertyForm = ({
               w="50%"
               type="submit"
               variant="outline"
-              onClick={async () => {
-                await setValue('isForSale', false);
-                await setValue('isDraft', q);
+              onClick={() => {
+                setValue('isForSale', false);
+                setValue('isDraft', true);
               }}
-              isLoading={getValues('isForSale') ? false : isLoading}
+              isLoading={draftLoading}
             >
               {item.isDraft ? 'Update Draft' : 'Move to Draft'}
             </Button>
@@ -189,7 +189,7 @@ const EditPropertyForm = ({
               <ButtonComponent
                 content={item.isForSale ? 'Update Listing' : 'Publish Listing'}
                 isValid={isValid}
-                loading={getValues('isDraft') ? false : false}
+                loading={liveLoading}
               />
             </Box>
           </HStack>
@@ -249,24 +249,20 @@ const EditPropertyForm = ({
   const [deleteItem, { loading, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  // useEffect(() => {
-  //   const deleteMedia = async () => {
-  //     const params: Parameters = {
-  //       id: selectedId as number,
-  //     };
+  const deleteMedia = async (mediaId: any) => {
+    const params: Parameters = {
+      id: mediaId,
+    };
 
-  //     try {
-  //       const result = await (await deleteItem(params)).data;
-  //       if (result.status) {
-  //         console.log({ result });
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   deleteMedia();
-  // }, [selectedId]);
-
+    try {
+      const result = await (await deleteItem(params)).data;
+      if (result.status) {
+        console.log({ result });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -293,9 +289,16 @@ const EditPropertyForm = ({
     console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
+      if (data.sellMyself) {
+        setLiveLoading(true);
+      } else {
+        setDraftLoading(true);
+      }
       const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
       if (result.status != 400) {
+        setLiveLoading(false);
+        setDraftLoading(false);
         addToast('Property Succesfully Updated', {
           appearance: 'success',
           autoDismiss: true,
@@ -305,6 +308,8 @@ const EditPropertyForm = ({
         router.reload();
         return;
       }
+      setLiveLoading(false);
+      setDraftLoading(false);
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
@@ -524,7 +529,7 @@ const EditPropertyForm = ({
                                         color="white"
                                         fontSize="1rem"
                                         onClick={() => {
-                                          setSelectedId(item.id);
+                                          deleteMedia(item.id);
                                         }}
                                       />
                                     </Box>
@@ -640,7 +645,7 @@ const EditPropertyForm = ({
                                         color="white"
                                         fontSize="1rem"
                                         onClick={() => {
-                                          setSelectedId(item.id);
+                                          deleteMedia(item.id);
                                         }}
                                       />
                                     </Box>
