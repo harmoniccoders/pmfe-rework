@@ -279,7 +279,7 @@ const LandlordOptions = ({ onClose }: Props) => {
             </Center>
             <Center>
               <Text mb="1rem" fontWeight="700" fontSize="2rem">
-                #0.00
+              ₦0.00
               </Text>
             </Center>
 
@@ -296,7 +296,7 @@ const LandlordOptions = ({ onClose }: Props) => {
                 p=".55rem"
                 mb="1rem"
               >
-                <Text textAlign="left">#2,500,000</Text>
+                <Text textAlign="left">₦2,500,000</Text>
                 <Spacer />
                 <Text textAlign="right">30 Jun 2021</Text>
               </Flex>
@@ -370,7 +370,7 @@ const LandlordOptions = ({ onClose }: Props) => {
                   </Box>
                   <Spacer />
                   <Box textAlign="right">
-                    <Text fontWeight="700">#2,500,000</Text>
+                    <Text fontWeight="700">₦2,500,000</Text>
                     <Text color="#545454">
                       <small>GTBank Account</small>
                     </Text>

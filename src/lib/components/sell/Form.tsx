@@ -406,10 +406,10 @@ const Form = ({
 
                             <Tooltip
                               placement="top"
-                              onClick={() => setFormStep(2)}
+                              
                             >
                               <Box as="span" cursor="pointer">
-                                <FaInfoCircle />
+                                <FaInfoCircle onClick={() => setFormStep(2)}/>
                               </Box>
                             </Tooltip>
                           </Flex>
@@ -591,7 +591,7 @@ const Form = ({
                   </li>
                 </ol>
                 <Center> 
-                  <Button  position='absolute' bottom='10' w='75%' onClick={onClose} >ok</Button>
+                  <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
                 </Center>
               </Box>
               )}

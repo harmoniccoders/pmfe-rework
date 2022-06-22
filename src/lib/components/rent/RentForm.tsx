@@ -571,10 +571,9 @@ const RentForm = ({
                               value={'false'}
                             />
                             <Tooltip
-                              onClick={() => setFormStep(2)}
                               aria-label="A tooltip"
                             >
-                              <FaInfoCircle />
+                              <FaInfoCircle onClick={() => setFormStep(2)} />
                             </Tooltip>
                           </Flex>
                         </>
@@ -677,7 +676,7 @@ const RentForm = ({
                     </li>
                   </ol>
                   <Center> 
-                    <Button  position='absolute' bottom='10' w='75%' onClick={onClose} >ok</Button>
+                    <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
                   </Center>
                 </Box>
               )}
