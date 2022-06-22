@@ -15,9 +15,8 @@ import {
   SimpleGrid,
   Heading,
 } from '@chakra-ui/react';
-import ApplicationForm from 'lib/components/ApplicationForm';
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { MediaModel, PropertyModel } from 'types/api';
+import React, { useRef, useState } from 'react';
+import { MediaModel, PropertyView } from 'types/api';
 import { useRouter } from 'next/router';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useForm } from 'react-hook-form';
@@ -34,18 +33,19 @@ import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
-// import loanDetails from 'lib/Utils/loanDetails';
 import moment from 'moment';
+import { incomeBracket } from 'lib/Utils/IncomeBracket';
 
 type Props = {
   onClose: any;
   isOpen: boolean;
+  item: PropertyView;
 };
 
-const RentReliefModal = ({ onClose, isOpen }: Props) => {
+const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   const [RentRelief, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
-  // console.log({ data });
+
   const router = useRouter();
   const [formStep, setFormStep] = useState<number>(0);
   const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
@@ -53,55 +53,52 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
-    // reliefAmount: yup.number(),
-    // payBackDate: yup.string(),
-    // repaymentFrequency: yup.string(),
-    // register: yup.object({
-    //   firstName: yup.string().required(),
-    //   middleName: yup.string(),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   dateOfBirth: yup.string().required(),
-    //   occupation: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   companyName: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   annualIncome: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   workAddress: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   nationality: yup.string(),
-    //   maritalStatus: yup.string(),
-    // }),
-    // nextOfKin: yup.object({
-    //   firstName: yup.string().required(),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   address: yup.string().required(),
-    //   relationship: yup.string().required(),
-    // }),
-    //  reliefAmount: yup.number().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.number()
-    //   }),
-    //   payBackDate: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
-    //   repaymentFrequency: yup.string().when('firstName', {
-    //     is: () => formStep === 2,
-    //     then: yup.string()
-    //   }),
+    register: yup.object({
+      firstName: yup.string().required(),
+      middleName: yup.string(),
+      lastName: yup.string().required(),
+      email: yup.string().email().required(),
+      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+      dateOfBirth: yup.string().required(),
+      occupation: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string(),
+      }),
+      companyName: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string(),
+      }),
+      annualIncome: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string(),
+      }),
+      workAddress: yup.string().when('firstName', {
+        is: () => formStep === 1,
+        then: yup.string(),
+      }),
+      nationality: yup.string(),
+      maritalStatus: yup.string(),
+    }),
+    nextOfKin: yup.object({
+      firstName: yup.string().required(),
+      lastName: yup.string().required(),
+      email: yup.string().email().required(),
+      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+      address: yup.string().required(),
+      relationship: yup.string().required(),
+    }),
+    reliefAmount: yup.number().when('firstName', {
+      is: () => formStep === 2,
+      then: yup.number(),
+    }),
+    payBackDate: yup.string().when('firstName', {
+      is: () => formStep === 2,
+      then: yup.string(),
+    }),
+    repaymentFrequency: yup.string().when('firstName', {
+      is: () => formStep === 2,
+      then: yup.string(),
+    }),
   });
 
   const users = Cookies.get('user') as unknown as string;
@@ -121,7 +118,8 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      // propertyId: data.id
+      propertyId: item?.id,
+      applicationTypeId: 5,
     },
   });
 
@@ -153,7 +151,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   watch('repaymentFrequency');
 
   const onChangePassport = async (info: any) => {
-    // uploadPassport = await groupInfo(info.uuid);
     const passportUrl = info.originalUrl;
 
     let newMedia: MediaModel = {
@@ -192,7 +189,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
 
   const widgetApiss = useRef();
   const widgetApis = useRef();
-  let uploaded;
 
   const RenderButton = () => {
     if (formStep === 0 || formStep === 1) {
@@ -221,8 +217,6 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
           />
         </Box>
       );
-      // } else {
-      //   return null;
     }
   };
 
@@ -238,11 +232,9 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
         ).toLocaleDateString())
       : null;
 
-    data.applicationTypeId = 5;
     data.register!.passportPhotograph = uploadedPassport[0];
     data.register!.workId = uploadedId[0];
 
-    console.log({ data });
     try {
       const result = await (await RentRelief(undefined, data)).data;
       console.log({ result });
@@ -311,13 +303,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
   ];
 
   return (
-    <Modal
-      isOpen={isOpen}
-      closeOnOverlayClick={false}
-      onClose={onClose}
-      size="lg"
-      isCentered
-    >
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
       <ModalContent
         py={5}
@@ -486,14 +472,19 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                       defaultValue=""
                       register={register}
                     />
-                    <CurrencyField<ApplicationModel>
-                      label="what is your annual income"
-                      defaultValue=""
+                    <PrimarySelect<ApplicationModel>
                       register={register}
                       error={errors.register?.annualIncome}
-                      name="register.annualIncome"
-                      control={control}
+                      label="what is your annual income"
                       placeholder="This can be your annual salary of an estimated income "
+                      name="register.annualIncome"
+                      options={
+                        <>
+                          {incomeBracket.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                     <Box>
                       <Flex
@@ -516,9 +507,7 @@ const RentReliefModal = ({ onClose, isOpen }: Props) => {
                         publicKey="fda3a71102659f95625f"
                         //@ts-ignore
                         id="file"
-                        // multiple
                         imageShrink="640x480"
-                        // multipleMax={1}
                         imagePreviewMaxSize={9}
                         imagesOnly
                         onChange={(info) => onChangePassport(info)}

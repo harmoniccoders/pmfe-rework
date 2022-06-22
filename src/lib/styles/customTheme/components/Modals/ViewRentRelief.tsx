@@ -16,13 +16,15 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react';
 import { FaArrowUp } from 'react-icons/fa';
+import { ApplicationView } from 'types/api';
 
 interface Props {
   isOpen: boolean;
+  item: ApplicationView
   onClose: () => void;
 }
 
-const ViewRentRelief = ({ isOpen, onClose }: Props) => {
+const ViewRentRelief = ({ isOpen, onClose,item }: Props) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -59,10 +61,12 @@ const ViewRentRelief = ({ isOpen, onClose }: Props) => {
         </ModalHeader>
 
         <ModalBody>
-          <Box px={5} py="5">
+          <Box px={[1, 4]} py="5">
             <VStack>
               <Text>Amount to pay</Text>
-              <Heading fontSize="1.5rem">₦4,500,000</Heading>
+              <Heading fontSize="1.5rem">
+                ₦{item.reliefAmount?.toLocaleString(undefined, {})}
+              </Heading>
               <SimpleGrid columns={2} pt="5" spacing="5">
                 <Box>
                   <Text mb="2">Outstaning Balance</Text>

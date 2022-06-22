@@ -197,7 +197,6 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       isOpen={isOpen}
       onClose={onClose}
       size="lg"
-      closeOnOverlayClick={false}
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />

@@ -34,9 +34,9 @@ function MyRent({ data }: { data: any }) {
         </HStack>
         <>
           {result?.length <= 0 ? (
-            <Heading fontSize="16px" lineHeight={1.5}>
-              Sorry! There's no property at this time please check back later
-            </Heading>
+           <Text mt="3" fontWeight="medium" fontSize=".9rem">
+              You have not made any enquiries...
+            </Text>
           ) : (
             <Box>
               <Grid

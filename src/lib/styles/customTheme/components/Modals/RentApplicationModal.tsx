@@ -13,9 +13,8 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import ApplicationForm from 'lib/components/ApplicationForm';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { MediaModel, PropertyModel } from 'types/api';
+import { MediaModel } from 'types/api';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,9 +27,9 @@ import Cookies from 'js-cookie';
 import ButtonComponent from 'lib/components/Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { Widget } from '@uploadcare/react-widget';
-import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
+import { incomeBracket } from 'lib/Utils/IncomeBracket';
 
 type Props = {
   onClose: any;
@@ -45,11 +44,11 @@ const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   // console.log({ data });
 
   const [formStep, setFormStep] = useState<number>(0);
-const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
-const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
+  const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
+  const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
 
-const widgetApiss = useRef();
-const widgetApis = useRef();
+  const widgetApiss = useRef();
+  const widgetApis = useRef();
   // const [getResult, setGetResult] = useState([]);
 
   const mobile = /^([0]{1})[0-9]{10}$/;
@@ -95,51 +94,51 @@ const widgetApis = useRef();
     user = JSON.parse(users);
   }
 
-  let propertyId = data.id;
-
   const {
     register,
     handleSubmit,
     control,
-    setValue,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      propertyId: data.id,
+      applicationTypeId: 2,
+    },
   });
 
-    const { addToast } = useToasts();
-     const onChangePassport = async (info: any) => {
-       // uploadPassport = await groupInfo(info.uuid);
-       const passportUrl = info.originalUrl;
+  const { addToast } = useToasts();
+  const onChangePassport = async (info: any) => {
+    const passportUrl = info.originalUrl;
 
-       let newMedia: MediaModel = {
-         url: passportUrl,
-         isImage: true,
-         isVideo: false,
-         name: '',
-         extention: '',
-         base64String: '',
-         isDocument: false,
-       };
+    let newMedia: MediaModel = {
+      url: passportUrl,
+      isImage: true,
+      isVideo: false,
+      name: '',
+      extention: '',
+      base64String: '',
+      isDocument: false,
+    };
 
-       setUploadedPassport([newMedia]);
-     };
-     const onChangeId = async (info: any) => {
-       const idUrl = info.originalUrl;
+    setUploadedPassport([newMedia]);
+  };
+  const onChangeId = async (info: any) => {
+    const idUrl = info.originalUrl;
 
-       let newMedia: MediaModel = {
-         url: idUrl,
-         isImage: true,
-         isVideo: false,
-         name: '',
-         extention: '',
-         base64String: '',
-         isDocument: false,
-       };
+    let newMedia: MediaModel = {
+      url: idUrl,
+      isImage: true,
+      isVideo: false,
+      name: '',
+      extention: '',
+      base64String: '',
+      isDocument: false,
+    };
 
-       setUploadedId([newMedia]);
-     };
+    setUploadedId([newMedia]);
+  };
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -182,10 +181,9 @@ const widgetApis = useRef();
           data.register?.dateOfBirth as unknown as Date
         ).toLocaleDateString())
       : null;
-    data.propertyId = propertyId;
-      data.applicationTypeId = 2;
-      data.register!.passportPhotograph = uploadedPassport[0];
-      data.register!.workId = uploadedId[0];
+
+    data.register!.passportPhotograph = uploadedPassport[0];
+    data.register!.workId = uploadedId[0];
 
     console.log({ data });
     try {
@@ -239,13 +237,7 @@ const widgetApis = useRef();
   ];
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="lg"
-      closeOnOverlayClick={false}
-      isCentered
-    >
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
@@ -297,13 +289,6 @@ const widgetApis = useRef();
             <Text fontWeight={600} color="brand.100" textTransform="capitalize">
               Application form
             </Text>
-
-            {/* <ApplicationForm
-              formStep={formStep}
-              setFormStep={setFormStep}
-              setStep={setStep}
-              onClose={onClose}
-            /> */}
 
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
               <>
@@ -439,14 +424,19 @@ const widgetApis = useRef();
                       defaultValue=""
                       register={register}
                     />
-                    <CurrencyField<ApplicationModel>
-                      label="what is your annual income"
-                      defaultValue=""
+                    <PrimarySelect<ApplicationModel>
                       register={register}
                       error={errors.register?.annualIncome}
-                      name="register.annualIncome"
-                      control={control}
+                      label="what is your annual income"
                       placeholder="This can be your annual salary of an estimated income "
+                      name="register.annualIncome"
+                      options={
+                        <>
+                          {incomeBracket.map((x: any) => {
+                            return <option value={x.name}>{x.name}</option>;
+                          })}
+                        </>
+                      }
                     />
                     <Box>
                       <Flex
@@ -469,9 +459,7 @@ const widgetApis = useRef();
                         publicKey="fda3a71102659f95625f"
                         //@ts-ignore
                         id="file"
-                        // multiple
                         imageShrink="640x480"
-                        // multipleMax={1}
                         imagePreviewMaxSize={9}
                         imagesOnly
                         onChange={(info) => onChangePassport(info)}

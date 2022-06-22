@@ -110,7 +110,6 @@ const BookCleaningModal = ({
       isOpen={isOpen}
       onClose={closeModal}
       size="lg"
-      closeOnOverlayClick={false}
       motionPreset="slideInBottom"
       isCentered
     >

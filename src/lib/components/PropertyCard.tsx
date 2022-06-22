@@ -15,7 +15,7 @@ import {
   Hide,
   HStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
@@ -24,6 +24,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useRouter } from 'next/router';
 import { PropertyView, UserView } from 'types/api';
 import Cookies from 'js-cookie';
+import RentReliefModal from 'lib/styles/customTheme/components/Modals/RentReliefModal';
 
 type Props = {
   item: PropertyView;
@@ -40,6 +41,11 @@ if (users !== undefined) {
 
 const PropertyCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [openRelief, setOpenRelief] = useState<boolean>(false);
+
+  const openReliefModal = () => {
+    setOpenRelief(true);
+  };
 
   const [addViews, { loading, data, error }] = useOperationMethod(
     'Propertyaddview{Id}'
@@ -60,6 +66,7 @@ const PropertyCard = ({ item }: Props) => {
 
   const router = useRouter();
   const curPage = router.asPath;
+  const relief = router.asPath == '/rent/rent-relief';
   const enquiry = router.asPath == '/enquires';
 
   const [addEnquiry, { loading: isLoading, data: isData, error: isError }] =
@@ -263,23 +270,30 @@ const PropertyCard = ({ item }: Props) => {
                 See more
               </Button>
             )}
-
             {!item.sellMyself && (
               <Button
                 variant="solid"
                 height="40px"
                 w="full"
                 disabled={item.createdByUser?.id == user?.id ? true : false}
-                onClick={() => CreateEnquireView()}
+                onClick={
+                  relief ? () => openReliefModal() : () => CreateEnquireView()
+                }
               >
-                Enquire
+                {relief ? 'Get relief' : 'Enquire'}
               </Button>
             )}
           </HStack>
         </VStack>
       </Box>
+      <RentReliefModal
+        onClose={() => setOpenRelief(false)}
+        isOpen={openRelief}
+        item={item}
+      />
       <SeemoreModal
         isOpen={isOpen}
+        openReliefModal={openReliefModal}
         AddEnquireView={CreateEnquireView}
         onClose={onClose}
         item={item}
