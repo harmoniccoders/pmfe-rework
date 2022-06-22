@@ -4,6 +4,7 @@ import {
   Stack,
   Button,
   Flex,
+  Center,
   HStack,
   Tooltip,
   Icon,
@@ -660,23 +661,25 @@ const RentForm = ({
                 </>
               )}
                {formStep === 2 && (
-                <>
-                  <Text fontSize='18px' fontWeight='600'>Benefits of letting us help you sell your property</Text>
+                <Box h='75vh'>
+                  <Text fontSize='18px' fontWeight='600' mb='1rem'>Benefits of letting us help you sell your property</Text>
                   <ol>
                     <li>
-                      <Text>1. Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
+                      <Text mt='1rem'>Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
                         your property faster as buyers will feel more confident to buy.</Text>
                     </li>
                     <li>
-                      <Text>2. Your property will be shown prominently in search results.</Text>
+                      <Text mt='1rem'>Your property will be shown prominently in search results.</Text>
                     </li>
                     <li>
-                      <Text>
-                      3. Your property will feature the verification badge.
+                      <Text mt='1rem'> Your property will feature the verification badge.
                       </Text>
                     </li>
                   </ol>
-                </>
+                  <Center> 
+                    <Button  position='absolute' bottom='10' w='75%' onClick={onClose} >ok</Button>
+                  </Center>
+                </Box>
               )}
               {RenderButton()}
             </>

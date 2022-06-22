@@ -210,6 +210,7 @@ const LandlordOptions = ({ onClose }: Props) => {
             </Box>
           </Grid>
         </Box>
+        
       )}
       {formStep === 1 && (
         <>
