@@ -34,6 +34,7 @@ import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLitin
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
 import { useOperationMethod } from 'react-openapi-client';
 import { Parameters } from 'openapi-client-axios';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;
@@ -61,21 +62,6 @@ const ListingsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [applications, setApplications] = useState <Application[]>([]);
-
-  const [GetApplication, { loading: isLoading, data: isData, error: isError }] =
-    useOperationMethod('Applicationlist{propertyId}');
-
-  const getApplication = async () => {
-    const params: Parameters = {
-      propertyId: item.id as number,
-    };
-    try {
-      const result = await (await GetApplication(params)).data;
-      setApplications(result?.data.value);
-    } catch (err) {}
-  };
-  
 
   return (
     <>
@@ -231,8 +217,7 @@ const ListingsCard = ({
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;
-                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  {naira(item.price as unknown as number)}
                 </Text>
               </Flex>
             </GridItem>
@@ -267,31 +252,26 @@ const ListingsCard = ({
               variant="solid"
               height="40px"
               width="full"
-              onClick={() => {
-                getApplication();
-                onOpen();
-              }}
+              onClick={() => onOpen()}
             >
               Details
             </Button>
           </HStack>
         </VStack>
       </Box>
-      {item.isForSale && (
+      {item.isForSale ? (
         <ViewListedProperty
           isOpen={isOpen}
           onClose={onClose}
           item={item}
           openModal={() => setUpdateModal(true)}
         />
-      )}
-      {item.isForRent && (
+      ) : (
         <ViewListedRentProperty
           isOpen={isOpen}
           onClose={onClose}
           item={item}
           openModal={() => setUpdateModal(true)}
-          applications={applications}
         />
       )}
       <DeleteListings

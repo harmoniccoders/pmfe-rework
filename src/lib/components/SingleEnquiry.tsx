@@ -1,5 +1,5 @@
 import { Box, Button, VStack, HStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PropertyModel } from 'types/api';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
@@ -53,6 +53,27 @@ const SingleEnquiry = ({ data, date }: Props) => {
   };
 
   const [step, setStep] = useState(2);
+
+  const [
+    getApplication,
+    { loading: appLoading, data: appData, error: isError },
+  ] = useOperationMethod('Applicationgetuserproperty{propertyId}');
+
+  useEffect(() => {
+    const GetApplication = async () => {
+      const params: Parameters = {
+        propertyId: data.id as number,
+      };
+      try {
+        const result = await (await getApplication(params)).data;
+        console.log({ result });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    GetApplication();
+  }, []);
+  console.log({ appData });
   return (
     <HStack
       w="90%"
@@ -62,15 +83,20 @@ const SingleEnquiry = ({ data, date }: Props) => {
       flexDirection={{ base: 'column', lg: 'row' }}
     >
       <Box w={{ base: 'full', md: 'full', lg: '45%', xl: '28%' }}>
-        <VStack
-          w="100%"
-          alignItems="flex-start"
-          spacing="0rem"
-          // borderLeft="2px solid #DCE1E7"
-          px="1.2rem"
-        >
-          <StepOne date={date} data={data} step={step} setStep={setStep} />
-          <StepTwo step={step} setStep={setStep} data={data} />
+        <VStack w="100%" alignItems="flex-start" spacing="0rem" px="1.2rem">
+          <StepOne
+            appData={appData}
+            date={date}
+            data={data}
+            step={step}
+            setStep={setStep}
+          />
+          <StepTwo
+            step={step}
+            appData={appData}
+            setStep={setStep}
+            data={data}
+          />
           <StepThree step={step} />
         </VStack>
 

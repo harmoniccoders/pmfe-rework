@@ -28,7 +28,7 @@ function RentPage({
   getStates,
   getBanks,
 }: Props) {
-  console.log({ data });
+  
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">

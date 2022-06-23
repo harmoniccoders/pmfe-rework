@@ -25,6 +25,8 @@ import { useRouter } from 'next/router';
 import { PropertyView, UserView } from 'types/api';
 import Cookies from 'js-cookie';
 import RentReliefModal from 'lib/styles/customTheme/components/Modals/RentReliefModal';
+import { useToasts } from 'react-toast-notifications';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;
@@ -83,6 +85,9 @@ const PropertyCard = ({ item }: Props) => {
       console.log(err);
     }
   };
+
+  const isRequest = router.pathname.startsWith('/requests/');
+
   const [createEnquiry, { loading: isLoad, data: isDatas, error: isErrors }] =
     useOperationMethod('Userenquire{PropertyId}');
   let result;
@@ -103,6 +108,69 @@ const PropertyCard = ({ item }: Props) => {
           ? router.push(`/rent/enquire/${item.id}`)
           : router.push(`buy/enquire/${item.id}`);
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const { addToast } = useToasts();
+
+  const [
+    acceptRequest,
+    { loading: isLoader, data: isDataer, error: isErrorer },
+  ] = useOperationMethod('Propertyaddenquiries{Id}');
+
+  const AcceptRequest = async () => {
+    const params: Parameters = {
+      Id: item.id as number,
+    };
+
+    try {
+      const result = await (await acceptRequest(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        CreateEnquireView();
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const [
+    rejectRequest,
+    { loading: isLoaderr, data: isDataerr, error: isErrorerr },
+  ] = useOperationMethod('Propertyaddenquiries{Id}');
+
+  const RejectRequest = async () => {
+    const params: Parameters = {
+      Id: item.id as number,
+    };
+
+    try {
+      const result = await (await rejectRequest(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        router.reload();
+
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
     } catch (err) {
       console.log(err);
     }
@@ -224,8 +292,7 @@ const PropertyCard = ({ item }: Props) => {
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="11px" ml="4px">
-                  &#8358;
-                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  {naira(item.price as unknown  as number)}
                 </Text>
               </Flex>
             </GridItem>
@@ -259,6 +326,18 @@ const PropertyCard = ({ item }: Props) => {
               >
                 {item.isForRent ? 'To Rent' : 'To Buy'}
               </Button>
+            ) : isRequest ? (
+              <Button
+                variant="outline"
+                height="40px"
+                width="full"
+                color="white"
+                bgColor="brand.800"
+                textTransform="capitalize"
+                onClick={() => AcceptRequest()}
+              >
+                reject
+              </Button>
             ) : (
               <Button
                 variant="outline"
@@ -274,13 +353,18 @@ const PropertyCard = ({ item }: Props) => {
               <Button
                 variant="solid"
                 height="40px"
+                bgColor={isRequest ? 'brand.900' : 'brand.100'}
                 w="full"
                 disabled={item.createdByUser?.id == user?.id ? true : false}
                 onClick={
-                  relief ? () => openReliefModal() : () => CreateEnquireView()
+                  relief
+                    ? () => openReliefModal()
+                    : isRequest
+                    ? () => RejectRequest()
+                    : () => CreateEnquireView()
                 }
               >
-                {relief ? 'Get relief' : 'Enquire'}
+                {relief ? 'Get relief' : isRequest ? 'Accept' : 'Enquire'}
               </Button>
             )}
           </HStack>

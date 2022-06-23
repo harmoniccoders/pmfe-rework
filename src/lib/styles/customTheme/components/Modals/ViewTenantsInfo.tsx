@@ -21,6 +21,7 @@ import { Application } from 'types/api';
 import moment from 'moment';
 import { useOperationMethod } from 'react-openapi-client';
 import { Parameters } from 'openapi-client-axios';
+import { useToasts } from 'react-toast-notifications';
 
 interface Props {
   isOpen: boolean;
@@ -29,36 +30,57 @@ interface Props {
 }
 
 const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
-  const [AcceptTenant, { loading, data, error }] = useOperationMethod(
+  const { addToast } = useToasts();
+  const [acceptTenant, { loading, data, error }] = useOperationMethod(
     'Applicationaccept{id}'
   );
 
-  const acceptTenant = async () => {
+  const AcceptTenant = async () => {
     const params: Parameters = {
       id: item.id as number,
     };
     try {
-      const result = await (await AcceptTenant(params)).data;
-      console.log({ result })
-       if (result.status) {
-         onClose();
-       }
+      const result = await (await acceptTenant(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
     } catch (err) {}
   };
 
-  const [RejectTenant, { loading: isLoading, data: isData, error: isError }] =
+  const [rejectTenant, { loading: isLoading, data: isData, error: isError }] =
     useOperationMethod('Applicationreject{id}');
 
-  const rejectTenant = async () => {
+  const RejectTenant = async () => {
     const params: Parameters = {
       id: item.id as number,
     };
     try {
-      const result = await (await RejectTenant(params)).data;
-      console.log({ result })
+      const result = await (await rejectTenant(params)).data;
+      console.log({ result });
       if (result.status) {
-        onClose()
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        return;
       }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
     } catch (err) {}
   };
   return (
@@ -171,10 +193,10 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                   rating of 3 stars or higher
                 </Text>
                 <SimpleGrid columns={2} spacing="5" my="7">
-                  <Button w="full" variant="outline" onClick={rejectTenant}>
+                  <Button w="full" variant="outline" onClick={RejectTenant}>
                     Decline
                   </Button>
-                  <Button w="full" variant="outline" onClick={acceptTenant}>
+                  <Button w="full" variant="outline" onClick={AcceptTenant}>
                     Accept as Tenant
                   </Button>
                 </SimpleGrid>
@@ -234,12 +256,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Annual Income</Heading>
-                <Text fontSize="14px">
-                  ₦
-                  {item?.user?.annualIncome
-                    ?.toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') || ''}
-                </Text>
+                <Text fontSize="14px">{item?.user?.annualIncome}</Text>
                 <Divider />
               </VStack>
             </VStack>

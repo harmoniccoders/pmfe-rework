@@ -25,6 +25,7 @@ import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
 import parse from 'html-react-parser';
 import MapView from 'lib/Utils/MapView';
+import naira from '../Generics/Naira';
 
 const iconStyle = {
   color: '#0042ff',
@@ -309,10 +310,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                 <Flex alignItems="center">
                   <Icons iconClass="fa-tags" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    &#8358;
-                    {item.price
-                      ?.toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    {naira(item.price as unknown as number)}
                   </Text>
                 </Flex>
               </GridItem>

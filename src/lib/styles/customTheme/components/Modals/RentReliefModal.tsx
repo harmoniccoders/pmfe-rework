@@ -35,6 +35,7 @@ import { SRLWrapper } from 'simple-react-lightbox';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import moment from 'moment';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   onClose: any;
@@ -79,14 +80,17 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       nationality: yup.string(),
       maritalStatus: yup.string(),
     }),
-    nextOfKin: yup.object({
-      firstName: yup.string().required(),
-      lastName: yup.string().required(),
-      email: yup.string().email().required(),
-      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      address: yup.string().required(),
-      relationship: yup.string().required(),
-    }),
+    // nextOfKin: yup.object({
+    //   firstName: yup.string().when('firstName', {
+    //     is: () => formStep === 1,
+    //     then: yup.string(),
+    //   }),
+    //   lastName: yup.string().required(),
+    //   email: yup.string().email().required(),
+    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+    //   address: yup.string().required(),
+    //   relationship: yup.string().required(),
+    // }),
     reliefAmount: yup.number().when('firstName', {
       is: () => formStep === 2,
       then: yup.number(),
@@ -683,7 +687,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                       control={control}
                       fontSize="sm"
                       minDate={new Date()}
-                      defaultValue={user?.dateOfBirth || ''}
+                      defaultValue={user?.dateOfBirth}
                     />
                     <PrimarySelect<ApplicationModel>
                       label="How do you want to pay back?"
@@ -713,11 +717,11 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                         <Box>
                           <Text>Loan Amount</Text>
                           <Text fontWeight="600">
-                            ₦
-                            {reliefAmount.toLocaleString(undefined, {
+                            {naira(reliefAmount as unknown as number)}
+                            {/* {reliefAmount.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            })}
+                            })} */}
                           </Text>
                         </Box>
                         <Box>
@@ -727,21 +731,21 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                         <Box>
                           <Text>Total Repayment</Text>
                           <Text fontWeight="600">
-                            ₦
-                            {totalPayment.toLocaleString(undefined, {
+                            {naira(totalPayment as unknown as number)}
+                            {/* {totalPayment.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            })}
+                            })} */}
                           </Text>
                         </Box>
                         <Box>
                           <Text>Installments</Text>
                           <Text fontWeight="600">
-                            ₦
-                            {installments.toLocaleString(undefined, {
+                            {naira(installments as unknown as number)}
+                            {/* {installments.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            })}
+                            })} */}
                             /{getRepayment()}
                           </Text>
                         </Box>

@@ -28,6 +28,7 @@ import parse from 'html-react-parser';
 import Cookies from 'js-cookie';
 import MapView from 'lib/Utils/MapView';
 import { SRLWrapper } from 'simple-react-lightbox';
+import naira from './Generics/Naira';
 
 interface Props {
   isOpen?: any;
@@ -204,10 +205,7 @@ const SeemoreModal = ({
                 <GridItem mb="5px" display="flex" alignItems="center">
                   <Icons iconClass="fa-tags" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    &#8358;
-                    {item.price
-                      ?.toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    {naira(item.price as unknown as number)}
                   </Text>
                 </GridItem>
                 <GridItem mb="5px" display="flex" alignItems="center">
@@ -240,9 +238,7 @@ const SeemoreModal = ({
                   width="100%"
                   disabled={item.createdByUser?.id == user?.id}
                   onClick={
-                    relief
-                      ? () => openReliefModal()
-                      : () => AddEnquireView()
+                    relief ? () => openReliefModal() : () => AddEnquireView()
                   }
                 >
                   {item.createdByUser?.id == user?.id
@@ -341,15 +337,6 @@ const SeemoreModal = ({
                                       />
                                     </AspectRatio>
                                   </SRLWrapper>
-                                  // <Box w="full" h="150px" bgColor="brand.50">
-                                  //   <video w="full" h="full">
-                                  //     <source
-                                  //       src={media.url as string}
-                                  //       type="video.mp4"
-                                  //     />
-                                  //     Your browser does not support this video.
-                                  //   </video>
-                                  // </Box>
                                 )}
                               </>
                             );
