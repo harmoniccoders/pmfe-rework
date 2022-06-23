@@ -49,6 +49,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         borderRadius="0"
         height="3rem"
         fontSize=".9rem"
+        textTransform="capitalize"
         defaultValue={defaultValue}
         icon={<Icons iconClass="fa-angle-right" />}
       >

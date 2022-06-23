@@ -19,6 +19,7 @@ export interface Cleaning {
   userId?: number;
   user?: User;
   statusId?: number;
+  location?: null | string;
   status?: Status;
   cleaningQuotes?: null | Array<CleaningQuote>;
 }

@@ -10,6 +10,8 @@ import { Parameters } from 'openapi-client-axios';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
+import { DataAccess } from 'lib/Utils/Api';
+import Cookies from 'js-cookie';
 
 type Props = {
   data: PropertyModel;
@@ -20,6 +22,8 @@ const SingleEnquiry = ({ data, date }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
     'Userenquirecancel{PropertyId}'
   );
+  const [applicationStatus, setApplicationStatus] = useState<any>();
+
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -74,6 +78,28 @@ const SingleEnquiry = ({ data, date }: Props) => {
     GetApplication();
   }, []);
   console.log({ appData });
+  const resultData = appData?.data;
+
+  console.log(resultData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const bearer = `Bearer ${Cookies.get('token')}`;
+      const _dataAccess = new DataAccess(bearer);
+
+      try {
+        const result = (
+          await _dataAccess.get(`/api/Application/get/user/property/${data.id}`)
+        ).data;
+
+        console.log(result);
+        setApplicationStatus(result);
+      } catch (err) {}
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <HStack
       w="90%"
@@ -93,8 +119,9 @@ const SingleEnquiry = ({ data, date }: Props) => {
           />
           <StepTwo
             step={step}
-            appData={appData}
+            appData={resultData}
             setStep={setStep}
+            applicationData={applicationStatus}
             data={data}
           />
           <StepThree step={step} />

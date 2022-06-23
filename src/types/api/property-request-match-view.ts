@@ -6,4 +6,5 @@ export interface PropertyRequestMatchView {
   id?: number;
   property?: PropertyView;
   propertyRequest?: PropertyRequest;
+  status?: null | string;
 }

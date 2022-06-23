@@ -149,6 +149,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       if (result.status) {
         // setStep(2);
         // setGetResult(result.data);
+
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
@@ -193,12 +194,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
   ];
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="lg"
-      isCentered
-    >
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent

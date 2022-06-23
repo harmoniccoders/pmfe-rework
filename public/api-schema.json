@@ -175,6 +175,47 @@
         }
       }
     },
+    "/api/Admin/user/{userId}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminuser{userId}",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Admin/metrics": {
       "get": {
         "tags": [
@@ -4128,6 +4169,88 @@
         }
       }
     },
+    "/api/PropertyRequest/match/accept/{matchId}": {
+      "get": {
+        "tags": [
+          "PropertyRequest"
+        ],
+        "operationId": "PropertyRequestmatchaccept{matchId}",
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PropertyRequest/match/reject/{matchId}": {
+      "get": {
+        "tags": [
+          "PropertyRequest"
+        ],
+        "operationId": "PropertyRequestmatchreject{matchId}",
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestMatchViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Relief/user": {
       "get": {
         "tags": [
@@ -6410,6 +6533,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
           "status": {
             "$ref": "#/components/schemas/Status"
           },
@@ -7541,6 +7668,13 @@
           },
           "propertyRequest": {
             "$ref": "#/components/schemas/PropertyRequest"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -7627,6 +7761,10 @@
           },
           "propertyRequest": {
             "$ref": "#/components/schemas/PropertyRequest"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7960,7 +8098,11 @@
           "user": {
             "$ref": "#/components/schemas/LeanUserView"
           },
-          "cleaningQuote": {
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleaningQuotes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CleaningQuoteView"
@@ -8221,6 +8363,10 @@
       "UserEnquiryView": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "userId": {
             "type": "integer",
             "format": "int32",
@@ -8859,6 +9005,10 @@
             "nullable": true
           },
           "fileNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
             "type": "string",
             "nullable": true
           }
