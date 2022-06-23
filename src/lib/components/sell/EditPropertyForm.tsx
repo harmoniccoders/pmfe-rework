@@ -289,7 +289,7 @@ const EditPropertyForm = ({
     console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
-      if (data.sellMyself) {
+      if (data.isForSale) {
         setLiveLoading(true);
       } else {
         setDraftLoading(true);

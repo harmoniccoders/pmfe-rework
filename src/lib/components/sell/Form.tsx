@@ -253,33 +253,33 @@ const Form = ({
     data.mediaFiles = uploadedMedia;
 
     try {
-      if (data.sellMyself) {
+      if (data.isForSale) {
         setLiveLoading(true);
       } else {
         setDraftLoading(true);
       }
-      const result = await (await PropertyCreate(undefined, data)).data;
+      // const result = await (await PropertyCreate(undefined, data)).data;
 
-      if (result.status) {
-        setLiveLoading(false);
-        setDraftLoading(false);
-        addToast(result.message, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        onClose();
-        setFormStep(0);
-        router.reload();
-        return;
-      }
-      setLiveLoading(false);
-      setDraftLoading(false);
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      setFormStep(0);
-      onClose();
+      // if (result.status) {
+      //   setLiveLoading(false);
+      //   setDraftLoading(false);
+      //   addToast(result.message, {
+      //     appearance: 'success',
+      //     autoDismiss: true,
+      //   });
+      //   onClose();
+      //   setFormStep(0);
+      //   router.reload();
+      //   return;
+      // }
+      // setLiveLoading(false);
+      // setDraftLoading(false);
+      // addToast(result.message, {
+      //   appearance: 'error',
+      //   autoDismiss: true,
+      // });
+      // setFormStep(0);
+      // onClose();
       return;
     } catch (err) {}
   };
