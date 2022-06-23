@@ -15,8 +15,6 @@ const index = ({ data, date }: Props) => {
   const router = useRouter();
 
 
-  const { id } = router.query;
-
   return (
     <Box mt="30px" py="1rem">
       <SingleEnquiry data={data} date={date} />

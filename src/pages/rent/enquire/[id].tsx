@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next';
 import { DataAccess } from 'lib/Utils/Api';
 import { Box } from '@chakra-ui/react';
 import SingleEnquiry from 'lib/components/SingleEnquiry';
+import { returnUserData } from 'lib/Utils/userData';
 
 interface Props {
   data: PropertyModel;
@@ -12,9 +13,7 @@ interface Props {
 }
 
 const index = ({ data, date }: Props) => {
-  const router = useRouter();
-
-  const { id } = router.query;
+  // const router = useRouter();
 
   return (
     <Box mt="30px" py="1rem">
@@ -26,6 +25,17 @@ const index = ({ data, date }: Props) => {
 export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const {
+    data: { user, redirect },
+  } = returnUserData(ctx);
+  if (redirect)
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+      props: {},
+    };
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   const id = ctx.params?.id;

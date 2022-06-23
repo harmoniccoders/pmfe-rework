@@ -18,13 +18,17 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Application, PropertyView } from 'types/api';
 import parse from 'html-react-parser';
 import MapView from 'lib/Utils/MapView';
 import TenantInfo from 'lib/components/TenantInfo';
+import naira from '../Generics/Naira';
+import { useRouter } from 'next/router';
+import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
 
 const iconStyle = {
   color: '#0042ff',
@@ -35,24 +39,41 @@ type Props = {
   onClose?: any;
   openModal: () => void;
   item: PropertyView;
-  applications: Application[];
+  // applications: Application[];
 };
 
 const ViewListedRentProperty = ({
   isOpen,
   onClose,
   item,
-  applications,
+  // applications,
   openModal,
 }: Props) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
-  const application: Application[] = applications.filter(
-    (item) => item.applicationType === 'RENT'
-  );
-  const noAccepted: Application[] = application.filter(
-    (item) => item !== 'ACCEPTED'
-  );
-  console.log(application);
+
+  const [applications, setApplications] = useState<number>(0);
+
+  const [getApplication, { loading: isLoading, data: isData, error: isError }] =
+    useOperationMethod('Applicationlist{propertyId}');
+
+  useEffect(() => {
+    const GetApplication = async () => {
+      const params: Parameters = {
+        propertyId: item.id as number,
+      };
+      try {
+        const result = await (await getApplication(params)).data;
+        if (result.status) {
+          setApplications(result?.data.value.length);
+        }
+        return;
+      } catch (err) {}
+    };
+    GetApplication();
+  }, []);
+
+  const router = useRouter();
+
   return (
     <Modal
       isOpen={isOpen}
@@ -60,7 +81,6 @@ const ViewListedRentProperty = ({
       motionPreset="slideInBottom"
       size="lg"
       isCentered
-      // scrollBehavior="outside"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
@@ -237,6 +257,12 @@ const ViewListedRentProperty = ({
                 </Text>
               </GridItem>
               <GridItem
+                onClick={
+                  applications > 0
+                    ? () => router.push(`/my-rent/applications/${item.id}`)
+                    : undefined
+                }
+                cursor={applications > 0 ? 'pointer' : 'not-allowed'}
                 mb="5px"
                 display="flex"
                 alignItems="center"
@@ -248,58 +274,14 @@ const ViewListedRentProperty = ({
               >
                 <Icons iconClass="fa-comments" style={{ fontSize: '20px' }} />
                 <Text fontSize="14px" mx="2rem" fontWeight="bold">
-                  {application.length}
+                  {applications}
                 </Text>
                 <Text fontSize="14px" fontWeight="500">
                   Applications
                 </Text>
               </GridItem>
             </Grid>
-            {application.length > 0 ? (
-              noAccepted.length === 0 ? (
-                <VStack align="flex-start" spacing="5" mt="5">
-                  <Heading fontSize="15px">Tenant Applications</Heading>
-                  <SimpleGrid spacing="5" w="full">
-                    {application.map((item) => (
-                      <TenantInfo key={item.id} item={item} />
-                    ))}
-                  </SimpleGrid>
-                </VStack>
-              ) : (
-                noAccepted.length > 0 && (
-                  <Box>
-                    <VStack align="flex-start" spacing="5" mt="5">
-                      <Heading fontSize="15px">Accepted Tenant</Heading>
-                      <SimpleGrid spacing="5" w="full">
-                        {application
-                          ?.filter((item) => item?.status === 'ACCEPTED')
-                          .map((item) => (
-                            <TenantInfo key={item.id} item={item} />
-                          ))}
-                      </SimpleGrid>
-                    </VStack>
-                    <VStack align="flex-start" spacing="5" mt="7">
-                      <Heading fontSize="15px">Other Applicants</Heading>
-                      <SimpleGrid spacing="5" w="full">
-                        {application
-                          ?.filter((item) => item?.status !== 'ACCEPTED')
-                          .map((item) => (
-                            <TenantInfo
-                              key={item.id}
-                              disabled={true}
-                              item={item}
-                            />
-                          ))}
-                      </SimpleGrid>
-                    </VStack>
-                  </Box>
-                )
-              )
-            ) : (
-              <Heading fontSize="15px" mt="5">
-                No applications yet
-              </Heading>
-            )}
+
             {showDetails && (
               <Box>
                 <Heading fontSize="14px" mt="6" mb=".5rem">
@@ -352,10 +334,7 @@ const ViewListedRentProperty = ({
                     <Flex alignItems="center">
                       <Icons iconClass="fa-tags" style={iconStyle} />
                       <Text fontSize="13px" ml="4px">
-                        &#8358;
-                        {item.price
-                          ?.toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        {naira(item.price as unknown as number)}
                       </Text>
                     </Flex>
                   </GridItem>

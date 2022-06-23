@@ -24,33 +24,16 @@ type Props = {
   step: number;
   setStep: any;
   data: PropertyModel;
+  appData: any;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepTwo = ({ step, setStep, data }: Props) => {
+const StepTwo = ({ step, setStep, data,appData }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-
-  const [getApplication, { loading: isLoading, data: isData, error: isError }] =
-    useOperationMethod('Applicationget{id}');
-
-  useEffect(() => {
-    const GetApplication = async () => {
-      const params: Parameters = {
-        id: data.id as number,
-      };
-      try {
-        const result = await (await getApplication(params)).data;
-        console.log({ result });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    GetApplication();
-  }, []);
 
   return (
     <>
@@ -115,7 +98,7 @@ const StepTwo = ({ step, setStep, data }: Props) => {
               <Icons iconClass="fa-paper-plane" />
             </Box>
 
-            <Text> Submit Application</Text>
+            <Text>{appData?.data.hasApplied? "": "Submit Application"}</Text>
           </Button>
 
           <Button

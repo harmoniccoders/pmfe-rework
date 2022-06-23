@@ -7,16 +7,17 @@ import ListedProperties from 'lib/styles/customTheme/components/ListedProperties
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyView, UserEnquiry } from 'types/api';
+import { PropertyRequestMatch, PropertyView, UserEnquiry } from 'types/api';
 
-const matches = ({ data }: { data: any }) => {
-  const result = data.value;
-  console.log({ result });
+const matches = ({ data, id }: { data: any; id: any }) => {
+  let result = data.value.filter((item: any) => item.id == id);
+  
+  const singleRequest = result[0].matches;
 
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <>
-        {result.length <= 0 ? (
+        {singleRequest.length <= 0 ? (
           <Heading fontSize="16px" lineHeight={1.5}>
             Sorry! There's no property at this time please check back later
           </Heading>
@@ -32,7 +33,7 @@ const matches = ({ data }: { data: any }) => {
             rowGap={5}
           >
             <>
-              {result.map((item: UserEnquiry) => {
+              {singleRequest.map((item: PropertyRequestMatch) => {
                 return (
                   <GridItem key={item.id}>
                     <PropertyCard item={item.property as PropertyView} />
@@ -40,11 +41,7 @@ const matches = ({ data }: { data: any }) => {
                 );
               })}
             </>
-            <GridItem my="2rem" colStart={1} colEnd={4}>
-              <Flex justifyContent="center">
-                <Pagination data={data} />
-              </Flex>
-            </GridItem>
+          
           </Grid>
         )}
       </>
@@ -69,16 +66,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
-  console.log(ctx.params);
 
-  let { url } = ctx.query;
+  let { url, id } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-    const data = (await _dataAccess.get(`/api/User/enquiries/user?${url}`))
-      .data;
+    const data = (
+      await _dataAccess.get(`/api/PropertyRequest/list/user?${url}`)
+    ).data;
 
     return {
       props: {
+        id,
         data,
       },
     };

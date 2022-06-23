@@ -23,13 +23,14 @@ type Props = {
   data: PropertyView;
   step: number;
   setStep: any;
+  appData: any;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepOne = ({ date, data, step, setStep }: Props) => {
+const StepOne = ({ date, data, step, setStep,appData }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [openModal, setOpenModal] = useState<boolean>(false);

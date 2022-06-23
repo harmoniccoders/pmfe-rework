@@ -1,10 +1,13 @@
 import { Box, Flex, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { ApplicationView } from 'types/api';
+import { InstallmentView, RentReliefView } from 'types/api';
 import ViewRentRelief from './ViewRentRelief';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
-const ReliefCard = ({ item }: { item: ApplicationView }) => {
+const ReliefCard = ({ item }: { item: RentReliefView }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  
   return (
     <Box
       w="full"
@@ -23,11 +26,19 @@ const ReliefCard = ({ item }: { item: ApplicationView }) => {
             Relief Amount
           </Text>
           <Text fontWeight="600">
-            ₦{item?.reliefAmount?.toLocaleString(undefined, {})}
+            {naira(item?.reliefAmount as unknown as number)}
+           
           </Text>
         </Box>
-        <Text fontWeight="600" bg="gray.100" rounded="md" px="4" py="1">
-          {item?.status}
+        <Text
+          fontWeight="600"
+          textTransform="capitalize"
+          bg="gray.100"
+          rounded="md"
+          px="4"
+          py="1"
+        >
+          {item?.status?.toLowerCase() as unknown as string}
         </Text>
       </Flex>
       <HStack w="full" spacing="4" justify="space-between">
@@ -35,19 +46,23 @@ const ReliefCard = ({ item }: { item: ApplicationView }) => {
           <Text opacity=".7" fontSize="14px">
             Interest{' '}
           </Text>
-          <Text fontWeight="600">15% </Text>
+          <Text fontWeight="600">{item?.interest}%</Text>
         </Box>
         <Box>
           <Text noOfLines={1} opacity=".7" fontSize="14px">
             Monthly Installments
           </Text>
-          <Text fontWeight="600">₦797,062</Text>
+          <Text fontWeight="600">
+            {naira(item?.monthlyInstallment as unknown as number)}
+          </Text>
         </Box>
         <Box>
           <Text noOfLines={1} opacity=".7" fontSize="14px">
             Total Repayment
           </Text>
-          <Text fontWeight="600">₦4,782,372</Text>
+          <Text fontWeight="600">
+            {naira(item?.totalRepayment as unknown as number)}
+          </Text>
         </Box>
       </HStack>
       <ViewRentRelief
