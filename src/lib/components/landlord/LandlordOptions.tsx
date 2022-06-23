@@ -13,31 +13,56 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import Icons from '../Icons';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-import { PrimarySelect } from 'lib/Utils/PrimarySelect';
-import { Tenancy, RentCollectionType } from 'types/api';
+import { Tenancy, RentCollectionType, ComplaintsCategory, ComplaintsModel } from 'types/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
 import axios from 'axios';
 
 interface Props {
   formStep: number;
   setFormStep: any;
   Tenancylandlord: any;
+  getBanks: any[];
+  category: ComplaintsCategory[];
   onClose: () => void;
 }
 
-const LandlordOptions = ({ onClose }: Props) => {
-  const [Tenancylandlord, { loading: isLoading, data, error }] =
-    useOperationMethod('Tenancylandlord');
+const LandlordOptions = ({ onClose ,getBanks}: Props) => {
+  // const [ViewTenancylandlord, { loading: isLoading, data, error }] =
+  //   useOperationMethod('Tenancylandlord');
+
+    const [ authorizeComplaints, { loading, data, error }] =
+    useOperationMethod('Complaintsauthorize{complaintsId}');
+
+    // const AuthorizeComplaints = async () => {
+    //   const params: Parameters = {
+    //     complaintsId: item.id as number,
+    //   };
+  
+    //   try {
+    //     const result = await (await authorizeComplaints(params)).data;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+  
+  
 
   const schema = yup.object().shape({
     name: yup.string().required(),
-    accountNumber: yup.string().required(),
+    bank: yup.string().when('name', {
+      is: () => formStep === 3,
+      then: yup.string(),
+    }),
+    accountNumber: yup.string().when('name', {
+      is: () => formStep === 3,
+      then: yup.string(),
+    }),
   });
 
   const [formStep, setFormStep] = useState<number>(0);
@@ -46,44 +71,15 @@ const LandlordOptions = ({ onClose }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<Tenancylandlord>({
+  } = useForm<Tenancy>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
-  const completeFormStep = () => {
-    setFormStep((cur: number) => cur + 1);
-  };
-  const clearPreviewData = () => {
-    setFormStep(0);
-    onClose();
-  };
-
+  
   const { addToast } = useToasts();
 
-  const onSubmit = async (data: Tenancylandlord) => {
-    try {
-      const result = await (await Tenancylandlord(undefined, data)).data;
-      //console to be removed, take note
-      console.log({ result });
-      //remove the line above
-      if (result.status != 400) {
-        addToast(result.message, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        onClose();
-        return;
-      }
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      onClose();
-      return;
-    } catch (err) {}
-  };
-
+  
   return (
     <>
       {formStep === 0 && (
@@ -266,170 +262,6 @@ const LandlordOptions = ({ onClose }: Props) => {
                 as well as repair costs.
               </Text>
             </Box>
-          </Box>
-        </>
-      )}
-      {formStep === 3 && (
-        <>
-          <Box w="full">
-            <Center>
-              <Text mt="1rem" color="#545454">
-                Total Rent Remitted
-              </Text>
-            </Center>
-            <Center>
-              <Text mb="1rem" fontWeight="700" fontSize="2rem">
-              ₦0.00
-              </Text>
-            </Center>
-
-            <Stack mt="1rem">
-              <Text fontWeight="700" fontSize={['1rem', '']}>
-                Upcoming Remitance
-              </Text>
-              <Flex
-                w="full"
-                h="3rem"
-                borderRadius="8px"
-                bgColor="rgba(154,167,179,0.06)"
-                align="center"
-                p=".55rem"
-                mb="1rem"
-              >
-                <Text textAlign="left">₦2,500,000</Text>
-                <Spacer />
-                <Text textAlign="right">30 Jun 2021</Text>
-              </Flex>
-              <Button
-                type="button"
-                w="100%"
-                h="100%"
-                mt="2rem"
-                variant="solid"
-                textTransform="capitalize"
-              >
-                Request Payment
-              </Button>
-            </Stack>
-            <Stack mt="2rem !important">
-              <Text fontWeight="700" fontSize={['1rem', '']}>
-                Rent Collection
-              </Text>
-              <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                <PrimarySelect<RentCollectionType>
-                  label="How frequently do you want to collect rent?"
-                  name="name"
-                  error={errors.name}
-                  placeholder="How frequently do you want to collect rent?"
-                  defaultValue=""
-                  register={register}
-                  options={['Anually', 'Monthly', 'Daily']}
-                />
-                <PrimarySelect<RentCollectionType>
-                  label="Your Bank"
-                  name="name"
-                  error={errors.name}
-                  placeholder="Your Bank"
-                  defaultValue=""
-                  register={register}
-                  options={['GTB', 'Union bank', 'FCMB']}
-                />
-                <PrimaryInput<RentCollectionType>
-                  label="Your account number"
-                  name="name"
-                  error={errors.name}
-                  placeholder="Your account number"
-                  defaultValue=""
-                  register={register}
-                />
-                <Button
-                  type="button"
-                  w="100%"
-                  h="100%"
-                  mt="1rem"
-                  variant="solid"
-                  textTransform="capitalize"
-                >
-                  Update
-                </Button>
-              </form>
-              <Stack>
-                <Text
-                  mt="1.5rem !important"
-                  fontWeight="700"
-                  fontSize={['1rem', '']}
-                >
-                  Payment History
-                </Text>
-                <Flex w="full" p=".55rem" mb="1rem">
-                  <Box textAlign="left">
-                    <Text color="#3F931D">Rent Remittance</Text>
-                    <Text color="#545454">
-                      <small>23 April 2021</small>
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box textAlign="right">
-                    <Text fontWeight="700">₦2,500,000</Text>
-                    <Text color="#545454">
-                      <small>GTBank Account</small>
-                    </Text>
-                  </Box>
-                </Flex>
-              </Stack>
-            </Stack>
-          </Box>
-        </>
-      )}
-      {formStep === 4 && (
-        <>
-          <Box>
-            <Text fontWeight="700" fontSize="1.25em">
-              Tenancy Agreement
-            </Text>
-            <Text fontSize="1.25em">Between</Text>
-            <Text fontWeight="700" fontSize="1.25em">
-              Gideon Oluwasegun Emokpae
-            </Text>
-            <Text fontSize="1.35em">And</Text>
-            <Text fontWeight="700" fontSize="1.35em">
-              PropertyMataaz Limited
-            </Text>
-            <Stack fontSize=".95em" mt="1rem">
-              <Text fontWeight="600">
-                In respect of the 4 Bedroom Duplex at No. 16 Admiralty Way,
-                lekki Phase 1, lekki, Lagos, Nigeria
-              </Text><br/>
-              <Text>
-                <span style={{ textTransform: 'uppercase' }}>
-                  THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021 BETWEEN
-                </span>
-                <br />
-                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
-                  GIDEON OLUWASEGUN EMOKPAE
-                </span>{' '}
-                of 10 Adebayo Titilope Street, Omole Phase 4, Ikeja, Lagos,
-                Nigeria (hereinafter to referred to as The Tenant which
-                expression shall where the context so admit include his
-                successors in title and assigns) of the one part
-                <br />
-                <br />
-                <span style={{ textTransform: 'uppercase' }}> and</span>
-                <br />
-                <br />
-                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
-                  PROPERTYMATAAZ LIMITED
-                </span>
-                , a company incorporated in nigeria having its registered office
-                at Km 24 Lekki Epe Expressway, oko Ado, Lagos, Nigeria
-                <br />
-                <br />
-                <span style={{ textTransform: 'uppercase', fontWeight: '600' }}>
-                  WHEREAS
-                </span>
-                :
-              </Text>
-            </Stack>
           </Box>
         </>
       )}
