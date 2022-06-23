@@ -57,15 +57,15 @@ function Tenant({
               For Tenant
             </Text>
 
-            <MyTenancy category={category} data={data} />
-            {/* 
+            {/* <MyTenancy category={category} data={data} /> */}
+
             {data.length > 0 ? (
               <MyTenancy category={category} data={data} />
             ) : (
               <Text mt="3" fontWeight="medium" fontSize=".9rem">
                 You currently do not have any active tenancy...
               </Text>
-            )} */}
+            )}
           </Box>
         </Box>
       </Box>

@@ -31,9 +31,10 @@ type Props = {
   isOpen: boolean;
   onClose: any;
   category: ComplaintsCategory[];
+  propertyData: any;
 };
 
-const TenancyModal = ({ isOpen, onClose, category }: Props) => {
+const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const [showForm, setShowForm] = useState<number>(0);
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
@@ -54,6 +55,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
   } = useForm<ComplaintsModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: { propertyId: propertyData.property.id },
   });
   const { addToast } = useToasts();
 
@@ -63,20 +65,20 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
       const result = await (await CreateComplaint(undefined, data)).data;
 
       console.log({ result });
-      // if (result.status !== 400) {
-      //   addToast('Property Added', {
-      //     appearance: 'success',
-      //     autoDismiss: true,
-      //   });
-      //   return;
-      // }
-      // addToast(result.message, {
-      //   appearance: 'error',
-      //   autoDismiss: true,
-      // });
-    } catch (err) {
-      window.alert(err);
-    }
+      onClose();
+      if (result.status) {
+        addToast('Application Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } catch (err) {}
   };
 
   return (
@@ -216,7 +218,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                     right="0"
                     textTransform="capitalize"
                   >
-                    lekki phase 1
+                    {propertyData.property.lga}
                   </Flex>
                 </Box>
               </Flex>
@@ -236,7 +238,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                   fontWeight={600}
                   lineHeight={1.5}
                 >
-                  4 Bedroom duplex with BQ
+                  {propertyData.property.name}
                 </Text>
 
                 <HStack w="100%">
