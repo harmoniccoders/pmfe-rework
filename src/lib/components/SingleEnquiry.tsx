@@ -74,6 +74,10 @@ const SingleEnquiry = ({ data, date }: Props) => {
     GetApplication();
   }, []);
   console.log({ appData });
+  const resultData = appData?.data;
+
+  console.log(resultData);
+
   return (
     <HStack
       w="90%"
@@ -93,7 +97,7 @@ const SingleEnquiry = ({ data, date }: Props) => {
           />
           <StepTwo
             step={step}
-            appData={appData}
+            appData={resultData}
             setStep={setStep}
             data={data}
           />

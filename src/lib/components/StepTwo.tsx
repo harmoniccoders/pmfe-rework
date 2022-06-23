@@ -31,9 +31,24 @@ const iconStyle = {
   color: '#191919',
 };
 
-const StepTwo = ({ step, setStep, data,appData }: Props) => {
+const StepTwo = ({ step, setStep, data, appData }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
+
+  const applicationStatusCheck = () => {
+    switch (appData?.applicationStatus) {
+      case 'REVIEWED':
+        return 'Under Review';
+      case 'ACCEPTED':
+        return 'Application Accepted';
+      case 'REJECTED':
+        return 'Application Rejected';
+      case 'APPROVED':
+        return 'Application Approved';
+      default:
+        return 'Under review';
+    }
+  };
 
   return (
     <>
@@ -98,7 +113,11 @@ const StepTwo = ({ step, setStep, data,appData }: Props) => {
               <Icons iconClass="fa-paper-plane" />
             </Box>
 
-            <Text>{appData?.data.hasApplied? "": "Submit Application"}</Text>
+            <Text>
+              {appData?.hasApplied
+                ? applicationStatusCheck()
+                : 'Submit Application'}
+            </Text>
           </Button>
 
           <Button

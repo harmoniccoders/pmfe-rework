@@ -38,8 +38,9 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
 
+  const [showCategory, setShowCategory] = useState<boolean>(false);
+
   const schema = yup.object().shape({
-    complaintsCategory: yup.string().required(),
     complaintsSubCategoryId: yup.number().required(),
     comment: yup.string().required(),
   });
@@ -86,7 +87,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
         py={5}
         borderRadius="0"
         w={['88%', '80%']}
-        overflowY="scroll"
+        overflowY="auto"
         maxH="100vh"
         pos="fixed"
         mt="0rem"
@@ -132,6 +133,8 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                   height="3rem"
                   fontSize=".9rem"
                   icon={<Icons iconClass="fa-angle-right" />}
+                  onChange={() => setShowCategory(true)}
+                  textTransform="capitalize"
                 >
                   <option disabled>choose a category </option>
                   <>
@@ -146,26 +149,28 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                 </Select>
               </FormControl>
 
-              <PrimarySelect<ComplaintsModel>
-                label="choose a subcategory"
-                name="complaintsSubCategoryId"
-                error={errors?.complaintsSubCategoryId}
-                placeholder="choose your subcategory"
-                register={register}
-                options={
-                  <>
-                    {category.map((item: any) =>
-                      item.complaintsSubCategories.map((subcategory: any) => {
-                        return (
-                          <option value={subcategory.id} key={subcategory.id}>
-                            {subcategory.name}
-                          </option>
-                        );
-                      })
-                    )}
-                  </>
-                }
-              />
+              {showCategory && (
+                <PrimarySelect<ComplaintsModel>
+                  label="choose a subcategory"
+                  name="complaintsSubCategoryId"
+                  error={errors?.complaintsSubCategoryId}
+                  placeholder="choose your subcategory"
+                  register={register}
+                  options={
+                    <>
+                      {category.map((item: any) =>
+                        item.complaintsSubCategories.map((subcategory: any) => {
+                          return (
+                            <option value={subcategory.id} key={subcategory.id}>
+                              {subcategory.name}
+                            </option>
+                          );
+                        })
+                      )}
+                    </>
+                  }
+                />
+              )}
 
               <PrimaryTextArea<ComplaintsModel>
                 label="comments"
