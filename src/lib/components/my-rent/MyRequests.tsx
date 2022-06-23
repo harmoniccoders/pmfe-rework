@@ -3,7 +3,7 @@ import {
   Flex,
   Grid,
   GridItem,
-  Heading,
+  Text,
   HStack,
 } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
@@ -15,6 +15,7 @@ import Pagination from '../Pagination';
 
 function MyRequests({ data }: { data: any }) {
   const result = data.value;
+  console.log({data})
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">
@@ -36,9 +37,9 @@ function MyRequests({ data }: { data: any }) {
 
         <>
           {result.length <= 0 ? (
-            <Heading fontSize="16px" lineHeight={1.5}>
-              Sorry! There's no property at this time please check back later
-            </Heading>
+            <Text mt="3" fontWeight="medium" fontSize=".9rem">
+              You have not made any request...
+            </Text>
           ) : (
             <Box>
               <Grid

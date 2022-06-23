@@ -28,10 +28,12 @@ import parse from 'html-react-parser';
 import Cookies from 'js-cookie';
 import MapView from 'lib/Utils/MapView';
 import { SRLWrapper } from 'simple-react-lightbox';
+import naira from './Generics/Naira';
 
 interface Props {
   isOpen?: any;
   onClose?: any;
+  openReliefModal?: any;
   AddEnquireView: any;
   item: PropertyView;
 }
@@ -39,7 +41,13 @@ const iconStyle = {
   color: '#0042ff',
 };
 
-const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
+const SeemoreModal = ({
+  isOpen,
+  onClose,
+  item,
+  AddEnquireView,
+  openReliefModal,
+}: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
@@ -60,10 +68,17 @@ const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
 
   const router = useRouter();
   const [showContactDetails, setShowContactDetails] = useState<boolean>(false);
+  const relief = router.asPath == '/rent/rent-relief';
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" isCentered size="lg">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        motionPreset="slideInBottom"
+        isCentered
+        size="lg"
+      >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
@@ -190,10 +205,7 @@ const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
                 <GridItem mb="5px" display="flex" alignItems="center">
                   <Icons iconClass="fa-tags" style={iconStyle} />
                   <Text fontSize="13px" ml="4px">
-                    &#8358;
-                    {item.price
-                      ?.toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    {naira(item.price as unknown as number)}
                   </Text>
                 </GridItem>
                 <GridItem mb="5px" display="flex" alignItems="center">
@@ -225,11 +237,15 @@ const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
                   height="40px"
                   width="100%"
                   disabled={item.createdByUser?.id == user?.id}
-                  onClick={() => AddEnquireView()}
+                  onClick={
+                    relief ? () => openReliefModal() : () => AddEnquireView()
+                  }
                 >
                   {item.createdByUser?.id == user?.id
                     ? 'You cannot enquire on owned property'
-                    : 'Enquire'}
+                    : relief
+                    ? 'Get relief'
+                    : 'Enqiure'}
                 </Button>
               )}
 
@@ -321,15 +337,6 @@ const SeemoreModal = ({ isOpen, onClose, item, AddEnquireView }: Props) => {
                                       />
                                     </AspectRatio>
                                   </SRLWrapper>
-                                  // <Box w="full" h="150px" bgColor="brand.50">
-                                  //   <video w="full" h="full">
-                                  //     <source
-                                  //       src={media.url as string}
-                                  //       type="video.mp4"
-                                  //     />
-                                  //     Your browser does not support this video.
-                                  //   </video>
-                                  // </Box>
                                 )}
                               </>
                             );

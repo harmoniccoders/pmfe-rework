@@ -21,7 +21,7 @@ const LandlordRentCard = () => {
   return (
     <Box
       w="100%"
-      boxShadow="0 20px 25px 4px rgba(0,0,0,0.14)"
+      boxShadow="0 5px 5px 2px rgba(0,0,0,0.14)"
       py="15px"
       borderRadius="8px"
     >
@@ -53,7 +53,6 @@ const LandlordRentCard = () => {
             height="100%"
             variant="outline"
             textTransform="capitalize"
-            onClick={onOpen}
           >
             view details
           </Button>

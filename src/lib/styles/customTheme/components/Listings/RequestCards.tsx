@@ -15,6 +15,7 @@ import { PropertyRequestView } from 'types/api';
 import { useRouter } from 'next/router';
 import CancelRequest from '../Modals/CancelRequest';
 import Icons from 'lib/components/Icons';
+import naira from '../Generics/Naira';
 
 type Props = {
   item: PropertyRequestView;
@@ -29,6 +30,7 @@ const RequestCard = ({ item }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
+  console.log({item})
   return (
     <>
       <Box
@@ -42,7 +44,9 @@ const RequestCard = ({ item }: Props) => {
         <VStack align="flex-start" spacing={4}>
           <Flex px=".8rem" mt="1rem" w="full">
             <Text fontWeight={500} fontSize="13px" textTransform="capitalize">
-              {item.comment}
+              {`${
+                item.numberOfBedRooms
+              } bedrooms ${item.propertyType?.name?.toLowerCase()}`}
             </Text>
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>
@@ -78,7 +82,7 @@ const RequestCard = ({ item }: Props) => {
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  {item.budget}
+                  {naira(item.budget as unknown as number)}
                 </Text>
               </Flex>
             </GridItem>
@@ -101,7 +105,7 @@ const RequestCard = ({ item }: Props) => {
               onClick={() => router.push(`/requests/${item.id}`)}
             >
               {item.matches && item.matches.length > 0
-                ? 'View Matches'
+                ? `View ${item.matches.length} Matches`
                 : 'No matches found'}
             </Button>
           </HStack>

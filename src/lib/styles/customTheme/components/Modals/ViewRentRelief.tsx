@@ -16,13 +16,36 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react';
 import { FaArrowUp } from 'react-icons/fa';
+import { RentReliefView } from 'types/api';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import moment from 'moment';
 
 interface Props {
   isOpen: boolean;
+  item: RentReliefView;
   onClose: () => void;
 }
 
-const ViewRentRelief = ({ isOpen, onClose }: Props) => {
+// const outstaningBalance = item?.installments?.reduce(
+//   (prev: number, curr: InstallmentView) => {
+//     if (curr.status !== 'PENDING') {
+//       return prev + curr.amount;
+//     }
+//     return;
+//   }
+// );
+// let outStandingBalance: number;
+// item?.installments?.forEach((x) => {
+//   if (x?.status !== 'PENDING') {
+//     outStandingBalance += x.amount;
+//   }
+// });
+
+// console.log(outStandingBalance);
+const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
+  const paymentHistory = item?.installments?.filter(
+    (x) => x.status !== 'PENDING'
+  );
   return (
     <Modal
       isOpen={isOpen}
@@ -59,10 +82,12 @@ const ViewRentRelief = ({ isOpen, onClose }: Props) => {
         </ModalHeader>
 
         <ModalBody>
-          <Box px={5} py="5">
+          <Box px={[1, 4]} py="5">
             <VStack>
               <Text>Amount to pay</Text>
-              <Heading fontSize="1.5rem">₦4,500,000</Heading>
+              <Heading fontSize="1.5rem">
+                {naira(item?.totalRepayment as unknown as number)}
+              </Heading>
               <SimpleGrid columns={2} pt="5" spacing="5">
                 <Box>
                   <Text mb="2">Outstaning Balance</Text>
@@ -73,7 +98,7 @@ const ViewRentRelief = ({ isOpen, onClose }: Props) => {
                     py="2"
                     rounded="lg"
                   >
-                    ₦3,985,310
+                    {naira(item?.reliefAmount as unknown as number)}
                   </Text>
                 </Box>
                 <Box>
@@ -115,23 +140,41 @@ const ViewRentRelief = ({ isOpen, onClose }: Props) => {
             </Button>
             <VStack align="flex-start" spacing="5">
               <Heading fontSize="17px">Payment History</Heading>
-              <HStack
-                align="flex-start"
-                border="1px solid"
-                w="full"
-                p="3"
-                borderColor="gray.300"
-                rounded="md"
-              >
-                <Text color="white" bg="green.400" rounded="full" p="3">
-                  <FaArrowUp />
-                </Text>
-                <Box>
-                  <Heading fontSize="16px">1st Instalment</Heading>
-                  <Text>Paid on the 23/02/21 via LiquedeFlex</Text>
-                </Box>
-                <Heading fontSize="16px">+ ₦797,062 </Heading>
-              </HStack>
+
+              {paymentHistory?.length > 0 ? (
+                <>
+                  
+                  {paymentHistory?.map((x) => {
+                    return (
+                      <HStack
+                        align="flex-start"
+                        border="1px solid"
+                        w="full"
+                        p="3"
+                        borderColor="gray.300"
+                        rounded="md"
+                      >
+                        <Text color="white" bg="green.400" rounded="full" p="3">
+                          <FaArrowUp />
+                        </Text>
+                        <Box>
+                          <Heading fontSize="16px">1st Instalment</Heading>
+
+                          <Text>
+                            Paid on the {moment(x?.paidOn).format('D/MM/YY')}{' '}
+                            via Flutterwave
+                          </Text>
+                        </Box>
+                        <Heading fontSize="16px">
+                          + {naira(x.amount as unknown as number)}{' '}
+                        </Heading>
+                      </HStack>
+                    );
+                  })}
+                </>
+              ) : (
+                'No payment made'
+              )}
             </VStack>
           </Box>
         </ModalBody>

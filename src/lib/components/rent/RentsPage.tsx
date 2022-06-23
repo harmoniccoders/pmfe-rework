@@ -33,13 +33,13 @@ const RentsPage = ({
     router.push('/rent/listed-property');
   };
 
-  // const openRentRelief = () => {
-  //   router.push('/rent-relief');
-  // };
+  const openRentRelief = () => {
+    router.push('/rent/rent-relief');
+  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [openRelief, setOpenRelief] = useState<boolean>(false);
+ 
   const closeModal = () => {
     setShowModal(false);
   };
@@ -67,7 +67,7 @@ const RentsPage = ({
           img="/assets/rentRelief.png"
           title="Get Rent Relief"
           text="Get an instant, low interest loan to pay your rent"
-          onClick={() => setOpenRelief(true)}
+          onClick={openRentRelief}
         />
       </SimpleGrid>
 
@@ -83,10 +83,7 @@ const RentsPage = ({
         getStates={getStates}
         getBanks={getBanks}
       />
-      <RentReliefModal
-        onClose={() => setOpenRelief(false)}
-        isOpen={openRelief}
-      />
+     
     </Box>
   );
 };

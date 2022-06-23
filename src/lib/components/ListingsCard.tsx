@@ -15,7 +15,7 @@ import {
   Hide,
   HStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import { FaPen } from 'react-icons/fa';
@@ -25,12 +25,16 @@ import {
   PropertyType,
   PropertyView,
   RentCollectionType,
+  Application,
   TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
+import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;
@@ -58,7 +62,7 @@ const ListingsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-console.log({item})
+
   return (
     <>
       <Box
@@ -213,8 +217,7 @@ console.log({item})
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
-                  &#8358;
-                  {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  {naira(item.price as unknown as number)}
                 </Text>
               </Flex>
             </GridItem>
@@ -245,21 +248,25 @@ console.log({item})
             >
               Delete
             </Button>
-            <Button variant="solid" height="40px" width="full" onClick={onOpen}>
+            <Button
+              variant="solid"
+              height="40px"
+              width="full"
+              onClick={() => onOpen()}
+            >
               Details
             </Button>
           </HStack>
         </VStack>
       </Box>
-      {item.isForSale && (
+      {item.isForSale ? (
         <ViewListedProperty
           isOpen={isOpen}
           onClose={onClose}
           item={item}
           openModal={() => setUpdateModal(true)}
         />
-      )}
-      {item.isForRent && (
+      ) : (
         <ViewListedRentProperty
           isOpen={isOpen}
           onClose={onClose}

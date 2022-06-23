@@ -4,6 +4,7 @@ import CleanProperty from '../clean/CleanProperty';
 import LandlordRentCard from 'lib/components/LandlordRentCard';
 
 function Landlord({ data }: { data: any }) {
+  console.log({data});
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">

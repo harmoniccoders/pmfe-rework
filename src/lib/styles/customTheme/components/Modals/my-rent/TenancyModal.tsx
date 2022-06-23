@@ -25,6 +25,7 @@ import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import ButtonComponent from 'lib/components/Button';
 import { useOperationMethod } from 'react-openapi-client';
 import { ComplaintsCategory, ComplaintsModel } from 'types/api';
+import { useToasts } from 'react-toast-notifications';
 
 type Props = {
   isOpen: boolean;
@@ -36,23 +37,6 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
   const [showForm, setShowForm] = useState<number>(0);
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
-
-  const complaints = [
-    {
-      id: 1,
-      name: 'structural damage',
-    },
-
-    {
-      id: 2,
-      name: 'legal issues',
-    },
-
-    {
-      id: 3,
-      name: 'co-tenants',
-    },
-  ];
 
   const schema = yup.object().shape({
     complaintsCategory: yup.string().required(),
@@ -70,9 +54,28 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const { addToast } = useToasts();
 
-  const onSubmit = (data: ComplaintsModel) => {
+  const onSubmit = async (data: ComplaintsModel) => {
     console.log(data);
+    try {
+      const result = await (await CreateComplaint(undefined, data)).data;
+
+      console.log({ result });
+      // if (result.status !== 400) {
+      //   addToast('Property Added', {
+      //     appearance: 'success',
+      //     autoDismiss: true,
+      //   });
+      //   return;
+      // }
+      // addToast(result.message, {
+      //   appearance: 'error',
+      //   autoDismiss: true,
+      // });
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   return (
@@ -131,7 +134,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                   icon={<Icons iconClass="fa-angle-right" />}
                 >
                   <option disabled>choose a category </option>
-                  <option>
+                  <>
                     {category.map((item: any) => {
                       return (
                         <option value={item.name} key={item.id}>
@@ -139,7 +142,7 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                         </option>
                       );
                     })}
-                  </option>
+                  </>
                 </Select>
               </FormControl>
 
@@ -151,13 +154,15 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
                 register={register}
                 options={
                   <>
-                    {category.map((item: any) => {
-                      return (
-                        <option value={item.id} key={item.id}>
-                          {item.name}
-                        </option>
-                      );
-                    })}
+                    {category.map((item: any) =>
+                      item.complaintsSubCategories.map((subcategory: any) => {
+                        return (
+                          <option value={subcategory.id} key={subcategory.id}>
+                            {subcategory.name}
+                          </option>
+                        );
+                      })
+                    )}
                   </>
                 }
               />
@@ -173,7 +178,11 @@ const TenancyModal = ({ isOpen, onClose, category }: Props) => {
 
               <Box my="40px"></Box>
 
-              <ButtonComponent content="submit" />
+              <ButtonComponent
+                content="submit"
+                isValid={isValid}
+                loading={loading}
+              />
             </form>
           ) : (
             <Box borderRadius="8px 8px 0 0" overflow="hidden">

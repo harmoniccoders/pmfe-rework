@@ -15,7 +15,7 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
             'repeat(1,1fr)',
             'repeat(3,1fr)',
           ]}
-          columnGap="3"
+          columnGap="5"
           rowGap={5}
           width="100%"
         >

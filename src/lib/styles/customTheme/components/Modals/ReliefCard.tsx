@@ -1,10 +1,13 @@
 import { Box, Flex, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { ApplicationView } from 'types/api';
+import { InstallmentView, RentReliefView } from 'types/api';
 import ViewRentRelief from './ViewRentRelief';
+import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
-const ReliefCard = ({ items }: {items: ApplicationView}) => {
+const ReliefCard = ({ item }: { item: RentReliefView }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  
   return (
     <Box
       w="full"
@@ -12,7 +15,8 @@ const ReliefCard = ({ items }: {items: ApplicationView}) => {
       px="1rem"
       borderRadius="8px"
       overflow="hidden"
-      boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
+      // boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
+      shadow="xl"
       cursor="pointer"
       onClick={() => setShowModal(true)}
     >
@@ -21,10 +25,20 @@ const ReliefCard = ({ items }: {items: ApplicationView}) => {
           <Text opacity=".7" fontSize="14px">
             Relief Amount
           </Text>
-          <Text fontWeight="600">₦4,500,000</Text>
+          <Text fontWeight="600">
+            {naira(item?.reliefAmount as unknown as number)}
+           
+          </Text>
         </Box>
-        <Text fontWeight="600" bg="gray.100" rounded="md" px="4" py="1">
-          Pending
+        <Text
+          fontWeight="600"
+          textTransform="capitalize"
+          bg="gray.100"
+          rounded="md"
+          px="4"
+          py="1"
+        >
+          {item?.status?.toLowerCase() as unknown as string}
         </Text>
       </Flex>
       <HStack w="full" spacing="4" justify="space-between">
@@ -32,22 +46,30 @@ const ReliefCard = ({ items }: {items: ApplicationView}) => {
           <Text opacity=".7" fontSize="14px">
             Interest{' '}
           </Text>
-          <Text fontWeight="600">15% </Text>
+          <Text fontWeight="600">{item?.interest}%</Text>
         </Box>
         <Box>
-          <Text opacity=".7" fontSize="14px">
-            Monthly Instalments
+          <Text noOfLines={1} opacity=".7" fontSize="14px">
+            Monthly Installments
           </Text>
-          <Text fontWeight="600">₦797,062</Text>
+          <Text fontWeight="600">
+            {naira(item?.monthlyInstallment as unknown as number)}
+          </Text>
         </Box>
         <Box>
-          <Text opacity=".7" fontSize="14px">
+          <Text noOfLines={1} opacity=".7" fontSize="14px">
             Total Repayment
           </Text>
-          <Text fontWeight="600">₦4,782,372</Text>
+          <Text fontWeight="600">
+            {naira(item?.totalRepayment as unknown as number)}
+          </Text>
         </Box>
       </HStack>
-      <ViewRentRelief isOpen={showModal} onClose={() => setShowModal(false)} />
+      <ViewRentRelief
+        item={item}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </Box>
   );
 };

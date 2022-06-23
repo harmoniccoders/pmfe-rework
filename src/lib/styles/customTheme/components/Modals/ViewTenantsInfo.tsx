@@ -11,21 +11,78 @@ import {
   ModalBody,
   VStack,
   Button,
-  HStack,
   SimpleGrid,
   Divider,
 } from '@chakra-ui/react';
 
 import React from 'react';
-import { FaStar,FaStarHalfAlt } from 'react-icons/fa';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { Application } from 'types/api';
+import moment from 'moment';
+import { useOperationMethod } from 'react-openapi-client';
+import { Parameters } from 'openapi-client-axios';
+import { useToasts } from 'react-toast-notifications';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  item: Application;
 }
 
-const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
-  const accepted = false;
+const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
+  const { addToast } = useToasts();
+  const [acceptTenant, { loading, data, error }] = useOperationMethod(
+    'Applicationaccept{id}'
+  );
+
+  const AcceptTenant = async () => {
+    const params: Parameters = {
+      id: item.id as number,
+    };
+    try {
+      const result = await (await acceptTenant(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err) {}
+  };
+
+  const [rejectTenant, { loading: isLoading, data: isData, error: isError }] =
+    useOperationMethod('Applicationreject{id}');
+
+  const RejectTenant = async () => {
+    const params: Parameters = {
+      id: item.id as number,
+    };
+    try {
+      const result = await (await rejectTenant(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Successful', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err) {}
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -58,15 +115,6 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
               ></span>
               Back
             </Text>
-            <Box w="150px" h="40px">
-              <Image
-                src="/assets/PropertyMataaz.png"
-                alt="company-logo"
-                w="100%"
-                h="100%"
-                objectFit="contain"
-              />
-            </Box>
           </Flex>
         </ModalHeader>
 
@@ -75,15 +123,21 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
             <VStack spacing="5">
               <Image
                 rounded="lg"
-                src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg"
-                h="200px"
-                w="200px"
+                src={
+                  item?.user?.passportPhotograph?.url || '/assets/user-icon.png'
+                }
+                h="150px"
+                w="150px"
                 objectFit="cover"
                 alt="name"
               />
-              <Heading fontSize="17px">Gideon Oluwasegun Emokpae</Heading>
+              <Heading fontSize="17px" textTransform="capitalize">{`${
+                item?.user?.firstName
+              } ${item?.user?.middleName || ''} ${
+                item?.user?.lastName
+              }`}</Heading>
             </VStack>
-            {accepted ? (
+            {item.status === 'ACCEPTED' && (
               <VStack spacing="3" my="7">
                 <Heading fontSize="20px">Tenancy Status</Heading>
                 <Text
@@ -97,7 +151,23 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
                   Awaiting Payment
                 </Text>
               </VStack>
-            ) : (
+            )}
+            {item.status === 'REJECTED' && (
+              <VStack spacing="3" my="7">
+                <Heading fontSize="20px">Tenancy Status</Heading>
+                <Text
+                  borderRadius="4px"
+                  border="1px solid #96FFC9"
+                  px="1.5rem"
+                  fontWeight="600"
+                  py="2"
+                  bgColor="brand.700"
+                >
+                  Rejected
+                </Text>
+              </VStack>
+            )}
+            {item.status === 'ACTIVE' && (
               <Box>
                 <Flex
                   w="full"
@@ -123,10 +193,10 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
                   rating of 3 stars or higher
                 </Text>
                 <SimpleGrid columns={2} spacing="5" my="7">
-                  <Button w="full" variant="outline">
+                  <Button w="full" variant="outline" onClick={RejectTenant}>
                     Decline
                   </Button>
-                  <Button w="full" variant="outline">
+                  <Button w="full" variant="outline" onClick={AcceptTenant}>
                     Accept as Tenant
                   </Button>
                 </SimpleGrid>
@@ -136,59 +206,57 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
             <VStack w="full" align="flex-start" spacing="3">
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Mobile Number</Heading>
-                <Text fontSize="14px">08098765432</Text>
+                <Text fontSize="14px">{item?.user?.phoneNumber || ''}</Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Email</Heading>
-                <Text fontSize="14px">gideonemo@gmail.com</Text>
+                <Text fontSize="14px">{item?.user?.email || ''}</Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Current Residential Address</Heading>
-                <Text fontSize="14px">
-                  10 Adebayo Titilope Street, Omole Phase 4, Ikeja, Lagos,
-                  Nigeria
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.user?.address || ''}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Date of Birth</Heading>
-                <Text fontSize="14px">14/04/1980</Text>
+                <Text fontSize="14px">
+                  {(item.user?.dateOfBirth &&
+                    moment(item.user.dateOfBirth).format('Do MMMM YYYY')) ||
+                    ''}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Nationality</Heading>
-                <Text fontSize="14px">Nigerian</Text>
+                <Text fontSize="14px">{item?.user?.nationality || ''}</Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Marital Status</Heading>
-                <Text fontSize="14px">Married</Text>
+                <Text fontSize="14px">{item.user?.maritalStatus || ''}</Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Occupation</Heading>
-                <Text fontSize="14px">Banker</Text>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.user?.occupation || ''}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Work Address</Heading>
-                <Text fontSize="14px">
-                  44 Cameron Road, Ikoyi, Lagos, Nigeria
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.user?.workAddress || ''}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Annual Income</Heading>
-                <Text fontSize="14px">₦14,500,000</Text>
-                <Divider />
-              </VStack>
-              <VStack align="flex-start" w="full" spacing="2">
-                <Heading fontSize="15px">Work Address</Heading>
-                <Text fontSize="14px">
-                  44 Cameron Road, Ikoyi, Lagos, Nigeria
-                </Text>
+                <Text fontSize="14px">{item?.user?.annualIncome}</Text>
                 <Divider />
               </VStack>
             </VStack>
@@ -198,35 +266,44 @@ const ViewTenantsInfo = ({ isOpen, onClose }: Props) => {
             <VStack w="full" align="flex-start" spacing="3">
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">First Name</Heading>
-                <Text fontSize="14px">Amanda</Text>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.firstName || ''}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Surname</Heading>
-                <Text fontSize="14px">Gideon</Text>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.lastName || ''}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Address</Heading>
-                <Text fontSize="14px">
-                  10 Adebayo Titilope Street, Omole Phase 4, Ikeja, Lagos,
-                  Nigeria
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.address || ''}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Relationship</Heading>
-                <Text fontSize="14px">Wife</Text>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.relationship || ''}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Work ID</Heading>
-                <Image
-                  src="/assets/idcard.png"
-                  h="200px"
-                  objectFit="cover"
-                  alt="id card"
-                />
+                {item?.user?.workId ? (
+                  <Image
+                    src={item?.user?.workId?.url}
+                    h="100px"
+                    objectFit="cover"
+                    alt="id card"
+                  />
+                ) : (
+                  'No work ID uploaded'
+                )}
               </VStack>
             </VStack>
           </Box>
