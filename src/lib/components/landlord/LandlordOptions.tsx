@@ -82,7 +82,6 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
   
   return (
     <>
-      {formStep === 0 && (
         <Box w="100%" borderRadius="8px !important">
           <Box w="full" h="150px" pos="relative">
             <Image
@@ -128,7 +127,7 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
             gap={4}
           >
             <Box
-              onClick={() => setFormStep(1)}
+              
               w="full"
               border="1px solid gray"
               mt=".2rem"
@@ -180,7 +179,6 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
               p=".75rem"
               borderRadius="4px"
               cursor="pointer"
-              onClick={() => setFormStep(4)}
             >
               <HStack>
                 <Icons iconClass="fa-copy" />
@@ -207,7 +205,6 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
           </Grid>
         </Box>
         
-      )}
       {formStep === 1 && (
         <>
           <Box w="full">
@@ -218,50 +215,6 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
               <Text>10/04/21</Text>
               <Divider />
             </Stack>
-          </Box>
-        </>
-      )}
-      {formStep === 2 && (
-        <>
-          <Box w="full">
-            <Stack mt="1rem">
-              <Text fontWeight="500">Category</Text>
-              <Text fontWeight="700" fontSize={['1rem', '']}>
-                Structural Damage
-              </Text>
-              <Divider />
-            </Stack>
-            <Stack mt="1rem">
-              <Text fontWeight="500">Sub Category</Text>
-              <Text fontWeight="700" fontSize={['1rem', '']}>
-                Roof Leakage
-              </Text>
-              <Divider />
-            </Stack>
-            <Stack mt="1rem">
-              <Text fontWeight="500">Comments</Text>
-              <Text fontWeight="700" fontSize={['1rem', '']}>
-                Roof Leakage
-              </Text>
-              <Divider />
-            </Stack>
-            <Box mt="4rem">
-              <Button
-                type="button"
-                w="100%"
-                h="100%"
-                variant="solid"
-                textTransform="capitalize"
-                onClick={() => setFormStep(3)}
-              >
-                Authorize Inspection
-              </Button>
-              <Text  color="gray" mt="1.25rem">
-                A propertyMattaaz Representative will go and inspect the
-                reported damage and we will revert to you with proof of damage
-                as well as repair costs.
-              </Text>
-            </Box>
           </Box>
         </>
       )}

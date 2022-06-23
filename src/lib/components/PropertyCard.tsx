@@ -183,7 +183,7 @@ const PropertyCard = ({ item }: Props) => {
         pb="1rem"
         borderRadius="8px"
         overflow="hidden"
-        boxShadow="0 23px 36px 4px rgba(0,0,0,0.14)"
+        boxShadow="0 5px 5px 2px rgba(0,0,0,0.14)"
       >
         <Box w="full" h="150px" pos="relative">
           <>

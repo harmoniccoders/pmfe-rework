@@ -22,24 +22,25 @@ interface Props {
 const Payment = () => {
     const onSubmit = async (data: Tenancy) => {
     try {
-      const result = await (await ViewTenancylandlord(undefined, data)).data;
+      const result = await (await Tenancy(undefined, data)).data;
       //console to be removed, take note
       console.log({ result });
       alert({result})
       //remove the line above
+      
+  const { addToast } = useToasts();
+
       if (result.status != 400) {
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
         });
-        onClose();
         return;
       }
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
       });
-      onClose();
       return;
     } catch (err) {}
   };
