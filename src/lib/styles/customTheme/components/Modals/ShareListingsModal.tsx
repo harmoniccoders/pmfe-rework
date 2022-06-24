@@ -74,13 +74,12 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
         <ModalContent
           py={5}
           borderRadius="0"
-          // w={['88%', '80%']}
+          
           overflow="hidden"
-          // maxH="100vh"
-          // maxW="40%"
+         
           pos="fixed"
           mt="0"
-          //   mb="1rem"
+          
         >
           <ModalHeader>
             <Flex justifyContent="space-between" alignItems="center">

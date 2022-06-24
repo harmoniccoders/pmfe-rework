@@ -15,7 +15,7 @@ import VerifyModal from 'lib/styles/customTheme/components/Modals/VerifyModal';
 import { LandSearchView } from 'types/api/land-search-view';
 
 const LandSearchCard = ({ item }: { item: LandSearchView }) => {
-  const {isOpen, onClose, onOpen} = useDisclosure()
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <Box
       w="full"
@@ -33,23 +33,13 @@ const LandSearchCard = ({ item }: { item: LandSearchView }) => {
             </Text>
             <Text mt="3">{item?.fileNumber}</Text>
           </Box>
-          <Text
-            fontSize="14px"
-            fontWeight="600"
-            bg="gray.100"
-            textTransform="capitalize"
-            rounded="md"
-            px="4"
-            py="1"
-          >
-            {item?.status}
-          </Text>
+         
         </Flex>
 
         <Divider borderColor="brand.50" />
         <Flex px=".8rem" justify="space-between" w="full">
           <Button
-            isDisabled={item?.status === 'PENDING' ? true : false}
+            isDisabled={item?.status !== 'PENDING' ? true : false}
             variant="outline"
             height="40px"
             w="full"
@@ -61,7 +51,7 @@ const LandSearchCard = ({ item }: { item: LandSearchView }) => {
           </Button>
         </Flex>
       </VStack>
-      <VerifyModal isOpen={isOpen} onClose={onClose} />
+      <VerifyModal item={item} isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

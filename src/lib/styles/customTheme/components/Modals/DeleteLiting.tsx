@@ -75,12 +75,22 @@ const DeleteListings = ({ isOpen, onClose, item }: Props) => {
         mb="1rem"
       >
         <ModalHeader textAlign="center">
-          <Text fontSize="1.1rem" fontWeight="bold">
-            Are you sure you want to delete this listing?
-          </Text>
-          <Text color="red" fontSize=".8rem">
-            Please note, action cannot be reversed
-          </Text>
+          {item.status === 'INACTIVE' ? (
+            <Text fontSize="1.1rem" fontWeight="bold">
+              {`You cannot delete a property that has been  ${
+                item.isForRent ? 'rented out' : 'sold'
+              }`}
+            </Text>
+          ) : (
+            <>
+              <Text fontSize="1.1rem" fontWeight="bold">
+                Are you sure you want to delete this listing?
+              </Text>
+              <Text color="red" fontSize=".8rem">
+                Please note, action cannot be reversed
+              </Text>
+            </>
+          )}
         </ModalHeader>
 
         <ModalBody>
@@ -100,6 +110,7 @@ const DeleteListings = ({ isOpen, onClose, item }: Props) => {
                 height="40px"
                 width="full"
                 bgColor="brand.900"
+                isDisabled={item.status === 'INACTIVE'}
                 isLoading={loading}
                 onClick={() => DeleteProperty()}
               >

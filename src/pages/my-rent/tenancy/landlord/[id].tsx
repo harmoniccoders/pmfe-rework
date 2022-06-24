@@ -4,11 +4,9 @@ import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 
-export default function SinglePropertyForLandlord({
-  data,
-  singleProperty,
-}: any) {
-  const singles = data.filter((x: any) => x.id == singleProperty);
+export default function SinglePropertyForLandlord({ data, id }: any) {
+  const singles = data.filter((x: any) => x.id == id)[0];
+  console.log({ singles });
   return <LandlordOptions singles={singles} />;
 }
 
@@ -27,7 +25,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
-  const { singleProperty } = ctx.query;
+
+  const { id } = ctx.query;
 
   try {
     const data = (await _dataAccess.get(`/api/Tenancy/landlord`)).data;
@@ -35,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       props: {
         data,
-        singleProperty,
+        id,
       },
     };
   } catch (error) {

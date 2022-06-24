@@ -28,7 +28,7 @@ interface LandlordProps {
 function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   const { isOpen: opened, onClose: closed, onOpen: onOpened } = useDisclosure();
   const [complains, setComplains] = useState<any>();
-
+  console.log({ data });
   // const getSingleComplains = (singleData: any) => {
   //   // console.log({ singleData });
   //   <SingleComplainModal isOpen={opened} onClose={closed} data={singleData} />;
@@ -44,19 +44,20 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
       name: 'girl',
     },
   ];
+   console.log({ datas });
   useEffect(() => {
     const getComplaints = async () => {
       const bearer = `Bearer ${Cookies.get('token')}`;
       const _dataAccess = new DataAccess(bearer);
 
       try {
-        const data = (
-          await _dataAccess.get(`/api/Complaints/property/${3}/list`)
+        const datass = (
+          await _dataAccess.get(`/api/Complaints/property/${data.property?.id}/list`)
         ).data;
-        console.log({ data });
-        if (data.status) {
-          // setComplains(data.data)
-        }
+       
+        // if (datas.status) {
+        //   // setComplains(data.data)
+        // }
       } catch (err) {
         console.log(err);
       }

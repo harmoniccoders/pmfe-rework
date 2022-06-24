@@ -19,6 +19,7 @@ import {
   RentCollectionType,
   ComplaintsCategory,
   ComplaintsModel,
+  TenancyView,
 } from 'types/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +31,7 @@ import { Parameters } from 'openapi-client-axios';
 import axios from 'axios';
 import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
 import TenancyAgreement from './TenancyAgreement';
+import moment from 'moment';
 
 // interface Props {
 //   formStep: number;
@@ -41,10 +43,10 @@ import TenancyAgreement from './TenancyAgreement';
 //   singles: any;
 // }
 
-const LandlordOptions = ({ singles }: any) => {
+const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: opened, onOpen: onOpened, onClose: closed } = useDisclosure();
-
+console.log({singles})
   // const [ViewTenancylandlord, { loading: isLoading, data, error }] =
   //   useOperationMethod('Tenancylandlord');
 
@@ -93,13 +95,29 @@ const LandlordOptions = ({ singles }: any) => {
     <>
       <Box w="70%" mx="auto" py="2rem">
         <Box w="full" h="400px" pos="relative">
-          <Image
-            src="/assets/nb.webp"
-            alt="property-image"
-            w="100%"
-            height="100%"
-            objectFit="cover"
-          />
+          <>
+            {singles.property?.mediaFiles && singles.property?.mediaFiles?.length > 0 ? (
+              <>
+                {singles.property?.mediaFiles[0].isImage && (
+                  <Image
+                    src={singles.property?.mediaFiles[0].url as string}
+                    alt="propery-image"
+                    w="100%"
+                    height="100%"
+                    objectFit="cover"
+                  />
+                )}
+              </>
+            ) : (
+              <Image
+                src="/assets/nb.webp"
+                alt="propery-image"
+                w="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            )}
+          </>
           <Flex
             bg="brand.100"
             color="white"
@@ -115,17 +133,20 @@ const LandlordOptions = ({ singles }: any) => {
             right="0"
             textTransform="capitalize"
           >
-            Lekki phase 1
+            {singles?.property?.lga}
           </Flex>
         </Box>
 
         <VStack my="3rem" alignItems="flex-start">
           <Text fontWeight="600" whiteSpace="nowrap" fontSize="2rem">
-            4 Bedroom Duplex with BQ
+            {singles.property?.name}
           </Text>
           <HStack>
             <Icons iconClass="fa-calendar" />
-            <Text fontWeight="400">Next rent is due in 365 days</Text>
+            <Text>{`Next rent is due in ${moment(singles.rentDueDate).diff(
+              moment(singles.transaction?.dateCreated),
+              'day'
+            )} days`}</Text>
           </HStack>
         </VStack>
         <Grid

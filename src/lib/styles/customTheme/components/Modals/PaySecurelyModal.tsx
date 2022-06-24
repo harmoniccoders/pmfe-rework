@@ -10,7 +10,6 @@ import {
   VStack,
   Image,
   Box,
-  
 } from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
 import { PaymentRatesView, PropertyView } from 'types/api';
@@ -21,19 +20,19 @@ type Props = {
   open: boolean;
   close: any;
   item?: PropertyView;
- 
+
   paymentRates: PaymentRatesView;
 };
 const PaySecurelyModal = ({
   open,
   close,
   item,
-  
+
   paymentRates,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log({paymentRates})
-  
+  console.log({ paymentRates });
+
   return (
     <Modal
       isOpen={open}
@@ -111,7 +110,12 @@ const PaySecurelyModal = ({
                 <Text>{naira(paymentRates?.total as number)}</Text>
               </Flex>
             </VStack>
-            <Box onClick={() => onOpen()}>
+            <Box
+              onClick={() => {
+                close();
+                onOpen();
+              }}
+            >
               <ButtonComponent
                 content="Pay Securely"
                 isValid={true}
@@ -126,7 +130,6 @@ const PaySecurelyModal = ({
         close={onClose}
         paymentRates={paymentRates}
         item={item}
-       
       />
     </Modal>
   );

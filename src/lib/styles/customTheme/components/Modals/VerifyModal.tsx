@@ -12,14 +12,14 @@ import {
 } from '@chakra-ui/react';
 
 import { FaTimes } from 'react-icons/fa';
+import { LandSearchView } from 'types/api/land-search-view';
 
 interface VerifyProps {
   isOpen: boolean;
   onClose: () => void;
-  
+  item: LandSearchView;
 }
-const VerifyModal = ({ isOpen, onClose }: VerifyProps) => {
-
+const VerifyModal = ({ isOpen, onClose, item }: VerifyProps) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -41,41 +41,46 @@ const VerifyModal = ({ isOpen, onClose }: VerifyProps) => {
         mb="1rem"
       >
         <ModalHeader>
-          <Flex
-            justifyContent="flex-end"
-            alignItems="center"
-            cursor="pointer"
-            fontSize="sm"
-            onClick={onClose}
-          >
-            <FaTimes />
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text
+              onClick={onClose}
+              display="flex"
+              alignItems="center"
+              fontSize="14px"
+              cursor="pointer"
+            >
+              <span
+                className="fal fa-angle-left"
+                style={{ marginRight: '5px' }}
+              ></span>
+              Back
+            </Text>
+
+            
           </Flex>
         </ModalHeader>
 
         <ModalBody>
-          <Box h={['100vh', 'auto']} py="3" overflowY="auto">
-            <Text fontWeight="600" color="black" fontSize="14">
-              Choose an option to continue
-            </Text>
-            <VStack spacing="5" mt="8">
-              <Button
-                
-                variant="outline"
-                w="full"
-                color="gray.600"
-                fontWeight="500"
-                fontSize=".9rem"
-              >
-                List property yourself
-              </Button>
-              <Button
-                variant="outline"
-                w="full"
-                color="gray.600"
-                fontWeight="500"
-                fontSize=".9rem"
-               >
-              </Button>
+          <Box h={['100vh', 'auto']} py="3" overflowY="auto" px="5">
+            <VStack align="flex-start" spacing="5" mt="5">
+              <Box>
+                <Text fontWeight="600" fontSize="17px">
+                  Status
+                </Text>
+                <Text>{item.status}</Text>
+              </Box>
+              <Box>
+                <Text fontWeight="600" fontSize="17px">
+                  File Name
+                </Text>
+                <Text>{item.fileName}</Text>
+              </Box>
+              <Box>
+                <Text fontWeight="600" fontSize="17px">
+                  File Number
+                </Text>
+                <Text>{item.fileNumber}</Text>
+              </Box>
             </VStack>
           </Box>
         </ModalBody>
