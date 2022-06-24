@@ -39,12 +39,14 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     'Cleanquoteaccept{id}'
   );
 
+  const quote = item.cleaningQuotes[item.cleaningQuotes.length - 1];
+
   const { addToast } = useToasts();
   const router = useRouter();
 
   const RejectQuote = async () => {
     const params: Parameters = {
-      id: item.id as number,
+      id: quote.id as number,
     };
 
     try {
@@ -68,7 +70,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
   };
   const AcceptQuote = async () => {
     const params: Parameters = {
-      id: item.id as number,
+      id: quote.id as number,
     };
     console.log(params);
     try {
@@ -145,11 +147,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   Quote
                 </Text>
                 <Text fontSize=".8rem" fontWeight="400">
-                  <>
-                    {naira(
-                      (item?.cleaningQuote?.quote as unknown as number) || 0
-                    )}
-                  </>
+                  <>{naira((quote.quote as unknown as number) || 0)}</>
                 </Text>
               </Box>
               <Box>
@@ -161,9 +159,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   <Text fontSize=".8rem" fontWeight="400" ml=".5rem">
                     {item.cleaningQuote === null
                       ? 'Awaiting Approval'
-                      : moment(item.cleaningQuote?.proposedDate).format(
-                          'Do MMMM YYYY'
-                        )}
+                      : moment(quote.proposedDate).format('Do MMMM YYYY')}
                   </Text>
                 </Flex>
               </Box>
@@ -176,7 +172,12 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   textTransform="uppercase"
                   onClick={() => RejectQuote()}
                   isLoading={isLoading}
-                  disabled={item.cleaningQuote === null ? true : false}
+                  disabled={
+                    item.cleaningQuotes === null ||
+                    item.cleaningQuotes.length < 1
+                      ? true
+                      : false
+                  }
                 >
                   Reject Quote
                 </Button>
@@ -184,11 +185,16 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   variant="solid"
                   height="40px"
                   width="full"
-                  color="rgb(37,36,39)"
                   textTransform="uppercase"
                   onClick={() => AcceptQuote()}
                   isLoading={loading}
-                  disabled={item.cleaningQuote === null ? true : false}
+                  color="white"
+                  disabled={
+                    item.cleaningQuotes === null ||
+                    item.cleaningQuotes.length < 1
+                      ? true
+                      : false
+                  }
                 >
                   Accept Quote
                 </Button>

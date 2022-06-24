@@ -35,11 +35,11 @@ const CleanCard = ({
   data,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  console.log({ data });
 
   return (
     <>
       <Box
-        
         w="full"
         py="2rem"
         px="1rem"
@@ -54,7 +54,14 @@ const CleanCard = ({
                 {propertyType?.toLowerCase()}
               </Text>
             ) : (
-               <Text fontWeight={600} fontSize="17px" visibility="hidden" textTransform="capitalize">None</Text>
+              <Text
+                fontWeight={600}
+                fontSize="17px"
+                visibility="hidden"
+                textTransform="capitalize"
+              >
+                None
+              </Text>
             )}
           </Flex>
           <Grid w="full" px=".8rem" templateColumns="repeat(2, 1fr)" gap={4}>

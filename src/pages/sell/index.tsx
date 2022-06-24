@@ -26,6 +26,7 @@ const sell = ({
 
   const result = data?.filter((property: PropertyView) => !property.isDraft);
 
+  //Redirect user to login and back here when login is successful
   const isUser = Cookies.get('userIn');
   useEffect(() => {
     if (isUser !== 'true') {
@@ -33,6 +34,7 @@ const sell = ({
       return;
     }
   });
+
   return (
     <SellPage
       propertyTitles={propertyTitles}
