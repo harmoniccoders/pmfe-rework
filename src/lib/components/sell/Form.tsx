@@ -90,7 +90,9 @@ const Form = ({
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
-    defaultValues: {},
+    defaultValues: {
+      isForSale: true,
+    },
   });
 
   watch('numberOfBathrooms');
@@ -101,8 +103,6 @@ const Form = ({
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
-
- 
 
   const widgetApi = useRef();
   const widgetApis = useRef();
@@ -158,7 +158,6 @@ const Form = ({
               variant="outline"
               onClick={() => {
                 setValue('isDraft', true);
-                setValue('isForSale', false);
               }}
               isLoading={draftLoading}
             >
@@ -168,7 +167,6 @@ const Form = ({
               w="50%"
               onClick={() => {
                 setValue('isDraft', false);
-                setValue('isForSale', true);
               }}
             >
               <ButtonComponent
@@ -256,10 +254,10 @@ const Form = ({
     data.mediaFiles = uploadedMedia;
 
     try {
-      if (data.isForSale) {
-        setLiveLoading(true);
-      } else {
+      if (data.isDraft) {
         setDraftLoading(true);
+      } else {
+        setLiveLoading(true);
       }
       // const result = await (await PropertyCreate(undefined, data)).data;
 
@@ -404,12 +402,9 @@ const Form = ({
                               value={'false'}
                             />
 
-                            <Tooltip
-                              placement="top"
-                              
-                            >
+                            <Tooltip placement="top">
                               <Box as="span" cursor="pointer">
-                                <FaInfoCircle onClick={() => setFormStep(2)}/>
+                                <FaInfoCircle onClick={() => setFormStep(2)} />
                               </Box>
                             </Tooltip>
                           </Flex>
@@ -575,25 +570,43 @@ const Form = ({
                 </>
               )}
               {formStep === 2 && (
-                <Box h='75vh'>
-                <Text fontSize='18px' fontWeight='600' mb='1rem'>Benefits of letting us help you sell your property</Text>
-                <ol>
-                  <li>
-                    <Text mt='1rem'>Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
-                      your property faster as buyers will feel more confident to buy.</Text>
-                  </li>
-                  <li>
-                    <Text mt='1rem'>Your property will be shown prominently in search results.</Text>
-                  </li>
-                  <li>
-                    <Text mt='1rem'> Your property will feature the verification badge.
-                    </Text>
-                  </li>
-                </ol>
-                <Center> 
-                  <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
-                </Center>
-              </Box>
+                <Box h="75vh">
+                  <Text fontSize="18px" fontWeight="600" mb="1rem">
+                    Benefits of letting us help you sell your property
+                  </Text>
+                  <ol>
+                    <li>
+                      <Text mt="1rem">
+                        Our 103% money-back guarantee will be activated on your
+                        property. This guarantee will help you sell your
+                        property faster as buyers will feel more confident to
+                        buy.
+                      </Text>
+                    </li>
+                    <li>
+                      <Text mt="1rem">
+                        Your property will be shown prominently in search
+                        results.
+                      </Text>
+                    </li>
+                    <li>
+                      <Text mt="1rem">
+                        {' '}
+                        Your property will feature the verification badge.
+                      </Text>
+                    </li>
+                  </ol>
+                  <Center>
+                    <Button
+                      position="absolute"
+                      bottom="10"
+                      w="75%"
+                      onClick={() => setFormStep(formStep - 1)}
+                    >
+                      ok
+                    </Button>
+                  </Center>
+                </Box>
               )}
               {RenderButton()}
             </>

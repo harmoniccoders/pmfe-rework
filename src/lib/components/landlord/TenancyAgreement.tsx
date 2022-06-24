@@ -1,10 +1,91 @@
-import React from 'react'
-import {Box, Text, Stack,  } from '@chakra-ui/react'
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Flex,
+  Text,
+  Box,
+  Stack,
+} from '@chakra-ui/react';
+import LandlordOptions from 'lib/components/landlord/LandlordOptions';
+import { useState } from 'react';
+import { PropertyTitle, PropertyType } from 'types/api';
 
-const TenancyAgreement = () => {
+interface LandlordProps {
+  isOpen: boolean;
+  onClose: () => void;
+  data: any;
+}
+
+export default function TenancyAgreement({
+  isOpen,
+  onClose,
+  data,
+}: LandlordProps) {
+  const [formStep, setFormStep] = useState(0);
   return (
-    <>
-          <Box>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="lg"
+      motionPreset="slideInBottom"
+      isCentered
+    >
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
+
+      <ModalContent
+        py={5}
+        overflowY="auto"
+        borderRadius="0"
+        pos="fixed"
+        maxH="100vh"
+      >
+        <ModalHeader>
+          {formStep === 0 ? (
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              onClick={onClose}
+            >
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            </Flex>
+          ) : (
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              onClick={() => setFormStep(formStep - 1)}
+            >
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            </Flex>
+          )}
+        </ModalHeader>
+
+        <ModalBody>
+          <Box maxH="80vh" overflow="auto">
             <Text fontWeight="700" fontSize="1.25em">
               Tenancy Agreement
             </Text>
@@ -20,7 +101,8 @@ const TenancyAgreement = () => {
               <Text fontWeight="600">
                 In respect of the 4 Bedroom Duplex at No. 16 Admiralty Way,
                 lekki Phase 1, lekki, Lagos, Nigeria
-              </Text><br/>
+              </Text>
+              <br />
               <Text>
                 <span style={{ textTransform: 'uppercase' }}>
                   THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021 BETWEEN
@@ -52,8 +134,8 @@ const TenancyAgreement = () => {
               </Text>
             </Stack>
           </Box>
-        </>
-  )
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
 }
-
-export default TenancyAgreement

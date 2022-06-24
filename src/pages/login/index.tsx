@@ -37,6 +37,14 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleAfterLogin = () => {
+    if (router.query && router.query.from) {
+      router.push(router.query.from as unknown as string);
+    } else {
+      window.location.href = '/';
+    }
+  };
+
   const onSubmit = async (data: LoginModel) => {
     try {
       const result = await (await LoginModelUser(undefined, data)).data;
@@ -50,7 +58,7 @@ const Login = () => {
         Cookies.set('user', JSON.stringify(result.data));
         Cookies.set('userIn', 'true');
         // router.push('/');
-        window.location.href = '/';
+        handleAfterLogin();
         return;
       }
       addToast(result.message, {

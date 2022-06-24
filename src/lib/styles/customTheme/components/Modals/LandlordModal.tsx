@@ -7,18 +7,65 @@ import {
   Flex,
   Text,
   Box,
+  Stack,
+  Divider,
+  VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 import LandlordOptions from 'lib/components/landlord/LandlordOptions';
-import { useState } from 'react';
+import { DataAccess } from 'lib/Utils/Api';
+import { useEffect, useState } from 'react';
 import { PropertyTitle, PropertyType } from 'types/api';
+import SingleComplainModal from './SingleComplaintModal';
 
 interface LandlordProps {
   isOpen: boolean;
   onClose: () => void;
+  data: any;
 }
 
-function LandlordModal({ isOpen, onClose }: LandlordProps) {
-  const [formStep, setFormStep] = useState(0);
+function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
+  const { isOpen: opened, onClose: closed, onOpen: onOpened } = useDisclosure();
+  const [complains, setComplains] = useState<any>();
+
+  // const getSingleComplains = (singleData: any) => {
+  //   // console.log({ singleData });
+  //   <SingleComplainModal isOpen={opened} onClose={closed} data={singleData} />;
+  // };
+
+  const datas = [
+    {
+      id: 1,
+      name: 'boy',
+    },
+    {
+      id: 2,
+      name: 'girl',
+    },
+  ];
+  useEffect(() => {
+    const getComplaints = async () => {
+      const bearer = `Bearer ${Cookies.get('token')}`;
+      const _dataAccess = new DataAccess(bearer);
+
+      try {
+        const data = (
+          await _dataAccess.get(`/api/Complaints/property/${3}/list`)
+        ).data;
+        console.log({ data });
+        if (data.status) {
+          // setComplains(data.data)
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getComplaints();
+  }, []);
+
+  console.log({ complains });
+
   return (
     <Modal
       isOpen={isOpen}
@@ -37,54 +84,48 @@ function LandlordModal({ isOpen, onClose }: LandlordProps) {
         maxH="100vh"
       >
         <ModalHeader>
-          {formStep === 0 ? (
-            <Flex
-              justifyContent="space-between"
+          <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            onClick={onClose}
+          >
+            <Text
+              display="flex"
               alignItems="center"
-              onClick={onClose}
+              fontSize="14px"
+              cursor="pointer"
             >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          ) : (
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              onClick={() => setFormStep(formStep - 1)}
-            >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          )}
+              <span
+                className="fal fa-angle-left"
+                style={{ marginRight: '5px' }}
+              ></span>
+              Back
+            </Text>
+          </Flex>
         </ModalHeader>
 
         <ModalBody>
           <Box px={5}>
-            <LandlordOptions
-              formStep={formStep}
-              setFormStep={setFormStep}
-              onClose={onClose}
-            />
+            <VStack spacing={5}>
+              {datas.map((singleData: any) => {
+                return (
+                  <Box w="full">
+                    <Stack spacing={3} onClick={onOpened} cursor="pointer">
+                      <Text fontWeight="600" fontSize={['1rem', '']}>
+                        Structural Damage
+                      </Text>
+                      <Text>10/04/21</Text>
+                      <Divider />
+                    </Stack>
+                    <SingleComplainModal
+                      isOpen={opened}
+                      onClose={closed}
+                      data={singleData}
+                    />
+                  </Box>
+                );
+              })}
+            </VStack>
           </Box>
         </ModalBody>
       </ModalContent>

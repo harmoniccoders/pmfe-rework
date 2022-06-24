@@ -4,12 +4,13 @@ import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 
-function SinglePropertyForLandlord({ data, singleProperty }: any) {
+export default function SinglePropertyForLandlord({
+  data,
+  singleProperty,
+}: any) {
   const singles = data.filter((x: any) => x.id == singleProperty);
   return <LandlordOptions singles={singles} />;
 }
-
-export default SinglePropertyForLandlord;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -29,13 +30,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { singleProperty } = ctx.query;
 
   try {
-    const data = (
-      await _dataAccess.get(`/api/Tenancy/landlord?${singleProperty}`)
-    ).data;
+    const data = (await _dataAccess.get(`/api/Tenancy/landlord`)).data;
 
     return {
       props: {
         data,
+        singleProperty,
       },
     };
   } catch (error) {

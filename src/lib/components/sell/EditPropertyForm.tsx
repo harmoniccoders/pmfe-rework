@@ -172,7 +172,6 @@ const EditPropertyForm = ({
               type="submit"
               variant="outline"
               onClick={() => {
-                setValue('isForSale', false);
                 setValue('isDraft', true);
               }}
               isLoading={draftLoading}
@@ -187,7 +186,7 @@ const EditPropertyForm = ({
               }}
             >
               <ButtonComponent
-                content={item.isForSale ? 'Update Listing' : 'Publish Listing'}
+                content={!item.isDraft ? 'Update Listing' : 'Publish Listing'}
                 isValid={isValid}
                 loading={liveLoading}
               />
@@ -289,14 +288,14 @@ const EditPropertyForm = ({
     console.log({ data });
     data.mediaFiles = uploadedMedia;
     try {
-      if (data.isForSale) {
-        setLiveLoading(true);
-      } else {
+      if (data.isDraft) {
         setDraftLoading(true);
+      } else {
+        setLiveLoading(true);
       }
       const result = await (await PropertyCreate(undefined, data)).data;
       console.log({ result });
-      if (result.status != 400) {
+      if (result.status) {
         setLiveLoading(false);
         setDraftLoading(false);
         addToast('Property Succesfully Updated', {

@@ -117,11 +117,11 @@ const PropertyCard = ({ item }: Props) => {
   const [
     acceptRequest,
     { loading: isLoader, data: isDataer, error: isErrorer },
-  ] = useOperationMethod('Propertyaddenquiries{Id}');
+  ] = useOperationMethod('PropertyRequestmatchaccept{matchId}');
 
   const AcceptRequest = async () => {
     const params: Parameters = {
-      Id: item.id as number,
+      matchId: item.id as number,
     };
 
     try {
@@ -147,11 +147,11 @@ const PropertyCard = ({ item }: Props) => {
   const [
     rejectRequest,
     { loading: isLoaderr, data: isDataerr, error: isErrorerr },
-  ] = useOperationMethod('Propertyaddenquiries{Id}');
+  ] = useOperationMethod('PropertyRequestmatchreject{matchId}');
 
   const RejectRequest = async () => {
     const params: Parameters = {
-      Id: item.id as number,
+      matchId: item.id as number,
     };
 
     try {
@@ -292,7 +292,7 @@ const PropertyCard = ({ item }: Props) => {
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="11px" ml="4px">
-                  {naira(item.price as unknown  as number)}
+                  {naira(item.price as unknown as number)}
                 </Text>
               </Flex>
             </GridItem>

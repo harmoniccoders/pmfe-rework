@@ -5,6 +5,9 @@ import { returnUserData } from 'lib/Utils/userData';
 import axios from 'axios';
 import SellPage from 'lib/components/sell/SellPage';
 import { useDisclosure } from '@chakra-ui/react';
+import router from 'next/router';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 const sell = ({
   propertyTitles,
@@ -23,6 +26,13 @@ const sell = ({
 
   const result = data?.filter((property: PropertyView) => !property.isDraft);
 
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
   return (
     <SellPage
       propertyTitles={propertyTitles}
@@ -35,17 +45,18 @@ const sell = ({
 
 export default sell;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+  // const {
+  //   data: { user, redirect },
+  // } = returnUserData(ctx);
+
+  // if (redirect)
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: '/login',
+  //     },
+  //     props: {},
+  //   };
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);

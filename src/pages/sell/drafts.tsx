@@ -5,6 +5,7 @@ import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import axios from 'axios';
 import ListingsCard from 'lib/components/ListingsCard';
+import router from 'next/router';
 
 const drafts = ({
   propertyTitles,
@@ -76,7 +77,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
       props: {},
     };
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
