@@ -9,38 +9,38 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
 import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
 import { FaCheck } from 'react-icons/fa';
 import PaySecurelyModal from 'lib/styles/customTheme/components/Modals/PaySecurelyModal';
-import { PropertyModel } from 'types/api';
-import { useOperationMethod } from 'react-openapi-client';
-import { Parameters } from 'openapi-client-axios';
+import { PaymentRatesView, PropertyModel } from 'types/api';
 import RentApplicationModal from 'lib/styles/customTheme/components/Modals/RentApplicationModal';
 
 type Props = {
-  step: number;
-  setStep: any;
   applicationData: any;
   data: PropertyModel;
-  appData: any;
+  paymentRates: PaymentRatesView;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
+const StepTwo = ({
+  applicationData,
+  data,
+
+  paymentRates,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-  console.log(applicationData.applicationStatus);
-
+console.log({ applicationData });
   return (
     <>
       <Flex
-        h={[step !== 1 && step !== 2 ? '3rem' : '100%', '100%']}
+        h={['100%', '100%']}
         overflow="hidden"
         justifyContent="space-between"
         width="100%"
@@ -49,30 +49,43 @@ const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
           <Circle
             size="2rem"
             p="0.2rem"
-            border={step >= 1 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
-            bgColor={step >= 1 ? '#2fdf84' : 'unset'}
+            border={
+              applicationData?.hasPaid
+                ? '1px solid #2fdf84'
+                : '1px solid #DCE1E7'
+            }
+            bgColor={applicationData?.hasPaid ? '#2fdf84' : 'unset'}
           >
             <Icon
-              as={step >= 1 ? FaCheck : TbHourglassHigh}
+              as={
+                applicationData?.applicationStatus == 'APPROVED' &&
+                applicationData?.hasPaid
+                  ? FaCheck
+                  : TbHourglassHigh
+              }
               w="100%"
-              color={step >= 1 ? 'white' : 'brand.50'}
+              color={applicationData?.hasPaid ? 'white' : 'brand.50'}
             />
           </Circle>
           <Box
             h="100%"
             w="2px"
-            bgColor={step >= 1 ? '#2fdf84' : '#DCE1E7'}
+            bgColor={
+              applicationData?.applicationStatus == 'APPROVED' &&
+              applicationData?.hasPaid
+                ? '#2fdf84'
+                : '#DCE1E7'
+            }
           ></Box>
         </VStack>
 
         <VStack
-          // border="2px solid blue"
           align="flex-start"
           spacing={3}
           width="100%"
           ml="2rem"
-          pb={[step !== 1 && step !== 2 ? '0' : '3.5rem', '3.5rem']}
-          h={[step !== 1 && step !== 2 ? '1rem' : '100%', ' 100%']}
+          pb={['3.5rem', '3.5rem']}
+          h={['100%', ' 100%']}
           overflow="hidden"
         >
           <Heading fontSize="1rem" lineHeight={1.5}>
@@ -88,7 +101,7 @@ const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={step < 1}
+            disabled={applicationData?.hasApplied}
             onClick={onOpen}
           >
             <Box
@@ -101,15 +114,15 @@ const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
             </Box>
 
             <Text>
-              {applicationData.applicationStatus == 'ACTIVE'
-                ? 'Application has been Submitted'
-                : applicationData.applicationStatus == 'REVIEWED'
+              {applicationData?.applicationStatus == 'ACTIVE'
+                ? 'Pending review'
+                : applicationData?.applicationStatus == 'REVIEWED'
                 ? 'Application is under review'
-                : applicationData.applicationStatus == 'ACCEPTED'
+                : applicationData?.applicationStatus == 'ACCEPTED'
                 ? 'Proceed to payment'
-                : applicationData.applicationStatus == 'APPROVED'
+                : applicationData?.applicationStatus == 'APPROVED'
                 ? 'Payment approved'
-                : applicationData.applicationStatus == null &&
+                : applicationData?.applicationStatus == null &&
                   'Submit Application'}
             </Text>
           </Button>
@@ -123,7 +136,12 @@ const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={step < 2}
+            disabled={
+              applicationData?.applicationStatus == 'APPROVED' ||
+              applicationData?.applicationStatus == null ||
+              applicationData?.applicationStatus == 'REVIEWED' ||
+              applicationData?.applicationStatus == 'ACTIVE'
+            }
             onClick={payOpen}
           >
             <Box
@@ -140,25 +158,15 @@ const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
         </VStack>
       </Flex>
       {data.isForRent ? (
-        <RentApplicationModal
-          onClose={onClose}
-          isOpen={isOpen}
-          data={data}
-          setStep={setStep}
-        />
+        <RentApplicationModal onClose={onClose} isOpen={isOpen} data={data} />
       ) : (
-        <SubmitApplicationModal
-          onClose={onClose}
-          isOpen={isOpen}
-          data={data}
-          setStep={setStep}
-        />
+        <SubmitApplicationModal onClose={onClose} isOpen={isOpen} data={data} />
       )}
       <PaySecurelyModal
         open={open}
         close={close}
-        setStep={setStep}
         item={data}
+        paymentRates={paymentRates}
       />
     </>
   );

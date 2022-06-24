@@ -39,6 +39,7 @@ function MyRents({
 }: ListingTypes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const result = data.value;
+  console.log({result})
   
   return (
     <Box w="95%" mx="auto" pb="5">
@@ -56,7 +57,7 @@ function MyRents({
         <PageTabs tabName="listings/myrents" tabTitle="For Rent" />
       </HStack>
       <Box>
-        {result.length > 0 ? (
+        {result?.length > 0 ? (
           <Box>
             <Flex justify="space-between" align="center" my="8">
               <Text fontWeight="bold" color="brand.100" fontSize="lg">

@@ -28,14 +28,16 @@ const TenantInfo = ({
       spacing="4"
       opacity={disabled ? '.5' : 'unset'}
       cursor={disabled ? 'not-allowed' : 'pointer'}
-      onClick={
-        disabled
-          ? undefined
-          : () =>
-              router.push(
-                `/my-rent/applications/tenant/${item.id}/${item.property.id}`
-              )
-      }
+      onClick={()=>setShowModal(true)}
+      
+      // onClick={
+      //   disabled
+      //     ? undefined
+      //     : () =>
+      //         router.push(
+      //           `/my-rent/applications/tenant/${item.id}/${item.property.id}`
+      //         )
+      // }
     >
       <Box w="35%">
         <Image

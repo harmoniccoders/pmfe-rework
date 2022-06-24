@@ -63,6 +63,21 @@ const ListingsCard = ({
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
 
+  const [
+    fetchData,
+    { loading: isLoaderr, data: isDataerr, error: isErrorerr },
+  ] = useOperationMethod('Applicationlist{propertyId}');
+
+  const FetchData = async () => {
+    const params: Parameters = {
+      propertyId: item.id as number,
+    };
+    try {
+      const result = await (await fetchData(params)).data;
+
+      return;
+    } catch (err) {}
+  };
   return (
     <>
       <Box
@@ -122,13 +137,19 @@ const ListingsCard = ({
             <Text textTransform="capitalize">
               {item.isDraft
                 ? 'Only visible to you'
+                : item.status === 'INACTIVE'
+                ? (item.isForSale && 'SOLD') || (item.isForRent && 'Rented')
                 : item.status === 'PENDING'
                 ? 'Listing is pending'
                 : item.status === 'REJECTED'
                 ? `Rejected: ${item.rejectionReason}`
                 : 'Listing is live'}
             </Text>
-            <HStack cursor="pointer" onClick={() => setUpdateModal(true)}>
+            <HStack
+              cursor={'pointer'}
+              display={item.status === 'INACTIVE' ? 'none' : 'flex'}
+              onClick={() => setUpdateModal(true)}
+            >
               <Text>Edit</Text>
               <FaPen />
             </HStack>
@@ -252,7 +273,10 @@ const ListingsCard = ({
               variant="solid"
               height="40px"
               width="full"
-              onClick={() => onOpen()}
+              onClick={() => {
+                onOpen();
+                FetchData();
+              }}
             >
               Details
             </Button>
@@ -270,7 +294,8 @@ const ListingsCard = ({
         <ViewListedRentProperty
           isOpen={isOpen}
           onClose={onClose}
-          item={item}
+            item={item}
+            data={isDataerr?.data.value}
           openModal={() => setUpdateModal(true)}
         />
       )}

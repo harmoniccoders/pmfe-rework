@@ -5,11 +5,9 @@ import {
   Text,
   ModalHeader,
   useDisclosure,
-  ModalCloseButton,
   Flex,
   ModalBody,
   VStack,
-  HStack,
   Box,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
@@ -23,10 +21,10 @@ type Props = {
   close: any;
   date?: InspectionDateView;
   item?: PropertyView;
-  setStep: any;
+  
 };
 
-const LiveInspectionModal = ({ open, close, date, item, setStep }: Props) => {
+const LiveInspectionModal = ({ open, close, date, item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Modal
@@ -65,7 +63,7 @@ const LiveInspectionModal = ({ open, close, date, item, setStep }: Props) => {
                 date={date}
                 item={item}
                 close={close}
-                setStep={setStep}
+              
               />
             </VStack>
           </Box>

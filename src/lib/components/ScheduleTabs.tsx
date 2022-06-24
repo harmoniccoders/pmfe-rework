@@ -14,10 +14,10 @@ type Props = {
   date?: InspectionDateView | undefined;
   item?: PropertyView;
   close: any;
-  setStep: any;
+  
 };
 
-const ScheduleTabs = ({ date, item, close, setStep }: Props) => {
+const ScheduleTabs = ({ date, item, close }: Props) => {
   return (
     <>
       <Tabs isFitted variant="enclosed" width="100%" defaultIndex={0}>
@@ -55,7 +55,7 @@ const ScheduleTabs = ({ date, item, close, setStep }: Props) => {
               date={date}
               item={item}
               close={close}
-              setStep={setStep}
+              
             />
           </TabPanel>
           <TabPanel>

@@ -94,7 +94,8 @@ const DesktopView = ({ user }: { user: any }) => {
           <LoggedIn closeMenu={function (): void {}} />
         ) : (
           <>
-            <NavLink name="Get Rent Loan" path="/contact" />
+            <NavLink name="Get Rent Loan" path="/my-rent/rent-relief" />
+            <NavLink name="Verify" path="/sessions/verify" />
             <NavLink name="Login" path="/login" />
             <NavLink name="Sign Up" path="/register" />
           </>
@@ -159,7 +160,12 @@ const MobileView = ({ user }: { user: any }) => {
             <NavLink
               closeMenu={closeMenu}
               name="Get Rent Loan"
-              path="/get-rent-loan"
+              path="/rent/rent-relief"
+            />
+            <NavLink
+              closeMenu={closeMenu}
+              name="Verify"
+              path="/sessions/verify"
             />
             <NavLink closeMenu={closeMenu} name="Login" path="/login" />
             <NavLink closeMenu={closeMenu} name="Sign Up" path="/register" />

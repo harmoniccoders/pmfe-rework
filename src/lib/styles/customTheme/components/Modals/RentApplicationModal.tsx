@@ -13,7 +13,7 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { MediaModel } from 'types/api';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useForm } from 'react-hook-form';
@@ -35,13 +35,11 @@ type Props = {
   onClose: any;
   isOpen: boolean;
   data: any;
-  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
+const RentApplicationModal = ({ onClose, isOpen, data}: Props) => {
   const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
-  // console.log({ data });
 
   const [formStep, setFormStep] = useState<number>(0);
   const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
@@ -49,7 +47,6 @@ const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
 
   const widgetApiss = useRef();
   const widgetApis = useRef();
-  // const [getResult, setGetResult] = useState([]);
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
@@ -185,15 +182,11 @@ const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
     data.register!.passportPhotograph = uploadedPassport[0];
     data.register!.workId = uploadedId[0];
 
-    console.log({ data });
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
-      console.log({ result });
 
       if (result.status) {
-        // setStep(2);
-        // setGetResult(result.data);
-        addToast(result.message, {
+        addToast('Application submitted successfully', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -206,9 +199,7 @@ const RentApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       });
       onClose();
       return;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const CountryList = require('country-list').getNames();

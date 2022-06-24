@@ -25,6 +25,7 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
+  
   return (
     <>
       <VStack
@@ -185,15 +186,7 @@ const PropertyInfo = ({ data }: Props) => {
                             allowFullScreen
                           />
                         </AspectRatio>
-                        // <Box w="full" h="150px" bgColor="brand.50">
-                        //   <video w="full" h="full">
-                        //     <source
-                        //       src={media.url as string}
-                        //       type="video.mp4"
-                        //     />
-                        //     Your browser does not support this video.
-                        //   </video>
-                        // </Box>
+                       
                       )}
                     </>
                   );

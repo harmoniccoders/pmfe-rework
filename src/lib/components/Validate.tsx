@@ -72,7 +72,7 @@ function Validate() {
           <Flex
             bgColor="brand.100"
             w="50%"
-            h="100vh"
+            minH="100vh"
             align="center"
             justify="center"
             pl="2rem"
@@ -142,7 +142,9 @@ function Validate() {
                     transaction?.user?.lastName || ''
                   }`}
                   amount={(transaction?.amount as unknown as number) || 0}
-                  price={transaction?.property?.price || 0}
+                  price={
+                    (transaction?.property?.price as unknown as number) || 0
+                  }
                   txRef={transaction?.paymentLog?.transactionReference || ''}
                   property={`1. ${transaction?.property?.name || ''} - ${
                     transaction?.property?.lga || ''

@@ -1,13 +1,12 @@
-import { Box, Flex, HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { InstallmentView, RentReliefView } from 'types/api';
-import ViewRentRelief from './ViewRentRelief';
+import { RentReliefView } from 'types/api';
+import ViewRentRelief from '../styles/customTheme/components/Modals/ViewRentRelief';
 import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 const ReliefCard = ({ item }: { item: RentReliefView }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
-
-  
+ 
   return (
     <Box
       w="full"
@@ -15,8 +14,7 @@ const ReliefCard = ({ item }: { item: RentReliefView }) => {
       px="1rem"
       borderRadius="8px"
       overflow="hidden"
-      // boxShadow="0 5px 5px 2px rgba(0,0,0,0.14)"
-      shadow="xl"
+      boxShadow="0 5px 5px 2px rgba(0,0,0,0.14)"
       cursor="pointer"
       onClick={() => setShowModal(true)}
     >
@@ -27,18 +25,17 @@ const ReliefCard = ({ item }: { item: RentReliefView }) => {
           </Text>
           <Text fontWeight="600">
             {naira(item?.reliefAmount as unknown as number)}
-           
           </Text>
         </Box>
         <Text
           fontWeight="600"
-          textTransform="capitalize"
-          bg="gray.100"
+          color="white"
+          bg={item.status === 'PENDING' ? 'brand.600' : '#2FDF84'}
           rounded="md"
           px="4"
           py="1"
         >
-          {item?.status?.toLowerCase() as unknown as string}
+          {item?.status}
         </Text>
       </Flex>
       <HStack w="full" spacing="4" justify="space-between">
@@ -68,8 +65,10 @@ const ReliefCard = ({ item }: { item: RentReliefView }) => {
       <ViewRentRelief
         item={item}
         isOpen={showModal}
+       
         onClose={() => setShowModal(false)}
       />
+      
     </Box>
   );
 };
