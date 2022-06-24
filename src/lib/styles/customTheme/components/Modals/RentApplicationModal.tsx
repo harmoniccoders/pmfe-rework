@@ -186,8 +186,7 @@ const RentApplicationModal = ({ onClose, isOpen, data}: Props) => {
       const result = await (await SubmitApplication(undefined, data)).data;
 
       if (result.status) {
-        // setStep(2);
-        addToast(result.message, {
+        addToast('Application submitted successfully', {
           appearance: 'success',
           autoDismiss: true,
         });

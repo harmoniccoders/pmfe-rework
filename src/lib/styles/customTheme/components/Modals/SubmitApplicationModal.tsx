@@ -141,7 +141,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
       
 
       if (result.status) {
-        addToast(result.message, {
+        addToast('Application submitted successfully', {
           appearance: 'success',
           autoDismiss: true,
         });

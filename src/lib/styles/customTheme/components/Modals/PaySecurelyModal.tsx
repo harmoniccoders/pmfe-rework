@@ -24,15 +24,15 @@ type Props = {
  
   paymentRates: PaymentRatesView;
 };
-
 const PaySecurelyModal = ({
   open,
   close,
   item,
- 
+  
   paymentRates,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  console.log({paymentRates})
   
   return (
     <Modal

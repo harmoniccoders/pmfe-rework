@@ -41,7 +41,6 @@ if (users !== undefined) {
 const PropertyCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
-
   const openReliefModal = () => {
     setOpenRelief(true);
   };
@@ -99,7 +98,7 @@ const PropertyCard = ({ item }: Props) => {
           ? router.push(`/buy/enquire/${item.id}`)
           : router.pathname.startsWith('/rent')
           ? router.push(`/rent/enquire/${item.id}`)
-          : router.push(`buy/enquire/${item.id}`);
+          : router.push(`/buy/enquire/${item.id}`);
       }
     } catch (err) {}
   };

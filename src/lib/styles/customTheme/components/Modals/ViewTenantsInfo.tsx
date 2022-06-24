@@ -33,20 +33,20 @@ interface Props {
 const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
   const { addToast } = useToasts();
   const router = useRouter();
-  const [acceptTenant, { loading, data, error }] = useOperationMethod(
-    'Applicationaccept{id}'
+  const [reviewTenant, { loading, data, error }] = useOperationMethod(
+    'Applicationreview{id}'
   );
 
-  const AcceptTenant = async () => {
+  const ReviewTenant = async () => {
     const params: Parameters = {
       id: item.id as number,
     };
     try {
-      const result = await (await acceptTenant(params)).data;
+      const result = await(await reviewTenant(params)).data;
 
       if (result.status) {
         onClose();
-        addToast('Application accepted succesfully', {
+        addToast('Application under review', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -181,7 +181,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                     w="full"
                     variant="outline"
                     isLoading={loading}
-                    onClick={AcceptTenant}
+                    onClick={ReviewTenant}
                   >
                     Accept as Tenant
                   </Button>

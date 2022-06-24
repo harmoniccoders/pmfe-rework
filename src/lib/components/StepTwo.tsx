@@ -36,7 +36,7 @@ const StepTwo = ({
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-
+console.log({ applicationData });
   return (
     <>
       <Flex
@@ -50,11 +50,11 @@ const StepTwo = ({
             size="2rem"
             p="0.2rem"
             border={
-              applicationData?.hasApplied
+              applicationData?.hasPaid
                 ? '1px solid #2fdf84'
                 : '1px solid #DCE1E7'
             }
-            bgColor={applicationData?.hasApplied ? '#2fdf84' : 'unset'}
+            bgColor={applicationData?.hasPaid ? '#2fdf84' : 'unset'}
           >
             <Icon
               as={
@@ -64,7 +64,7 @@ const StepTwo = ({
                   : TbHourglassHigh
               }
               w="100%"
-              color={applicationData?.hasApplied ? 'white' : 'brand.50'}
+              color={applicationData?.hasPaid ? 'white' : 'brand.50'}
             />
           </Circle>
           <Box
@@ -115,7 +115,7 @@ const StepTwo = ({
 
             <Text>
               {applicationData?.applicationStatus == 'ACTIVE'
-                ? 'Application has been Submitted'
+                ? 'Pending review'
                 : applicationData?.applicationStatus == 'REVIEWED'
                 ? 'Application is under review'
                 : applicationData?.applicationStatus == 'ACCEPTED'
