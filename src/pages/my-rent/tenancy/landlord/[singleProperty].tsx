@@ -1,13 +1,15 @@
-import Landlord from 'lib/components/my-rent/Landlord';
+import LandlordOptions from 'lib/components/landlord/LandlordOptions';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
+import React from 'react';
 
-const index = ({ data }: { data: any }) => {
-  return <Landlord data={data} />;
-};
+function SinglePropertyForLandlord({ data, singleProperty }: any) {
+  const singles = data.filter((x: any) => x.id == singleProperty);
+  return <LandlordOptions singles={singles} />;
+}
 
-export default index;
+export default SinglePropertyForLandlord;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
@@ -24,10 +26,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
-  let { url } = ctx.query;
-  url = 'limit=8&offset=0';
+  const { singleProperty } = ctx.query;
+
   try {
-    const data = (await _dataAccess.get(`/api/Tenancy/landlord?${url}`)).data;
+    const data = (
+      await _dataAccess.get(`/api/Tenancy/landlord?${singleProperty}`)
+    ).data;
 
     return {
       props: {

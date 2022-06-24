@@ -13,7 +13,12 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import Icons from '../Icons';
-import { Tenancy, RentCollectionType, ComplaintsCategory, ComplaintsModel } from 'types/api';
+import {
+  Tenancy,
+  RentCollectionType,
+  ComplaintsCategory,
+  ComplaintsModel,
+} from 'types/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,35 +28,35 @@ import { useOperationMethod } from 'react-openapi-client';
 import { Parameters } from 'openapi-client-axios';
 import axios from 'axios';
 
-interface Props {
-  formStep: number;
-  setFormStep: any;
-  Tenancylandlord: any;
-  getBanks: any[];
-  category: ComplaintsCategory[];
-  onClose: () => void;
-}
+// interface Props {
+//   formStep: number;
+//   setFormStep: any;
+//   Tenancylandlord: any;
+//   getBanks: any[];
+//   category: ComplaintsCategory[];
+//   onClose: () => void;
+//   singles: any;
+// }
 
-const LandlordOptions = ({ onClose ,getBanks}: Props) => {
+const LandlordOptions = ({ singles }: any) => {
   // const [ViewTenancylandlord, { loading: isLoading, data, error }] =
   //   useOperationMethod('Tenancylandlord');
 
-    const [ authorizeComplaints, { loading, data, error }] =
-    useOperationMethod('Complaintsauthorize{complaintsId}');
+  const [authorizeComplaints, { loading, data, error }] = useOperationMethod(
+    'Complaintsauthorize{complaintsId}'
+  );
 
-    // const AuthorizeComplaints = async () => {
-    //   const params: Parameters = {
-    //     complaintsId: item.id as number,
-    //   };
-  
-    //   try {
-    //     const result = await (await authorizeComplaints(params)).data;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-  
-  
+  // const AuthorizeComplaints = async () => {
+  //   const params: Parameters = {
+  //     complaintsId: item.id as number,
+  //   };
+
+  //   try {
+  //     const result = await (await authorizeComplaints(params)).data;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -76,10 +81,8 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
     mode: 'all',
   });
 
-  
   const { addToast } = useToasts();
 
-  
   return (
     <>
       {formStep === 0 && (
@@ -138,7 +141,7 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
             >
               <HStack>
                 <Icons iconClass="fa-house" />
-                <Text fontSize="1rem" ml="4px">
+                <Text fontSize="1rem" ml="4px" onClick={}>
                   Complaints
                 </Text>
               </HStack>
@@ -206,7 +209,6 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
             </Box>
           </Grid>
         </Box>
-        
       )}
       {formStep === 1 && (
         <>
@@ -256,7 +258,7 @@ const LandlordOptions = ({ onClose ,getBanks}: Props) => {
               >
                 Authorize Inspection
               </Button>
-              <Text  color="gray" mt="1.25rem">
+              <Text color="gray" mt="1.25rem">
                 A propertyMattaaz Representative will go and inspect the
                 reported damage and we will revert to you with proof of damage
                 as well as repair costs.

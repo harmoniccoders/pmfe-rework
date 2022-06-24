@@ -10,9 +10,12 @@ import {
 } from '@chakra-ui/react';
 import Icons from './Icons';
 import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
+import { useRouter } from 'next/router';
+const moment = require('moment');
 
-const LandlordRentCard = () => {
+const LandlordRentCard = ({ data }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
 
   const iconStyle = {
     color: '#0042ff',
@@ -35,13 +38,15 @@ const LandlordRentCard = () => {
             fontWeight={600}
             lineHeight={1.5}
           >
-            4 Bedroom duplex with BQ
+            {data.transaction.property.name}
           </Text>
 
           <HStack w="100%">
             <Icons iconClass="fa-calendar-day" style={iconStyle} />
 
-            <Text>Next rent is due in 365 days</Text>
+            <Text>{`Next rent is due in ${moment(data.rentDueDate).format(
+              'DD'
+            )} days`}</Text>
           </HStack>
         </VStack>
 
@@ -53,6 +58,7 @@ const LandlordRentCard = () => {
             height="100%"
             variant="outline"
             textTransform="capitalize"
+            onClick={() => router.push(`/tenancy/landlord/${data.id}`)}
           >
             view details
           </Button>

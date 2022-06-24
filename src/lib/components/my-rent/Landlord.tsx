@@ -4,7 +4,6 @@ import CleanProperty from '../clean/CleanProperty';
 import LandlordRentCard from 'lib/components/LandlordRentCard';
 
 function Landlord({ data }: { data: any }) {
-  console.log({data});
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">
@@ -46,27 +45,28 @@ function Landlord({ data }: { data: any }) {
               For Landlord
             </Text>
             {data.length > 0 ? (
-              <CleanProperty requests={data} />
+              <>
+                {data.map((x: any) => {
+                  return (
+                    <Grid
+                      templateColumns={[
+                        'repeat(1,1fr)',
+                        'repeat(2,1fr)',
+                        'repeat(3,1fr)',
+                      ]}
+                      columnGap={6}
+                      rowGap={8}
+                    >
+                      <LandlordRentCard data={x} />
+                    </Grid>
+                  );
+                })}
+              </>
             ) : (
               <>
-                {/* <Text mt="3" fontWeight="medium" fontSize=".9rem">
-                You currently do not have any active tenancy...                
-              </Text> */}
-
-                <Grid
-                  templateColumns={[
-                    'repeat(1,1fr)',
-                    'repeat(2,1fr)',
-                    'repeat(3,1fr)',
-                  ]}
-                  columnGap={6}
-                  rowGap={8}
-                >
-                  <LandlordRentCard />
-                  <LandlordRentCard />
-                  <LandlordRentCard />
-                  <LandlordRentCard />
-                </Grid>
+                <Text mt="3" fontWeight="medium" fontSize=".9rem">
+                  You currently do not have any active tenancy...
+                </Text>
               </>
             )}
           </Box>
