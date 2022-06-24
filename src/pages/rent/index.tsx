@@ -40,17 +40,17 @@ const rent = ({
 export default rent;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+  // const {
+  //   data: { user, redirect },
+  // } = returnUserData(ctx);
+  // if (redirect)
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: '/login',
+  //     },
+  //     props: {},
+  //   };
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
