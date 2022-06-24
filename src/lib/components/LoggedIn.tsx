@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
 import UpdateUserModal from 'lib/styles/customTheme/components/Modals/UpdatePasswordModal';
+import { DataAccess } from 'lib/Utils/Api';
 
 interface NavProps {
   path: string;
@@ -46,10 +47,24 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
     window.location.href = '/';
   };
   const users = Cookies.get('user') as unknown as string;
-  let user;
+  let user: any;
   if (users !== undefined) {
     user = JSON.parse(users);
   }
+
+  const bearer = `Bearer ${Cookies.get('token')}`;
+  const _dataAccess = new DataAccess(bearer);
+  const [isUser, setIsUser] = useState(user);
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const data = (await _dataAccess.get(`/api/user/list`)).data;
+        const result = data.value.filter((x: any) => x.id == user.id);
+        setIsUser(result[0]);
+      } catch (error) {}
+    };
+    getUser();
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   const dropDown = useRef(null);
@@ -125,7 +140,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
           {user?.firstName}
           <Avatar
             size="xs"
-            src={user?.profilePicture || '/assets/user-icon.png'}
+            src={isUser?.profilePicture || '/assets/user-icon.png'}
           />
           <BiChevronDown />
         </Flex>

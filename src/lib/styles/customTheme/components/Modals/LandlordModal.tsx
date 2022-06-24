@@ -35,7 +35,7 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   // };
 
   const datas = [
-    {
+  {
       id: 1,
       name: 'boy',
     },

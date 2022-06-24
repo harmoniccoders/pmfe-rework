@@ -21,7 +21,9 @@ import { useToasts } from 'react-toast-notifications';
 import { UpdateUserModel, MediaModel } from 'types/api';
 import ButtonComponent from './Button';
 import { Widget } from '@uploadcare/react-widget';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { DataAccess } from 'lib/Utils/Api';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -53,10 +55,6 @@ function Profile() {
   const [url, setUrl] = useState('');
   const widgetApi = useRef();
 
-  const onChange = (info: any) => {
-    setUrl(info.originalUrl);
-  };
-
   const onSubmit = async (data: UpdateUserModel) => {
     if (!data.profilePicture) {
       let media: MediaModel = {
@@ -74,6 +72,7 @@ function Profile() {
     data.profilePicture.url = url as string;
 
     data.id = user.id as number;
+    console.log({ data });
 
     try {
       const result = await (await updateUser(undefined, data)).data;
@@ -93,6 +92,54 @@ function Profile() {
       return;
     } catch (err) {}
   };
+
+  const bearer = `Bearer ${Cookies.get('token')}`;
+  const _dataAccess = new DataAccess(bearer);
+  const [isUser, setIsUser] = useState(user);
+  const onChange = async (info: any) => {
+    setUrl(info.originalUrl);
+    console.log({ info });
+    const updates = {
+      id: user.id,
+      profilePicture: {
+        url: info.originalUrl,
+        isImage: true,
+        name: '',
+        extention: '',
+        base64String: '',
+        isVideo: false,
+        isDocument: false,
+      },
+    };
+    console.log({ updates });
+
+    try {
+      const result = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASEURL}${'/api/User/update'}`,
+        updates,
+        {
+          headers: {
+            Authorization: bearer,
+          },
+        }
+      );
+      setIsUser(result.data.data);
+      console.log({ result });
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const data = (await _dataAccess.get(`/api/user/list`)).data;
+        const result = data.value.filter((x: any) => x.id == user.id);
+        setIsUser(result[0]);
+        // console.log({ isUser });
+      } catch (error) {}
+    };
+    getUser();
+  }, []);
+
   return (
     <Stack
       direction="row"
@@ -103,7 +150,6 @@ function Profile() {
       overflow="hidden"
       align="center"
     >
-      
       <Box w="full" h="full" m="1rem unset" mt={['2rem', '1rem']}>
         <Flex align="flex-end" color="white">
           <Circle
@@ -114,7 +160,6 @@ function Profile() {
             pos="relative"
             mx={['auto', 'unset']}
           >
-           
             <Box
               pos="absolute"
               top="0"
@@ -125,7 +170,7 @@ function Profile() {
               <FaCamera color="#0042ff" fontSize="1.5rem" />
             </Box>
             <Image
-              src={user?.profilePicture || '/assets/user-icon.png'}
+              src={isUser?.profilePicture || '/assets/user-icon.png'}
               w="full"
               h="full"
               borderRadius="50%"

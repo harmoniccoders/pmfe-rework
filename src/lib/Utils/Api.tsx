@@ -22,6 +22,10 @@ export class DataAccess {
     const result = await api.get(url);
     return result.data;
   };
+  public put = async (url: string, data: any) => {
+    const result = await api.get(url);
+    return result.data;
+  };
 }
 
 export default api;
