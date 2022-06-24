@@ -19,6 +19,7 @@ type Props = {
 };
 
 const TenancyCard = ({ category, data }: Props) => {
+  console.log(data);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const iconStyle = {
     color: '#0042ff',
@@ -27,7 +28,7 @@ const TenancyCard = ({ category, data }: Props) => {
   return (
     <Box
       w="100%"
-      boxShadow="0 20px 25px 4px rgba(0,0,0,0.14)"
+      boxShadow="0 5px 5px 2px rgba(0,0,0,0.14)"
       py="15px"
       borderRadius="8px"
     >
@@ -42,7 +43,7 @@ const TenancyCard = ({ category, data }: Props) => {
             lineHeight={1.5}
           >
             {/* 4 Bedroom duplex with BQ */}
-            {data.userName}
+            {data.property.name}
           </Text>
 
           <HStack w="100%">
@@ -67,7 +68,12 @@ const TenancyCard = ({ category, data }: Props) => {
         </Box>
       </Box>
 
-      <TenancyModal isOpen={isOpen} onClose={onClose} category={category} />
+      <TenancyModal
+        isOpen={isOpen}
+        onClose={onClose}
+        category={category}
+        propertyData={data}
+      />
     </Box>
   );
 };

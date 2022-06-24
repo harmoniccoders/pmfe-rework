@@ -23,6 +23,7 @@ import RentApplicationModal from 'lib/styles/customTheme/components/Modals/RentA
 type Props = {
   step: number;
   setStep: any;
+  applicationData: any;
   data: PropertyModel;
   appData: any;
 };
@@ -31,9 +32,10 @@ const iconStyle = {
   color: '#191919',
 };
 
-const StepTwo = ({ step, setStep, data,appData }: Props) => {
+const StepTwo = ({ step, setStep, applicationData, data, appData }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
+  console.log(applicationData.applicationStatus);
 
   return (
     <>
@@ -98,7 +100,18 @@ const StepTwo = ({ step, setStep, data,appData }: Props) => {
               <Icons iconClass="fa-paper-plane" />
             </Box>
 
-            <Text>{appData?.data.hasApplied? "": "Submit Application"}</Text>
+            <Text>
+              {applicationData.applicationStatus == 'ACTIVE'
+                ? 'Application has been Submitted'
+                : applicationData.applicationStatus == 'REVIEWED'
+                ? 'Application is under review'
+                : applicationData.applicationStatus == 'ACCEPTED'
+                ? 'Proceed to payment'
+                : applicationData.applicationStatus == 'APPROVED'
+                ? 'Payment approved'
+                : applicationData.applicationStatus == null &&
+                  'Submit Application'}
+            </Text>
           </Button>
 
           <Button

@@ -27,11 +27,13 @@ import { buildingState } from 'lib/Utils/BuildingStates';
 import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 
 const schema = yup.object().shape({
-  buildingType: yup.string(),
-  buildingState: yup.string(),
+  buildingType: yup.string().required(),
+  buildingState: yup.string().required(),
   propertyTypeId: yup.number().required(),
+  location: yup.string().required(),
   dateNeeded: yup.string().required(),
 });
 
@@ -203,6 +205,15 @@ const BookCleaningModal = ({
                     })}
                   </>
                 }
+              />
+
+              <PrimaryInput<CleaningModel>
+                label="location"
+                name="location"
+                register={register}
+                error={errors.location}
+                placeholder="location"
+                defaultValue=""
               />
 
               <PrimaryDate<CleaningModel>

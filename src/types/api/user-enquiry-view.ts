@@ -2,6 +2,7 @@
 import { InspectionView } from './inspection-view';
 
 export interface UserEnquiryView {
+  id?: number;
   userId?: null | number;
   propertyId?: number;
   propertyName?: null | string;

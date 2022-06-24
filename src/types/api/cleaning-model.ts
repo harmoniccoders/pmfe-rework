@@ -9,4 +9,5 @@ export interface CleaningModel {
   buildingType?: null | string;
   fileName?: null | string;
   fileNumber?: null | string;
+  location?: null | string;
 }

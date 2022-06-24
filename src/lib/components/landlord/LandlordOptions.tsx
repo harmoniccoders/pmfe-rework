@@ -85,131 +85,128 @@ const LandlordOptions = ({ singles }: any) => {
 
   return (
     <>
-      {formStep === 0 && (
-        <Box w="100%" borderRadius="8px !important">
-          <Box w="full" h="150px" pos="relative">
-            <Image
-              src="/assets/nb.webp"
-              alt="property-image"
-              w="100%"
-              height="100%"
-              objectFit="cover"
-            />
-            <Flex
-              bg="brand.100"
-              color="white"
-              pos="absolute"
-              w="fit-content"
-              px="1.5rem"
-              h="24px"
-              top="18%"
-              fontSize="14px"
-              align="center"
-              justify="center"
-              borderRadius="4px 0 0 4px"
-              right="0"
-              textTransform="capitalize"
-            >
-              Lekki phase 1
-            </Flex>
-          </Box>
-
-          <VStack my="1.5rem" alignItems="flex-start">
-            <Text fontWeight="600" whiteSpace="nowrap" fontSize="1.2rem">
-              4 Bedroom Duplex with BQ
-            </Text>
-            <HStack>
-              <Icons iconClass="fa-calendar" />
-              <Text fontWeight="400">Next rent is due in 365 days</Text>
-            </HStack>
-          </VStack>
-          <Grid
-            mt={['.5rem', '.75rem']}
-            alignItems="center !important"
-            justifyContent="center !important"
-            templateColumns={['repeat(1,1fr)', 'repeat(1,1fr)']}
-            gap={4}
+      <Box w="100%" borderRadius="8px !important">
+        <Box w="full" h="150px" pos="relative">
+          <Image
+            src="/assets/nb.webp"
+            alt="property-image"
+            w="100%"
+            height="100%"
+            objectFit="cover"
+          />
+          <Flex
+            bg="brand.100"
+            color="white"
+            pos="absolute"
+            w="fit-content"
+            px="1.5rem"
+            h="24px"
+            top="18%"
+            fontSize="14px"
+            align="center"
+            justify="center"
+            borderRadius="4px 0 0 4px"
+            right="0"
+            textTransform="capitalize"
           >
-            <Box
-              onClick={() => setFormStep(1)}
-              w="full"
-              border="1px solid gray"
-              mt=".2rem"
-              p=".75rem"
-              borderRadius="4px"
-              cursor="pointer"
-            >
-              <HStack>
-                <Icons iconClass="fa-house" />
-                <Text fontSize="1rem" ml="4px" onClick={}>
-                  Complaints
-                </Text>
-              </HStack>
-            </Box>
-            <Box
-              w="full"
-              border="1px solid gray"
-              mt=".2rem"
-              p=".75rem"
-              borderRadius="4px"
-              cursor="pointer"
-            >
-              <HStack>
-                <Icons iconClass="fa-money-bill-wave" />
-                <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
-                  Payments
-                </Text>
-              </HStack>
-            </Box>
-            <Box
-              w="full"
-              border="1px solid gray"
-              mt=".2rem"
-              p=".75rem"
-              borderRadius="4px"
-              cursor="pointer"
-            >
-              <HStack>
-                <Icons iconClass="fa-scroll" />
-                <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
-                  Recipts
-                </Text>
-              </HStack>
-            </Box>
-            <Box
-              w="full"
-              border="1px solid gray"
-              mt=".2rem"
-              p=".75rem"
-              borderRadius="4px"
-              cursor="pointer"
-              onClick={() => setFormStep(4)}
-            >
-              <HStack>
-                <Icons iconClass="fa-copy" />
-                <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
-                  Tenancy Agreements
-                </Text>
-              </HStack>
-            </Box>
-            <Box
-              w="full"
-              border="1px solid gray"
-              mt=".2rem"
-              p=".75rem"
-              borderRadius="4px"
-              cursor="pointer"
-            >
-              <HStack>
-                <Icons iconClass="fa-life-ring" />
-                <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
-                  Renew Tenancy
-                </Text>
-              </HStack>
-            </Box>
-          </Grid>
+            Lekki phase 1
+          </Flex>
         </Box>
-      )}
+
+        <VStack my="1.5rem" alignItems="flex-start">
+          <Text fontWeight="600" whiteSpace="nowrap" fontSize="1.2rem">
+            4 Bedroom Duplex with BQ
+          </Text>
+          <HStack>
+            <Icons iconClass="fa-calendar" />
+            <Text fontWeight="400">Next rent is due in 365 days</Text>
+          </HStack>
+        </VStack>
+        <Grid
+          mt={['.5rem', '.75rem']}
+          alignItems="center !important"
+          justifyContent="center !important"
+          templateColumns={['repeat(1,1fr)', 'repeat(1,1fr)']}
+          gap={4}
+        >
+          <Box
+            w="full"
+            border="1px solid gray"
+            mt=".2rem"
+            p=".75rem"
+            borderRadius="4px"
+            cursor="pointer"
+          >
+            <HStack>
+              <Icons iconClass="fa-house" />
+              <Text fontSize="1rem" ml="4px">
+                Complaints
+              </Text>
+            </HStack>
+          </Box>
+          <Box
+            w="full"
+            border="1px solid gray"
+            mt=".2rem"
+            p=".75rem"
+            borderRadius="4px"
+            cursor="pointer"
+          >
+            <HStack>
+              <Icons iconClass="fa-money-bill-wave" />
+              <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
+                Payments
+              </Text>
+            </HStack>
+          </Box>
+          <Box
+            w="full"
+            border="1px solid gray"
+            mt=".2rem"
+            p=".75rem"
+            borderRadius="4px"
+            cursor="pointer"
+          >
+            <HStack>
+              <Icons iconClass="fa-scroll" />
+              <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
+                Recipts
+              </Text>
+            </HStack>
+          </Box>
+          <Box
+            w="full"
+            border="1px solid gray"
+            mt=".2rem"
+            p=".75rem"
+            borderRadius="4px"
+            cursor="pointer"
+          >
+            <HStack>
+              <Icons iconClass="fa-copy" />
+              <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
+                Tenancy Agreements
+              </Text>
+            </HStack>
+          </Box>
+          <Box
+            w="full"
+            border="1px solid gray"
+            mt=".2rem"
+            p=".75rem"
+            borderRadius="4px"
+            cursor="pointer"
+          >
+            <HStack>
+              <Icons iconClass="fa-life-ring" />
+              <Text fontSize="1rem" whiteSpace="nowrap" ml="4px">
+                Renew Tenancy
+              </Text>
+            </HStack>
+          </Box>
+        </Grid>
+      </Box>
+
       {formStep === 1 && (
         <>
           <Box w="full">

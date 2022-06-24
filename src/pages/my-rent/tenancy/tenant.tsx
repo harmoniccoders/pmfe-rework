@@ -11,7 +11,7 @@ const index = ({
   data: any;
   category: ComplaintsCategory[];
 }) => {
-  console.log(data);
+  console.log({ data });
   console.log(category);
   return <Tenant data={data} category={category} />;
 };
