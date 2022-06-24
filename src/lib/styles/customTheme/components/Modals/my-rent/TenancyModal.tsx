@@ -26,6 +26,7 @@ import ButtonComponent from 'lib/components/Button';
 import { useOperationMethod } from 'react-openapi-client';
 import { ComplaintsCategory, ComplaintsModel } from 'types/api';
 import { useToasts } from 'react-toast-notifications';
+import RentReliefModal from '../RentReliefModal';
 
 type Props = {
   isOpen: boolean;
@@ -35,10 +36,11 @@ type Props = {
 };
 
 const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
+  const [openRelief, setOpenRelief] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<number>(0);
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
-
+  
   const [showCategory, setShowCategory] = useState<boolean>(false);
 
   const schema = yup.object().shape({
@@ -82,7 +84,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
 
       <ModalContent
@@ -286,6 +288,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
                   role="group"
                   display="flex"
                   alignItems="center"
+                  onClick={() => setOpenRelief(true)}
                 >
                   <Box
                     pr="10px"
@@ -385,6 +388,11 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
             </Box>
           )}
         </ModalBody>
+        <RentReliefModal
+          onClose={() => setOpenRelief(false)}
+          isOpen={openRelief}
+          item={propertyData?.property}
+        />
       </ModalContent>
     </Modal>
   );

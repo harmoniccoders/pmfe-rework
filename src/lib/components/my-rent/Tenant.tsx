@@ -29,8 +29,7 @@ function Tenant({
           p=".2rem"
           mb="2.5rem"
         >
-          <PageTabs tabName="my-rent/enquiries" tabTitle="Enquiries" />
-          <PageTabs tabName="my-rent/requests" tabTitle="Requests" />
+          
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>

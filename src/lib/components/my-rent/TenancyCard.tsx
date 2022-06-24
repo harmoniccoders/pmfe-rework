@@ -11,11 +11,11 @@ import {
 } from '@chakra-ui/react';
 import Icons from '../Icons';
 import TenancyModal from 'lib/styles/customTheme/components/Modals/my-rent/TenancyModal';
-import { ComplaintsCategory } from 'types/api';
-
+import { ComplaintsCategory, TenancyView } from 'types/api';
+import moment from 'moment';
 type Props = {
   category: ComplaintsCategory[];
-  data: any;
+  data: TenancyView;
 };
 
 const TenancyCard = ({ category, data }: Props) => {
@@ -43,13 +43,15 @@ const TenancyCard = ({ category, data }: Props) => {
             lineHeight={1.5}
           >
             {/* 4 Bedroom duplex with BQ */}
-            {data.property.name}
+            {data?.property?.name}
           </Text>
 
           <HStack w="100%">
             <Icons iconClass="fa-calendar-day" style={iconStyle} />
 
-            <Text fontSize="14px">Next rent is due in 365 days</Text>
+            <Text fontSize="14px">{`Next rent is due in ${moment(
+              data.rentDueDate
+            ).diff(moment(data.transaction?.dateCreated), 'day')} days`}</Text>
           </HStack>
         </VStack>
 

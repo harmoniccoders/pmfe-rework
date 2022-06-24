@@ -30,6 +30,7 @@ import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
+import { useRouter } from 'next/router';
 
 type Props = {
   onClose: any;
@@ -37,10 +38,10 @@ type Props = {
   data: any;
 };
 
-const RentApplicationModal = ({ onClose, isOpen, data}: Props) => {
+const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
   const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
-
+  const router = useRouter();
   const [formStep, setFormStep] = useState<number>(0);
   const [uploadedId, setUploadedId] = useState<MediaModel[]>([]);
   const [uploadedPassport, setUploadedPassport] = useState<MediaModel[]>([]);
@@ -191,6 +192,7 @@ const RentApplicationModal = ({ onClose, isOpen, data}: Props) => {
           autoDismiss: true,
         });
         onClose();
+        router.reload();
         return;
       }
       addToast(result.message, {

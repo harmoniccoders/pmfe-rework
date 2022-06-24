@@ -138,7 +138,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                 <Flex alignItems="center" mt=".5rem">
                   <Icons iconClass="fa-calendar" style={{ color: 'blue' }} />
                   <Text fontSize="13px" ml=".5rem" fontWeight="500">
-                    {moment(item.dateCreated).format('Do MMMM YYYY')}
+                    {moment(item?.dateCreated).format('Do MMMM YYYY')}
                   </Text>
                 </Flex>
               </Heading>
@@ -147,7 +147,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   Quote
                 </Text>
                 <Text fontSize=".8rem" fontWeight="400">
-                  <>{naira((quote.quote as unknown as number) || 0)}</>
+                  <>{naira((quote?.quote as unknown as number) || 0)}</>
                 </Text>
               </Box>
               <Box>
@@ -159,7 +159,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
                   <Text fontSize=".8rem" fontWeight="400" ml=".5rem">
                     {item.cleaningQuote === null
                       ? 'Awaiting Approval'
-                      : moment(quote.proposedDate).format('Do MMMM YYYY')}
+                      : moment(quote?.proposedDate).format('Do MMMM YYYY')}
                   </Text>
                 </Flex>
               </Box>

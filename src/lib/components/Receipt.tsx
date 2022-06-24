@@ -128,7 +128,7 @@ function Receipt({
                 <TableData name={property} />
                 {/* <TableData name="1" /> */}
                 <TableData name={naira(price as unknown as number)} />
-                <TableData name={naira((price as unknown as number) * 0.5)} />
+                <TableData name={'15%'} />
               </Tr>
             </Tbody>
           </Table>

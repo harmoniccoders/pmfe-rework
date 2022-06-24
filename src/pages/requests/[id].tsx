@@ -14,6 +14,7 @@ const matches = ({ data, id }: { data: any; id: any }) => {
   
   const singleRequest = result[0].matches;
 
+  console.log({singleRequest})
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <>
@@ -36,7 +37,7 @@ const matches = ({ data, id }: { data: any; id: any }) => {
               {singleRequest.map((item: PropertyRequestMatch) => {
                 return (
                   <GridItem key={item.id}>
-                    <PropertyCard item={item.property as PropertyView} />
+                    <PropertyCard matchId={item.id} item={item.property as PropertyView} />
                   </GridItem>
                 );
               })}

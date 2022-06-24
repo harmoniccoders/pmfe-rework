@@ -38,14 +38,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           baseURL: process.env.NEXT_PUBLIC_API_BASEURL,
         }}
       >
-        <Head>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-          />
-          <title>Property Mataaz</title>
-          <link rel="icon" href="/assets/flyfav.png" type="image/x-icon" />
-        </Head>
+        
         <DefaultSeo {...defaultSEOConfig} />
         {/* <Layout> */}
         <UserProvider>

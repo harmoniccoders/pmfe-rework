@@ -102,7 +102,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
           <NavLink name="Drafts" path="/sell/drafts" closeMenu={closeMenu} />
           <NavLink
             name="Rent"
-            path="/my-rent/enquiries"
+            path="/my-rent/rent-relief"
             closeMenu={closeMenu}
           />
           <NavLink name="Sessions" path="/sessions/fix" closeMenu={closeMenu} />

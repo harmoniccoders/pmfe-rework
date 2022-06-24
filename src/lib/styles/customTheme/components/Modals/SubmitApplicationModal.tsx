@@ -23,6 +23,8 @@ import { useToasts } from 'react-toast-notifications';
 import Cookies from 'js-cookie';
 import ButtonComponent from 'lib/components/Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
+import { useRouter } from 'next/router';
+
 
 type Props = {
   onClose: any;
@@ -30,12 +32,12 @@ type Props = {
   data: any;
 };
 
-const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
+const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
   const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
 
   const [formStep, setFormStep] = useState<number>(0);
-
+  const router = useRouter();
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
@@ -135,10 +137,9 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
       : null;
     data.propertyId = propertyId;
     data.applicationTypeId = 1;
-   
+
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
-      
 
       if (result.status) {
         addToast('Application submitted successfully', {
@@ -146,6 +147,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
           autoDismiss: true,
         });
         onClose();
+        router.reload();
         return;
       }
       addToast(result.message, {
@@ -154,9 +156,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
       });
       onClose();
       return;
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
 
   const CountryList = require('country-list').getNames();

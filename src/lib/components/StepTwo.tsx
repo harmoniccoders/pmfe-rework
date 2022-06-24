@@ -36,7 +36,7 @@ const StepTwo = ({
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-console.log({ applicationData });
+  console.log({ applicationData });
   return (
     <>
       <Flex
@@ -50,7 +50,7 @@ console.log({ applicationData });
             size="2rem"
             p="0.2rem"
             border={
-              applicationData?.hasPaid
+              applicationData?.hasApplied
                 ? '1px solid #2fdf84'
                 : '1px solid #DCE1E7'
             }
@@ -117,11 +117,13 @@ console.log({ applicationData });
               {applicationData?.applicationStatus == 'ACTIVE'
                 ? 'Pending review'
                 : applicationData?.applicationStatus == 'REVIEWED'
-                ? 'Application is under review'
+                ? 'Under review'
                 : applicationData?.applicationStatus == 'ACCEPTED'
                 ? 'Proceed to payment'
                 : applicationData?.applicationStatus == 'APPROVED'
                 ? 'Payment approved'
+                : applicationData?.applicationStatus == 'REJECTED'
+                ? 'Rejected'
                 : applicationData?.applicationStatus == null &&
                   'Submit Application'}
             </Text>
@@ -138,6 +140,7 @@ console.log({ applicationData });
             alignItems="center"
             disabled={
               applicationData?.applicationStatus == 'APPROVED' ||
+              applicationData?.applicationStatus == 'REJECTED' ||
               applicationData?.applicationStatus == null ||
               applicationData?.applicationStatus == 'REVIEWED' ||
               applicationData?.applicationStatus == 'ACTIVE'

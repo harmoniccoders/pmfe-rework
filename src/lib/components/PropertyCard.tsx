@@ -27,6 +27,7 @@ import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;
+  matchId?: number
 };
 
 const iconStyle = {
@@ -38,9 +39,10 @@ if (users !== undefined) {
   user = JSON.parse(users);
 }
 
-const PropertyCard = ({ item }: Props) => {
+const PropertyCard = ({ item,matchId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
+  
   const openReliefModal = () => {
     setOpenRelief(true);
   };
@@ -111,7 +113,7 @@ const PropertyCard = ({ item }: Props) => {
 
   const AcceptRequest = async () => {
     const params: Parameters = {
-      matchId: item.id as number,
+      matchId: matchId as number,
     };
 
     try {
@@ -139,7 +141,7 @@ const PropertyCard = ({ item }: Props) => {
 
   const RejectRequest = async () => {
     const params: Parameters = {
-      matchId: item.id as number,
+      matchId: matchId as number,
     };
 
     try {
@@ -320,7 +322,7 @@ const PropertyCard = ({ item }: Props) => {
                 color="white"
                 bgColor="brand.800"
                 textTransform="capitalize"
-                onClick={() => AcceptRequest()}
+                onClick={() => RejectRequest()}
               >
                 reject
               </Button>
@@ -346,7 +348,7 @@ const PropertyCard = ({ item }: Props) => {
                   relief
                     ? () => openReliefModal()
                     : isRequest
-                    ? () => RejectRequest()
+                    ? () => AcceptRequest()
                     : () => CreateEnquireView()
                 }
               >
