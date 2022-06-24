@@ -1,12 +1,10 @@
 import { Box, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import ReliefCard from 'lib/styles/customTheme/components/Modals/ReliefCard';
-import { useOperationMethod } from 'react-openapi-client';
+import ReliefCard from 'lib/components/ReliefCard';
 import { RentReliefView } from 'types/api';
-import { Parameters } from 'openapi-client-axios';
 
 function RentRelief({ data }: { data: any }) {
-  console.log({data})
+  
   const reliefs = data?.data;
 
   return (

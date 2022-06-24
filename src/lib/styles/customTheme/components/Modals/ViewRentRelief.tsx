@@ -6,46 +6,46 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Image,
   Text,
-  Center,
   Heading,
   HStack,
   Button,
   VStack,
   SimpleGrid,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FaArrowUp } from 'react-icons/fa';
 import { RentReliefView } from 'types/api';
 import naira from 'lib/styles/customTheme/components/Generics/Naira';
 import moment from 'moment';
+import InstructionModal from './InstructionModals';
 
 interface Props {
   isOpen: boolean;
   item: RentReliefView;
+
   onClose: () => void;
 }
 
-// const outstaningBalance = item?.installments?.reduce(
-//   (prev: number, curr: InstallmentView) => {
-//     if (curr.status !== 'PENDING') {
-//       return prev + curr.amount;
-//     }
-//     return;
-//   }
-// );
-// let outStandingBalance: number;
-// item?.installments?.forEach((x) => {
-//   if (x?.status !== 'PENDING') {
-//     outStandingBalance += x.amount;
-//   }
-// });
-
-// console.log(outStandingBalance);
 const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
+  const { isOpen: isOpened, onClose: onClosed, onOpen } = useDisclosure();
+
   const paymentHistory = item?.installments?.filter(
     (x) => x.status !== 'PENDING'
   );
+  let outstaningBalance = 0;
+  let paidAmount = 0;
+
+  if (item.installments !== null && item.installments !== undefined) {
+    item?.installments?.forEach((x) => {
+      if (x?.status === 'PENDING') {
+        outstaningBalance += x.amount as unknown as number;
+      } else {
+        paidAmount += x.amount as unknown as number;
+      }
+    });
+  }
+  const nextPayment = item?.installments?.find((x) => x.status === 'PENDING');
   return (
     <Modal
       isOpen={isOpen}
@@ -89,62 +89,80 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
                 {naira(item?.totalRepayment as unknown as number)}
               </Heading>
               <SimpleGrid columns={2} pt="5" spacing="5">
-                <Box>
-                  <Text mb="2">Outstaning Balance</Text>
+                <VStack w="full">
+                  <Text mb="2">Outstanding Balance</Text>
                   <Text
                     bg="brand.100"
                     color="white"
+                    w="full"
                     textAlign="center"
                     py="2"
                     rounded="lg"
                   >
-                    {naira(item?.reliefAmount as unknown as number)}
+                    {naira(outstaningBalance as number)}
                   </Text>
-                </Box>
-                <Box>
+                </VStack>
+                <VStack>
                   <Text mb="2">Next Payment Date</Text>
                   <Text
                     bg="brand.100"
                     color="white"
                     textAlign="center"
                     py="2"
+                    w="full"
                     rounded="lg"
                   >
-                    23/03/21
+                    {item.status === 'PENDING'
+                      ? moment(nextPayment?.dateDue).format('D/MM/YY')
+                      : '-'}
                   </Text>
-                </Box>
+                </VStack>
               </SimpleGrid>
             </VStack>
             <VStack w="full" spacing="5" mt="8">
               <Text>Repayment Progress</Text>
-              <SimpleGrid w="full" border="1px solid" rounded="lg" columns={6}>
-                <Box
-                  bg="brand.100"
-                  h="20px"
-                  borderRight="1px solid"
-                  roundedLeft="lg"
-                ></Box>
-                <Box bg="blue.50" h="20px" borderRight="1px solid"></Box>
-                <Box bg="blue.50" h="20px" borderRight="1px solid"></Box>
-                <Box bg="blue.50" h="20px" borderRight="1px solid"></Box>
-                <Box bg="blue.50" h="20px" borderRight="1px solid"></Box>
-                <Box bg="blue.50" h="20px" roundedRight="lg"></Box>
+              <SimpleGrid
+                w="full"
+                border="1px solid"
+                columns={item?.installments?.length}
+              >
+                {item.installments?.map((x, index) => (
+                  <Box
+                    bg={x.status === 'PENDING' ? 'blue.50' : 'brand.100'}
+                    h="20px"
+                    borderRight={
+                      index ===
+                      (item?.installments?.length as unknown as number) - 1
+                        ? 'unset'
+                        : '1px solid'
+                    }
+                    key={x.id}
+                  ></Box>
+                ))}
               </SimpleGrid>
               <Flex justifyContent="space-between" w="full">
-                <Text fontWeight="600">₦782,372</Text>
-                <Text fontWeight="600">₦4,782,372</Text>
+                <Text fontWeight="600">{naira(paidAmount as number)}</Text>
+                <Text fontWeight="600">
+                  {naira(outstaningBalance as number)}
+                </Text>
               </Flex>
             </VStack>
-            <Button variant="outline" my="7" color="black" w="full">
+            <Button
+              variant="outline"
+              my="7"
+              color="black"
+              w="full"
+              disabled={item.status === 'COMPLETED'}
+              onClick={onOpen}
+            >
               Make a payment
             </Button>
             <VStack align="flex-start" spacing="5">
               <Heading fontSize="17px">Payment History</Heading>
 
-              {paymentHistory?.length > 0 ? (
+              {(paymentHistory?.length as unknown as number) > 0 ? (
                 <>
-                  
-                  {paymentHistory?.map((x) => {
+                  {paymentHistory?.map((x, index) => {
                     return (
                       <HStack
                         align="flex-start"
@@ -158,7 +176,9 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
                           <FaArrowUp />
                         </Text>
                         <Box>
-                          <Heading fontSize="16px">1st Instalment</Heading>
+                          <Heading fontSize="16px">
+                            {moment.localeData().ordinal(index + 1)} Installment
+                          </Heading>
 
                           <Text>
                             Paid on the {moment(x?.paidOn).format('D/MM/YY')}{' '}
@@ -173,11 +193,17 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
                   })}
                 </>
               ) : (
-                'No payment made'
+                <Text>No payments made</Text>
               )}
             </VStack>
           </Box>
         </ModalBody>
+        <InstructionModal
+          open={isOpened}
+          close={onClosed}
+          nextPayment={nextPayment}
+          rentRelief={item}
+        />
       </ModalContent>
     </Modal>
   );

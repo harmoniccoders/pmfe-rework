@@ -22,7 +22,7 @@ type Props = {
   item?: any;
   date: InspectionView | any;
   close: any;
-  setStep: any;
+ 
 };
 
 const schema = yup.object().shape({
@@ -30,7 +30,7 @@ const schema = yup.object().shape({
   inspectionTimeId: yup.number().required(),
 });
 
-const DateSliders = ({ item, date, close, setStep }: Props) => {
+const DateSliders = ({ item, date, close }: Props) => {
   const users = Cookies.get('user') as unknown as string;
   let user;
   if (users !== undefined) {
@@ -64,9 +64,8 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
 
     try {
       const result = await (await scheduleInspection(undefined, data)).data;
-      console.log({ result });
+     
       if (result.status) {
-        setStep(1);
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
@@ -82,7 +81,7 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
       close();
       return;
     } catch (err) {
-      console.log(err);
+     
     }
   };
 
@@ -176,42 +175,3 @@ const DateSliders = ({ item, date, close, setStep }: Props) => {
 };
 
 export default DateSliders;
-// date.map((item: any, index: any) => {
-//             return (
-//               <Box
-//                 w="fit-content"
-//                 cursor="pointer"
-//                 onClick={() => setSelectedDate(item)}
-//               >
-//                 <Flex
-//                   border="1px solid"
-//                   borderColor={
-//                     selctedDate?.id === item.id ? 'brand.100' : '#DCE1E7'
-//                   }
-//                   height="90px"
-//                   bgColor={selctedDate?.id === item.id ? '#edf6ff' : 'unset'}
-//                   w="90px"
-//                   key={index}
-//                   borderRadius="5px"
-//                 >
-//                   <VStack
-//                     spacing={2}
-//                     justifyContent="center"
-//                     width="100%"
-//                     height="100%"
-//                   >
-//                     <Text
-//                       fontWeight={600}
-//                       fontSize="16px"
-//                       textTransform="uppercase"
-//                     >
-//                       {moment(item.date).format('ddd')}
-//                     </Text>
-//                     <Text fontWeight={600} fontSize="16px">
-//                       {moment(item.date).format('MMM DD')}
-//                     </Text>
-//                   </VStack>
-//                 </Flex>
-//               </Box>
-//             );
-//           })

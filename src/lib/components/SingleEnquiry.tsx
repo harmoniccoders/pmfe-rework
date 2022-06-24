@@ -1,6 +1,6 @@
 import { Box, Button, VStack, HStack } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { PropertyModel } from 'types/api';
+import { PaymentRatesView, PropertyModel } from 'types/api';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
 import StepTwo from './StepTwo';
@@ -16,9 +16,10 @@ import Cookies from 'js-cookie';
 type Props = {
   data: PropertyModel;
   date?: InspectionDateView;
+  paymentRates: PaymentRatesView;
 };
 
-const SingleEnquiry = ({ data, date }: Props) => {
+const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
     'Userenquirecancel{PropertyId}'
   );
@@ -52,35 +53,9 @@ const SingleEnquiry = ({ data, date }: Props) => {
       });
       return;
     } catch (err) {
-      console.log(err);
+      
     }
   };
-
-  const [step, setStep] = useState(2);
-
-  const [
-    getApplication,
-    { loading: appLoading, data: appData, error: isError },
-  ] = useOperationMethod('Applicationgetuserproperty{propertyId}');
-
-  useEffect(() => {
-    const GetApplication = async () => {
-      const params: Parameters = {
-        propertyId: data.id as number,
-      };
-      try {
-        const result = await (await getApplication(params)).data;
-        console.log({ result });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    GetApplication();
-  }, []);
-  console.log({ appData });
-  const resultData = appData?.data;
-
-  console.log(resultData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,21 +85,13 @@ const SingleEnquiry = ({ data, date }: Props) => {
     >
       <Box w={{ base: 'full', md: 'full', lg: '45%', xl: '28%' }}>
         <VStack w="100%" alignItems="flex-start" spacing="0rem" px="1.2rem">
-          <StepOne
-            appData={appData}
-            date={date}
-            data={data}
-            step={step}
-            setStep={setStep}
-          />
+          <StepOne date={date} data={data} />
           <StepTwo
-            step={step}
-            appData={resultData}
-            setStep={setStep}
             applicationData={applicationStatus}
+            paymentRates={paymentRates}
             data={data}
           />
-          <StepThree step={step} />
+          <StepThree  applicationData={applicationStatus} />
         </VStack>
 
         <Button

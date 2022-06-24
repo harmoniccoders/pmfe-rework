@@ -5,16 +5,15 @@ import {
   Text,
   ModalHeader,
   useDisclosure,
-  ModalCloseButton,
   Flex,
   ModalBody,
   VStack,
-  HStack,
   Image,
   Box,
+  
 } from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
-import { PropertyView } from 'types/api';
+import { PaymentRatesView, PropertyView } from 'types/api';
 import naira from '../Generics/Naira';
 import InstructionModal from './InstructionModals';
 
@@ -22,19 +21,19 @@ type Props = {
   open: boolean;
   close: any;
   item?: PropertyView;
-  setStep: any;
+ 
+  paymentRates: PaymentRatesView;
 };
 
-const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
+const PaySecurelyModal = ({
+  open,
+  close,
+  item,
+ 
+  paymentRates,
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const price = item?.price;
-
-  let fees, tax, total;
-  if (price !== undefined) {
-    fees = (2.35 / 100) * price;
-    tax = (7.5 / 100) * price;
-    total = price + fees + tax;
-  }
+  
   return (
     <Modal
       isOpen={open}
@@ -92,15 +91,15 @@ const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
             <VStack spacing={4} w="full">
               <Flex justify="space-between" fontSize=".8rem" w="full">
                 <Text>Cost of unit</Text>
-                <Text>{naira(item?.price as number)}</Text>
+                <Text>{naira(paymentRates?.price as number)}</Text>
               </Flex>
               <Flex justify="space-between" fontSize=".8rem" w="full">
                 <Text>Fees</Text>
-                <Text>{naira(fees as number)}</Text>
+                <Text>{naira(paymentRates?.rates as number)}</Text>
               </Flex>
               <Flex justify="space-between" fontSize=".8rem" w="full">
                 <Text>Taxes</Text>
-                <Text>{naira(tax as number)}</Text>
+                <Text>{naira(paymentRates?.tax as number)}</Text>
               </Flex>
               <Flex
                 justify="space-between"
@@ -109,7 +108,7 @@ const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
                 w="full"
               >
                 <Text>Total</Text>
-                <Text>{naira(total as number)}</Text>
+                <Text>{naira(paymentRates?.total as number)}</Text>
               </Flex>
             </VStack>
             <Box onClick={() => onOpen()}>
@@ -125,9 +124,9 @@ const PaySecurelyModal = ({ open, close, item, setStep }: Props) => {
       <InstructionModal
         open={isOpen}
         close={onClose}
-        total={total}
+        paymentRates={paymentRates}
         item={item}
-        setStep={setStep}
+       
       />
     </Modal>
   );

@@ -43,7 +43,7 @@ function Receipt({
       mr={mr}
       p="3rem 2rem 2rem"
       mb={['1rem', '0rem']}
-      h="100vh"
+      minH="100vh"
       overflow="hidden"
     >
       <Link href="/" passHref>
@@ -113,8 +113,8 @@ function Receipt({
         <Text fontSize="1rem" fontWeight="700" mb="1.5rem" px="1rem">
           Product
         </Text>
-        <TableContainer border="1px solid rgba(0,0,0,.1)">
-          <Table variant="striped" colorScheme="gray">
+        <TableContainer border="1px solid rgba(0,0,0,.1)" >
+          <Table variant="striped" colorScheme="gray" >
             <Thead>
               <Tr>
                 <TableHead title="Item Name" />
@@ -128,7 +128,7 @@ function Receipt({
                 <TableData name={property} />
                 {/* <TableData name="1" /> */}
                 <TableData name={naira(price as unknown as number)} />
-                <TableData name={naira((price as unknown as number) * 0.075)} />
+                <TableData name={naira((price as unknown as number) * 0.5)} />
               </Tr>
             </Tbody>
           </Table>

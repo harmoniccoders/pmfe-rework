@@ -22,6 +22,7 @@ import moment from 'moment';
 import { useOperationMethod } from 'react-openapi-client';
 import { Parameters } from 'openapi-client-axios';
 import { useToasts } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
 
 interface Props {
   isOpen: boolean;
@@ -31,6 +32,7 @@ interface Props {
 
 const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
   const { addToast } = useToasts();
+  const router = useRouter();
   const [acceptTenant, { loading, data, error }] = useOperationMethod(
     'Applicationaccept{id}'
   );
@@ -41,12 +43,14 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
     };
     try {
       const result = await (await acceptTenant(params)).data;
-      console.log({ result });
+
       if (result.status) {
-        addToast('Successful', {
+        onClose();
+        addToast('Application accepted succesfully', {
           appearance: 'success',
           autoDismiss: true,
         });
+        router.reload();
 
         return;
       }
@@ -67,19 +71,20 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
     };
     try {
       const result = await (await rejectTenant(params)).data;
-      console.log({ result });
+      onClose();
       if (result.status) {
-        addToast('Successful', {
+        addToast('Application rejected succesfully', {
           appearance: 'success',
           autoDismiss: true,
         });
-
+        router.reload();
         return;
       }
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
       });
+
       return;
     } catch (err) {}
   };
@@ -137,37 +142,8 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                 item?.user?.lastName
               }`}</Heading>
             </VStack>
-            {item.status === 'ACCEPTED' && (
-              <VStack spacing="3" my="7">
-                <Heading fontSize="20px">Tenancy Status</Heading>
-                <Text
-                  borderRadius="4px"
-                  border="1px solid #96FFC9"
-                  px="1.5rem"
-                  fontWeight="600"
-                  py="3"
-                  bgColor="brand.700"
-                >
-                  Awaiting Payment
-                </Text>
-              </VStack>
-            )}
-            {item.status === 'REJECTED' && (
-              <VStack spacing="3" my="7">
-                <Heading fontSize="20px">Tenancy Status</Heading>
-                <Text
-                  borderRadius="4px"
-                  border="1px solid #96FFC9"
-                  px="1.5rem"
-                  fontWeight="600"
-                  py="2"
-                  bgColor="brand.700"
-                >
-                  Rejected
-                </Text>
-              </VStack>
-            )}
-            {item.status === 'ACTIVE' && (
+
+            {item.status === 'ACTIVE' ? (
               <Box>
                 <Flex
                   w="full"
@@ -193,14 +169,44 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                   rating of 3 stars or higher
                 </Text>
                 <SimpleGrid columns={2} spacing="5" my="7">
-                  <Button w="full" variant="outline" onClick={RejectTenant}>
+                  <Button
+                    w="full"
+                    variant="outline"
+                    isLoading={isLoading}
+                    onClick={RejectTenant}
+                  >
                     Decline
                   </Button>
-                  <Button w="full" variant="outline" onClick={AcceptTenant}>
+                  <Button
+                    w="full"
+                    variant="outline"
+                    isLoading={loading}
+                    onClick={AcceptTenant}
+                  >
                     Accept as Tenant
                   </Button>
                 </SimpleGrid>
               </Box>
+            ) : (
+              <VStack spacing="3" my="7">
+                <Heading fontSize="20px">Tenancy Status</Heading>
+                <Text
+                  borderRadius="4px"
+                  border="1px solid #96FFC9"
+                  px="1.5rem"
+                  fontWeight="600"
+                  py="2"
+                  bgColor="brand.700"
+                >
+                  {item.status === 'APPROVED'
+                    ? 'Payment Confirmed'
+                    : item.status === 'REJECTED'
+                    ? 'Rejected'
+                    : item.status === 'ACCEPTED'
+                    ? 'Awaiting Payment'
+                    : 'Under Review'}
+                </Text>
+              </VStack>
             )}
 
             <VStack w="full" align="flex-start" spacing="3">

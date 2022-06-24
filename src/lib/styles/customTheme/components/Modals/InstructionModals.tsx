@@ -4,12 +4,8 @@ import {
   ModalOverlay,
   Text,
   ModalHeader,
-  useDisclosure,
-  ModalCloseButton,
   Flex,
   ModalBody,
-  VStack,
-  HStack,
   Image,
   Box,
   OrderedList,
@@ -17,32 +13,55 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import ButtonComponent from 'lib/components/Button';
-import Icons from 'lib/components/Icons';
 
-import ScheduleTabs from 'lib/components/ScheduleTabs';
 import React, { useState } from 'react';
 import { useOperationMethod } from 'react-openapi-client';
-import { PaymentModel, PropertyView } from 'types/api';
-import naira from '../Generics/Naira';
+import {
+  PaymentRatesView,
+  PropertyView,
+  RentReliefView,
+  InstallmentView,
+} from 'types/api';
 
 type Props = {
   open: boolean;
   close: any;
   item?: PropertyView;
-  setStep: any;
-  total: any;
+  nextPayment?: InstallmentView;
+  
+  paymentRates?: PaymentRatesView;
+  rentRelief?: RentReliefView;
 };
 
-const InstructionModal = ({ open, close, item, total, setStep }: Props) => {
+const InstructionModal = ({
+  open,
+  close,
+  item,
+  paymentRates,
+  nextPayment,
+  rentRelief,
+  
+}: Props) => {
   const [redirect, setRedirect] = useState(false);
+  let payData: any;
 
-  const payData = {
-    propertyId: item?.id,
-    amount: total,
-  };
+  if (item) {
+    payData = {
+      propertyId: item?.id,
+      amount: paymentRates?.total,
+    }
+  }
+  if (rentRelief) {
+    payData = {
+      propertyId: rentRelief?.propertyId,
+      amount: nextPayment?.amount,
+      rentReliefId: rentRelief?.id,
+      installmentId: nextPayment?.id,
+    };
+  }
 
-  const [initiatePay, { loading, data, error }] =
-    useOperationMethod('Paymentinitiate');
+    const [initiatePay, { loading, data, error }] =
+      useOperationMethod('Paymentinitiate');
 
   const InitiatePayment = async () => {
     try {
@@ -53,6 +72,7 @@ const InstructionModal = ({ open, close, item, total, setStep }: Props) => {
         setTimeout(() => {
           window.open(result.message);
           close();
+          setRedirect(false);
         }, 3000);
       }
     } catch (err) {
@@ -65,18 +85,16 @@ const InstructionModal = ({ open, close, item, total, setStep }: Props) => {
       onClose={close}
       motionPreset="slideInBottom"
       isCentered
+      size="lg"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
       <ModalContent
         py={5}
         borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
+        overflowY="auto"
+        h="100vh"
         pos="fixed"
-        mt="1rem"
-        mb="1rem"
       >
         <ModalHeader>
           <Flex justifyContent="space-between" alignItems="center">
@@ -106,7 +124,7 @@ const InstructionModal = ({ open, close, item, total, setStep }: Props) => {
           </Flex>
         </ModalHeader>
         <ModalBody>
-          <Box maxH="80vh" overflowY="auto" px="2rem">
+          <Box px="2rem">
             <Text color="brand.100" fontWeight="bold" mt="1rem">
               Please read the following before you proceed.
             </Text>

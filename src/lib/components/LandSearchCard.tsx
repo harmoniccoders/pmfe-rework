@@ -8,12 +8,14 @@ import {
   Heading,
   SimpleGrid,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import VerifyModal from 'lib/styles/customTheme/components/Modals/VerifyModal';
 import { LandSearchView } from 'types/api/land-search-view';
 
 const LandSearchCard = ({ item }: { item: LandSearchView }) => {
-  
+  const {isOpen, onClose, onOpen} = useDisclosure()
   return (
     <Box
       w="full"
@@ -53,12 +55,13 @@ const LandSearchCard = ({ item }: { item: LandSearchView }) => {
             w="full"
             px="1.8rem"
             color="rgb(37,36,39)"
-            // onClick={onOpen}
+            onClick={onOpen}
           >
             View Details
           </Button>
         </Flex>
       </VStack>
+      <VerifyModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

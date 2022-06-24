@@ -14,18 +14,21 @@ import { TbHourglassHigh } from 'react-icons/tb';
 import { FaCheck } from 'react-icons/fa';
 
 type Props = {
-  step: number;
+  applicationData: any;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepThree = ({ step }: Props) => {
+const StepThree = ({ applicationData }: Props) => {
+  const check =
+    applicationData?.applicationStatus == 'APPROVED' &&
+    applicationData?.hasPaid;
   return (
     <>
       <Flex
-        h={[step !== 1 ? '3rem' : '100%', '100%']}
+        h={['100%', '100%']}
         overflow="hidden"
         justifyContent="space-between"
         width="100%"
@@ -34,29 +37,24 @@ const StepThree = ({ step }: Props) => {
           <Circle
             size="2rem"
             p="0.2rem"
-            border={step >= 3 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
-            bgColor={step >= 3 ? '#2fdf84' : 'unset'}
+            border={check ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
+            bgColor={check ? '#2fdf84' : 'unset'}
           >
             <Icon
-              as={step >= 3 ? FaCheck : TbHourglassHigh}
+              as={check ? FaCheck : TbHourglassHigh}
               w="100%"
-              color={step >= 3 ? 'white' : 'brand.50'}
+              color={check ? 'white' : 'brand.50'}
             />
           </Circle>
-          <Box
-            h="100%"
-            w="2px"
-            bgColor={step >= 3 ? '#2fdf84' : '#DCE1E7'}
-          ></Box>
+          <Box h="100%" w="2px" bgColor={check ? '#2fdf84' : '#DCE1E7'}></Box>
         </VStack>
         <VStack
-          // border="2px solid blue"
           align="flex-start"
           spacing={3}
           width="100%"
           ml="2rem"
-          pb={[step !== 3 ? '0' : '3.5rem', '3.5rem']}
-          h={[step !== 3 ? '1rem' : '100%', ' 100%']}
+          pb={['3.5rem', '3.5rem']}
+          h={['100%', ' 100%']}
           overflow="hidden"
         >
           <Heading fontSize="1rem" lineHeight={1.5}>
@@ -72,7 +70,10 @@ const StepThree = ({ step }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={step < 3}
+            disabled={
+              applicationData?.applicationStatus !== 'APPROVED' &&
+              !applicationData?.hasPaid
+            }
           >
             <Box
               pr="10px"
@@ -95,7 +96,10 @@ const StepThree = ({ step }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={step < 4}
+            disabled={
+              applicationData?.applicationStatus !== 'APPROVED' &&
+              !applicationData?.hasPaid
+            }
           >
             <Box
               pr="10px"

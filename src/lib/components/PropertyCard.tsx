@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Image,
-  Badge,
   VStack,
   Text,
   Icon,
@@ -10,9 +9,7 @@ import {
   GridItem,
   Divider,
   Button,
-  ButtonGroup,
   useDisclosure,
-  Hide,
   HStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -61,9 +58,7 @@ const PropertyCard = ({ item }: Props) => {
 
     try {
       const result = await (await addViews(params)).data;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const router = useRouter();
@@ -81,9 +76,7 @@ const PropertyCard = ({ item }: Props) => {
 
     try {
       const result = await (await addEnquiry(params)).data;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const isRequest = router.pathname.startsWith('/requests/');
@@ -97,7 +90,7 @@ const PropertyCard = ({ item }: Props) => {
     };
     try {
       result = await (await createEnquiry(params)).data;
-      console.log({ result });
+
       AddEnquireView();
       if (result.status) {
         enquiry && item.isForRent
@@ -108,9 +101,7 @@ const PropertyCard = ({ item }: Props) => {
           ? router.push(`/rent/enquire/${item.id}`)
           : router.push(`buy/enquire/${item.id}`);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const { addToast } = useToasts();
 
@@ -126,7 +117,7 @@ const PropertyCard = ({ item }: Props) => {
 
     try {
       const result = await (await acceptRequest(params)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Successful', {
           appearance: 'success',
@@ -140,9 +131,7 @@ const PropertyCard = ({ item }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const [
     rejectRequest,
@@ -156,7 +145,7 @@ const PropertyCard = ({ item }: Props) => {
 
     try {
       const result = await (await rejectRequest(params)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Successful', {
           appearance: 'success',
@@ -171,9 +160,7 @@ const PropertyCard = ({ item }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -292,7 +279,7 @@ const PropertyCard = ({ item }: Props) => {
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="11px" ml="4px">
-                  {naira(item.price as unknown  as number)}
+                  {naira(item.price as unknown as number)}
                 </Text>
               </Flex>
             </GridItem>
@@ -353,7 +340,7 @@ const PropertyCard = ({ item }: Props) => {
               <Button
                 variant="solid"
                 height="40px"
-                bgColor={isRequest ? 'brand.900' : 'brand.100'}
+                bgColor={isRequest ? '#2FDF84' : 'brand.100'}
                 w="full"
                 disabled={item.createdByUser?.id == user?.id ? true : false}
                 onClick={

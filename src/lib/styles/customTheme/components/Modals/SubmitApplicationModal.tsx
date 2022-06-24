@@ -4,7 +4,6 @@ import {
   ModalHeader,
   ModalOverlay,
   HStack,
-  Flex,
   Image,
   ModalBody,
   VStack,
@@ -12,9 +11,7 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import ApplicationForm from 'lib/components/ApplicationForm';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { PropertyModel } from 'types/api';
+import React, { useState } from 'react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,17 +28,14 @@ type Props = {
   onClose: any;
   isOpen: boolean;
   data: any;
-  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
+const SubmitApplicationModal = ({ onClose, isOpen, data, }: Props) => {
   const [SubmitApplication, { loading, data: isData, error }] =
     useOperationMethod('Applicationnew');
-  // console.log({ data });
 
   const [formStep, setFormStep] = useState<number>(0);
 
-  // const [getResult, setGetResult] = useState([]);
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
@@ -141,15 +135,12 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       : null;
     data.propertyId = propertyId;
     data.applicationTypeId = 1;
-    console.log({ data });
+   
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
-      console.log({ result });
+      
 
       if (result.status) {
-        // setStep(2);
-        // setGetResult(result.data);
-
         addToast(result.message, {
           appearance: 'success',
           autoDismiss: true,
@@ -164,7 +155,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
       onClose();
       return;
     } catch (error) {
-      console.log(error);
+     
     }
   };
 
@@ -246,13 +237,6 @@ const SubmitApplicationModal = ({ onClose, isOpen, data, setStep }: Props) => {
             <Text fontWeight={600} color="brand.100" textTransform="capitalize">
               Application form
             </Text>
-
-            {/* <ApplicationForm
-              formStep={formStep}
-              setFormStep={setFormStep}
-              setStep={setStep}
-              onClose={onClose}
-            /> */}
 
             <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
               <>

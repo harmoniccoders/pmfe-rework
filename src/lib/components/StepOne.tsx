@@ -21,16 +21,13 @@ import { InspectionDateView, PropertyView } from 'types/api';
 type Props = {
   date?: InspectionDateView;
   data: PropertyView;
-  step: number;
-  setStep: any;
-  appData: any;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepOne = ({ date, data, step, setStep,appData }: Props) => {
+const StepOne = ({ date, data }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -48,7 +45,7 @@ const StepOne = ({ date, data, step, setStep,appData }: Props) => {
   return (
     <>
       <Flex
-        h={[step !== 0 ? '3rem' : '100%', '100%']}
+        h={['100%', '100%']}
         justifyContent="space-between"
         width="100%"
         overflow={'hidden'}
@@ -56,30 +53,21 @@ const StepOne = ({ date, data, step, setStep,appData }: Props) => {
         <VStack w={['fit-content']} spacing="0.5rem">
           <Circle
             size="2rem"
-            border={step >= 0 ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
-            bgColor={step >= 0 ? '#2fdf84' : '#DCE1E7'}
+            border={'1px solid #DCE1E7'}
+            bgColor={'#2fdf84'}
             p="0.2rem"
           >
-            <Icon
-              as={FaCheck}
-              w="100%"
-              color={step >= 0 ? 'white' : 'brand.50'}
-            />
+            <Icon as={FaCheck} w="100%" color={'white'} />
           </Circle>
-          <Box
-            h="100%"
-            w="2px"
-            bgColor={step >= 0 ? '#2fdf84' : '#DCE1E7'}
-          ></Box>
+          <Box h="100%" w="2px" bgColor={'#2fdf84'}></Box>
         </VStack>
         <VStack
-          // borderLeft="2px solid #DCE1E7"
           align="flex-start"
           spacing={3}
           width="100%"
           ml="2rem"
-          pb={[step !== 0 ? '0' : '3.5rem', '3.5rem']}
-          h={[step !== 0 ? '1rem' : '100%', ' 100%']}
+          pb={['3.5rem', '3.5rem']}
+          h={['100%', ' 100%']}
           overflow="hidden"
         >
           <Heading fontSize="1rem" lineHeight={1.5}>
@@ -195,7 +183,6 @@ const StepOne = ({ date, data, step, setStep,appData }: Props) => {
           close={onClose}
           date={date}
           item={data}
-          setStep={setStep}
         />
       )}
     </>

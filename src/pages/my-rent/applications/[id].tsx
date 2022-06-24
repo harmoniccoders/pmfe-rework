@@ -12,50 +12,7 @@ type Props = {
 const applications = ({ data }: Props) => {
   return (
     <ApplicationsPage data={data} />
-    // <div>
-    //
-    //   {application.length > 0 ? (
-    //     noAccepted.length === 0 ? (
-    //       <VStack align="flex-start" spacing="5" mt="5">
-    //         <Heading fontSize="15px">Tenant Applications</Heading>
-    //         <SimpleGrid spacing="5" w="full">
-    //           {application.map((item) => (
-    //             <TenantInfo key={item.id} item={item} />
-    //           ))}
-    //         </SimpleGrid>
-    //       </VStack>
-    //     ) : (
-    //       noAccepted.length > 0 && (
-    //         <Box>
-    //           <VStack align="flex-start" spacing="5" mt="5">
-    //             <Heading fontSize="15px">Accepted Tenant</Heading>
-    //             <SimpleGrid spacing="5" w="full">
-    //               {application
-    //                 ?.filter((item) => item?.status === 'ACCEPTED')
-    //                 .map((item) => (
-    //                   <TenantInfo key={item.id} item={item} />
-    //                 ))}
-    //             </SimpleGrid>
-    //           </VStack>
-    //           <VStack align="flex-start" spacing="5" mt="7">
-    //             <Heading fontSize="15px">Other Applicants</Heading>
-    //             <SimpleGrid spacing="5" w="full">
-    //               {application
-    //                 ?.filter((item) => item?.status !== 'ACCEPTED')
-    //                 .map((item) => (
-    //                   <TenantInfo key={item.id} disabled={true} item={item} />
-    //                 ))}
-    //             </SimpleGrid>
-    //           </VStack>
-    //         </Box>
-    //       )
-    //     )
-    //   ) : (
-    //     <Heading fontSize="15px" mt="5">
-    //       No applications yet
-    //     </Heading>
-    //   )}
-    // </div>
+    
   );
 };
 
