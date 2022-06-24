@@ -21,7 +21,7 @@ const TenantInfo = ({
   disabled?: boolean;
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const router = useRouter()
+  const router = useRouter();
   return (
     <HStack
       w="full"
@@ -29,10 +29,14 @@ const TenantInfo = ({
       opacity={disabled ? '.5' : 'unset'}
       cursor={disabled ? 'not-allowed' : 'pointer'}
       onClick={()=>setShowModal(true)}
+      
       // onClick={
       //   disabled
       //     ? undefined
-      //     : () => router.push(`/my-rent/applications/tenant/${item.id}`)
+      //     : () =>
+      //         router.push(
+      //           `/my-rent/applications/tenant/${item.id}/${item.property.id}`
+      //         )
       // }
     >
       <Box w="35%">

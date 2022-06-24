@@ -22,6 +22,10 @@ import { GrMail } from 'react-icons/gr';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Link from 'next/link';
+import React, { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
+import { ContactInput, ContactTextArea } from 'lib/Utils/ContactInput';
+import { useRouter } from 'next/router';
 
 const schema = yup.object().shape({
   firstname: yup.string().required(),
@@ -30,7 +34,8 @@ const schema = yup.object().shape({
 });
 
 const ContactPage = () => {
-  const [SendMessage, { loading }] = useOperationMethod('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [SendMessage, { loading: isLoad }] = useOperationMethod('');
   const {
     register,
     handleSubmit,
@@ -40,6 +45,7 @@ const ContactPage = () => {
     mode: 'all',
   });
   const { addToast } = useToasts();
+  const router = useRouter();
 
   const onSubmit = async (data: Register) => {
     try {
@@ -58,6 +64,38 @@ const ContactPage = () => {
       });
       return;
     } catch (err) {}
+  };
+
+  const form = useRef<any>();
+
+  const sendEmail = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs
+      .sendForm(
+        'service_i9nnz0w',
+        'template_kljdmey',
+        form.current,
+        'OcKaWyrr-i5DX0B2c'
+      )
+      .then(
+        (result) => {
+          setLoading(false);
+          addToast('Message sent sucessfully', {
+            appearance: 'success',
+            autoDismiss: true,
+          });
+          router.push('/');
+        },
+        (error) => {
+          setLoading(false);
+          addToast(error.text, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        }
+      );
   };
 
   const responsive = {
@@ -192,44 +230,42 @@ const ContactPage = () => {
               promised nothing but outstanding customer services
             </Text>
           </VStack>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <PrimaryInput<Register>
-              label="Name"
-              name="firstName"
-              error={errors.firstName}
+          <form ref={form} onSubmit={sendEmail}>
+            <ContactInput
+              label="Full Name"
+              name="fullName"
               defaultValue=""
-              register={register}
+              placeholder="Pade Omotosho"
             />
-            <PrimaryInput<Register>
-              label="Email "
+            <ContactInput
+              label="Email"
               name="email"
-              error={errors.email}
               defaultValue=""
-              register={register}
+              type="email"
+              placeholder="padeomotoso@gmail.com"
             />
-            <PrimaryTextArea<Register>
-              label="Message"
-              name="lastName"
-              error={errors.lastName}
+            <ContactInput
+              label="Phone number"
+              name="phoneNumber"
               defaultValue=""
-              minH="100px"
-              register={register}
+              placeholder="Type in a valid phone number"
+            />
+            <ContactTextArea
+              label="Message"
+              name="message"
+              placeholder="Type your message here"
             />
 
-            <ButtonComponent
-              content="Send"
-              isValid={isValid}
-              loading={loading}
-            />
-          </form>           
-              
+            <ButtonComponent content="Send" isValid={true} loading={loading} />
+          </form>
+
           <Box display="block">
-            <HStack spacing={4} justify="header"  px="2rem" flexWrap="wrap">
+            <HStack spacing={4} justify="center">
               <Flex align="center">
-                <Circle bgColor="brand.100" color="white" size="1.3rem">
-                  <FaPhone fontSize=".5rem" />
+                <Circle bgColor="brand.100" color="white" size="1rem">
+                  <FaPhone fontSize=".4rem" />
                 </Circle>
-                <Box pl=".5rem">
+                <Box pl=".3rem">
                   <Text fontSize=".8rem" fontWeight="600">
                     09090002394
                   </Text>
@@ -237,26 +273,26 @@ const ContactPage = () => {
               </Flex>
 
               <Flex align="center" mb="10px">
-                <Circle bgColor="brand.100" color="white" size="1.3rem">
-                  <GrMail fontSize=".5rem" />
+                <Circle bgColor="brand.100" color="white" size="1rem">
+                  <GrMail fontSize=".4rem" />
                 </Circle>
-                <Box pl=".5rem">
+                <Box pl=".3rem">
                   <Text fontSize=".8rem" fontWeight="600">
                     hello@propertymataaz.com
                   </Text>
                 </Box>
               </Flex>
               <Flex align="center" mb="10px">
-                <Circle bgColor="brand.100" color="white" size="1.3rem">
-                  <FaInstagram fontSize=".5rem" />
+                <Circle bgColor="brand.100" color="white" size="1rem">
+                  <FaInstagram fontSize=".4rem" />
                 </Circle>
-                <Box pl=".5rem">
+                <Box pl=".3rem">
                   <Text fontSize=".8rem" fontWeight="600">
                     @PropertyMataaz
                   </Text>
                 </Box>
-                </Flex>
-              </HStack>          
+              </Flex>
+            </HStack>
           </Box>
         </Box>
       </Flex>
@@ -265,4 +301,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-

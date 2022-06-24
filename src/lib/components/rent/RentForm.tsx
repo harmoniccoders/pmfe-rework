@@ -72,38 +72,38 @@ const RentForm = ({
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
-    address: yup.string().required(),
-    description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    sellMyself: yup.string().required(),
-    name: yup.string().required(),
-    numberOfBathrooms: yup.number().required(),
-    numberOfBedrooms: yup.number().required(),
-    price: yup.number().required(),
-    budget: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    rentCollectionTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    tenantTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    bank: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string(),
-    }),
-    accountNumber: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string(),
-    }),
+    // address: yup.string().required(),
+    // description: yup.string().required(),
+    // title: yup.string().required(),
+    // area: yup.string().required(),
+    // lga: yup.string().required(),
+    // state: yup.string().required(),
+    // propertyTypeId: yup.number().required(),
+    // sellMyself: yup.string().required(),
+    // name: yup.string().required(),
+    // numberOfBathrooms: yup.number().required(),
+    // numberOfBedrooms: yup.number().required(),
+    // price: yup.number().required(),
+    // budget: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // rentCollectionTypeId: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // tenantTypeId: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // bank: yup.string().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.string(),
+    // }),
+    // accountNumber: yup.string().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.string(),
+    // }),
   });
 
   const {
@@ -413,7 +413,6 @@ const RentForm = ({
                     label="Rent (Per year)"
                   />
                   <Box>
-                    
                     <Flex
                       w="full"
                       border="1px solid grey"

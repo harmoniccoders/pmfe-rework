@@ -7,16 +7,16 @@ import { GetServerSideProps } from 'next';
 import { Application } from 'types/api';
 
 type Props = {
-    data: Application;
-    id: number
+  data: any;
+  params: any;
 };
-const tenant = ({ data, id }: Props) => {
-    // let result = data.filter((item: any) => item.id == id);
- 
-  console.log({ data });
+const tenant = ({ data, params }: Props) => {
+  const singleId = params[0];
+  const result = data.value.filter((x: any) => x.id == singleId)[0];
+  // console.log({ result });
   return (
     <>hell</>
-    // <ApplicationsPage data={data} />
+    // <ApplicationsPage data={result} />
   );
 };
 
@@ -36,15 +36,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
-  const id = ctx.params?.id;
+  const { params } = ctx.query;
+  const datas = (params as unknown as string)[1];
 
   try {
-    const data = (await _dataAccess.get(`/api/Application/list/${id}`)).data;
+    const data = (await _dataAccess.get(`/api/Application/list/${datas}`)).data;
 
     return {
       props: {
         data,
-        id,
+        params,
       },
     };
   } catch (error) {
