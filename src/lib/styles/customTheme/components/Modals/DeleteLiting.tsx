@@ -75,7 +75,7 @@ const DeleteListings = ({ isOpen, onClose, item }: Props) => {
         mb="1rem"
       >
         <ModalHeader textAlign="center">
-          {item.status === 'INACTIVE' ? (
+          {item.status === 'INACTIVE' || item.status === 'SOLD' ? (
             <Text fontSize="1.1rem" fontWeight="bold">
               {`You cannot delete a property that has been  ${
                 item.isForRent ? 'rented out' : 'sold'
@@ -110,7 +110,9 @@ const DeleteListings = ({ isOpen, onClose, item }: Props) => {
                 height="40px"
                 width="full"
                 bgColor="brand.900"
-                isDisabled={item.status === 'INACTIVE'}
+                isDisabled={
+                  item.status === 'INACTIVE' || item.status === 'SOLD'
+                }
                 isLoading={loading}
                 onClick={() => DeleteProperty()}
               >

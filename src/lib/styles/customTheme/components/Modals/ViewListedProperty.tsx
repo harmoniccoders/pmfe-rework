@@ -118,12 +118,17 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                   fontWeight="600"
                   justify="space-between"
                   color={
-                    item.isDraft || item.status === 'REJECTED'
+                    item.isDraft ||
+                    item.status === 'REJECTED' ||
+                    item.status === 'SOLD' ||
+                    item.status === 'INACTIVE'
                       ? 'white'
                       : 'black'
                   }
                   bgColor={
-                    item.isDraft
+                    item.isDraft ||
+                    item.status === 'SOLD' ||
+                    item.status === 'INACTIVE'
                       ? 'rgba(108,117,125,.9)'
                       : item.status === 'PENDING'
                       ? 'brand.600'
@@ -141,13 +146,25 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                   <Text textTransform="capitalize">
                     {item.isDraft
                       ? 'Only visible to you'
+                      : item.status === 'INACTIVE'
+                      ? 'Property has been rented out'
+                      : item.status === 'SOLD'
+                      ? 'Property has been sold'
                       : item.status === 'PENDING'
                       ? 'Listing is pending'
                       : item.status === 'REJECTED'
                       ? `Rejected: ${item.rejectionReason}`
                       : 'Listing is live'}
                   </Text>
-                  <HStack cursor="pointer" onClick={() => openModal()}>
+                  <HStack
+                    cursor={'pointer'}
+                    display={
+                      item.status === 'SOLD' || item.status === 'INACTIVE'
+                        ? 'none'
+                        : 'flex'
+                    }
+                    onClick={() => openModal()}
+                  >
                     <Text>Edit</Text>
                     <FaPen />
                   </HStack>
@@ -259,7 +276,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                 </Text>
               </Flex>
               <Text fontSize="14px" fontWeight="500">
-                Pending sale
+                {item.status !== 'SOLD' ? ' Pending sale' : 'Sold'}
               </Text>
             </Flex>
 

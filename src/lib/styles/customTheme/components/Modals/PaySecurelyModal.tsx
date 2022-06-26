@@ -33,105 +33,106 @@ const PaySecurelyModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log({ paymentRates });
 
+  const closeModal = () => {
+    onOpen();
+    close();
+  };
   return (
-    <Modal
-      isOpen={open}
-      onClose={close}
-      motionPreset="slideInBottom"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        borderRadius="0"
-        w={['88%', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        pos="fixed"
-        mt="1rem"
-        mb="1rem"
+    <>
+      <Modal
+        isOpen={open}
+        onClose={close}
+        motionPreset="slideInBottom"
+        isCentered
       >
-        <ModalHeader>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text
-              onClick={close}
-              display="flex"
-              alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
-            >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px' }}
-              ></span>
-              Back
-            </Text>
+        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
-            <Box w="150px" h="40px">
-              <Image
-                src="/assets/PropertyMataaz.png"
-                alt="company-logo"
-                w="100%"
-                h="100%"
-                objectFit="contain"
-              />
-            </Box>
-          </Flex>
-        </ModalHeader>
-        <ModalBody>
-          <Box maxH="80vh" overflowY="hidden" px="2rem">
-            <Box borderBottom="1px dashed black" py="1rem" mb="1rem">
-              <Text fontWeight={600} fontSize="1.1rem">
-                {item?.name}
-              </Text>
-            </Box>
-
-            <VStack spacing={4} w="full">
-              <Flex justify="space-between" fontSize=".8rem" w="full">
-                <Text>Cost of unit</Text>
-                <Text>{naira(paymentRates?.price as number)}</Text>
-              </Flex>
-              <Flex justify="space-between" fontSize=".8rem" w="full">
-                <Text>Fees</Text>
-                <Text>{naira(paymentRates?.rates as number)}</Text>
-              </Flex>
-              <Flex justify="space-between" fontSize=".8rem" w="full">
-                <Text>Taxes</Text>
-                <Text>{naira(paymentRates?.tax as number)}</Text>
-              </Flex>
-              <Flex
-                justify="space-between"
-                fontSize=".9rem"
-                fontWeight={600}
-                w="full"
+        <ModalContent
+          py={5}
+          borderRadius="0"
+          w={['88%', '80%']}
+          overflow="hidden"
+          maxH="100vh"
+          pos="fixed"
+          mt="1rem"
+          mb="1rem"
+        >
+          <ModalHeader>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text
+                onClick={close}
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
               >
-                <Text>Total</Text>
-                <Text>{naira(paymentRates?.total as number)}</Text>
-              </Flex>
-            </VStack>
-            <Box
-              onClick={() => {
-                close();
-                onOpen();
-              }}
-            >
-              <ButtonComponent
-                content="Pay Securely"
-                isValid={true}
-                loading={false}
-              />
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+
+              <Box w="150px" h="40px">
+                <Image
+                  src="/assets/PropertyMataaz.png"
+                  alt="company-logo"
+                  w="100%"
+                  h="100%"
+                  objectFit="contain"
+                />
+              </Box>
+            </Flex>
+          </ModalHeader>
+          <ModalBody>
+            <Box maxH="80vh" overflowY="hidden" px="2rem">
+              <Box borderBottom="1px dashed black" py="1rem" mb="1rem">
+                <Text fontWeight={600} fontSize="1.1rem">
+                  {item?.name}
+                </Text>
+              </Box>
+
+              <VStack spacing={4} w="full">
+                <Flex justify="space-between" fontSize=".8rem" w="full">
+                  <Text>Cost of unit</Text>
+                  <Text>{naira(paymentRates?.price as number)}</Text>
+                </Flex>
+                <Flex justify="space-between" fontSize=".8rem" w="full">
+                  <Text>Fees</Text>
+                  <Text>{naira(paymentRates?.rates as number)}</Text>
+                </Flex>
+                <Flex justify="space-between" fontSize=".8rem" w="full">
+                  <Text>Taxes</Text>
+                  <Text>{naira(paymentRates?.tax as number)}</Text>
+                </Flex>
+                <Flex
+                  justify="space-between"
+                  fontSize=".9rem"
+                  fontWeight={600}
+                  w="full"
+                >
+                  <Text>Total</Text>
+                  <Text>{naira(paymentRates?.total as number)}</Text>
+                </Flex>
+              </VStack>
+              <Box onClick={closeModal}>
+                <ButtonComponent
+                  content="Pay Securely"
+                  isValid={true}
+                  loading={false}
+                />
+              </Box>
             </Box>
-          </Box>
-        </ModalBody>
-      </ModalContent>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <InstructionModal
         open={isOpen}
         close={onClose}
         paymentRates={paymentRates}
         item={item}
       />
-    </Modal>
+    </>
   );
 };
 

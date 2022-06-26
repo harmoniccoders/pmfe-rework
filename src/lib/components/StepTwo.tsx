@@ -15,13 +15,15 @@ import { TbHourglassHigh } from 'react-icons/tb';
 import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
 import { FaCheck } from 'react-icons/fa';
 import PaySecurelyModal from 'lib/styles/customTheme/components/Modals/PaySecurelyModal';
-import { PaymentRatesView, PropertyModel } from 'types/api';
+import { PaymentRatesView, PropertyModel, PropertyView } from 'types/api';
 import RentApplicationModal from 'lib/styles/customTheme/components/Modals/RentApplicationModal';
 
 type Props = {
   applicationData: any;
-  data: PropertyModel;
+  data: PropertyView;
   paymentRates: PaymentRatesView;
+  isBuy: boolean;
+  isRent: boolean;
 };
 
 const iconStyle = {
@@ -31,12 +33,16 @@ const iconStyle = {
 const StepTwo = ({
   applicationData,
   data,
-
+  isBuy,
+  isRent,
   paymentRates,
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-  console.log({ applicationData });
+  // console.log({ applicationData });
+  // console.log({ isBuy, isRent });
+  const payment = data.status === 'SOLD' || data.status === 'INACTIVE';
+
   return (
     <>
       <Flex
@@ -54,29 +60,15 @@ const StepTwo = ({
                 ? '1px solid #2fdf84'
                 : '1px solid #DCE1E7'
             }
-            bgColor={applicationData?.hasPaid ? '#2fdf84' : 'unset'}
+            bgColor={applicationData?.hasApplied ? '#2fdf84' : 'unset'}
           >
             <Icon
-              as={
-                applicationData?.applicationStatus == 'APPROVED' &&
-                applicationData?.hasPaid
-                  ? FaCheck
-                  : TbHourglassHigh
-              }
+              as={payment ? FaCheck : TbHourglassHigh}
               w="100%"
-              color={applicationData?.hasPaid ? 'white' : 'brand.50'}
+              color={payment ? 'white' : 'brand.50'}
             />
           </Circle>
-          <Box
-            h="100%"
-            w="2px"
-            bgColor={
-              applicationData?.applicationStatus == 'APPROVED' &&
-              applicationData?.hasPaid
-                ? '#2fdf84'
-                : '#DCE1E7'
-            }
-          ></Box>
+          <Box h="100%" w="2px" bgColor={payment ? '#2fdf84' : '#DCE1E7'}></Box>
         </VStack>
 
         <VStack
@@ -115,7 +107,7 @@ const StepTwo = ({
 
             <Text>
               {applicationData?.applicationStatus == 'ACTIVE'
-                ? 'Pending review'
+                ? 'Application Submitted'
                 : applicationData?.applicationStatus == 'REVIEWED'
                 ? 'Under review'
                 : applicationData?.applicationStatus == 'ACCEPTED'
@@ -139,11 +131,14 @@ const StepTwo = ({
             display="flex"
             alignItems="center"
             disabled={
-              applicationData?.applicationStatus == 'APPROVED' ||
-              applicationData?.applicationStatus == 'REJECTED' ||
-              applicationData?.applicationStatus == null ||
-              applicationData?.applicationStatus == 'REVIEWED' ||
-              applicationData?.applicationStatus == 'ACTIVE'
+              isBuy
+                ? applicationData?.hasPaid == true ||
+                  applicationData?.hasApplied == false ||
+                  data.status === 'SOLD'
+                : isRent
+                ? applicationData?.status !== 'REVIEWED' ||
+                  data.status === 'INACTIVE'
+                : false
             }
             onClick={payOpen}
           >
@@ -156,7 +151,7 @@ const StepTwo = ({
               <Icons iconClass="fa-lock" />
             </Box>
 
-            <Text>Pay Securely</Text>
+            <Text>{payment ? 'Payment Confirmed' : 'Pay Securely'}</Text>
           </Button>
         </VStack>
       </Flex>

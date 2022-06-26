@@ -17,7 +17,7 @@ interface AddPropertyProps {
   onClose: () => void;
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-  getStates: any[];
+  // getStates: any[];
 }
 
 function AddPropertyModal({
@@ -25,7 +25,7 @@ function AddPropertyModal({
   onClose,
   propertyTitles,
   propertyTypes,
-  getStates,
+  // getStates,
 }: AddPropertyProps) {
   const [formStep, setFormStep] = useState(0);
   return (
@@ -92,7 +92,7 @@ function AddPropertyModal({
             <Form
               propertyTypes={propertyTypes}
               propertyTitles={propertyTitles}
-              getStates={getStates}
+              // getStates={getStates}
               formStep={formStep}
               setFormStep={setFormStep}
               onClose={onClose}

@@ -27,7 +27,6 @@ interface EditPropertyProps {
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
   getBanks: any[];
-  getStates: any[];
   item: PropertyModel;
 }
 
@@ -39,7 +38,6 @@ function EditPropertyModal({
   getBanks,
   propertyTenants,
   propertyCollection,
-  getStates,
   item,
 }: EditPropertyProps) {
   
@@ -110,7 +108,6 @@ function EditPropertyModal({
               <EditPropertyForm
                 propertyTypes={propertyTypes}
                 propertyTitles={propertyTitles}
-                getStates={getStates}
                 formStep={formStep}
                 setFormStep={setFormStep}
                 onClose={onClose}
@@ -123,7 +120,6 @@ function EditPropertyModal({
                 propertyTitles={propertyTitles}
                 propertyTenants={propertyTenants}
                 propertyCollection={propertyCollection}
-                getStates={getStates}
                 getBanks={getBanks}
                 formStep={formStep}
                 setFormStep={setFormStep}

@@ -27,7 +27,7 @@ import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;
-  matchId?: number
+  matchId?: number;
 };
 
 const iconStyle = {
@@ -39,10 +39,10 @@ if (users !== undefined) {
   user = JSON.parse(users);
 }
 
-const PropertyCard = ({ item,matchId }: Props) => {
+const PropertyCard = ({ item, matchId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
-  
+
   const openReliefModal = () => {
     setOpenRelief(true);
   };
@@ -106,6 +106,17 @@ const PropertyCard = ({ item,matchId }: Props) => {
   };
   const { addToast } = useToasts();
 
+  function doEnquiry() {
+    if (enquiry && item.isForRent) {
+      router.push(`/rent/enquire/${item.id}`);
+      return;
+    }
+    if (enquiry && item.isForSale) {
+      router.push(`/buy/enquire/${item.id}`);
+      return;
+    }
+  }
+
   const [
     acceptRequest,
     { loading: isLoader, data: isDataer, error: isErrorer },
@@ -164,6 +175,9 @@ const PropertyCard = ({ item,matchId }: Props) => {
     } catch (err) {}
   };
 
+  console.log({ item });
+  console.log({ user });
+
   return (
     <>
       <Box
@@ -212,7 +226,7 @@ const PropertyCard = ({ item,matchId }: Props) => {
             right="0"
             textTransform="capitalize"
           >
-            {item.area}
+            {item.lga}
           </Flex>
         </Box>
         <VStack align="flex-start" spacing={4}>
@@ -301,8 +315,8 @@ const PropertyCard = ({ item,matchId }: Props) => {
             </GridItem>
           </Grid>
           <Divider borderColor="brand.50" />
-          <HStack px=".8rem" w="full" spacing={5}>
-            {enquiry ? (
+          {enquiry ? (
+            <HStack px=".8rem" w="full" spacing={5}>
               <Button
                 variant="outline"
                 height="40px"
@@ -310,11 +324,23 @@ const PropertyCard = ({ item,matchId }: Props) => {
                 color="rgb(37,36,39)"
                 disabled={true}
                 textTransform="uppercase"
-                onClick={() => AddViewToProperty()}
               >
                 {item.isForRent ? 'To Rent' : 'To Buy'}
               </Button>
-            ) : isRequest ? (
+
+              <Button
+                variant="solid"
+                height="40px"
+                bgColor={isRequest ? '#2FDF84' : 'brand.100'}
+                w="full"
+                disabled={item.createdByUser === user?.id}
+                onClick={doEnquiry}
+              >
+                Details
+              </Button>
+            </HStack>
+          ) : isRequest ? (
+            <HStack px=".8rem" w="full" spacing={5}>
               <Button
                 variant="outline"
                 height="40px"
@@ -324,38 +350,75 @@ const PropertyCard = ({ item,matchId }: Props) => {
                 textTransform="capitalize"
                 onClick={() => RejectRequest()}
               >
-                reject
+                Reject
               </Button>
-            ) : (
+
+              <Button
+                variant="solid"
+                height="40px"
+                bgColor="#2FDF84"
+                w="full"
+                disabled={item.createdByUser?.id === user?.id}
+                onClick={() => AcceptRequest()}
+              >
+                Accept
+              </Button>
+            </HStack>
+          ) : relief ? (
+            <HStack px=".8rem" w="full" spacing={5}>
               <Button
                 variant="outline"
                 height="40px"
                 width="full"
-                color="rgb(37,36,39)"
+                textTransform="capitalize"
                 onClick={() => AddViewToProperty()}
               >
-                See more
+                See More
               </Button>
-            )}
-            {!item.sellMyself && (
+
               <Button
                 variant="solid"
                 height="40px"
-                bgColor={isRequest ? '#2FDF84' : 'brand.100'}
                 w="full"
-                disabled={item.createdByUser?.id == user?.id ? true : false}
-                onClick={
-                  relief
-                    ? () => openReliefModal()
-                    : isRequest
-                    ? () => AcceptRequest()
-                    : () => CreateEnquireView()
+                bgColor={
+                  item.createdByUser?.id === user?.id ? 'gray.300' : 'brand.100'
                 }
+                disabled={item.createdByUser?.id === user?.id}
+                onClick={() => openReliefModal()}
               >
-                {relief ? 'Get relief' : isRequest ? 'Accept' : 'Enquire'}
+                {item.createdByUser?.id === user?.id
+                  ? 'Disabled'
+                  : 'Get Relief'}
               </Button>
-            )}
-          </HStack>
+            </HStack>
+          ) : (
+            <HStack px=".8rem" w="full" spacing={5}>
+              <Button
+                variant="outline"
+                height="40px"
+                width="full"
+                textTransform="capitalize"
+                onClick={() => AddViewToProperty()}
+              >
+                See More
+              </Button>
+
+              <Button
+                variant="solid"
+                height="40px"
+                w="full"
+                bgColor={
+                  item.createdByUser?.id === user?.id ? 'gray.300' : 'brand.100'
+                }
+                disabled={item.createdByUser?.id === user?.id}
+                onClick={() => CreateEnquireView()}
+              >
+                {item.createdByUser?.id === user?.id
+                  ? 'Disabled'
+                  : 'Enquire'}
+              </Button>
+            </HStack>
+          )}
         </VStack>
       </Box>
       <RentReliefModal

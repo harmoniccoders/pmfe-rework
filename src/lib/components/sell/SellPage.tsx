@@ -14,16 +14,15 @@ import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
 import ListingsCard from 'lib/components/ListingsCard';
 import Pagination from 'lib/components/Pagination';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 const sell = ({
   propertyTitles,
   propertyTypes,
-  getStates,
   listings,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-  getStates: any;
   listings: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,7 +63,6 @@ const sell = ({
                         item={item}
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
-                        getStates={getStates}
                         propertyTenants={[]}
                         getBanks={undefined}
                         propertyCollection={[]}
@@ -112,7 +110,6 @@ const sell = ({
         onClose={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
-        getStates={getStates}
       />
     </Box>
   );

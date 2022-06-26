@@ -17,9 +17,11 @@ type Props = {
   data: PropertyModel;
   date?: InspectionDateView;
   paymentRates: PaymentRatesView;
+  isBuy: boolean;
+  isRent: boolean;
 };
 
-const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
+const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
   const [cancel, { loading, data: isData, error }] = useOperationMethod(
     'Userenquirecancel{PropertyId}'
   );
@@ -52,9 +54,7 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -90,8 +90,10 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
             applicationData={applicationStatus}
             paymentRates={paymentRates}
             data={data}
+            isBuy={isBuy}
+            isRent={isRent}
           />
-          <StepThree  applicationData={applicationStatus} />
+          <StepThree applicationData={data} />
         </VStack>
 
         <Button

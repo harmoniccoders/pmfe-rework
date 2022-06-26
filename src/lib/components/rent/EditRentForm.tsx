@@ -42,19 +42,18 @@ import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import Geocode from 'react-geocode';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any[];
   getBanks: any[];
   formStep: number;
   item: PropertyModel;
   setFormStep: any;
   onClose: () => void;
-  
 }
 
 const EditRentForm = ({
@@ -62,52 +61,50 @@ const EditRentForm = ({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
   getBanks,
   formStep,
   setFormStep,
   item,
   onClose,
-}:
-Props) => {
+}: Props) => {
   const [PropertyUpdate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
- const schema = yup.object().shape({
-   address: yup.string().required(),
-   description: yup.string().required(),
-   title: yup.string().required(),
-   area: yup.string().required(),
-   lga: yup.string().required(),
-   state: yup.string().required(),
-   propertyTypeId: yup.number().required(),
-   sellMyself: yup.string().required(),
-   name: yup.string().required(),
-   numberOfBathrooms: yup.number().required(),
-   numberOfBedrooms: yup.number().required(),
-   price: yup.number().required(),
-   budget: yup.number().when('name', {
-     is: () => formStep === 1,
-     then: yup.number(),
-   }),
-   rentCollectionTypeId: yup.number().when('name', {
-     is: () => formStep === 1,
-     then: yup.number(),
-   }),
-   tenantTypeId: yup.number().when('name', {
-     is: () => formStep === 1,
-     then: yup.number(),
-   }),
-   bank: yup.string().when('name', {
-     is: () => formStep === 1,
-     then: yup.string(),
-   }),
-   accountNumber: yup.string().when('name', {
-     is: () => formStep === 1,
-     then: yup.string(),
-   }),
- });
+  const schema = yup.object().shape({
+    address: yup.string().required(),
+    description: yup.string().required(),
+    title: yup.string().required(),
+    area: yup.string().required(),
+    lga: yup.string().required(),
+    state: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    sellMyself: yup.string().required(),
+    name: yup.string().required(),
+    numberOfBathrooms: yup.number().required(),
+    numberOfBedrooms: yup.number().required(),
+    price: yup.number().required(),
+    budget: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    rentCollectionTypeId: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    tenantTypeId: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    bank: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
+    }),
+    accountNumber: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
+    }),
+  });
 
   const {
     register,
@@ -147,11 +144,9 @@ Props) => {
     },
   });
 
-
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
   watch('sellMyself');
-
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -160,27 +155,7 @@ Props) => {
   const widgetApi = useRef();
   const widgetApis = useRef();
 
-  const [lgas, setLgas] = useState([]);
   const [selectedId, setSelectedId] = useState<Number>();
-
-  useEffect(() => {
-    const getLga = async (state: string) => {
-      const result = (
-        await axios.get(
-          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-        )
-      ).data;
-
-      if (Array.isArray(result) === true) {
-        setLgas(
-          result.map((value: string) => {
-            return { name: value };
-          })
-        );
-      }
-    };
-    getLga(getValues('state') as unknown as string);
-  }, [watch('state')]);
 
   const clearPreviewData = () => {
     setFormStep(0);
@@ -282,28 +257,25 @@ Props) => {
   const { addToast } = useToasts();
   const router = useRouter();
 
-    const [deleteItem, { loading, data: isData, error: isError }] =
-      useOperationMethod('Mediadelete{id}');
+  const [deleteItem, { loading, data: isData, error: isError }] =
+    useOperationMethod('Mediadelete{id}');
 
-    useEffect(() => {
-      const deleteMedia = async () => {
-        const params: Parameters = {
-          id: selectedId as number,
-        };
-
-        try {
-          const result = await (await deleteItem(params)).data;
-          if (result.status) {
-            
-          }
-        } catch (err) {
-          
-        }
+  useEffect(() => {
+    const deleteMedia = async () => {
+      const params: Parameters = {
+        id: selectedId as number,
       };
-      deleteMedia();
-      getValues('mediaFiles');
-    }, [selectedId]);
-  
+
+      try {
+        const result = await (await deleteItem(params)).data;
+        if (result.status) {
+        }
+      } catch (err) {}
+    };
+    deleteMedia();
+    getValues('mediaFiles');
+  }, [selectedId]);
+
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -311,25 +283,23 @@ Props) => {
   Geocode.enableDebug();
 
   const getLongAndLat = async (values: PropertyModel) => {
-    
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      
+
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       return values;
     } catch (error) {
-      
       return values;
     }
   };
-  
+
   const onSubmit = async (data: PropertyModel) => {
     getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     data.mediaFiles = uploadedMedia;
     try {
-      const result = await(await PropertyUpdate(undefined, data)).data;
+      const result = await (await PropertyUpdate(undefined, data)).data;
 
       if (result.status !== 400) {
         addToast('Property Succesfully Updated', {
@@ -397,37 +367,13 @@ Props) => {
                       </>
                     }
                   />
-                  <PrimarySelect<PropertyModel>
+                  <PrimaryState
                     register={register}
                     error={errors.state}
-                    label="State"
-                    placeholder="Which state in Nigeria is your property located"
-                    name="state"
-                    options={
-                      <>
-                        {getStates.map((x: any) => {
-                          return <option value={x.name}>{x.name}</option>;
-                        })}
-                      </>
-                    }
+                    errors={errors.lga}
+                    getValues={getValues}
+                    watch={watch}
                   />
-
-                  {getValues('state') !== undefined ? (
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.lga}
-                      label="LGA"
-                      placeholder="Local Government Area"
-                      name="lga"
-                      options={
-                        <>
-                          {lgas.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                  ) : null}
 
                   <PrimaryInput<PropertyModel>
                     label="Landmark"

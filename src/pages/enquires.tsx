@@ -9,6 +9,7 @@ import { PropertyView, UserEnquiry } from 'types/api';
 
 const enquires = ({ data }: { data: any }) => {
   const result = data.value;
+  console.log({ result });
 
   return (
     <Box w="90%" mx="auto" mt="3rem">
