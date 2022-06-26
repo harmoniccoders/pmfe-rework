@@ -5,7 +5,10 @@ import TenantInfo from '../TenantInfo';
 
 const AcceptedApplication = ({ result }: { result: any }) => {
   const accepted = result?.filter(
-    (item: ApplicationView) => item.status === 'ACCEPTED' || item.status === 'APPROVED'
+    (item: ApplicationView) =>
+      item.status === 'REVIEWED' ||
+      item.status === 'APPROVED' ||
+      item.status === 'ACCEPTED'
   );
   return (
     <Box>

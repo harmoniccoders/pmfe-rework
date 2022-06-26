@@ -153,7 +153,7 @@ const ContactPage = () => {
             p="2rem"
           >
             <Image
-              src="/assets/Buy_illustration.png"
+              src="/assets/Buy_Illustration.png"
               h="full"
               w="full"
               objectFit="cover"
@@ -169,7 +169,7 @@ const ContactPage = () => {
             mx="auto"
           >
             <Image
-              src="/assets/Clean_illustration.png"
+              src="/assets/Clean_Illustration.png"
               h="full"
               w="full"
               objectFit="cover"
@@ -185,11 +185,12 @@ const ContactPage = () => {
             mx="auto"
           >
             <Image
-              src="/assets/Sell illustration.png"
+              src="/assets/Sell Illustration.png"
               h="full"
               w="full"
               objectFit="cover"
             />
+          
           </Box>
           <Box
             w="400px"
@@ -201,7 +202,7 @@ const ContactPage = () => {
             mx="auto"
           >
             <Image
-              src="/assets/Rent_illustration.png"
+              src="/assets/Rent_Illustration.png"
               h="full"
               w="full"
               objectFit="cover"

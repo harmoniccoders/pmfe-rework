@@ -28,7 +28,7 @@ const sell = ({
   const result = data?.filter((property: PropertyView) => !property.isDraft);
 
   return (
-    <Box w="90%" mx="auto" py="4">
+    <Box w="90%" mx="auto" pt="2rem" pb="3rem">
       {result && result.length > 0 ? (
         <Box>
           <Flex justify="space-between" align="center" my="8">

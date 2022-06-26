@@ -60,7 +60,7 @@ const RequestRentProperty = ({ propertyTypes }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.push('/my-rent/requests');
+        router.push('/requests');
         return;
       }
       addToast(result.message, {

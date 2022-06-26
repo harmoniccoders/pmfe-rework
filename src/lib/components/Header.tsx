@@ -45,22 +45,24 @@ const Header = () => {
   const router = useRouter();
   const user = Cookies.get('user');
   return (
-    <Flex
-      w="90%"
-      mx="auto"
-      h="4.8rem"
-      justifyContent="space-between"
-      align="center"
-      
-      display={
-        router.asPath === '/contact' || router.asPath === '/payment/validate'
-          ? 'none'
-          : 'flex'
-      }
-    >
-      <DesktopView user={user} />
-      <MobileView user={user} />
-    </Flex>
+    <Box position="sticky" w="full" top="0" bg="white" zIndex="50">
+      <Flex
+        w="90%"
+        mx="auto"
+        bg="white"
+        h="4.8rem"
+        justifyContent="space-between"
+        align="center"
+        display={
+          router.asPath === '/contact' || router.asPath === '/payment/validate'
+            ? 'none'
+            : 'flex'
+        }
+      >
+        <DesktopView user={user} />
+        <MobileView user={user} />
+      </Flex>
+    </Box>
   );
 };
 export default Header;

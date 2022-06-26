@@ -296,7 +296,7 @@ function Profile() {
         mt="2rem !important"
         display={{ base: 'none', lg: 'block' }}
       >
-        <Image src="/assets/Buy_illustration.png" w="full" />
+        <Image src="/assets/Buy_Illustration.png" w="full" />
       </Box>
     </Stack>
   );

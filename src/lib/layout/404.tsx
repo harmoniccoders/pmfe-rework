@@ -2,7 +2,7 @@ import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 
 function NoPage() {
   return (
-    <Flex align="center" justifyContent="center">
+    <Flex align="center" justifyContent="center" pb="2rem">
       <Box w="full">
         <Box w="50%" mx="auto">
           <Image src="/assets/preview.png" w="full" h="auto" />

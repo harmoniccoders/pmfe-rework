@@ -11,7 +11,7 @@ function RequestPage({
 
 }) {
   return (
-    <Box w="100%" mt="30px">
+    <Box w="100%" mt="30px" pb="2rem">
       <Box w="90%" mx="auto">
         <Heading
           fontSize="16px"

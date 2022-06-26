@@ -659,7 +659,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                   <>
                     <CurrencyField<ApplicationModel>
                       placeholder="How much Rent Relief do you need?"
-                      defaultValue=""
+                      defaultValue={item?.price || ''}
                       register={register}
                       error={errors.reliefAmount}
                       name={'reliefAmount'}

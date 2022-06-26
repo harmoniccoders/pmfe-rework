@@ -69,8 +69,11 @@ const PropertyCard = ({ item, matchId }: Props) => {
 
   const [addEnquiry, { loading: isLoading, data: isData, error: isError }] =
     useOperationMethod('Propertyaddenquiries{Id}');
-
+  const userIn = Cookies.get('userIn');
   const AddEnquireView = async () => {
+    if (userIn != 'true') {
+      router.push('/login');
+    }
     const params: Parameters = {
       Id: item.id as number,
     };
@@ -410,9 +413,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
                 disabled={item.createdByUser?.id === user?.id}
                 onClick={() => CreateEnquireView()}
               >
-                {item.createdByUser?.id === user?.id
-                  ? 'Disabled'
-                  : 'Enquire'}
+                {item.createdByUser?.id === user?.id ? 'Disabled' : 'Enquire'}
               </Button>
             </HStack>
           )}

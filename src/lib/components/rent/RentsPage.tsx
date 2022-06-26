@@ -10,6 +10,7 @@ import {
 } from 'types/api';
 import AddRentModal from 'lib/components/Modals/AddRentModal';
 import RentoutModal from 'lib/components/Modals/RentoutModal';
+import Cookies from 'js-cookie';
 
 const RentsPage = ({
   propertyTitles,
@@ -27,7 +28,7 @@ const RentsPage = ({
   getBanks: any;
 }) => {
   const router = useRouter();
-
+  
   const openRentProperty = () => {
     router.push('/rent/listed-property');
   };

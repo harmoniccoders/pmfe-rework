@@ -21,7 +21,7 @@ import {
   TenantType,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -41,6 +41,7 @@ import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
+import Cookies from 'js-cookie';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -278,275 +279,40 @@ const RentForm = ({
       return;
     } catch (err) {}
   };
+  const userIn = Cookies.get('userIn');
+  useEffect(() => {
+    if (userIn !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
+  
   return (
     <>
-      <Box>
-        <Stack>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <>
-              {formStep == 0 && (
-                <>
-                  <PrimaryInput<PropertyModel>
-                    label="Name"
-                    name="name"
-                    error={errors.name}
-                    placeholder="Give your listing a name that makes it able to find"
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimarySelect<PropertyModel>
-                    register={register}
-                    error={errors.propertyTypeId}
-                    label="Type"
-                    placeholder="Choose a Property"
-                    name="propertyTypeId"
-                    options={
-                      <>
-                        {propertyTypes.map((x: PropertyType) => {
-                          return <option value={x.id}>{x.name}</option>;
-                        })}
-                      </>
-                    }
-                  />
-                  <PrimarySelect<PropertyModel>
-                    register={register}
-                    error={errors.title}
-                    label="Property Title"
-                    placeholder="Certificate of Occupancy, Governor's Consent ..."
-                    name="title"
-                    options={
-                      <>
-                        {propertyTitles.map((x: PropertyType) => {
-                          return (
-                            <option value={x.name as string}>{x.name}</option>
-                          );
-                        })}
-                      </>
-                    }
-                  />
-                  <PrimaryState
-                    register={register}
-                    error={errors.state}
-                    errors={errors.lga}
-                    getValues={getValues}
-                    watch={watch}
-                  />
-
-                  <PrimaryInput<PropertyModel>
-                    label="Landmark"
-                    name="area"
-                    placeholder="Nearest Landmark"
-                    error={errors.area}
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimaryInput<PropertyModel>
-                    label="Address"
-                    name="address"
-                    placeholder="Enter your address"
-                    error={errors.address}
-                    defaultValue=""
-                    register={register}
-                  />
-                  <PrimaryEditor<PropertyModel>
-                    name="description"
-                    control={control}
-                    label="Description"
-                    register={register}
-                    defaultValue=""
-                    error={errors.description}
-                  />
-                  <CurrencyField<PropertyModel>
-                    placeholder="₦0.00"
-                    defaultValue=""
-                    register={register}
-                    error={errors.price}
-                    name={'price'}
-                    control={control}
-                    label="Rent (Per year)"
-                  />
-                  <Box>
-                    <Flex
-                      w="full"
-                      border="1px solid grey"
-                      height="3rem"
-                      px="1rem"
-                      align="center"
-                      my="1.5rem"
-                      cursor="pointer"
-                      borderRadius="6px" //@ts-ignore
-                      onClick={() => widgetApi.current.openDialog()}
-                    >
-                      <Icon as={BiImage} />
-                      <Text fontWeight="500" pl="1rem">
-                        Upload an Image
-                      </Text>
-                    </Flex>
-                    <Widget
-                      publicKey="fda3a71102659f95625f"
-                      //@ts-ignore
-                      id="file"
-                      multiple
-                      imageShrink="640x480"
-                      multipleMax={9}
-                      imagePreviewMaxSize={9}
-                      imagesOnly
-                      onChange={(info) => onChangeImg(info, true)}
-                      //@ts-ignore
-                      ref={widgetApi}
-                    />
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {uploadedMedia
-                            .filter((m) => m.isImage)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                  >
-                                    <Image
-                                      src={item.url}
-                                      alt="propery-image"
-                                      w="100%"
-                                      height="100%"
-                                      objectFit="cover"
-                                    />
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
-                  </Box>
-                  <Box>
-                    <Flex
-                      w="full"
-                      border="1px solid grey"
-                      height="3rem"
-                      px="1rem"
-                      align="center"
-                      my="1.5rem"
-                      cursor="pointer"
-                      borderRadius="6px" //@ts-ignore
-                      onClick={() => widgetApis.current.openDialog()}
-                    >
-                      <Icon as={BiImage} />
-                      <Text fontWeight="500" pl="1rem">
-                        Upload an Interactive Video
-                      </Text>
-                    </Flex>
-                    <Widget
-                      publicKey="fda3a71102659f95625f"
-                      //@ts-ignore
-                      id="file"
-                      multiple
-                      imageShrink="640x480"
-                      multipleMax={3}
-                      imagePreviewMaxSize={9}
-                      inputAcceptTypes={'video/*'}
-                      onChange={(info) => onChangeImg(info, false)}
-                      //@ts-ignore
-                      ref={widgetApis}
-                    />
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {uploadedMedia
-                            .filter((m) => m.isVideo)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                  >
-                                    <AspectRatio
-                                      maxW="150px"
-                                      w="full"
-                                      ratio={1}
-                                    >
-                                      <iframe
-                                        title="Interactive videp"
-                                        src={item.url as string}
-                                        allowFullScreen
-                                      />
-                                    </AspectRatio>
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
-                  </Box>
-
-                  <NumberCounter
-                    valueName="numberOfBedrooms"
-                    setValue={setValue}
-                    getValues={getValues}
-                    label="Number of Bedrooms"
-                  />
-                  <NumberCounter
-                    valueName="numberOfBathrooms"
-                    setValue={setValue}
-                    getValues={getValues}
-                    label="Number of Bathrooms"
-                  />
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
+      {userIn == 'true' ? (
+        <Box>
+          <Stack>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+              <>
+                {formStep == 0 && (
+                  <>
+                    <PrimaryInput<PropertyModel>
+                      label="Name"
+                      name="name"
+                      error={errors.name}
+                      placeholder="Give your listing a name that makes it able to find"
                       defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to manage the tenant myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me manage my tenant'}
-                              value={'false'}
-                            />
-                            <Tooltip aria-label="A tooltip">
-                              <FaInfoCircle onClick={() => setFormStep(2)} />
-                            </Tooltip>
-                          </Flex>
-                        </>
-                      }
+                      register={register}
                     />
-                  </Box>
-                </>
-              )}
-              {formStep === 1 && (
-                <>
-                  <Box>
-                    <Text fontWeight="600">
-                      What kind of tenants do you want?
-                    </Text>
                     <PrimarySelect<PropertyModel>
                       register={register}
-                      error={errors.tenantTypeId}
+                      error={errors.propertyTypeId}
                       label="Type"
-                      placeholder="Choose an option"
-                      name="tenantTypeId"
+                      placeholder="Choose a Property"
+                      name="propertyTypeId"
                       options={
                         <>
-                          {propertyTenants.map((x: TenantType) => {
+                          {propertyTypes.map((x: PropertyType) => {
                             return <option value={x.id}>{x.name}</option>;
                           })}
                         </>
@@ -554,105 +320,350 @@ const RentForm = ({
                     />
                     <PrimarySelect<PropertyModel>
                       register={register}
-                      error={errors.budget}
-                      label="Annual Income Bracket"
-                      placeholder="Choose an option"
-                      name="budget"
+                      error={errors.title}
+                      label="Property Title"
+                      placeholder="Certificate of Occupancy, Governor's Consent ..."
+                      name="title"
                       options={
                         <>
-                          {incomeBracket.map((x: any) => {
-                            return <option value={x.id}>{x.name}</option>;
+                          {propertyTitles.map((x: PropertyType) => {
+                            return (
+                              <option value={x.name as string}>{x.name}</option>
+                            );
                           })}
                         </>
                       }
                     />
-                  </Box>
-                  <Box mt="8">
-                    <Text fontWeight="600">Rent Collection</Text>
-                    <PrimarySelect<PropertyModel>
+                    <PrimaryState
                       register={register}
-                      error={errors.rentCollectionTypeId}
-                      label="How Frequently do you want to collect rent?"
-                      placeholder="Choose option: weekly, monthly, yearly"
-                      name="rentCollectionTypeId"
-                      options={
-                        <>
-                          {propertyCollection.map((x: RentCollectionType) => {
-                            return <option value={x.id}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.bank}
-                      label="Your Bank"
-                      placeholder="Choose your bank"
-                      name="bank"
-                      options={
-                        <>
-                          {getBanks.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
+                      error={errors.state}
+                      errors={errors.lga}
+                      getValues={getValues}
+                      watch={watch}
                     />
 
                     <PrimaryInput<PropertyModel>
-                      label="Your Account Number"
-                      name="accountNumber"
-                      placeholder="Enter your bank account number"
+                      label="Landmark"
+                      name="area"
+                      placeholder="Nearest Landmark"
+                      error={errors.area}
                       defaultValue=""
                       register={register}
-                      error={errors.accountNumber}
                     />
+                    <PrimaryInput<PropertyModel>
+                      label="Address"
+                      name="address"
+                      placeholder="Enter your address"
+                      error={errors.address}
+                      defaultValue=""
+                      register={register}
+                    />
+                    <PrimaryEditor<PropertyModel>
+                      name="description"
+                      control={control}
+                      label="Description"
+                      register={register}
+                      defaultValue=""
+                      error={errors.description}
+                    />
+                    <CurrencyField<PropertyModel>
+                      placeholder="₦0.00"
+                      defaultValue=""
+                      register={register}
+                      error={errors.price}
+                      name={'price'}
+                      control={control}
+                      label="Rent (Per year)"
+                    />
+                    <Box>
+                      <Flex
+                        w="full"
+                        border="1px solid grey"
+                        height="3rem"
+                        px="1rem"
+                        align="center"
+                        my="1.5rem"
+                        cursor="pointer"
+                        borderRadius="6px" //@ts-ignore
+                        onClick={() => widgetApi.current.openDialog()}
+                      >
+                        <Icon as={BiImage} />
+                        <Text fontWeight="500" pl="1rem">
+                          Upload an Image
+                        </Text>
+                      </Flex>
+                      <Widget
+                        publicKey="fda3a71102659f95625f"
+                        //@ts-ignore
+                        id="file"
+                        multiple
+                        imageShrink="640x480"
+                        multipleMax={9}
+                        imagePreviewMaxSize={9}
+                        imagesOnly
+                        onChange={(info) => onChangeImg(info, true)}
+                        //@ts-ignore
+                        ref={widgetApi}
+                      />
+                      {uploadedMedia.length > 0 && (
+                        <>
+                          <HStack w="full" spacing="1rem" overflow="auto">
+                            {uploadedMedia
+                              .filter((m) => m.isImage)
+                              .map((item: any) => {
+                                return (
+                                  <SRLWrapper>
+                                    <Box
+                                      w="90px"
+                                      h="90px"
+                                      borderRadius="5px"
+                                      bgColor="brand.50"
+                                      flexShrink={0}
+                                      overflow="hidden"
+                                    >
+                                      <Image
+                                        src={item.url}
+                                        alt="propery-image"
+                                        w="100%"
+                                        height="100%"
+                                        objectFit="cover"
+                                      />
+                                    </Box>
+                                  </SRLWrapper>
+                                );
+                              })}
+                          </HStack>
+                        </>
+                      )}
+                    </Box>
+                    <Box>
+                      <Flex
+                        w="full"
+                        border="1px solid grey"
+                        height="3rem"
+                        px="1rem"
+                        align="center"
+                        my="1.5rem"
+                        cursor="pointer"
+                        borderRadius="6px" //@ts-ignore
+                        onClick={() => widgetApis.current.openDialog()}
+                      >
+                        <Icon as={BiImage} />
+                        <Text fontWeight="500" pl="1rem">
+                          Upload an Interactive Video
+                        </Text>
+                      </Flex>
+                      <Widget
+                        publicKey="fda3a71102659f95625f"
+                        //@ts-ignore
+                        id="file"
+                        multiple
+                        imageShrink="640x480"
+                        multipleMax={3}
+                        imagePreviewMaxSize={9}
+                        inputAcceptTypes={'video/*'}
+                        onChange={(info) => onChangeImg(info, false)}
+                        //@ts-ignore
+                        ref={widgetApis}
+                      />
+                      {uploadedMedia.length > 0 && (
+                        <>
+                          <HStack w="full" spacing="1rem" overflow="auto">
+                            {uploadedMedia
+                              .filter((m) => m.isVideo)
+                              .map((item: any) => {
+                                return (
+                                  <SRLWrapper>
+                                    <Box
+                                      w="90px"
+                                      h="90px"
+                                      borderRadius="5px"
+                                      bgColor="brand.50"
+                                      flexShrink={0}
+                                      overflow="hidden"
+                                    >
+                                      <AspectRatio
+                                        maxW="150px"
+                                        w="full"
+                                        ratio={1}
+                                      >
+                                        <iframe
+                                          title="Interactive videp"
+                                          src={item.url as string}
+                                          allowFullScreen
+                                        />
+                                      </AspectRatio>
+                                    </Box>
+                                  </SRLWrapper>
+                                );
+                              })}
+                          </HStack>
+                        </>
+                      )}
+                    </Box>
+
+                    <NumberCounter
+                      valueName="numberOfBedrooms"
+                      setValue={setValue}
+                      getValues={getValues}
+                      label="Number of Bedrooms"
+                    />
+                    <NumberCounter
+                      valueName="numberOfBathrooms"
+                      setValue={setValue}
+                      getValues={getValues}
+                      label="Number of Bathrooms"
+                    />
+                    <Box my="1.3em">
+                      <RadioButton<PropertyModel>
+                        name="sellMyself"
+                        register={register}
+                        defaultValue=""
+                        error={errors.sellMyself}
+                        control={control}
+                        radios={
+                          <>
+                            <RadioInput
+                              label={'I want to manage the tenant myself'}
+                              value={'true'}
+                            />
+                            <Flex align="center" gap="1" pos="relative">
+                              <RadioInput
+                                label={'Help me manage my tenant'}
+                                value={'false'}
+                              />
+                              <Tooltip aria-label="A tooltip">
+                                <FaInfoCircle onClick={() => setFormStep(2)} />
+                              </Tooltip>
+                            </Flex>
+                          </>
+                        }
+                      />
+                    </Box>
+                  </>
+                )}
+                {formStep === 1 && (
+                  <>
+                    <Box>
+                      <Text fontWeight="600">
+                        What kind of tenants do you want?
+                      </Text>
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.tenantTypeId}
+                        label="Type"
+                        placeholder="Choose an option"
+                        name="tenantTypeId"
+                        options={
+                          <>
+                            {propertyTenants.map((x: TenantType) => {
+                              return <option value={x.id}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.budget}
+                        label="Annual Income Bracket"
+                        placeholder="Choose an option"
+                        name="budget"
+                        options={
+                          <>
+                            {incomeBracket.map((x: any) => {
+                              return <option value={x.id}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+                    </Box>
+                    <Box mt="8">
+                      <Text fontWeight="600">Rent Collection</Text>
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.rentCollectionTypeId}
+                        label="How Frequently do you want to collect rent?"
+                        placeholder="Choose option: weekly, monthly, yearly"
+                        name="rentCollectionTypeId"
+                        options={
+                          <>
+                            {propertyCollection.map((x: RentCollectionType) => {
+                              return <option value={x.id}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.bank}
+                        label="Your Bank"
+                        placeholder="Choose your bank"
+                        name="bank"
+                        options={
+                          <>
+                            {getBanks.map((x: any) => {
+                              return <option value={x.name}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+
+                      <PrimaryInput<PropertyModel>
+                        label="Your Account Number"
+                        name="accountNumber"
+                        placeholder="Enter your bank account number"
+                        defaultValue=""
+                        register={register}
+                        error={errors.accountNumber}
+                      />
+                    </Box>
+                  </>
+                )}
+                {formStep === 2 && (
+                  <Box h="75vh">
+                    <Text fontSize="18px" fontWeight="600" mb="1rem">
+                      Benefits of letting us help you rent your property
+                    </Text>
+                    <ol>
+                      <li>
+                        <Text mt="1rem">
+                          Our 103% money-back guarantee will be activated on
+                          your property. This guarantee will help you rent out
+                          your property faster as tenants will feel more
+                          confident to rent.
+                        </Text>
+                      </li>
+                      <li>
+                        <Text mt="1rem">
+                          Your property will be shown prominently in search
+                          results.
+                        </Text>
+                      </li>
+                      <li>
+                        <Text mt="1rem">
+                          {' '}
+                          Your property will feature the verification badge.
+                        </Text>
+                      </li>
+                    </ol>
+                    <Center>
+                      <Button
+                        position="absolute"
+                        bottom="10"
+                        w="75%"
+                        onClick={() => setFormStep(formStep - 1)}
+                      >
+                        ok
+                      </Button>
+                    </Center>
                   </Box>
-                </>
-              )}
-              {formStep === 2 && (
-                <Box h="75vh">
-                  <Text fontSize="18px" fontWeight="600" mb="1rem">
-                    Benefits of letting us help you rent your property
-                  </Text>
-                  <ol>
-                    <li>
-                      <Text mt="1rem">
-                        Our 103% money-back guarantee will be activated on your
-                        property. This guarantee will help you rent out your
-                        property faster as tenants will feel more confident to
-                        rent.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        Your property will be shown prominently in search
-                        results.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        {' '}
-                        Your property will feature the verification badge.
-                      </Text>
-                    </li>
-                  </ol>
-                  <Center>
-                    <Button
-                      position="absolute"
-                      bottom="10"
-                      w="75%"
-                      onClick={() => setFormStep(formStep - 1)}
-                    >
-                      ok
-                    </Button>
-                  </Center>
-                </Box>
-              )}
-              {RenderButton()}
-            </>
-          </form>
-        </Stack>
-      </Box>
+                )}
+                {RenderButton()}
+              </>
+            </form>
+          </Stack>
+        </Box>
+      ) : null}
     </>
   );
 };

@@ -46,7 +46,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
 
       if (result.status) {
         onClose();
-        addToast('Application under review', {
+        addToast('Tenant accepted succesfully', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -198,13 +198,13 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                   py="2"
                   bgColor="brand.700"
                 >
-                  {item.status === 'APPROVED' 
+                  {item.status === 'APPROVED'
                     ? 'Payment Confirmed'
                     : item.status === 'REJECTED'
                     ? 'Rejected'
                     : item.status === 'ACCEPTED'
                     ? 'Awaiting Payment'
-                    : 'Pending Review'}
+                    : 'Awaiting Payment'}
                 </Text>
               </VStack>
             )}

@@ -51,7 +51,14 @@ const RequestCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-bed" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {`${item.numberOfBedRooms} ${
                     item.numberOfBedRooms
                       ? item.numberOfBedRooms > 1
@@ -65,7 +72,14 @@ const RequestCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-toilet" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {`${item.numberOfBathrooms} ${
                     item.numberOfBathrooms
                       ? item.numberOfBathrooms > 1
@@ -79,7 +93,14 @@ const RequestCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-tags" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {naira(item.budget as unknown as number)}
                 </Text>
               </Flex>
@@ -87,7 +108,14 @@ const RequestCard = ({ item }: Props) => {
             <GridItem>
               <Flex alignItems="center">
                 <Icons iconClass="fa-calendar" style={iconStyle} />
-                <Text fontSize="13px" ml="4px">
+                <Text
+                  fontSize="13px"
+                  ml="4px"
+                  w={{ base: '100px', lg: '50px', xl: '100px' }}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
                   {item.propertyType?.name}
                 </Text>
               </Flex>

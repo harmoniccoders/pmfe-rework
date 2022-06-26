@@ -41,6 +41,7 @@ function AddRentModal({
   isClosed,
 }: AddRentProps) {
   const [formStep, setFormStep] = useState(0);
+  
   return (
     <Modal
       isOpen={isOpen}

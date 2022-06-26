@@ -76,6 +76,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
         window.location.href = '/login';
         return;
       }
+      onClose()
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,

@@ -38,7 +38,7 @@ const index = ({ data }: { data: any }) => {
   return (
     <Box>
       {isSearch && router.query.search == searchTerm ? (
-        <Box w="90%" mx="auto" mt="3rem">
+        <Box w="90%" mx="auto" my="3rem">
           <Flex justify="space-between" alignItems="center" mb="2rem">
             <Heading fontSize="16px" lineHeight={1.5} color="brand.100">
               You searched for: {searchTerm}

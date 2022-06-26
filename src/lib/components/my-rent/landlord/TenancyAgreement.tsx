@@ -36,6 +36,7 @@ export default function TenancyAgreement({
       onClose={onClose}
       size="lg"
       motionPreset="slideInBottom"
+      trapFocus={false}
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
@@ -94,7 +95,9 @@ export default function TenancyAgreement({
             </Text>
             <VStack align="flex-start" spacing="2">
               <Text textTransform="uppercase">
-                THIS TENANCY IS MADE ON {moment(data.tenant?.dateCreated).format('Do of MMMM YYYY')} BETWEEN
+                THIS TENANCY IS MADE ON{' '}
+                {moment(data.tenant?.dateCreated).format('Do of MMMM YYYY')}{' '}
+                BETWEEN
               </Text>
               <Heading fontSize="1rem" textTransform="capitalize">{`${
                 data.tenant?.firstName
