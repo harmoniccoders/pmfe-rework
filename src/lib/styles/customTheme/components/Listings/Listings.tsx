@@ -1,6 +1,5 @@
-import { Box, Flex, Heading, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import {
-  PropertyModel,
   PropertyTitle,
   PropertyType,
   PropertyView,

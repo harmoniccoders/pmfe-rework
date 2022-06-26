@@ -26,7 +26,13 @@ const index = ({ data, date, paymentRates }: Props) => {
   });
   return (
     <Box mt="30px" py="1rem">
-      <SingleEnquiry paymentRates={paymentRates} data={data} date={date} />
+      <SingleEnquiry
+        paymentRates={paymentRates}
+        data={data}
+        date={date}
+        isRent={true}
+        isBuy={false}
+      />
     </Box>
   );
 };
@@ -43,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const data = (await _dataAccess.get(`/api/Property/get/${id}`)).data;
     const paymentRates = (await _dataAccess.get(`/api/Payment/rates/${id}`))
       .data;
-    
+
     const date = (
       await _dataAccess.get(`/api/Property/inspectiondates/list/${id}`)
     ).data;

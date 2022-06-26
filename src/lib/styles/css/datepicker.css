@@ -80,3 +80,22 @@
   border-radius: 50% !important;
   background-color: #0042ff !important;
 }
+.react-datepicker__header__dropdown,
+.react-datepicker__header__dropdown--select {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 0.5rem;
+}
+.react-datepicker__year-select,
+.react-datepicker__month-select {
+  width: 130px;
+  outline: 0;
+}
+.react-datepicker__year-dropdown-container--select,
+.react-datepicker__month-dropdown-container--select {
+  display: inline-block;
+  margin: 0 2px;
+  outline: 0;
+  border: 1px solid lightgrey;
+  margin-bottom: 0.5rem;
+}

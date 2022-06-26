@@ -135,9 +135,10 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
           cursor="pointer"
           onClick={() => setIsMenuOpened((prev) => !prev)}
           fontWeight="bold"
+          textTransform="capitalize"
           ref={dropDownB}
         >
-          {user?.firstName}
+          {user?.firstName || 'User'}
           <Avatar
             size="xs"
             src={isUser?.profilePicture || '/assets/user-icon.png'}

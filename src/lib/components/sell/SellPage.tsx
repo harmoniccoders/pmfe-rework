@@ -4,7 +4,6 @@ import {
   Grid,
   Stack,
   Text,
-  Center,
   Image,
   useDisclosure,
   GridItem,
@@ -13,17 +12,14 @@ import {
 import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
 import ListingsCard from 'lib/components/ListingsCard';
-import Pagination from 'lib/components/Pagination';
 
 const sell = ({
   propertyTitles,
   propertyTypes,
-
   listings,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-
   listings: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

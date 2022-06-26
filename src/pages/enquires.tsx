@@ -11,14 +11,15 @@ import { PropertyView, UserEnquiry } from 'types/api';
 
 const enquires = ({ data }: { data: any }) => {
   const result = data.value;
- const router = useRouter();
- const isUser = Cookies.get('userIn');
- useEffect(() => {
-   if (isUser !== 'true') {
-     router.push({ pathname: '/login', query: { from: router.pathname } });
-     return;
-   }
- });
+  const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
+
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <HStack
@@ -77,8 +78,6 @@ const enquires = ({ data }: { data: any }) => {
 export default enquires;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;

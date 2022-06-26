@@ -9,12 +9,12 @@ import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 const listings = ({
   propertyTitles,
   propertyTypes,
-  
+
   listings,
 }: {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-  
+
   listings: any;
 }) => {
   return (
@@ -22,7 +22,6 @@ const listings = ({
       data={listings}
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
-    
     />
   );
 };
@@ -58,7 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       props: {
         propertyTypes,
         propertyTitles,
-        
         listings,
       },
     };

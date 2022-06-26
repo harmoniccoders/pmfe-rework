@@ -1,4 +1,4 @@
-import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
+import { PropertyTitle, PropertyType } from 'types/api';
 import { GetServerSideProps } from 'next';
 import { DataAccess } from 'lib/Utils/Api';
 import SellPage from 'lib/components/sell/SellPage';
@@ -9,17 +9,13 @@ import Cookies from 'js-cookie';
 const sell = ({
   propertyTitles,
   propertyTypes,
-
   listings,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-
   listings: any;
 }) => {
   const data = listings.value;
-
-  const result = data?.filter((property: PropertyView) => !property.isDraft);
 
   //Redirect user to login and back here when login is successful
   const isUser = Cookies.get('userIn');

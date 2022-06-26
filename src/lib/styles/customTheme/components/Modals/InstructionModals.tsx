@@ -83,6 +83,7 @@ const InstructionModal = ({
       motionPreset="slideInBottom"
       isCentered
       size="lg"
+      trapFocus={false}
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 

@@ -22,9 +22,8 @@ const iconStyle = {
 };
 
 const StepThree = ({ applicationData }: Props) => {
-  const check =
-    applicationData?.applicationStatus == 'APPROVED' &&
-    applicationData?.hasPaid;
+  const payment =
+    applicationData.status === 'SOLD' || applicationData.status === 'INACTIVE';
   return (
     <>
       <Flex
@@ -37,16 +36,16 @@ const StepThree = ({ applicationData }: Props) => {
           <Circle
             size="2rem"
             p="0.2rem"
-            border={check ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
-            bgColor={check ? '#2fdf84' : 'unset'}
+            border={payment ? '1px solid #2fdf84' : '1px solid #DCE1E7'}
+            bgColor={payment ? '#2fdf84' : 'unset'}
           >
             <Icon
-              as={check ? FaCheck : TbHourglassHigh}
+              as={payment ? FaCheck : TbHourglassHigh}
               w="100%"
-              color={check ? 'white' : 'brand.50'}
+              color={payment ? 'white' : 'brand.50'}
             />
           </Circle>
-          <Box h="100%" w="2px" bgColor={check ? '#2fdf84' : '#DCE1E7'}></Box>
+          <Box h="100%" w="2px" bgColor={payment ? '#2fdf84' : '#DCE1E7'}></Box>
         </VStack>
         <VStack
           align="flex-start"
@@ -70,10 +69,7 @@ const StepThree = ({ applicationData }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={
-              applicationData?.applicationStatus !== 'APPROVED' &&
-              !applicationData?.hasPaid
-            }
+            disabled={!payment}
           >
             <Box
               pr="10px"
@@ -96,10 +92,7 @@ const StepThree = ({ applicationData }: Props) => {
             role="group"
             display="flex"
             alignItems="center"
-            disabled={
-              applicationData?.applicationStatus !== 'APPROVED' &&
-              !applicationData?.hasPaid
-            }
+            disabled={!payment}
           >
             <Box
               pr="10px"

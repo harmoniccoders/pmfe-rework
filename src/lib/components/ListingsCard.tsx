@@ -93,10 +93,17 @@ const ListingsCard = ({
             fontWeight="600"
             justify="space-between"
             color={
-              item.isDraft || item.status === 'REJECTED' ? 'white' : 'black'
+              item.isDraft ||
+              item.status === 'REJECTED' ||
+              item.status === 'SOLD' ||
+              item.status === 'INACTIVE'
+                ? 'white'
+                : 'black'
             }
             bgColor={
-              item.isDraft
+              item.isDraft ||
+              item.status === 'SOLD' ||
+              item.status === 'INACTIVE'
                 ? 'rgba(108,117,125,.9)'
                 : item.status === 'PENDING'
                 ? 'brand.600'
@@ -115,7 +122,9 @@ const ListingsCard = ({
               {item.isDraft
                 ? 'Only visible to you'
                 : item.status === 'INACTIVE'
-                ? (item.isForSale && 'SOLD') || (item.isForRent && 'Rented')
+                ? 'Property has been rented out'
+                : item.status === 'SOLD'
+                ? 'Property has been sold'
                 : item.status === 'PENDING'
                 ? 'Listing is pending'
                 : item.status === 'REJECTED'
@@ -124,7 +133,11 @@ const ListingsCard = ({
             </Text>
             <HStack
               cursor={'pointer'}
-              display={item.status === 'INACTIVE' ? 'none' : 'flex'}
+              display={
+                item.status === 'SOLD' || item.status === 'INACTIVE'
+                  ? 'none'
+                  : 'flex'
+              }
               onClick={() => setUpdateModal(true)}
             >
               <Text>Edit</Text>

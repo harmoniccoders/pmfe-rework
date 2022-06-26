@@ -41,11 +41,11 @@ import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
- 
   item: PropertyModel;
   formStep: number;
   setFormStep: any;
@@ -54,7 +54,6 @@ interface Props {
 const EditPropertyForm = ({
   propertyTitles,
   propertyTypes,
- 
   formStep,
   setFormStep,
   item,
@@ -122,27 +121,6 @@ const EditPropertyForm = ({
 
   const widgetApi = useRef();
   const widgetApis = useRef();
-
-  const [lgas, setLgas] = useState([]);
-
-  useEffect(() => {
-    const getLga = async (state: string) => {
-      const result = (
-        await axios.get(
-          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-        )
-      ).data;
-
-      if (Array.isArray(result) === true) {
-        setLgas(
-          result.map((value: string) => {
-            return { name: value };
-          })
-        );
-      }
-    };
-    getLga(getValues('state') as unknown as string);
-  }, [watch('state')]);
 
   const clearPreviewData = () => {
     setFormStep(0);
@@ -355,37 +333,13 @@ const EditPropertyForm = ({
                       </>
                     }
                   />
-                  {/* <PrimarySelect<PropertyModel>
+                  <PrimaryState
                     register={register}
                     error={errors.state}
-                    label="State"
-                    placeholder="Which state in Nigeria is your property located"
-                    name="state"
-                    options={
-                      <>
-                        {getStates.map((x: any) => {
-                          return <option value={x.name}>{x.name}</option>;
-                        })}
-                      </>
-                    }
+                    errors={errors.lga}
+                    getValues={getValues}
+                    watch={watch}
                   />
-
-                  {getValues('state') !== undefined ? (
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.lga}
-                      label="LGA"
-                      placeholder="Local Government Area"
-                      name="lga"
-                      options={
-                        <>
-                          {lgas.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                  ) : null} */}
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"

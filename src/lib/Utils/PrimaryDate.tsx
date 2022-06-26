@@ -69,6 +69,10 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
               maxDate={maxDate}
               onChange={(date) => field.onChange(date)}
               selected={field.value}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              // peekNextMonth
               
             />
           )}

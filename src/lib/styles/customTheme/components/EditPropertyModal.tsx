@@ -27,7 +27,6 @@ interface EditPropertyProps {
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
   getBanks: any[];
-
   item: PropertyModel;
 }
 
@@ -39,7 +38,6 @@ function EditPropertyModal({
   getBanks,
   propertyTenants,
   propertyCollection,
-
   item,
 }: EditPropertyProps) {
   const [formStep, setFormStep] = useState(0);

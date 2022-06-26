@@ -39,6 +39,7 @@ import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -50,7 +51,6 @@ interface Props {
 const Form = ({
   propertyTitles,
   propertyTypes,
-
   formStep,
   setFormStep,
   onClose,
@@ -103,27 +103,6 @@ const Form = ({
 
   const widgetApi = useRef();
   const widgetApis = useRef();
-
-  const [lgas, setLgas] = useState([]);
-
-  useEffect(() => {
-    const getLga = async (state: string) => {
-      const result = (
-        await axios.get(
-          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-        )
-      ).data;
-
-      if (Array.isArray(result) === true) {
-        setLgas(
-          result.map((value: string) => {
-            return { name: value };
-          })
-        );
-      }
-    };
-    getLga(getValues('state') as unknown as string);
-  }, [watch('state')]);
 
   const clearPreviewData = () => {
     setFormStep(0);
@@ -252,28 +231,28 @@ const Form = ({
       } else {
         setLiveLoading(true);
       }
-      // const result = await (await PropertyCreate(undefined, data)).data;
+      const result = await (await PropertyCreate(undefined, data)).data;
 
-      // if (result.status) {
-      //   setLiveLoading(false);
-      //   setDraftLoading(false);
-      //   addToast(result.message, {
-      //     appearance: 'success',
-      //     autoDismiss: true,
-      //   });
-      //   onClose();
-      //   setFormStep(0);
-      //   router.reload();
-      //   return;
-      // }
-      // setLiveLoading(false);
-      // setDraftLoading(false);
-      // addToast(result.message, {
-      //   appearance: 'error',
-      //   autoDismiss: true,
-      // });
-      // setFormStep(0);
-      // onClose();
+      if (result.status) {
+        setLiveLoading(false);
+        setDraftLoading(false);
+        addToast(result.message, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        onClose();
+        setFormStep(0);
+        router.reload();
+        return;
+      }
+      setLiveLoading(false);
+      setDraftLoading(false);
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      setFormStep(0);
+      onClose();
       return;
     } catch (err) {}
   };
@@ -323,36 +302,13 @@ const Form = ({
                       </>
                     }
                   />
-                  {/* <PrimarySelect<PropertyModel>
+                  <PrimaryState
                     register={register}
                     error={errors.state}
-                    label="State"
-                    placeholder="Which state in Nigeria is your property located"
-                    name="state"
-                    options={
-                      <>
-                        {getStates.map((x: any) => {
-                          return <option value={x.name}>{x.name}</option>;
-                        })}
-                      </>
-                    }
+                    errors={errors.lga}
+                    getValues={getValues}
+                    watch={watch}
                   />
-                  {getValues('state') !== undefined ? (
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.lga}
-                      label="LGA"
-                      placeholder="Local Government Area"
-                      name="lga"
-                      options={
-                        <>
-                          {lgas.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                  ) : null} */}
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"
