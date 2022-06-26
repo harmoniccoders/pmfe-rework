@@ -61,6 +61,7 @@ const PasswordReset = ({ code }: { code: string }) => {
             w={['90%', '100%', '40vw']}
             h={['100%', '100%', '60vh']}
             justifyContent="center"
+            display={['none', 'flex']}
             textAlign="center"
             mx="1.3rem"
             borderRadius="8px"

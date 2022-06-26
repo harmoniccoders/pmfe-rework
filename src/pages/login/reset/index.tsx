@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           <Box
             w={['90%', '100%', '40vw']}
             h={['100%', '100%', '60vh']}
-            // bg="#ccc"
+            display={['none', 'flex']}
             justifyContent="center"
             textAlign="center"
             mx="1.3rem"

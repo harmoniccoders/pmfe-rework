@@ -76,6 +76,7 @@ const Login = () => {
           w={['90%', '100%', '40vw']}
           h={['100%', '100%', '60vh']}
           justifyContent="center"
+          display={["none", "flex"]}
           alignItems="center"
           textAlign="center"
           mx="1.3rem"
@@ -95,7 +96,7 @@ const Login = () => {
           mt="5rem"
           w="full"
         >
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '80%' }}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '90%' }}>
             <Stack gap={3}>
               <PrimaryInput<LoginModel>
                 label="Email"
