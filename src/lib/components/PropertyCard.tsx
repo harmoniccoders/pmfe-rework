@@ -175,9 +175,6 @@ const PropertyCard = ({ item, matchId }: Props) => {
     } catch (err) {}
   };
 
-  console.log({ item });
-  console.log({ user });
-
   return (
     <>
       <Box

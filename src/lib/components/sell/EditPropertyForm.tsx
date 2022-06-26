@@ -9,7 +9,6 @@ import {
   Tooltip,
   Icon,
   AspectRatio,
-  Radio,
   Center,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
@@ -20,14 +19,13 @@ import {
   PropertyType,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle, FaTrash } from 'react-icons/fa';

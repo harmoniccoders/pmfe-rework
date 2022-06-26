@@ -58,6 +58,7 @@ function ListedRent({ data }: { data: any }) {
     }
   };
   const clearSearch = () => {
+    setSearchTerm('');
     router.push({
       query: {
         search: '',

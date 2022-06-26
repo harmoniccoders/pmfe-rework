@@ -103,10 +103,7 @@ const PasswordReset = ({ code }: { code: string }) => {
                 </Link>
               </Flex>
             ) : (
-              <form
-                onSubmit={handleSubmit(onSubmit, (error) => console.log(error))}
-                style={{ width: '100%' }}
-              >
+              <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
                 <PrimaryInput<PasswordReset>
                   label="New Password"
                   name="newPassword"

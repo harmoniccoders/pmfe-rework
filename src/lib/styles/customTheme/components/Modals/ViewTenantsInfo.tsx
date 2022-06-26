@@ -198,7 +198,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                   py="2"
                   bgColor="brand.700"
                 >
-                  {item.status === 'APPROVED'
+                  {item.status === 'APPROVED' 
                     ? 'Payment Confirmed'
                     : item.status === 'REJECTED'
                     ? 'Rejected'

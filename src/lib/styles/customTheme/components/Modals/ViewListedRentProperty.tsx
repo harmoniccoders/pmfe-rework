@@ -166,8 +166,8 @@ const ViewListedRentProperty = ({
                     {item.isDraft
                       ? 'Only visible to you'
                       : item.status === 'INACTIVE'
-                      ? (item.isForSale && 'SOLD') ||
-                        (item.isForRent && 'Rented')
+                      ? (item.isForSale && 'Property Has Been Sold') ||
+                        (item.isForRent && 'Property Has Been Rented Out')
                       : item.status === 'PENDING'
                       ? 'Listing is pending'
                       : item.status === 'REJECTED'

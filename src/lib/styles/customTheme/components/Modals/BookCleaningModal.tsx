@@ -25,7 +25,7 @@ import { useState } from 'react';
 import { buildingState } from 'lib/Utils/BuildingStates';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 const schema = yup.object().shape({
   buildingType: yup.string().required(),
@@ -205,13 +205,12 @@ const BookCleaningModal = ({
                 }
               />
 
-              <PrimaryInput<CleaningModel>
-                label="location"
-                name="location"
+              <PrimaryState
                 register={register}
                 error={errors.location}
-                placeholder="location"
-                defaultValue=""
+                name="location"
+                getValues={getValues}
+                watch={watch}
               />
 
               <PrimaryDate<CleaningModel>

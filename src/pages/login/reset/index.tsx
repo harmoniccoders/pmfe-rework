@@ -37,7 +37,7 @@ const ForgotPassword = () => {
     };
     try {
       const result = await (await InitiateEmail(params)).data;
-      console.log({ result });
+      
       if (result.status) {
         addToast(result.message, {
           appearance: 'success',

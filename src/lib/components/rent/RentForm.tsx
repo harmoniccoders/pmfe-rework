@@ -21,14 +21,13 @@ import {
   TenantType,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
 import { FaInfoCircle } from 'react-icons/fa';
@@ -41,6 +40,7 @@ import { PrimaryEditor } from 'lib/Utils/PrimaryEditor';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -120,8 +120,6 @@ const RentForm = ({
     mode: 'all',
     defaultValues: {
       isForRent: true,
-      isDraft: false,
-      isForSale: false,
     },
   });
 
@@ -135,27 +133,6 @@ const RentForm = ({
 
   const widgetApi = useRef();
   const widgetApis = useRef();
-
-  const [lgas, setLgas] = useState([]);
-
-  useEffect(() => {
-    const getLga = async (state: string) => {
-      const result = (
-        await axios.get(
-          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-        )
-      ).data;
-
-      if (Array.isArray(result) === true) {
-        setLgas(
-          result.map((value: string) => {
-            return { name: value };
-          })
-        );
-      }
-    };
-    getLga(getValues('state') as unknown as string);
-  }, [watch('state')]);
 
   const clearPreviewData = () => {
     setFormStep(0);
@@ -347,37 +324,13 @@ const RentForm = ({
                       </>
                     }
                   />
-                  {/* <PrimarySelect<PropertyModel>
+                  <PrimaryState
                     register={register}
                     error={errors.state}
-                    label="State"
-                    placeholder="Which state in Nigeria is your property located"
-                    name="state"
-                    options={
-                      <>
-                        {getStates.map((x: any) => {
-                          return <option value={x.name}>{x.name}</option>;
-                        })}
-                      </>
-                    }
+                    errors={errors.lga}
+                    getValues={getValues}
+                    watch={watch}
                   />
-
-                  {getValues('state') !== undefined ? (
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.lga}
-                      label="LGA"
-                      placeholder="Local Government Area"
-                      name="lga"
-                      options={
-                        <>
-                          {lgas.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                  ) : null} */}
 
                   <PrimaryInput<PropertyModel>
                     label="Landmark"

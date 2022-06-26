@@ -1,18 +1,18 @@
 import { Box, Stack, SimpleGrid } from '@chakra-ui/react';
 import { PropertyRequestInput, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import axios from 'axios';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
+import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
   propertyTypes: PropertyType[];
@@ -47,26 +47,6 @@ const RequestRentProperty = ({ propertyTypes }: Props) => {
   watch('numberOfBedRooms');
   watch('numberOfBathrooms');
 
-  const [lgas, setLgas] = useState([]);
-
-  useEffect(() => {
-    const getLga = async (state: string) => {
-      const result = (
-        await axios.get(
-          `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-        )
-      ).data;
-
-      if (Array.isArray(result) === true) {
-        setLgas(
-          result.map((value: string) => {
-            return { name: value };
-          })
-        );
-      }
-    };
-    getLga(getValues('state') as unknown as string);
-  }, [watch('state')]);
 
   const { addToast } = useToasts();
   const router = useRouter();
@@ -111,39 +91,13 @@ const RequestRentProperty = ({ propertyTypes }: Props) => {
                     </>
                   }
                 />
-
-                {/* <PrimarySelect<PropertyRequestInput>
+                <PrimaryState
                   register={register}
                   error={errors.state}
-                  label="State"
-                  placeholder="Which state in Nigeria is your property located"
-                  name="state"
-                  options={
-                    <>
-                      {getStates.map((x: any) => {
-                        return <option value={x.name}>{x.name}</option>;
-                      })}
-                    </>
-                  }
+                  errors={errors.lga}
+                  getValues={getValues}
+                  watch={watch}
                 />
-
-                {getValues('state') !== undefined ? (
-                  <PrimarySelect<PropertyRequestInput>
-                    register={register}
-                    error={errors.lga}
-                    label="LGA"
-                    placeholder="Local Government Area"
-                    name="lga"
-                    options={
-                      <>
-                        {lgas.map((x: any) => {
-                          return <option value={x.name}>{x.name}</option>;
-                        })}
-                      </>
-                    }
-                  />
-                ) : null} */}
-
                 <PrimaryTextArea<PropertyRequestInput>
                   label="Comments"
                   name="comment"

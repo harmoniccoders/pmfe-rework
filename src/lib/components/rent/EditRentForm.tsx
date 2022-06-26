@@ -376,6 +376,7 @@ const EditRentForm = ({
                     watch={watch}
                   />
 
+
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"

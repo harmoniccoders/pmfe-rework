@@ -4,13 +4,23 @@ import { PrimarySelect } from './PrimarySelect';
 //@ts-ignore
 import NaijaStates from 'naija-state-local-government';
 
+type Props = {
+  name?: any;
+  register: any;
+  error: any;
+  errors?: any;
+  getValues: any;
+  watch: any;
+};
+
 export default function PrimaryState({
+  name,
   register,
   error,
   errors,
   getValues,
   watch,
-}: any) {
+}: Props) {
   const naijaStates = NaijaStates.all();
   const selectedState = getValues('state');
   const [lgas, setLgas] = useState([]);
@@ -31,9 +41,9 @@ export default function PrimaryState({
       <PrimarySelect<PropertyModel>
         register={register}
         error={error}
-        label="State"
+        label='State'
         placeholder="Which state in Nigeria is your property located"
-        name="state"
+        name={name || 'state'}
         options={
           <>
             {naijaStates.map((x: any) => {
@@ -43,7 +53,7 @@ export default function PrimaryState({
         }
       />
 
-      {getValues('state') !== undefined ? (
+      {getValues('state') !== undefined && name !== 'location' ? (
         <PrimarySelect<PropertyModel>
           register={register}
           error={errors}

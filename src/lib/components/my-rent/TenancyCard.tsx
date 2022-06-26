@@ -18,7 +18,6 @@ type Props = {
 };
 
 const TenancyCard = ({ category, data }: Props) => {
-  console.log(data);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const iconStyle = {
     color: '#0042ff',
@@ -41,7 +40,6 @@ const TenancyCard = ({ category, data }: Props) => {
             fontWeight={600}
             lineHeight={1.5}
           >
-           
             {data?.property?.name}
           </Text>
 

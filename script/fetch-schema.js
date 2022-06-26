@@ -40,7 +40,5 @@ instance
       path.resolve(__dirname, '../public/api-schema.json'),
       JSON.stringify(updatedSchema, null, 2)
     );
-
-    console.log('==> Schema fetched successfully...');
   })
   .catch(console.error);
