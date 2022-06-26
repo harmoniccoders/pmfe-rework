@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InspectionDateView, PaymentRatesView, PropertyModel } from 'types/api';
 import { GetServerSideProps } from 'next';
 import { DataAccess } from 'lib/Utils/Api';
 import { Box } from '@chakra-ui/react';
 import SingleEnquiry from 'lib/components/SingleEnquiry';
 import { returnUserData } from 'lib/Utils/userData';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 interface Props {
   data: PropertyModel;
@@ -13,7 +15,15 @@ interface Props {
 }
 
 const index = ({ data, date, paymentRates }: Props) => {
- 
+  
+  const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
   return (
     <Box mt="30px" py="1rem">
       <SingleEnquiry paymentRates={paymentRates} data={data} date={date} />
@@ -24,17 +34,7 @@ const index = ({ data, date, paymentRates }: Props) => {
 export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   const id = ctx.params?.id;

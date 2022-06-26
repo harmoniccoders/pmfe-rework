@@ -1,6 +1,5 @@
-import { Flex, Icon, Square, Text } from '@chakra-ui/react';
+import { Flex, Square, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { PagedCollection } from 'types/AppTypes';
 import Icons from './Icons';
 
@@ -68,7 +67,6 @@ function Pagination({ data }: { data: PagedCollection }) {
           ml="5px"
         >
           <Icons iconClass="fa-angle-right" style={iconStyle} />
-          {/* <Icon as={FiChevronRight} color="#323232" fontSize="1.2rem" /> */}
         </Square>
       </Flex>
 

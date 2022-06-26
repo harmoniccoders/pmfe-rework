@@ -4,8 +4,7 @@ import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';
 
 const buy = ({ data }: { data: PropertyModel[] }) => {
-  // console.log({ data });
-
+ 
   return <BuyPage data={data} />;
 };
 

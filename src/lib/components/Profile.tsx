@@ -72,7 +72,6 @@ function Profile() {
     data.profilePicture.url = url as string;
 
     data.id = user.id as number;
-    console.log({ data });
 
     try {
       const result = await (await updateUser(undefined, data)).data;
@@ -98,7 +97,7 @@ function Profile() {
   const [isUser, setIsUser] = useState(user);
   const onChange = async (info: any) => {
     setUrl(info.originalUrl);
-    console.log({ info });
+
     const updates = {
       id: user.id,
       profilePicture: {
@@ -111,7 +110,6 @@ function Profile() {
         isDocument: false,
       },
     };
-    console.log({ updates });
 
     try {
       const result = await axios.put(
@@ -124,7 +122,6 @@ function Profile() {
         }
       );
       setIsUser(result.data.data);
-      console.log({ result });
     } catch (error) {}
   };
 
@@ -134,7 +131,6 @@ function Profile() {
         const data = (await _dataAccess.get(`/api/user/list`)).data;
         const result = data.value.filter((x: any) => x.id == user.id);
         setIsUser(result[0]);
-        // console.log({ isUser });
       } catch (error) {}
     };
     getUser();

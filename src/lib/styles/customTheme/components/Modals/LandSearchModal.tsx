@@ -1,9 +1,6 @@
 import {
   Box,
   Text,
-  Button,
-  VStack,
-  HStack,
   ModalBody,
   ModalHeader,
   Flex,
@@ -11,22 +8,14 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { LandSearchModel, PropertyType } from 'types/api';
+import { LandSearchModel } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import NumberCounter from 'lib/Utils/NumberCounter';
-import { useState } from 'react';
-import { buildingState } from 'lib/Utils/BuildingStates';
-import { PrimarySelectLabel } from 'lib/Utils/PrimarySelectLabel';
-import { PrimaryDate } from 'lib/Utils/PrimaryDate';
-import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 
 const schema = yup.object().shape({

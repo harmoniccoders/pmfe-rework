@@ -1,11 +1,11 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
-import { Application } from 'types/api';
+import { ApplicationView } from 'types/api';
 import TenantInfo from '../TenantInfo';
 
 const RejectedApplication = ({ result }: { result: any }) => {
   const rejected = result?.filter(
-    (item: Application) => item.status === 'REJECTED'
+    (item: ApplicationView) => item.status === 'REJECTED'
   );
   return (
     <Box>
@@ -14,7 +14,7 @@ const RejectedApplication = ({ result }: { result: any }) => {
       </Text>
       {rejected.length > 0 ? (
         <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="5">
-          {rejected.map((item: Application) => (
+          {rejected.map((item: ApplicationView) => (
             <TenantInfo key={item.id} item={item} />
           ))}
         </SimpleGrid>

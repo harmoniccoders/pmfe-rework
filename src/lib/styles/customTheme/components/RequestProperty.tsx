@@ -1,5 +1,4 @@
-import { Box, Stack, Grid, SimpleGrid } from '@chakra-ui/react';
-import { PrimaryInput } from 'lib/Utils/PrimaryInput';
+import { Box, Stack, SimpleGrid } from '@chakra-ui/react';
 import { PropertyRequestInput, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { useEffect, useState } from 'react';
@@ -9,8 +8,6 @@ import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { PrimarySelectKey } from 'lib/Utils/PrimarySelectKey';
-import { StateSelect } from 'lib/Utils/StateSelect';
 import axios from 'axios';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { PrimaryTextArea } from 'lib/Utils/PrimaryTextArea';
@@ -19,9 +16,8 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTypes: PropertyType[];
-  getStates: any[];
 }
-const Form = ({ propertyTypes, getStates }: Props) => {
+const Form = ({ propertyTypes }: Props) => {
   const [requestProperty, { loading, data, error }] =
     useOperationMethod('PropertyRequestnew');
 
@@ -48,7 +44,6 @@ const Form = ({ propertyTypes, getStates }: Props) => {
     mode: 'all',
   });
 
-  // (watch('sellMyself'));
   watch('numberOfBedRooms');
   watch('numberOfBathrooms');
 
@@ -77,11 +72,9 @@ const Form = ({ propertyTypes, getStates }: Props) => {
   const router = useRouter();
 
   const onSubmit = async (data: PropertyRequestInput) => {
-    console.log({ data });
-
     try {
       const result = await (await requestProperty(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Request Succesful', {
           appearance: 'success',
@@ -119,7 +112,7 @@ const Form = ({ propertyTypes, getStates }: Props) => {
                   }
                 />
 
-                <PrimarySelect<PropertyRequestInput>
+                {/* <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.state}
                   label="State"
@@ -149,7 +142,7 @@ const Form = ({ propertyTypes, getStates }: Props) => {
                       </>
                     }
                   />
-                ) : null}
+                ) : null} */}
                 <PrimaryTextArea<PropertyRequestInput>
                   label="Comments"
                   name="comment"

@@ -1,36 +1,33 @@
-import axios from 'axios';
 import { DataAccess } from 'lib/Utils/Api';
-import { returnUserData } from 'lib/Utils/userData';
+
 import { GetServerSideProps } from 'next';
-import { PropertyTitle, PropertyType } from 'types/api';
 import RentRelief from 'lib/components/my-rent/RentRelief';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const rentRelief = ({ data }: { data: any }) => {
+   const router = useRouter();
+   const isUser = Cookies.get('userIn');
+   useEffect(() => {
+     if (isUser !== 'true') {
+       router.push({ pathname: '/login', query: { from: router.pathname } });
+       return;
+     }
+   });
+  
   return <RentRelief data={data} />;
 };
 
 export default rentRelief;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
-
-    const data = (await _dataAccess.get(`/api/Relief/user?${url}`));
+    const data = await _dataAccess.get(`/api/Relief/user?${url}`);
 
     return {
       props: {

@@ -3,23 +3,20 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
   Button,
   Text,
   Image,
   Box,
-  Badge,
   Heading,
   Grid,
   GridItem,
   VStack,
   AspectRatio,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import Icons from 'lib/components/Icons';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ShareListingsModal from './Modals/ShareListingsModal';
 import { useRouter } from 'next/router';
 import { PropertyView } from 'types/api';
@@ -84,10 +81,8 @@ const SeemoreModal = ({
         <ModalContent
           py={5}
           borderRadius="0"
-          // w={['88%', '80%']}
           overflow="hidden"
           maxH="100vh"
-          // maxW={['full', '50%']}
           h="100%"
           pos="fixed"
           mt="0rem"

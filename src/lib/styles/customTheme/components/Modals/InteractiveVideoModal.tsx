@@ -2,19 +2,15 @@ import React from 'react';
 import {
   AspectRatio,
   Box,
-  Button,
-  Flex,
   Grid,
   Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { PropertyView } from 'types/api/property-view';
 import { SRLWrapper } from 'simple-react-lightbox';

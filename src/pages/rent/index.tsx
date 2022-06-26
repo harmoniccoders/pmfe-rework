@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import { returnUserData } from 'lib/Utils/userData';
 import { DataAccess } from 'lib/Utils/Api';
 import {
   PropertyType,
@@ -13,7 +12,6 @@ import RentsPage from 'lib/components/rent/RentsPage';
 const rent = ({
   propertyTitles,
   propertyTypes,
-  getStates,
   getBanks,
   propertyTenants,
   propertyCollection,
@@ -22,14 +20,13 @@ const rent = ({
   propertyTypes: PropertyTitle[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any;
+
   getBanks: any;
 }) => {
   return (
     <RentsPage
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
-      getStates={getStates}
       getBanks={getBanks}
       propertyTenants={propertyTenants}
       propertyCollection={propertyCollection}
@@ -40,18 +37,6 @@ const rent = ({
 export default rent;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const {
-  //   data: { user, redirect },
-  // } = returnUserData(ctx);
-  // if (redirect)
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: '/login',
-  //     },
-  //     props: {},
-  //   };
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
@@ -64,9 +49,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     ).data;
     const propertyCollection = (
       await _dataAccess.get('/api/Property/collection/types')
-    ).data;
-    const getStates = (
-      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
     ).data;
 
     const getBanks = await (
@@ -81,7 +63,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         propertyTitles,
         propertyTenants,
         propertyCollection,
-        getStates,
         getBanks,
       },
     };

@@ -9,40 +9,42 @@ import {
   Box,
   Stack,
   Divider,
-  VStack,
   Button,
 } from '@chakra-ui/react';
 import { Parameters } from 'openapi-client-axios';
 import { useOperationMethod } from 'react-openapi-client';
-import { useRouter } from 'next/router';
 import { useToasts } from 'react-toast-notifications';
+import { ComplaintsView } from 'types/api';
 
 interface LandlordProps {
   isOpen: boolean;
   onClose: () => void;
-  data: any;
+  closeModal: () => void;
+  data: ComplaintsView;
 }
 
 export default function SingleComplainModal({
   isOpen,
   onClose,
+  closeModal,
   data,
 }: LandlordProps) {
   const [authorize, { loading, data: aData, error }] = useOperationMethod(
     'Complaintsauthorize{complaintsId}'
   );
-  console.log({ data });
-
+ 
   const { addToast } = useToasts();
   const AuthorizeComplaints = async () => {
     const params: Parameters = {
-      complaintsId: 2,
+      complaintsId: data.id as unknown as number,
     };
 
     try {
       const result = await (await authorize(params)).data;
+     
+      closeModal()
+      onClose();
       if (result.status) {
-        onClose();
         addToast('Successful', {
           appearance: 'success',
           autoDismiss: true,
@@ -55,7 +57,7 @@ export default function SingleComplainModal({
       });
       return;
     } catch (err) {
-      console.log(err);
+     
     }
   };
   return (
@@ -102,21 +104,21 @@ export default function SingleComplainModal({
               <Stack mt="1rem">
                 <Text fontWeight="500">Category</Text>
                 <Text fontWeight="700" fontSize={['1rem', '']}>
-                  Structural Damage
+                  {data.complaintsCategory}
                 </Text>
                 <Divider />
               </Stack>
               <Stack mt="1rem">
                 <Text fontWeight="500">Sub Category</Text>
                 <Text fontWeight="700" fontSize={['1rem', '']}>
-                  Roof Leakage
+                 {data.complaintsSubCategory}
                 </Text>
                 <Divider />
               </Stack>
               <Stack mt="1rem">
                 <Text fontWeight="500">Comments</Text>
                 <Text fontWeight="700" fontSize={['1rem', '']}>
-                  Roof Leakage
+                  {data.comment}
                 </Text>
                 <Divider />
               </Stack>

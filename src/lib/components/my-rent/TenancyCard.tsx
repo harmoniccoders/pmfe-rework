@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
   HStack,
   Text,
   VStack,
@@ -42,7 +41,7 @@ const TenancyCard = ({ category, data }: Props) => {
             fontWeight={600}
             lineHeight={1.5}
           >
-            {/* 4 Bedroom duplex with BQ */}
+           
             {data?.property?.name}
           </Text>
 

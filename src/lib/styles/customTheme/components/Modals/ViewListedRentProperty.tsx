@@ -16,7 +16,7 @@ import {
   AspectRatio,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
-import React, {  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
@@ -24,6 +24,8 @@ import parse from 'html-react-parser';
 import MapView from 'lib/Utils/MapView';
 import naira from '../Generics/Naira';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import { DataAccess } from 'lib/Utils/Api';
 
 const iconStyle = {
   color: '#0042ff',
@@ -34,18 +36,33 @@ type Props = {
   onClose?: any;
   openModal: () => void;
   item: PropertyView;
-  data: any;
 };
 
 const ViewListedRentProperty = ({
   isOpen,
   onClose,
   item,
-  data,
+
   openModal,
 }: Props) => {
-  const applications = data?.length;
   const router = useRouter();
+  const [applications, setApplications] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      const bearer = `Bearer ${Cookies.get('token')}`;
+      const _dataAccess = new DataAccess(bearer);
+
+      try {
+        const result = (
+          await _dataAccess.get(`/api/Application/list/${item.id}`)
+        ).data;
+
+        setApplications(result.value?.length);
+      } catch (err) {}
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Modal

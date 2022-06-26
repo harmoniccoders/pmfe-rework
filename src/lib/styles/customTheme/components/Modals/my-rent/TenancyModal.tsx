@@ -27,6 +27,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { ComplaintsCategory, ComplaintsModel } from 'types/api';
 import { useToasts } from 'react-toast-notifications';
 import RentReliefModal from '../RentReliefModal';
+import AgreementModal from '../AgreementModal';
 
 type Props = {
   isOpen: boolean;
@@ -37,10 +38,11 @@ type Props = {
 
 const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const [openRelief, setOpenRelief] = useState<boolean>(false);
+  const [openAgree, setOpenAgree] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<number>(0);
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
-  
+
   const [showCategory, setShowCategory] = useState<boolean>(false);
 
   const schema = yup.object().shape({
@@ -62,11 +64,9 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const { addToast } = useToasts();
 
   const onSubmit = async (data: ComplaintsModel) => {
-    console.log(data);
     try {
       const result = await (await CreateComplaint(undefined, data)).data;
 
-      console.log({ result });
       onClose();
       if (result.status) {
         addToast('Application Successful', {
@@ -352,6 +352,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
                   role="group"
                   display="flex"
                   alignItems="center"
+                  onClick={() => setOpenAgree(true)}
                 >
                   <Box
                     pr="10px"
@@ -392,6 +393,11 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
           onClose={() => setOpenRelief(false)}
           isOpen={openRelief}
           item={propertyData?.property}
+        />
+        <AgreementModal
+          isOpen={openAgree}
+          onClose={() => setOpenAgree(false)}
+          item={propertyData}
         />
       </ModalContent>
     </Modal>

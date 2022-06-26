@@ -25,7 +25,6 @@ import Pagination from './Pagination';
 
 function Listed({ data }: { data: any }) {
   const result = data.value;
-  console.log({result})
 
   const router = useRouter();
 
@@ -369,9 +368,9 @@ function Listed({ data }: { data: any }) {
           <ListedProperties result={result} />
         </GridItem>
       </SimpleGrid>
-        <Center my="2rem">
-          <Pagination data={data} />
-        </Center>
+      <Center my="2rem">
+        <Pagination data={data} />
+      </Center>
     </Box>
   );
 }

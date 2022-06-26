@@ -1,28 +1,16 @@
 import {
   Box,
   Button,
-  Divider,
   Flex,
   HStack,
   Image,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
-  VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
 import PdfDownloader from 'lib/styles/customTheme/components/Generics/PdfDownloader';
 import moment from 'moment';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { TableData, TableHead } from './Table';
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Transaction } from 'types/api';
@@ -41,7 +29,7 @@ function Validate() {
   const [loading, setLoading] = useState(false);
 
   const validatePayment = async () => {
-    // setLoading(true);
+   
     try {
       const data = await (
         await axios.get(
@@ -53,7 +41,7 @@ function Validate() {
       return;
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      
     }
   };
   useEffect(() => {

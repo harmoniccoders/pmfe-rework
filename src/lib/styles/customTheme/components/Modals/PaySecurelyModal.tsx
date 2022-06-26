@@ -31,7 +31,6 @@ const PaySecurelyModal = ({
   paymentRates,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log({ paymentRates });
 
   return (
     <Modal

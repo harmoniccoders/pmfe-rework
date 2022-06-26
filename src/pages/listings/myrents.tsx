@@ -10,7 +10,7 @@ const myRents = ({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+ 
   getBanks,
   listings,
 }: {
@@ -18,7 +18,7 @@ const myRents = ({
   propertyTypes: PropertyType[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any;
+ 
   getBanks: any;
   listings: any;
 }) => {
@@ -29,7 +29,7 @@ const myRents = ({
       propertyTitles={propertyTitles}
       propertyTenants={propertyTenants}
       propertyCollection={propertyCollection}
-      getStates={getStates}
+    
       getBanks={getBanks}
     />
   );
@@ -63,9 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
      const propertyCollection = (
        await _dataAccess.get('/api/Property/collection/types')
      ).data;
-    const getStates = (
-      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
-    ).data;
+  
 
     const listings = (
       await _dataAccess.get(`/api/Property/user/created/rent?${url}`)
@@ -84,7 +82,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         propertyTitles,
         propertyTenants,
         propertyCollection,
-        getStates,
+       
         listings,
         getBanks,
       },

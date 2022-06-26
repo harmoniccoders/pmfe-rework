@@ -11,18 +11,18 @@ import {
   ModalBody,
   VStack,
   Button,
-  HStack,
-  SimpleGrid,
   Divider,
   Checkbox,
 } from '@chakra-ui/react';
+import { Tenancy } from 'types/api';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  item: Tenancy
 }
 
-const AgreementModal = ({ isOpen, onClose }: Props) => {
+const AgreementModal = ({ isOpen, onClose,item }: Props) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -72,7 +72,10 @@ const AgreementModal = ({ isOpen, onClose }: Props) => {
             <VStack align="flex-start" fontSize="1.2rem">
               <Heading fontSize="1.2rem">Tenancy Agreement</Heading>
               <Text>Between</Text>
-              <Heading fontSize="1.2rem">Gideon Oluwasegun Emokpae</Heading>
+              <Heading
+                fontSize="1.2rem"
+                textTransform="capitalize"
+              >{`${item.tenant?.firstName} ${item.tenant?.lastName}`}</Heading>
               <Text>And</Text>
               <Heading fontSize="1.2rem">PropertyMataaz Limted</Heading>
             </VStack>
@@ -84,7 +87,10 @@ const AgreementModal = ({ isOpen, onClose }: Props) => {
               <Text>
                 THIS TENANCY IS MADE THIS 10TH DAY OF APRIL 2021 BETWEEN
               </Text>
-              <Heading fontSize="1rem">Gideon Oluwasegun Emokpae</Heading>
+              <Heading
+                fontSize="1rem"
+                textTransform="capitalize"
+              >{`${item.tenant?.firstName} ${item.tenant?.lastName}`}</Heading>
               <Text>
                 of 10 Adebayo Titilope Street, Omole Phase 4, Ikeja, Lagos,
                 Nigeria (hereinafter to referred to as The Tenant which
@@ -103,14 +109,16 @@ const AgreementModal = ({ isOpen, onClose }: Props) => {
             <Heading my="5" fontSize="1rem">
               WHEREAS:
             </Heading>
-            <VStack spacing="5" align="flex-start" >
-              <Divider/>
+            <VStack spacing="5" align="flex-start">
+              <Divider />
               <Checkbox colorScheme="green" alignItems="flex-start">
                 I agree that checking this box and tapping the agree button
                 constitutes an appending of my electronic signature to the
                 Tenancy Agreement herein.
               </Checkbox>
-              <Button fontSize="1rem" w="full">Agree and Submit</Button>
+              <Button fontSize="1rem" w="full">
+                Agree and Submit
+              </Button>
             </VStack>
           </Box>
         </ModalBody>

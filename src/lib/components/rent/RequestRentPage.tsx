@@ -3,13 +3,12 @@ import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import RequestRentProperty from 'lib/components/rent/RequestRentProperty';
 import { PropertyType } from 'types/api';
 
-
 function RequestRentPage({
   propertyTypes,
-  getStates,
+  
 }: {
   propertyTypes: PropertyType[];
-  getStates: any;
+ 
 }) {
   return (
     <Box w="100%">
@@ -18,7 +17,6 @@ function RequestRentPage({
           fontSize="16px"
           lineHeight={1.5}
           mb="2rem"
-          // opacity="0"
           pointerEvents="none"
         >
           Find the perfect property to rent from our wide range of options
@@ -44,12 +42,11 @@ function RequestRentPage({
         </HStack>
         <RequestRentProperty
           propertyTypes={propertyTypes}
-          getStates={getStates}
+          
         />
       </Box>
     </Box>
   );
 }
-
 
 export default RequestRentPage;

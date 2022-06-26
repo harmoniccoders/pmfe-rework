@@ -3,22 +3,18 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
   Button,
   Text,
-  Image,
   Box,
   Heading,
-  Grid,
-  GridItem,
   VStack,
   HStack,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
 import React from 'react';
-import { Cleaning, CleaningQuote, CleaningView } from 'types/api';
+import { CleaningView } from 'types/api';
 import moment from 'moment';
 import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
@@ -72,7 +68,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     const params: Parameters = {
       id: quote.id as number,
     };
-    console.log(params);
+   
     try {
       const result = await (await accept(params)).data;
       if (result.status) {

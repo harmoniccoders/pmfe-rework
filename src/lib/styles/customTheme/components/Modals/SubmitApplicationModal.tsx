@@ -25,7 +25,6 @@ import ButtonComponent from 'lib/components/Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { useRouter } from 'next/router';
 
-
 type Props = {
   onClose: any;
   isOpen: boolean;
@@ -64,14 +63,6 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
       maritalStatus: yup.string().required(),
     }),
 
-    // nextOfKin: yup.object({
-    //   firstName: yup.string().required(),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   address: yup.string().required(),
-    //   relationship: yup.string().required(),
-    // }),
   });
 
   const users = Cookies.get('user') as unknown as string;

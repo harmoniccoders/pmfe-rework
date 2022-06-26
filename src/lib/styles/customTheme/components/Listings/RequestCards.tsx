@@ -26,11 +26,9 @@ const iconStyle = {
 };
 
 const RequestCard = ({ item }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  console.log({item})
   return (
     <>
       <Box

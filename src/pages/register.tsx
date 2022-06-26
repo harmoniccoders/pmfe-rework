@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ButtonComponent from 'lib/components/Button';
-import React, { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -27,7 +27,6 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
   password: yup.string().min(8).max(16).required(),
-  // phoneNumber1: yup.string().matches(mobile, 'Invalid phone number'),
 });
 
 const signupform = () => {
@@ -54,7 +53,7 @@ const signupform = () => {
   const onSubmit = async (data: Register) => {
     try {
       const result = await (await RegisterUser(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('User Successfully Created', {
           appearance: 'success',
@@ -69,9 +68,7 @@ const signupform = () => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   return (
     <Box width="90%" mx="auto" mt={['1.875rem', '2.3rem']}>

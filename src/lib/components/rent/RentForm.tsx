@@ -47,7 +47,7 @@ interface Props {
   propertyTypes: PropertyType[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any[];
+
   getBanks: any[];
   formStep: number;
   setFormStep: any;
@@ -60,7 +60,7 @@ const RentForm = ({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+
   getBanks,
   formStep,
   setFormStep,
@@ -72,38 +72,38 @@ const RentForm = ({
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
 
   const schema = yup.object().shape({
-    // address: yup.string().required(),
-    // description: yup.string().required(),
-    // title: yup.string().required(),
-    // area: yup.string().required(),
-    // lga: yup.string().required(),
-    // state: yup.string().required(),
-    // propertyTypeId: yup.number().required(),
-    // sellMyself: yup.string().required(),
-    // name: yup.string().required(),
-    // numberOfBathrooms: yup.number().required(),
-    // numberOfBedrooms: yup.number().required(),
-    // price: yup.number().required(),
-    // budget: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // rentCollectionTypeId: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // tenantTypeId: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // bank: yup.string().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.string(),
-    // }),
-    // accountNumber: yup.string().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.string(),
-    // }),
+    address: yup.string().required(),
+    description: yup.string().required(),
+    title: yup.string().required(),
+    area: yup.string().required(),
+    lga: yup.string().required(),
+    state: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    sellMyself: yup.string().required(),
+    name: yup.string().required(),
+    numberOfBathrooms: yup.number().required(),
+    numberOfBedrooms: yup.number().required(),
+    price: yup.number().required(),
+    budget: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    rentCollectionTypeId: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    tenantTypeId: yup.number().when('name', {
+      is: () => formStep === 1,
+      then: yup.number(),
+    }),
+    bank: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
+    }),
+    accountNumber: yup.string().when('name', {
+      is: () => formStep === 1,
+      then: yup.string(),
+    }),
   });
 
   const {
@@ -347,7 +347,7 @@ const RentForm = ({
                       </>
                     }
                   />
-                  <PrimarySelect<PropertyModel>
+                  {/* <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
                     label="State"
@@ -377,7 +377,7 @@ const RentForm = ({
                         </>
                       }
                     />
-                  ) : null}
+                  ) : null} */}
 
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
@@ -569,9 +569,7 @@ const RentForm = ({
                               label={'Help me manage my tenant'}
                               value={'false'}
                             />
-                            <Tooltip
-                              aria-label="A tooltip"
-                            >
+                            <Tooltip aria-label="A tooltip">
                               <FaInfoCircle onClick={() => setFormStep(2)} />
                             </Tooltip>
                           </Flex>
@@ -658,24 +656,42 @@ const RentForm = ({
                   </Box>
                 </>
               )}
-               {formStep === 2 && (
-                <Box h='75vh'>
-                  <Text fontSize='18px' fontWeight='600' mb='1rem'>Benefits of letting us help you sell your property</Text>
+              {formStep === 2 && (
+                <Box h="75vh">
+                  <Text fontSize="18px" fontWeight="600" mb="1rem">
+                    Benefits of letting us help you rent your property
+                  </Text>
                   <ol>
                     <li>
-                      <Text mt='1rem'>Our 103% money-back guarantee will be activated on your property. This guarantee will help you sell 
-                        your property faster as buyers will feel more confident to buy.</Text>
+                      <Text mt="1rem">
+                        Our 103% money-back guarantee will be activated on your
+                        property. This guarantee will help you rent out your
+                        property faster as tenants will feel more confident to
+                        rent.
+                      </Text>
                     </li>
                     <li>
-                      <Text mt='1rem'>Your property will be shown prominently in search results.</Text>
+                      <Text mt="1rem">
+                        Your property will be shown prominently in search
+                        results.
+                      </Text>
                     </li>
                     <li>
-                      <Text mt='1rem'> Your property will feature the verification badge.
+                      <Text mt="1rem">
+                        {' '}
+                        Your property will feature the verification badge.
                       </Text>
                     </li>
                   </ol>
-                  <Center> 
-                    <Button  position='absolute' bottom='10' w='75%' onClick={() => setFormStep(formStep - 1)} >ok</Button>
+                  <Center>
+                    <Button
+                      position="absolute"
+                      bottom="10"
+                      w="75%"
+                      onClick={() => setFormStep(formStep - 1)}
+                    >
+                      ok
+                    </Button>
                   </Center>
                 </Box>
               )}

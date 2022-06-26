@@ -48,7 +48,7 @@ const Login = () => {
   const onSubmit = async (data: LoginModel) => {
     try {
       const result = await (await LoginModelUser(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast('Login Successful', {
           appearance: 'success',
@@ -57,7 +57,7 @@ const Login = () => {
         Cookies.set('token', result.data.token);
         Cookies.set('user', JSON.stringify(result.data));
         Cookies.set('userIn', 'true');
-        // router.push('/');
+
         handleAfterLogin();
         return;
       }
@@ -75,7 +75,6 @@ const Login = () => {
         <Flex
           w={['90%', '100%', '40vw']}
           h={['100%', '100%', '60vh']}
-          // bg="#ccc"
           justifyContent="center"
           alignItems="center"
           textAlign="center"

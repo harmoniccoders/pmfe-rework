@@ -1,49 +1,33 @@
-import axios from 'axios';
+import Cookies from 'js-cookie';
 import FixSession from 'lib/components/sessions/FixSessionPage';
-import SessionPage from 'lib/components/sessions/CleanSessionPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const sessions = ({
-  fix,
-}: {
-
-  fix: any;
-}) => {
-  return (
-    <FixSession
-      fix={fix}
-    />
-  );
+const sessions = ({ fix }: { fix: any }) => {
+  const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
+  return <FixSession fix={fix} />;
 };
 
 export default sessions;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;
   url = 'limit=8&offset=0';
   try {
+    const fix = (await _dataAccess.get(`/api/Property?${url}`)).data;
 
-    const fix = (
-      await _dataAccess.get(`/api/Property?${url}`)
-    ).data;
-    
     return {
       props: {
         fix,
@@ -52,7 +36,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } catch (error) {
     return {
       props: {
-      
         fix: [],
       },
     };

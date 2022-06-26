@@ -18,12 +18,12 @@ import Pagination from 'lib/components/Pagination';
 const sell = ({
   propertyTitles,
   propertyTypes,
-  getStates,
+
   listings,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-  getStates: any;
+
   listings: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,7 +64,6 @@ const sell = ({
                         item={item}
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
-                        getStates={getStates}
                         propertyTenants={[]}
                         getBanks={undefined}
                         propertyCollection={[]}
@@ -112,7 +111,6 @@ const sell = ({
         onClose={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
-        getStates={getStates}
       />
     </Box>
   );

@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Image,
-  Badge,
   VStack,
   Text,
   Icon,
@@ -10,12 +9,10 @@ import {
   GridItem,
   Divider,
   Button,
-  ButtonGroup,
   useDisclosure,
-  Hide,
   HStack,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
 import { FaPen } from 'react-icons/fa';
@@ -25,15 +22,12 @@ import {
   PropertyType,
   PropertyView,
   RentCollectionType,
-  Application,
   TenantType,
 } from 'types/api';
 import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
 import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
 import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
 import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
-import { useOperationMethod } from 'react-openapi-client';
-import { Parameters } from 'openapi-client-axios';
 import naira from 'lib/styles/customTheme/components/Generics/Naira';
 
 type Props = {
@@ -43,7 +37,6 @@ type Props = {
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
   getBanks?: any;
-  getStates?: any;
 };
 
 const iconStyle = {
@@ -54,7 +47,6 @@ const ListingsCard = ({
   item,
   propertyTitles,
   propertyTypes,
-  getStates,
   propertyTenants,
   propertyCollection,
   getBanks,
@@ -62,22 +54,7 @@ const ListingsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-console.log({item})
-  const [
-    fetchData,
-    { loading: isLoaderr, data: isDataerr, error: isErrorerr },
-  ] = useOperationMethod('Applicationlist{propertyId}');
 
-  const FetchData = async () => {
-    const params: Parameters = {
-      propertyId: item.id as number,
-    };
-    try {
-      const result = await (await fetchData(params)).data;
-
-      return;
-    } catch (err) {}
-  };
   return (
     <>
       <Box
@@ -275,7 +252,6 @@ console.log({item})
               width="full"
               onClick={() => {
                 onOpen();
-                FetchData();
               }}
             >
               Details
@@ -294,8 +270,7 @@ console.log({item})
         <ViewListedRentProperty
           isOpen={isOpen}
           onClose={onClose}
-            item={item}
-            data={isDataerr?.data.value}
+          item={item}
           openModal={() => setUpdateModal(true)}
         />
       )}
@@ -313,7 +288,6 @@ console.log({item})
         propertyTenants={propertyTenants}
         propertyCollection={propertyCollection}
         getBanks={getBanks}
-        getStates={getStates}
       />
     </>
   );

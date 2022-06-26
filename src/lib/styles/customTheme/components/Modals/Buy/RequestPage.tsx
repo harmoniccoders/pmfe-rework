@@ -5,10 +5,10 @@ import RequestProperty from '../../RequestProperty';
 
 function RequestPage({
   propertyTypes,
-  getStates,
+  
 }: {
   propertyTypes: PropertyType[];
-  getStates: any;
+
 }) {
   return (
     <Box w="100%" mt="30px">
@@ -37,7 +37,7 @@ function RequestPage({
           <PageTabs tabName="request" tabTitle="Request Property" />
         </HStack>
 
-        <RequestProperty propertyTypes={propertyTypes} getStates={getStates} />
+        <RequestProperty propertyTypes={propertyTypes} />
       </Box>
     </Box>
   );

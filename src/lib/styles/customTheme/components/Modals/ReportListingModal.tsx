@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
-import { PropertyView, ReportModel, UserView } from 'types/api';
+import { PropertyView, ReportModel } from 'types/api';
 import Cookies from 'js-cookie';
 
 type Props = {
@@ -51,23 +51,18 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
   } = useForm<ReportModel>({
     resolver: yupResolver(schema),
     mode: 'all',
-    // defaultValues: {
-    //   userId: item.id,
-    // },
   });
 
   const { addToast } = useToasts();
   const router = useRouter();
 
   const onSubmit = async (data: ReportModel) => {
-    console.log({ data });
     data.propertyId = item.id as number;
     data.userId = loggedInUser?.id;
-    console.log(data.userId);
 
     try {
       const result = await (await reportProperty(undefined, data)).data;
-      console.log({ result });
+
       if (result.status !== 400) {
         addToast('Succesful, We will look into it and react out to you', {
           appearance: 'success',
@@ -134,7 +129,7 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
           </ModalHeader>
 
           <ModalBody>
-            <Box px={5} h={["100vh", "auto"]}>
+            <Box px={5} h={['100vh', 'auto']}>
               <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
                 <PrimaryInput<ReportModel>
                   label="Property Name"

@@ -3,14 +3,11 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
-  Button,
   Text,
   Image,
   Box,
-  Badge,
   Heading,
   Grid,
   GridItem,
@@ -19,7 +16,7 @@ import {
   AspectRatio,
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FaPen } from 'react-icons/fa';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { PropertyView } from 'types/api';
@@ -46,7 +43,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
       motionPreset="slideInBottom"
       size="lg"
       isCentered
-      // scrollBehavior="outside"
+      
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 

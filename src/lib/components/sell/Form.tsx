@@ -43,7 +43,6 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-  getStates: any[];
   formStep: number;
   setFormStep: any;
   onClose: () => void;
@@ -51,7 +50,7 @@ interface Props {
 const Form = ({
   propertyTitles,
   propertyTypes,
-  getStates,
+
   formStep,
   setFormStep,
   onClose,
@@ -97,8 +96,6 @@ const Form = ({
 
   watch('numberOfBathrooms');
   watch('numberOfBedrooms');
-
-  // console.log(watch('description'));
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -188,13 +185,10 @@ const Form = ({
 
   let uploaded;
   const onChangeImg = async (info: any, type: boolean) => {
-    console.log('Upload completed:', info);
     uploaded = await groupInfo(info.uuid);
 
     let newArr = [info.count];
 
-    console.log(newArr.length);
-    console.log({ uploaded });
     let medias: MediaModel[] = [];
 
     uploaded.files.forEach((file: any) => {
@@ -235,10 +229,9 @@ const Form = ({
   Geocode.enableDebug();
 
   const getLongAndLat = async (values: PropertyModel) => {
-    console.log('here');
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      console.log(results);
+
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       return values;
@@ -250,7 +243,7 @@ const Form = ({
   const onSubmit = async (data: PropertyModel) => {
     await getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
-    console.log({ data });
+
     data.mediaFiles = uploadedMedia;
 
     try {
@@ -330,7 +323,7 @@ const Form = ({
                       </>
                     }
                   />
-                  <PrimarySelect<PropertyModel>
+                  {/* <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
                     label="State"
@@ -359,7 +352,7 @@ const Form = ({
                         </>
                       }
                     />
-                  ) : null}
+                  ) : null} */}
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"

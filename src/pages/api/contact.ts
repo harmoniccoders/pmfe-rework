@@ -23,7 +23,7 @@ export default function handler(
       process.env.NEXT_PUBLIC_POSTMARK_API_TOKEN as unknown as string
     );
     const data = req.body as ContactData;
-    console.log({ data });
+
     client
       .sendEmail({
         From: process.env.NEXT_PUBLIC_POSTMARK_FROM_EMAIL as unknown as string,
@@ -31,9 +31,7 @@ export default function handler(
         Subject: 'New Contact Message from Storyboard',
         TextBody: data.message,
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => {});
     res.status(200).json({ status: true, message: 'Mail sent' });
   } else {
     return res.json({ status: false, message: 'An error occurred' });

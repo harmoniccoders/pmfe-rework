@@ -1,30 +1,9 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  SimpleGrid,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import ReliefCard from 'lib/components/ReliefCard';
-import { useOperationMethod } from 'react-openapi-client';
-import { Application, RentReliefView } from 'types/api';
-import { Parameters } from 'openapi-client-axios';
-import TenantInfo from '../TenantInfo';
-import Pagination from '../Pagination';
-import { date } from 'yup';
-import DateSliders from '../DateSliders';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import AllApplications from './AllApplications';
 import AcceptedApplication from './AcceptedApplication';
 import RejectedApplication from './RejectedApplication';
 
 function ApplicationsPage({ data }: { data: any }) {
-  console.log({ data });
   const result = data?.value;
 
   return (

@@ -35,7 +35,6 @@ const CleanCard = ({
   data,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log({ data });
 
   return (
     <>

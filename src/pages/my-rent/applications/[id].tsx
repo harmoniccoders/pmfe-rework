@@ -1,15 +1,24 @@
-import { VStack, Heading, SimpleGrid, Box } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 import ApplicationsPage from 'lib/components/my-rent/ApplicationsPage';
-import TenantInfo from 'lib/components/TenantInfo';
 import { DataAccess } from 'lib/Utils/Api';
-import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { Application } from 'types/api';
 
 type Props = {
   data: Application;
 };
 const applications = ({ data }: Props) => {
+
+   const router = useRouter();
+   const isUser = Cookies.get('userIn');
+   useEffect(() => {
+     if (isUser !== 'true') {
+       router.push({ pathname: '/login', query: { from: router.pathname } });
+       return;
+     }
+   });
   return (
     <ApplicationsPage data={data} />
     
@@ -19,17 +28,7 @@ const applications = ({ data }: Props) => {
 export default applications;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+  
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   const id = ctx.params?.id;

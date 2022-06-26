@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react';
 import LandlordOptions from 'lib/components/landlord/LandlordOptions';
 import { useState } from 'react';
-import { PropertyTitle, PropertyType } from 'types/api';
 
 interface LandlordProps {
   isOpen: boolean;
@@ -81,11 +80,12 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
 
         <ModalBody>
           <Box px={5}>
-            <LandlordOptions
+            {/* <LandlordOptions
               formStep={formStep}
               setFormStep={setFormStep}
               onClose={onClose}
             />
+            */}
           </Box>
         </ModalBody>
       </ModalContent>

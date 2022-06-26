@@ -36,7 +36,7 @@ const StepTwo = ({
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: open, onClose: close, onOpen: payOpen } = useDisclosure();
-  console.log({ applicationData });
+
   return (
     <>
       <Flex

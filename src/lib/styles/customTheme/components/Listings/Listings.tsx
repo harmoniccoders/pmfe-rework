@@ -12,12 +12,10 @@ function ListPage({
   data,
   propertyTitles,
   propertyTypes,
-  getStates,
 }: {
   data: PropertyView[];
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-  getStates: any;
 }) {
   return (
     <Box w="100%" mt="3rem">
@@ -40,7 +38,6 @@ function ListPage({
           data={data}
           propertyTypes={propertyTypes}
           propertyTitles={propertyTitles}
-          getStates={getStates}
         />
       </Box>
     </Box>

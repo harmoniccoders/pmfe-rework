@@ -4,7 +4,6 @@ import DateCarousel from './Carousel';
 import {
   InspectionDateView,
   InspectionModel,
-  InspectionTimeModel,
   InspectionTimeView,
   InspectionView,
 } from 'types/api';

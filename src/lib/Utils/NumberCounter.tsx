@@ -3,13 +3,11 @@ import {
   Button,
   Flex,
   FormLabel,
-  HStack,
   Text,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
 } from '@chakra-ui/react';
 
 interface CounterProps {

@@ -16,9 +16,8 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 interface Props {
   propertyTypes: PropertyType[];
-  getStates: any[];
 }
-const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
+const RequestRentProperty = ({ propertyTypes }: Props) => {
   const [requestProperty, { loading, data, error }] =
     useOperationMethod('PropertyRequestnew');
 
@@ -73,10 +72,9 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
   const router = useRouter();
 
   const onSubmit = async (data: PropertyRequestInput) => {
-    
     try {
       const result = await (await requestProperty(undefined, data)).data;
-      
+
       if (result.status) {
         addToast('Request Succesful', {
           appearance: 'success',
@@ -114,7 +112,7 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
                   }
                 />
 
-                <PrimarySelect<PropertyRequestInput>
+                {/* <PrimarySelect<PropertyRequestInput>
                   register={register}
                   error={errors.state}
                   label="State"
@@ -144,7 +142,7 @@ const RequestRentProperty = ({ propertyTypes, getStates }: Props) => {
                       </>
                     }
                   />
-                ) : null}
+                ) : null} */}
 
                 <PrimaryTextArea<PropertyRequestInput>
                   label="Comments"

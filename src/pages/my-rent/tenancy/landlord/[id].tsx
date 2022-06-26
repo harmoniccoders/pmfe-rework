@@ -1,27 +1,27 @@
+import Cookies from 'js-cookie';
 import LandlordOptions from 'lib/components/landlord/LandlordOptions';
 import { DataAccess } from 'lib/Utils/Api';
-import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 export default function SinglePropertyForLandlord({ data, id }: any) {
   const singles = data.filter((x: any) => x.id == id)[0];
-  console.log({ singles });
+
+   const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  
+   useEffect(() => {
+     if (isUser !== 'true') {
+       router.push({ pathname: '/login', query: { from: router.pathname } });
+       return;
+     }
+   });
   return <LandlordOptions singles={singles} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
+
 
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);

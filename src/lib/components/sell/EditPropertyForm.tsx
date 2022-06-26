@@ -10,6 +10,7 @@ import {
   Icon,
   AspectRatio,
   Radio,
+  Center,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -44,7 +45,7 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-  getStates: any[];
+ 
   item: PropertyModel;
   formStep: number;
   setFormStep: any;
@@ -53,7 +54,7 @@ interface Props {
 const EditPropertyForm = ({
   propertyTitles,
   propertyTypes,
-  getStates,
+ 
   formStep,
   setFormStep,
   item,
@@ -204,13 +205,8 @@ const EditPropertyForm = ({
 
   let uploaded;
   const onChangeImg = async (info: any, type: boolean) => {
-    console.log('Upload completed:', info);
     uploaded = await groupInfo(info.uuid);
 
-    let newArr = [info.count];
-
-    console.log(newArr.length);
-    console.log({ uploaded });
     let medias: MediaModel[] = [];
 
     uploaded.files.forEach((file: any) => {
@@ -256,11 +252,8 @@ const EditPropertyForm = ({
     try {
       const result = await (await deleteItem(params)).data;
       if (result.status) {
-        console.log({ result });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
@@ -269,15 +262,13 @@ const EditPropertyForm = ({
   Geocode.enableDebug();
 
   const getLongAndLat = async (values: PropertyModel) => {
-    console.log('here');
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      // console.log(results);
+
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       return values;
     } catch (error) {
-      console.error({ error });
       return values;
     }
   };
@@ -285,7 +276,7 @@ const EditPropertyForm = ({
   const onSubmit = async (data: PropertyModel) => {
     getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
-    console.log({ data });
+
     data.mediaFiles = uploadedMedia;
     try {
       if (data.isDraft) {
@@ -294,7 +285,7 @@ const EditPropertyForm = ({
         setLiveLoading(true);
       }
       const result = await (await PropertyCreate(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         setLiveLoading(false);
         setDraftLoading(false);
@@ -364,7 +355,7 @@ const EditPropertyForm = ({
                       </>
                     }
                   />
-                  <PrimarySelect<PropertyModel>
+                  {/* <PrimarySelect<PropertyModel>
                     register={register}
                     error={errors.state}
                     label="State"
@@ -394,7 +385,7 @@ const EditPropertyForm = ({
                         </>
                       }
                     />
-                  ) : null}
+                  ) : null} */}
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
                     name="area"
@@ -436,8 +427,10 @@ const EditPropertyForm = ({
                               label={'Help me sell'}
                               value={'false'}
                             />
-                            <Tooltip label="When we help you sell, your property is listed as verified.">
-                              <FaInfoCircle />
+                            <Tooltip placement="top">
+                              <Box as="span" cursor="pointer">
+                                <FaInfoCircle onClick={() => setFormStep(2)} />
+                              </Box>
                             </Tooltip>
                           </Flex>
                         </>
@@ -713,6 +706,45 @@ const EditPropertyForm = ({
                     fontSize="sm"
                   />
                 </>
+              )}
+              {formStep === 2 && (
+                <Box h="75vh">
+                  <Text fontSize="18px" fontWeight="600" mb="1rem">
+                    Benefits of letting us help you sell your property
+                  </Text>
+                  <ol>
+                    <li>
+                      <Text mt="1rem">
+                        Our 103% money-back guarantee will be activated on your
+                        property. This guarantee will help you sell your
+                        property faster as buyers will feel more confident to
+                        buy.
+                      </Text>
+                    </li>
+                    <li>
+                      <Text mt="1rem">
+                        Your property will be shown prominently in search
+                        results.
+                      </Text>
+                    </li>
+                    <li>
+                      <Text mt="1rem">
+                        {' '}
+                        Your property will feature the verification badge.
+                      </Text>
+                    </li>
+                  </ol>
+                  <Center>
+                    <Button
+                      position="absolute"
+                      bottom="10"
+                      w="75%"
+                      onClick={() => setFormStep(formStep - 1)}
+                    >
+                      ok
+                    </Button>
+                  </Center>
+                </Box>
               )}
               {RenderButton()}
             </>

@@ -1,12 +1,8 @@
-import { Box, Grid, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import {
   ComplaintsCategory,
-  PropertyTitle,
-  PropertyType,
-  PropertyView,
 } from 'types/api';
-import CleanProperty from '../clean/CleanProperty';
 import MyTenancy from './MyTenancy';
 
 function Tenant({
@@ -29,7 +25,6 @@ function Tenant({
           p=".2rem"
           mb="2.5rem"
         >
-          
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>
@@ -55,8 +50,6 @@ function Tenant({
             <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
               For Tenant
             </Text>
-
-            {/* <MyTenancy category={category} data={data} /> */}
 
             {data.length > 0 ? (
               <MyTenancy category={category} data={data} />

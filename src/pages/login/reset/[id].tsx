@@ -3,10 +3,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useToasts } from 'react-toast-notifications';
-import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
-import { Parameters } from 'openapi-client-axios';
-import { PasswordReset, UserresetinitiateEmailParameters } from 'types/api';
+import { PasswordReset } from 'types/api';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import ButtonComponent from 'lib/components/Button';
 import { useState } from 'react';
@@ -37,7 +35,6 @@ const PasswordReset = ({ code }: { code: string }) => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const onSubmit = async (data: PasswordReset) => {
-    console.log({ data });
     try {
       const result = await (await ResetComplete(undefined, data)).data;
       if (result.status) {
@@ -63,7 +60,6 @@ const PasswordReset = ({ code }: { code: string }) => {
           <Box
             w={['90%', '100%', '40vw']}
             h={['100%', '100%', '60vh']}
-            // bg="#ccc"
             justifyContent="center"
             textAlign="center"
             mx="1.3rem"

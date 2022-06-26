@@ -1,6 +1,6 @@
-import { Box, Flex, Heading, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import {
-  PropertyModel,
+ 
   PropertyTitle,
   PropertyType,
   PropertyView,
@@ -16,7 +16,7 @@ type Props = {
   propertyTitles: PropertyTitle[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any;
+  
   getBanks: any;
 };
 function RentPage({
@@ -25,7 +25,7 @@ function RentPage({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+ 
   getBanks,
 }: Props) {
   
@@ -52,7 +52,7 @@ function RentPage({
           propertyTitles={propertyTitles}
           propertyTenants={propertyTenants}
           propertyCollection={propertyCollection}
-          getStates={getStates}
+         
           getBanks={getBanks}
         />
       </Box>

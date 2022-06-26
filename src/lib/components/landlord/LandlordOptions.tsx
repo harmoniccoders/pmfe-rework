@@ -3,100 +3,29 @@ import {
   Box,
   Image,
   VStack,
-  Stack,
-  Button,
-  Center,
-  Divider,
   Text,
-  Spacer,
   Grid,
   HStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import Icons from '../Icons';
-import {
-  Tenancy,
-  RentCollectionType,
-  ComplaintsCategory,
-  ComplaintsModel,
-  TenancyView,
-} from 'types/api';
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useToasts } from 'react-toast-notifications';
-import { useOperationMethod } from 'react-openapi-client';
-import { Parameters } from 'openapi-client-axios';
-import axios from 'axios';
+import { TenancyView } from 'types/api';
+import React from 'react';
 import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
 import TenancyAgreement from './TenancyAgreement';
 import moment from 'moment';
 
-// interface Props {
-//   formStep: number;
-//   setFormStep: any;
-//   Tenancylandlord: any;
-//   getBanks: any[];
-//   category: ComplaintsCategory[];
-//   onClose: () => void;
-//   singles: any;
-// }
-
 const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: opened, onOpen: onOpened, onClose: closed } = useDisclosure();
-console.log({singles})
-  // const [ViewTenancylandlord, { loading: isLoading, data, error }] =
-  //   useOperationMethod('Tenancylandlord');
-
-  // const [authorizeComplaints, { loading, data, error }] = useOperationMethod(
-  //   'Complaintsauthorize{complaintsId}'
-  // );
-
-  // const AuthorizeComplaints = async () => {
-  //   const params: Parameters = {
-  //     complaintsId: item.id as number,
-  //   };
-
-  //   try {
-  //     const result = await (await authorizeComplaints(params)).data;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // const schema = yup.object().shape({
-  //   name: yup.string().required(),
-  //   bank: yup.string().when('name', {
-  //     is: () => formStep === 3,
-  //     then: yup.string(),
-  //   }),
-  //   accountNumber: yup.string().when('name', {
-  //     is: () => formStep === 3,
-  //     then: yup.string(),
-  //   }),
-  // });
-
-  // const [formStep, setFormStep] = useState<number>(0);
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors, isValid },
-  // } = useForm<Tenancy>({
-  //   resolver: yupResolver(schema),
-  //   mode: 'all',
-  // });
-
-  const { addToast } = useToasts();
 
   return (
     <>
       <Box w="70%" mx="auto" py="2rem">
         <Box w="full" h="400px" pos="relative">
           <>
-            {singles.property?.mediaFiles && singles.property?.mediaFiles?.length > 0 ? (
+            {singles.property?.mediaFiles &&
+            singles.property?.mediaFiles?.length > 0 ? (
               <>
                 {singles.property?.mediaFiles[0].isImage && (
                   <Image
@@ -262,60 +191,3 @@ console.log({singles})
 };
 
 export default LandlordOptions;
-// {formStep === 1 && (
-//   <>
-//     <Box w="full">
-//       <Stack spacing={3} onClick={() => setFormStep(2)} cursor="pointer">
-//         <Text fontWeight="600" fontSize={['1rem', '']}>
-//           Structural Damage
-//         </Text>
-//         <Text>10/04/21</Text>
-//         <Divider />
-//       </Stack>
-//     </Box>
-//   </>
-// )}
-// {formStep === 2 && (
-//   <>
-// <Box w="full">
-//   <Stack mt="1rem">
-//     <Text fontWeight="500">Category</Text>
-//     <Text fontWeight="700" fontSize={['1rem', '']}>
-//       Structural Damage
-//     </Text>
-//     <Divider />
-//   </Stack>
-//   <Stack mt="1rem">
-//     <Text fontWeight="500">Sub Category</Text>
-//     <Text fontWeight="700" fontSize={['1rem', '']}>
-//       Roof Leakage
-//     </Text>
-//     <Divider />
-//   </Stack>
-//   <Stack mt="1rem">
-//     <Text fontWeight="500">Comments</Text>
-//     <Text fontWeight="700" fontSize={['1rem', '']}>
-//       Roof Leakage
-//     </Text>
-//     <Divider />
-//   </Stack>
-//   <Box mt="4rem">
-//     <Button
-//       type="button"
-//       w="100%"
-//       h="100%"
-//       variant="solid"
-//       textTransform="capitalize"
-//       onClick={() => setFormStep(3)}
-//     >
-//       Authorize Inspection
-//     </Button>
-//     <Text color="gray" mt="1.25rem">
-//       A propertyMattaaz Representative will go and inspect the
-//       reported damage and we will revert to you with proof of damage
-//       as well as repair costs.
-//     </Text>
-//   </Box>
-// </Box>
-//   </>
-// )}

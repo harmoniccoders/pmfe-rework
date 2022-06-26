@@ -17,7 +17,7 @@ const MyTenancy = ({ category, data }: Props) => {
       rowGap={8}
       mt="25px"
     >
-      {/* <TenancyCard category={category} data={data} />; */}
+    
       {data.map((item: any) => {
         return <TenancyCard category={category} data={item} key={item.id} />;
       })}

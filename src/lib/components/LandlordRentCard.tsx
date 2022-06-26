@@ -3,19 +3,16 @@ import {
   Text,
   Divider,
   VStack,
-  useDisclosure,
   HStack,
   Box,
   Button,
 } from '@chakra-ui/react';
 import Icons from './Icons';
-import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
 import { useRouter } from 'next/router';
 import { TenancyView } from 'types/api';
-const moment = require('moment');
+import moment from 'moment';
 
 const LandlordRentCard = ({ data }: any) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
   const iconStyle = {
@@ -75,16 +72,13 @@ const LandlordRentCard = ({ data }: any) => {
                 variant="outline"
                 textTransform="capitalize"
                 onClick={() =>
-                  router.push(
-                    `/my-rent/tenancy/landlord/${item.id}`
-                  )
+                  router.push(`/my-rent/tenancy/landlord/${item.id}`)
                 }
               >
                 view details
               </Button>
             </Box>
           </Box>
-          {/* <LandlordModal isOpen={isOpen} onClose={onClose} /> */}
         </Box>
       ))}
     </Grid>

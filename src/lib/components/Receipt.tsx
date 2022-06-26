@@ -54,18 +54,12 @@ function Receipt({
           w={['52']}
           mx="auto"
           mb="2rem"
-          // p="1rem"
         />
       </Link>
       <Flex align="center">
         <Box h="3rem" w="45%" bgColor="brand.100" />
         <Flex w="40%" alignItems="center" justifyContent="center">
-          <Text
-            fontSize="1.3rem"
-            fontWeight="bold"
-            // px=".5rem"
-            textAlign="center"
-          >
+          <Text fontSize="1.3rem" fontWeight="bold" textAlign="center">
             Payment Receipt
           </Text>
         </Flex>
@@ -113,12 +107,12 @@ function Receipt({
         <Text fontSize="1rem" fontWeight="700" mb="1.5rem" px="1rem">
           Product
         </Text>
-        <TableContainer border="1px solid rgba(0,0,0,.1)" >
-          <Table variant="striped" colorScheme="gray" >
+        <TableContainer border="1px solid rgba(0,0,0,.1)">
+          <Table variant="striped" colorScheme="gray">
             <Thead>
               <Tr>
                 <TableHead title="Item Name" />
-                {/* <TableHead title="Quantity" /> */}
+
                 <TableHead title="Price" />
                 <TableHead title="Tax" />
               </Tr>
@@ -126,7 +120,7 @@ function Receipt({
             <Tbody>
               <Tr>
                 <TableData name={property} />
-                {/* <TableData name="1" /> */}
+
                 <TableData name={naira(price as unknown as number)} />
                 <TableData name={'15%'} />
               </Tr>

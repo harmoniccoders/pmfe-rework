@@ -28,7 +28,7 @@ type Props = {
   close: any;
   item?: PropertyView;
   nextPayment?: InstallmentView;
-  
+
   paymentRates?: PaymentRatesView;
   rentRelief?: RentReliefView;
 };
@@ -40,7 +40,6 @@ const InstructionModal = ({
   paymentRates,
   nextPayment,
   rentRelief,
-  
 }: Props) => {
   const [redirect, setRedirect] = useState(false);
   let payData: any;
@@ -49,7 +48,7 @@ const InstructionModal = ({
     payData = {
       propertyId: item?.id,
       amount: paymentRates?.total,
-    }
+    };
   }
   if (rentRelief) {
     payData = {
@@ -60,13 +59,13 @@ const InstructionModal = ({
     };
   }
 
-    const [initiatePay, { loading, data, error }] =
-      useOperationMethod('Paymentinitiate');
+  const [initiatePay, { loading, data, error }] =
+    useOperationMethod('Paymentinitiate');
 
   const InitiatePayment = async () => {
     try {
       const result = await (await initiatePay(undefined, payData)).data;
-      console.log({ result });
+
       if (result.status) {
         setRedirect(true);
         setTimeout(() => {
@@ -75,9 +74,7 @@ const InstructionModal = ({
           setRedirect(false);
         }, 3000);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   return (
     <Modal

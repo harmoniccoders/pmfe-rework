@@ -4,7 +4,6 @@ import ReliefCard from 'lib/components/ReliefCard';
 import { RentReliefView } from 'types/api';
 
 function RentRelief({ data }: { data: any }) {
-  
   const reliefs = data?.data;
 
   return (
@@ -20,8 +19,6 @@ function RentRelief({ data }: { data: any }) {
           p=".2rem"
           mb="2.5rem"
         >
-          {/* <PageTabs tabName="my-rent/enquiries" tabTitle="Enquiries" />
-          <PageTabs tabName="my-rent/requests" tabTitle="Requests" /> */}
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>
@@ -32,8 +29,8 @@ function RentRelief({ data }: { data: any }) {
           {reliefs?.length > 0 ? (
             <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="3">
               {reliefs.map((item: RentReliefView) => (
-                  <ReliefCard key={item.id} item={item} />
-                ))}
+                <ReliefCard key={item.id} item={item} />
+              ))}
             </SimpleGrid>
           ) : (
             <Text mt="3" fontWeight="medium" fontSize=".9rem">

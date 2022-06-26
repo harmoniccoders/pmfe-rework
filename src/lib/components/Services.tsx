@@ -1,5 +1,4 @@
 import {
-  Flex,
   Box,
   Button,
   Heading,
@@ -8,7 +7,6 @@ import {
   Text,
   VStack,
   Grid,
-  GridItem,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 

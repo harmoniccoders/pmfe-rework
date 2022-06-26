@@ -25,7 +25,7 @@ interface AddRentProps {
   propertyTypes: PropertyType[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any[];
+
   getBanks: any[];
 }
 
@@ -36,7 +36,7 @@ function AddRentModal({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+ 
   getBanks,
   isClosed,
 }: AddRentProps) {
@@ -107,7 +107,7 @@ function AddRentModal({
               propertyTitles={propertyTitles}
               propertyTenants={propertyTenants}
               propertyCollection={propertyCollection}
-              getStates={getStates}
+             
               getBanks={getBanks}
               formStep={formStep}
               setFormStep={setFormStep}

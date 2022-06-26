@@ -10,7 +10,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useOperationMethod } from 'react-openapi-client';
-import { PropertyRequestView, PropertyView } from 'types/api';
+import { PropertyRequestView } from 'types/api';
 import { Parameters } from 'openapi-client-axios';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
@@ -31,7 +31,7 @@ const CancelRequest = ({ isOpen, onClose, item }: Props) => {
     const params: Parameters = {
       id: item.id as number,
     };
-   
+
     try {
       const result = await (await deleteListings(params)).data;
       if (result.status) {
@@ -49,9 +49,7 @@ const CancelRequest = ({ isOpen, onClose, item }: Props) => {
       });
       onClose();
       return;
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
   return (
     <Modal

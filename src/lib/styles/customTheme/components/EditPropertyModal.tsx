@@ -17,7 +17,7 @@ import {
   RentCollectionType,
   TenantType,
 } from 'types/api';
-import EditRentForm from 'lib/components/rent/EditRentForm'
+import EditRentForm from 'lib/components/rent/EditRentForm';
 
 interface EditPropertyProps {
   isOpen: boolean;
@@ -27,7 +27,7 @@ interface EditPropertyProps {
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
   getBanks: any[];
-  getStates: any[];
+
   item: PropertyModel;
 }
 
@@ -39,16 +39,14 @@ function EditPropertyModal({
   getBanks,
   propertyTenants,
   propertyCollection,
-  getStates,
+
   item,
 }: EditPropertyProps) {
-  
   const [formStep, setFormStep] = useState(0);
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      
       motionPreset="slideInBottom"
       size="lg"
       isCentered
@@ -110,7 +108,6 @@ function EditPropertyModal({
               <EditPropertyForm
                 propertyTypes={propertyTypes}
                 propertyTitles={propertyTitles}
-                getStates={getStates}
                 formStep={formStep}
                 setFormStep={setFormStep}
                 onClose={onClose}
@@ -123,7 +120,6 @@ function EditPropertyModal({
                 propertyTitles={propertyTitles}
                 propertyTenants={propertyTenants}
                 propertyCollection={propertyCollection}
-                getStates={getStates}
                 getBanks={getBanks}
                 formStep={formStep}
                 setFormStep={setFormStep}

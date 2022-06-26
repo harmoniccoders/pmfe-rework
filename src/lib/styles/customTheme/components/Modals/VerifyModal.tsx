@@ -11,7 +11,6 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { FaTimes } from 'react-icons/fa';
 import { LandSearchView } from 'types/api/land-search-view';
 
 interface VerifyProps {

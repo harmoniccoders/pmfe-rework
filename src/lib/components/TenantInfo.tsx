@@ -7,37 +7,27 @@ import {
   Heading,
   Divider,
 } from '@chakra-ui/react';
-import AgreementModal from 'lib/styles/customTheme/components/Modals/AgreementModal';
 import ViewTenantsInfo from 'lib/styles/customTheme/components/Modals/ViewTenantsInfo';
-import { useRouter } from 'next/router';
+
 import { useState } from 'react';
-import { Application } from 'types/api';
+import { ApplicationView, Application } from 'types/api';
 
 const TenantInfo = ({
   item,
-  disabled,
+  onAccepted,
 }: {
-  item: Application;
-  disabled?: boolean;
+  item: ApplicationView;
+  onAccepted?: boolean;
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const router = useRouter();
+
   return (
     <HStack
       w="full"
       spacing="4"
-      opacity={disabled ? '.5' : 'unset'}
-      cursor={disabled ? 'not-allowed' : 'pointer'}
-      onClick={()=>setShowModal(true)}
-      
-      // onClick={
-      //   disabled
-      //     ? undefined
-      //     : () =>
-      //         router.push(
-      //           `/my-rent/applications/tenant/${item.id}/${item.property.id}`
-      //         )
-      // }
+      opacity={onAccepted ? '.5' : 'unset'}
+      cursor={onAccepted ? 'not-allowed' : 'pointer'}
+      onClick={onAccepted ? undefined : () => setShowModal(true)}
     >
       <Box w="35%">
         <Image
@@ -65,11 +55,10 @@ const TenantInfo = ({
         <Divider />
       </VStack>
       <ViewTenantsInfo
-        item={item}
+        item={item as Application}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       />
-      {/* <AgreementModal isOpen={showModal} onClose={() => setShowModal(false)} /> */}
     </HStack>
   );
 };

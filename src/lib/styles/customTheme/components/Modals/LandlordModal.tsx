@@ -13,10 +13,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import LandlordOptions from 'lib/components/landlord/LandlordOptions';
 import { DataAccess } from 'lib/Utils/Api';
 import { useEffect, useState } from 'react';
-import { PropertyTitle, PropertyType } from 'types/api';
+import { ComplaintsView } from 'types/api';
 import SingleComplainModal from './SingleComplaintModal';
 
 interface LandlordProps {
@@ -28,44 +27,23 @@ interface LandlordProps {
 function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   const { isOpen: opened, onClose: closed, onOpen: onOpened } = useDisclosure();
   const [complains, setComplains] = useState<any>();
-  console.log({ data });
-  // const getSingleComplains = (singleData: any) => {
-  //   // console.log({ singleData });
-  //   <SingleComplainModal isOpen={opened} onClose={closed} data={singleData} />;
-  // };
 
-  const datas = [
-  {
-      id: 1,
-      name: 'boy',
-    },
-    {
-      id: 2,
-      name: 'girl',
-    },
-  ];
-   console.log({ datas });
   useEffect(() => {
     const getComplaints = async () => {
       const bearer = `Bearer ${Cookies.get('token')}`;
       const _dataAccess = new DataAccess(bearer);
 
       try {
-        const datass = (
-          await _dataAccess.get(`/api/Complaints/property/${data.property?.id}/list`)
+        const datas = (
+          await _dataAccess.get(
+            `/api/Complaints/property/${data.property?.id}/list`
+          )
         ).data;
-       
-        // if (datas.status) {
-        //   // setComplains(data.data)
-        // }
-      } catch (err) {
-        console.log(err);
-      }
+        setComplains(datas.value);
+      } catch (err) {}
     };
     getComplaints();
   }, []);
-
-  console.log({ complains });
 
   return (
     <Modal
@@ -108,12 +86,12 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
         <ModalBody>
           <Box px={5}>
             <VStack spacing={5}>
-              {datas.map((singleData: any) => {
+              {complains?.map((item: ComplaintsView) => {
                 return (
-                  <Box w="full">
+                  <Box w="full" key={item.id}>
                     <Stack spacing={3} onClick={onOpened} cursor="pointer">
                       <Text fontWeight="600" fontSize={['1rem', '']}>
-                        Structural Damage
+                        {item.complaintsCategory}
                       </Text>
                       <Text>10/04/21</Text>
                       <Divider />
@@ -121,7 +99,8 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
                     <SingleComplainModal
                       isOpen={opened}
                       onClose={closed}
-                      data={singleData}
+                      closeModal={onClose}
+                      data={item}
                     />
                   </Box>
                 );

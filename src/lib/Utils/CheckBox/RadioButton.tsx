@@ -39,9 +39,6 @@ export const RadioButton = <TFormValues extends Record<string, any>>({
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl>
-      {/* <FormLabel color="brand.100" fontSize="1.1rem">
-        {label}
-      </FormLabel> */}
       <Controller
         render={({ field }) => (
           <HStack justify="space-between" spacing={6}>

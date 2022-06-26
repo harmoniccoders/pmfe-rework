@@ -3,30 +3,20 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
-  Flex,
-  Button,
   Text,
-  Image,
   Box,
-  Badge,
-  Heading,
-  Grid,
-  GridItem,
-  VStack,
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ButtonComponent from 'lib/components/Button';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
-import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
-import { PasswordResetModel, PropertyTitle, PropertyType } from 'types/api';
+import { PasswordResetModel } from 'types/api';
 
 interface AddPropertyProps {
   isOpen: boolean;
@@ -53,7 +43,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
   });
 
   const { addToast } = useToasts();
-  const router = useRouter();
+
   const [passwordType, setPasswordType] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(true);
 
@@ -76,7 +66,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
     }
     try {
       const result = await (await UpdatePassword(undefined, data)).data;
-      console.log({ result });
+
       if (result.status) {
         onClose();
         addToast('Password succesfully changed', {
@@ -100,23 +90,16 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
       motionPreset="slideInBottom"
       isCentered
       size="lg"
-     
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
-      <ModalContent
-        py={5}
-        
-        borderRadius="0"
-        pos="fixed"
-        maxH="100vh"
-      >
+      <ModalContent py={5} borderRadius="0" pos="fixed" maxH="100vh">
         <ModalHeader>
           <ModalCloseButton />
         </ModalHeader>
 
         <ModalBody>
-          <Box px={5} h={["100vh", 'auto']}>
+          <Box px={5} h={['100vh', 'auto']}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<PasswordResetModel>
                 label="Old Password"

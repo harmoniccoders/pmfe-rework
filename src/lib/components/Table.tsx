@@ -1,9 +1,7 @@
-import { Box, Circle, HStack, Switch, Td, Th } from '@chakra-ui/react';
+import { Circle, HStack, Switch, Td, Th } from '@chakra-ui/react';
 import {
-  FaArrowAltCircleRight,
   FaArrowRight,
   FaTimes,
-  FaTimesCircle,
 } from 'react-icons/fa';
 
 export function TableHead({ title }: { title: string }) {

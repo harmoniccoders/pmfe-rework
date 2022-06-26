@@ -9,11 +9,8 @@ import {
   OrderedList,
   Heading,
   SimpleGrid,
-  ListIcon,
-  List,
 } from '@chakra-ui/react';
 import { MdOutlinePrivacyTip } from 'react-icons/md';
-import { BsFillCheckCircleFill } from 'react-icons/bs';
 import NextLink from 'next/link';
 
 const PrivacyPolicy = () => {

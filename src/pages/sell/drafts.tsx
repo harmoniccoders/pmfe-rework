@@ -10,12 +10,11 @@ import router from 'next/router';
 const drafts = ({
   propertyTitles,
   propertyTypes,
-  getStates,
   listings,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-  getStates: any;
+
   listings: any;
 }) => {
   const result = listings.value;
@@ -44,7 +43,6 @@ const drafts = ({
                         item={item}
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
-                        getStates={getStates}
                         propertyTenants={[]}
                         propertyCollection={[]}
                       />
@@ -84,9 +82,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const propertyTypes = (await _dataAccess.get('/api/Property/types')).data;
     const propertyTitles = (await _dataAccess.get('/api/Property/titles')).data;
-    const getStates = (
-      await axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
-    ).data;
 
     const listings = (await _dataAccess.get(`/api/Property/user/drafts?${url}`))
       .data;
@@ -95,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       props: {
         propertyTypes,
         propertyTitles,
-        getStates,
+
         listings,
       },
     };

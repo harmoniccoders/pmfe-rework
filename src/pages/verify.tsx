@@ -4,13 +4,11 @@ import NextLink from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { UserverifyUserTokenEmailParameters, UserView } from 'types/api';
+import { UserverifyUserTokenEmailParameters } from 'types/api';
 import { useOperationMethod } from 'react-openapi-client';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import { GetServerSidePropsContext } from 'next';
-import { returnUserData } from 'lib/Utils/userData';
 import { Parameters } from 'openapi-client-axios';
 import Cookies from 'js-cookie';
 
@@ -21,7 +19,6 @@ const schema = yup.object().shape({
 const verify = () => {
   const router = useRouter();
   const userEmail = Cookies.get('userEmail')?.replaceAll('"', '');
-  console.log({ userEmail });
 
   const [VerifyUser, { loading, data, error }] = useOperationMethod(
     'UserverifyUser{token}{email}'
@@ -46,7 +43,7 @@ const verify = () => {
     };
     try {
       const result = await (await VerifyUser(params)).data;
-      console.log({ data });
+
       if (result.status) {
         addToast('Verification Complete', {
           appearance: 'success',
@@ -60,9 +57,7 @@ const verify = () => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -177,25 +172,3 @@ const verify = () => {
 };
 
 export default verify;
-
-// export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
-//   const {
-//     data: { user, redirect },
-//   } = returnUserData(ctx);
-//   const userData = JSON.parse(user);
-
-//   if (redirect)
-//     return {
-//       redirect: {
-//         permanent: false,
-//         destination: '/login',
-//       },
-//       props: {},
-//     };
-
-//   return {
-//     props: {
-//       user: userData,
-//     },
-//   };
-// };

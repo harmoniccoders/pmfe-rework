@@ -3,17 +3,12 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   Flex,
-  Button,
   Text,
   Image,
   Box,
-  Badge,
   Heading,
-  Grid,
-  GridItem,
   HStack,
 } from '@chakra-ui/react';
 import {
@@ -30,8 +25,7 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useToasts } from 'react-toast-notifications';
 
 type Props = {
@@ -52,7 +46,6 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
   }
 
   const handleCopyToClipboard = async () => {
-    console.log({ url });
     const copied = await navigator.clipboard.writeText(url);
     addToast('Copied to clipboard', {
       appearance: 'success',
@@ -67,19 +60,16 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         motionPreset="slideInBottom"
-       size="lg"
+        size="lg"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
 
         <ModalContent
           py={5}
           borderRadius="0"
-          
           overflow="hidden"
-         
           pos="fixed"
           mt="0"
-          
         >
           <ModalHeader>
             <Flex justifyContent="space-between" alignItems="center">

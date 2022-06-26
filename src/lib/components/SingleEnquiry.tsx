@@ -35,7 +35,7 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
 
     try {
       const result = await (await cancel(params)).data;
-      console.log({ result });
+
       if (result.status) {
         addToast(result.message, {
           appearance: 'success',
@@ -52,9 +52,7 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -67,7 +65,6 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
           await _dataAccess.get(`/api/Application/get/user/property/${data.id}`)
         ).data;
 
-        console.log(result);
         setApplicationStatus(result);
       } catch (err) {}
     };
@@ -91,7 +88,7 @@ const SingleEnquiry = ({ data, date, paymentRates }: Props) => {
             paymentRates={paymentRates}
             data={data}
           />
-          <StepThree  applicationData={applicationStatus} />
+          <StepThree applicationData={applicationStatus} />
         </VStack>
 
         <Button

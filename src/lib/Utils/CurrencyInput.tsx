@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, GridItem, Icon, Text } from '@chakra-ui/react';
+import { FormControl, FormLabel, GridItem, Text } from '@chakra-ui/react';
 import {
   Controller,
   UseFormRegister,
@@ -6,7 +6,6 @@ import {
   FieldError,
   Control,
 } from 'react-hook-form';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CurrencyInput from 'react-currency-input-field';
 

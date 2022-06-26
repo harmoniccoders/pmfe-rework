@@ -1,7 +1,6 @@
-import { Box, Grid, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
 import LandlordRentCard from 'lib/components/LandlordRentCard';
-import MyTenancy from './MyTenancy';
 
 function Landlord({ data }: { data: any }) {
   return (

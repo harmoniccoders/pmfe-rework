@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  SimpleGrid,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import ListingsCard from 'lib/components/ListingsCard';
 import Pagination from 'lib/components/Pagination';
 import {
@@ -24,7 +16,7 @@ interface ListingTypes {
   propertyTitles: PropertyTitle[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any;
+
   getBanks: any;
 }
 
@@ -34,13 +26,11 @@ function MyRents({
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+
   getBanks,
 }: ListingTypes) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const result = data.value;
-  console.log({result})
-  
+
   return (
     <Box w="95%" mx="auto" pb="5">
       <HStack
@@ -75,7 +65,6 @@ function MyRents({
                     propertyTitles={propertyTitles}
                     propertyTenants={propertyTenants}
                     propertyCollection={propertyCollection}
-                    getStates={getStates}
                     getBanks={getBanks}
                   />
                 );

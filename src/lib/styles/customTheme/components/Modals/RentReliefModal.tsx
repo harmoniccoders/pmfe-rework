@@ -63,45 +63,35 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       dateOfBirth: yup.string().required(),
       occupation: yup.string().when('firstName', {
         is: () => formStep === 1,
-        then: yup.string(),
+        then: yup.string().required(),
       }),
       companyName: yup.string().when('firstName', {
         is: () => formStep === 1,
-        then: yup.string(),
+        then: yup.string().required(),
       }),
       annualIncome: yup.string().when('firstName', {
         is: () => formStep === 1,
-        then: yup.string(),
+        then: yup.string().required(),
       }),
       workAddress: yup.string().when('firstName', {
         is: () => formStep === 1,
-        then: yup.string(),
+        then: yup.string().required(),
       }),
       nationality: yup.string(),
-      maritalStatus: yup.string(),
+      maritalStatus: yup.string().required(),
     }),
-    // nextOfKin: yup.object({
-    //   firstName: yup.string().when('firstName', {
-    //     is: () => formStep === 1,
-    //     then: yup.string(),
-    //   }),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   address: yup.string().required(),
-    //   relationship: yup.string().required(),
-    // }),
+
     reliefAmount: yup.number().when('firstName', {
       is: () => formStep === 2,
-      then: yup.number(),
+      then: yup.number().required(),
     }),
     payBackDate: yup.string().when('firstName', {
       is: () => formStep === 2,
-      then: yup.string(),
+      then: yup.string().required(),
     }),
     repaymentFrequency: yup.string().when('firstName', {
       is: () => formStep === 2,
-      then: yup.string(),
+      then: yup.string().required(),
     }),
   });
 
@@ -241,7 +231,6 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
 
     try {
       const result = await (await RentRelief(undefined, data)).data;
-      console.log({ result });
 
       if (result.status) {
         addToast(
@@ -261,9 +250,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       });
       onClose();
       return;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const CountryList = require('country-list').getNames();

@@ -4,7 +4,6 @@ import {
   ModalOverlay,
   Text,
   ModalHeader,
-  useDisclosure,
   Flex,
   ModalBody,
   VStack,
@@ -25,7 +24,7 @@ type Props = {
 };
 
 const LiveInspectionModal = ({ open, close, date, item }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+ 
   return (
     <Modal
       isOpen={open}

@@ -73,7 +73,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
       const result = await (await rejectTenant(params)).data;
       onClose();
       if (result.status) {
-        addToast('Application rejected succesfully', {
+        addToast('Tenant rejected succesfully', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -204,7 +204,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                     ? 'Rejected'
                     : item.status === 'ACCEPTED'
                     ? 'Awaiting Payment'
-                    : 'Under Review'}
+                    : 'Pending Review'}
                 </Text>
               </VStack>
             )}
@@ -212,18 +212,20 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
             <VStack w="full" align="flex-start" spacing="3">
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Mobile Number</Heading>
-                <Text fontSize="14px">{item?.user?.phoneNumber || ''}</Text>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.user?.phoneNumber || 'not found'}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Email</Heading>
-                <Text fontSize="14px">{item?.user?.email || ''}</Text>
+                <Text fontSize="14px">{item?.user?.email || 'not found'}</Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Current Residential Address</Heading>
                 <Text fontSize="14px" textTransform="capitalize">
-                  {item?.user?.address || ''}
+                  {item?.user?.address || 'not found'}
                 </Text>
                 <Divider />
               </VStack>
@@ -232,70 +234,41 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                 <Text fontSize="14px">
                   {(item.user?.dateOfBirth &&
                     moment(item.user.dateOfBirth).format('Do MMMM YYYY')) ||
-                    ''}
+                    'not found'}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Nationality</Heading>
-                <Text fontSize="14px">{item?.user?.nationality || ''}</Text>
+                <Text fontSize="14px">
+                  {item?.user?.nationality || 'not found'}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Marital Status</Heading>
-                <Text fontSize="14px">{item.user?.maritalStatus || ''}</Text>
+                <Text fontSize="14px">
+                  {item.user?.maritalStatus || 'not found'}
+                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Occupation</Heading>
                 <Text fontSize="14px" textTransform="capitalize">
-                  {item?.user?.occupation || ''}
+                  {item?.user?.occupation || 'not found'}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Work Address</Heading>
                 <Text fontSize="14px" textTransform="capitalize">
-                  {item?.user?.workAddress || ''}
+                  {item?.user?.workAddress || 'not found'}
                 </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
                 <Heading fontSize="15px">Annual Income</Heading>
                 <Text fontSize="14px">{item?.user?.annualIncome}</Text>
-                <Divider />
-              </VStack>
-            </VStack>
-            <Heading my="5" fontSize="18px">
-              Next of Kin
-            </Heading>
-            <VStack w="full" align="flex-start" spacing="3">
-              <VStack align="flex-start" w="full" spacing="2">
-                <Heading fontSize="15px">First Name</Heading>
-                <Text fontSize="14px" textTransform="capitalize">
-                  {item?.nextOfKin?.firstName || ''}
-                </Text>
-                <Divider />
-              </VStack>
-              <VStack align="flex-start" w="full" spacing="2">
-                <Heading fontSize="15px">Surname</Heading>
-                <Text fontSize="14px" textTransform="capitalize">
-                  {item?.nextOfKin?.lastName || ''}
-                </Text>
-                <Divider />
-              </VStack>
-              <VStack align="flex-start" w="full" spacing="2">
-                <Heading fontSize="15px">Address</Heading>
-                <Text fontSize="14px" textTransform="capitalize">
-                  {item?.nextOfKin?.address || ''}
-                </Text>
-                <Divider />
-              </VStack>
-              <VStack align="flex-start" w="full" spacing="2">
-                <Heading fontSize="15px">Relationship</Heading>
-                <Text fontSize="14px" textTransform="capitalize">
-                  {item?.nextOfKin?.relationship || ''}
-                </Text>
                 <Divider />
               </VStack>
               <VStack align="flex-start" w="full" spacing="2">
@@ -308,8 +281,41 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                     alt="id card"
                   />
                 ) : (
-                  'No work ID uploaded'
+                  <Text fontSize="14px">No work ID uploaded</Text>
                 )}
+              </VStack>
+            </VStack>
+            <Heading my="5" fontSize="18px">
+              Next of Kin
+            </Heading>
+            <VStack w="full" align="flex-start" spacing="3">
+              <VStack align="flex-start" w="full" spacing="2">
+                <Heading fontSize="15px">First Name</Heading>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.firstName || 'not found'}
+                </Text>
+                <Divider />
+              </VStack>
+              <VStack align="flex-start" w="full" spacing="2">
+                <Heading fontSize="15px">Surname</Heading>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.lastName || 'not found'}
+                </Text>
+                <Divider />
+              </VStack>
+              <VStack align="flex-start" w="full" spacing="2">
+                <Heading fontSize="15px">Address</Heading>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.address || 'not found'}
+                </Text>
+                <Divider />
+              </VStack>
+              <VStack align="flex-start" w="full" spacing="2">
+                <Heading fontSize="15px">Relationship</Heading>
+                <Text fontSize="14px" textTransform="capitalize">
+                  {item?.nextOfKin?.relationship || 'not found'}
+                </Text>
+                <Divider />
               </VStack>
             </VStack>
           </Box>

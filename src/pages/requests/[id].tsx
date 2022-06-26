@@ -1,20 +1,26 @@
-import { Box, Flex, Grid, GridItem, Heading, HStack } from '@chakra-ui/react';
-import axios from 'axios';
-import Pagination from 'lib/components/Pagination';
+import { Box, Grid, GridItem, Heading } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 import PropertyCard from 'lib/components/PropertyCard';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
 import { DataAccess } from 'lib/Utils/Api';
-import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';
-import { PropertyRequestMatch, PropertyView, UserEnquiry } from 'types/api';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { PropertyRequestMatch, PropertyView } from 'types/api';
 
 const matches = ({ data, id }: { data: any; id: any }) => {
   let result = data.value.filter((item: any) => item.id == id);
-  
+
   const singleRequest = result[0].matches;
 
-  console.log({singleRequest})
+  const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
+
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <>
@@ -37,12 +43,14 @@ const matches = ({ data, id }: { data: any; id: any }) => {
               {singleRequest.map((item: PropertyRequestMatch) => {
                 return (
                   <GridItem key={item.id}>
-                    <PropertyCard matchId={item.id} item={item.property as PropertyView} />
+                    <PropertyCard
+                      matchId={item.id}
+                      item={item.property as PropertyView}
+                    />
                   </GridItem>
                 );
               })}
             </>
-          
           </Grid>
         )}
       </>
@@ -53,18 +61,6 @@ const matches = ({ data, id }: { data: any; id: any }) => {
 export default matches;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const {
-    data: { user, redirect },
-  } = returnUserData(ctx);
-  if (redirect)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
-      },
-      props: {},
-    };
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
 

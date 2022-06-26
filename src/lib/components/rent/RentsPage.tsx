@@ -10,21 +10,20 @@ import {
 } from 'types/api';
 import AddRentModal from 'lib/styles/customTheme/components/Modals/AddRentModal';
 import RentoutModal from 'lib/styles/customTheme/components/Modals/RentoutModal';
-import RentReliefModal from 'lib/styles/customTheme/components/Modals/RentReliefModal';
 
 const RentsPage = ({
   propertyTitles,
   propertyTypes,
   propertyTenants,
   propertyCollection,
-  getStates,
+ 
   getBanks,
 }: {
   propertyTitles: PropertyType[];
   propertyTypes: PropertyTitle[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-  getStates: any;
+ 
   getBanks: any;
 }) => {
   const router = useRouter();
@@ -80,7 +79,7 @@ const RentsPage = ({
         propertyTitles={propertyTitles}
         propertyTenants={propertyTenants}
         propertyCollection={propertyCollection}
-        getStates={getStates}
+       
         getBanks={getBanks}
       />
      
