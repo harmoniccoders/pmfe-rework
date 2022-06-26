@@ -10,7 +10,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
-import AddPropertyModal from 'lib/styles/customTheme/components/Modals/AddPropertyModal';
+import AddPropertyModal from 'lib/components/Modals/AddPropertyModal';
 import ListingsCard from 'lib/components/ListingsCard';
 
 const sell = ({

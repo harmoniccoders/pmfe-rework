@@ -35,7 +35,7 @@ import { SRLWrapper } from 'simple-react-lightbox';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import moment from 'moment';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import naira from 'lib/components/Generics/Naira';
 
 type Props = {
   onClose: any;

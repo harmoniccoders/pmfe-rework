@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { FaArrowUp } from 'react-icons/fa';
 import { RentReliefView } from 'types/api';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import naira from 'lib/components/Generics/Naira';
 import moment from 'moment';
 import InstructionModal from './InstructionModals';
 

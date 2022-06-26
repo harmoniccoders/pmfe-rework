@@ -3,7 +3,7 @@ import { Box, Center, SimpleGrid, Text } from '@chakra-ui/react';
 import CardButton from 'lib/components/CardButton';
 import { PropertyType } from 'types/api';
 import CleanProperty from 'lib/components/clean/CleanProperty';
-import BookCleaningModal from 'lib/styles/customTheme/components/Modals/BookCleaningModal';
+import BookCleaningModal from 'lib/components/Modals/BookCleaningModal';
 
 const CleanPage = ({
   data,

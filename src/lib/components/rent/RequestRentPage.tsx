@@ -1,5 +1,5 @@
 import { Box, Heading, HStack } from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
+import PageTabs from 'lib/components/Generics/PageTabs';
 import RequestRentProperty from 'lib/components/rent/RequestRentProperty';
 import { PropertyType } from 'types/api';
 

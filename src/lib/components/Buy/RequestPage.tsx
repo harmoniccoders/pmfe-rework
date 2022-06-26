@@ -1,7 +1,7 @@
 import { Box, Heading, HStack } from '@chakra-ui/react';
 import { PropertyType } from 'types/api';
-import PageTabs from '../../Generics/PageTabs';
-import RequestProperty from '../../RequestProperty';
+import PageTabs from 'lib/components/Generics/PageTabs';
+import RequestProperty from '../RequestProperty';
 
 function RequestPage({
   propertyTypes,
@@ -37,7 +37,7 @@ function RequestPage({
           <PageTabs tabName="request" tabTitle="Request Property" />
         </HStack>
 
-        <RequestProperty propertyTypes={propertyTypes} />
+        <RequestProperty propertyTypes={propertyTypes}  />
       </Box>
     </Box>
   );

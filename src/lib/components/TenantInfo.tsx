@@ -7,7 +7,7 @@ import {
   Heading,
   Divider,
 } from '@chakra-ui/react';
-import ViewTenantsInfo from 'lib/styles/customTheme/components/Modals/ViewTenantsInfo';
+import ViewTenantsInfo from 'lib/components/Modals/ViewTenantsInfo';
 
 import { useState } from 'react';
 import { ApplicationView, Application } from 'types/api';

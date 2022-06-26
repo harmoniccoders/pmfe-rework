@@ -15,15 +15,15 @@ import {
 import { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
 import Icons from './Icons';
-import SeemoreModal from 'lib/styles/customTheme/components/SeemoreModal';
+import SeemoreModal from 'lib/components/Modals/SeemoreModal';
 import { Parameters } from 'openapi-client-axios';
 import { useOperationMethod } from 'react-openapi-client';
 import { useRouter } from 'next/router';
 import { PropertyView, UserView } from 'types/api';
 import Cookies from 'js-cookie';
-import RentReliefModal from 'lib/styles/customTheme/components/Modals/RentReliefModal';
+import RentReliefModal from 'lib/components/Modals/RentReliefModal';
 import { useToasts } from 'react-toast-notifications';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import naira from 'lib/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;

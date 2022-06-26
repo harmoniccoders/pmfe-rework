@@ -1,4 +1,4 @@
-import BuyPage from 'lib/styles/customTheme/components/Modals/Buy/BuyPage';
+import BuyPage from 'lib/components/Buy/BuyPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { PropertyModel } from 'types/api';

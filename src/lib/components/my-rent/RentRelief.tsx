@@ -1,5 +1,5 @@
 import { Box, HStack, SimpleGrid, Text } from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
+import PageTabs from 'lib/components/Generics/PageTabs';
 import ReliefCard from 'lib/components/ReliefCard';
 import { RentReliefView } from 'types/api';
 

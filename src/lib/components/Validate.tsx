@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import PdfDownloader from 'lib/styles/customTheme/components/Generics/PdfDownloader';
+import PdfDownloader from 'lib/components/Generics/PdfDownloader';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Icons from '../Icons';
-import CleanDetailsModal from 'lib/styles/customTheme/components/Modals/CleanDetailsModal';
+import CleanDetailsModal from 'lib/components/Modals/CleanDetailsModal';
 
 type Props = {
   propertyType: string | undefined | null;

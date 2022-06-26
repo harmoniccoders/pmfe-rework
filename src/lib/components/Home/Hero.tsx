@@ -1,5 +1,4 @@
 import {
-  Box,
   Input,
   InputGroup,
   Text,

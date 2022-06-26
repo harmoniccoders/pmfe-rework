@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
-import UpdateUserModal from 'lib/styles/customTheme/components/Modals/UpdatePasswordModal';
+import UpdateUserModal from 'lib/components/Modals/UpdatePasswordModal';
 import { DataAccess } from 'lib/Utils/Api';
 
 interface NavProps {

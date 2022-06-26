@@ -8,10 +8,10 @@ import {
   HStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import Icons from '../Icons';
+import Icons from '../../Icons';
 import { TenancyView } from 'types/api';
 import React from 'react';
-import LandlordModal from 'lib/styles/customTheme/components/Modals/LandlordModal';
+import LandlordModal from 'lib/components/Modals/LandlordModal';
 import TenancyAgreement from './TenancyAgreement';
 import moment from 'moment';
 

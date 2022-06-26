@@ -1,6 +1,6 @@
 import axios from 'axios';
-import ListPage from 'lib/styles/customTheme/components/Listings/Listings';
-import BuyPage from 'lib/styles/customTheme/components/Modals/Buy/BuyPage';
+import ListPage from 'lib/components/Listings/Listings';
+import BuyPage from 'lib/components/Buy/BuyPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';

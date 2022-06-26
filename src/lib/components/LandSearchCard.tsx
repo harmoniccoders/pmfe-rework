@@ -7,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import VerifyModal from 'lib/styles/customTheme/components/Modals/VerifyModal';
+import VerifyModal from 'lib/components/Modals/VerifyModal';
 import { LandSearchView } from 'types/api/land-search-view';
 
 const LandSearchCard = ({ item }: { item: LandSearchView }) => {

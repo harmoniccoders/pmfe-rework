@@ -28,6 +28,7 @@ import { ComplaintsCategory, ComplaintsModel } from 'types/api';
 import { useToasts } from 'react-toast-notifications';
 import RentReliefModal from '../RentReliefModal';
 import AgreementModal from '../AgreementModal';
+import TenancyAgreement from 'lib/components/my-rent/landlord/TenancyAgreement';
 
 type Props = {
   isOpen: boolean;
@@ -394,10 +395,10 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
           isOpen={openRelief}
           item={propertyData?.property}
         />
-        <AgreementModal
+        <TenancyAgreement
           isOpen={openAgree}
           onClose={() => setOpenAgree(false)}
-          item={propertyData}
+          data={propertyData}
         />
       </ModalContent>
     </Modal>

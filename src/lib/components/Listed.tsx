@@ -15,9 +15,9 @@ import {
   Button,
   Center,
 } from '@chakra-ui/react';
-import Counter from 'lib/styles/customTheme/components/Counter';
+import Counter from 'lib/Utils/Counter';
 
-import ListedProperties from 'lib/styles/customTheme/components/ListedProperties';
+import ListedProperties from 'lib/components/ListedProperties';
 import { useRouter } from 'next/router';
 import { SetStateAction, useState } from 'react';
 import Icons from './Icons';

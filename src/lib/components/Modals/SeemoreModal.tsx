@@ -17,15 +17,15 @@ import {
 } from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
 import React, { useState } from 'react';
-import ShareListingsModal from './Modals/ShareListingsModal';
+import ShareListingsModal from './ShareListingsModal';
 import { useRouter } from 'next/router';
 import { PropertyView } from 'types/api';
-import ReportListingModal from './Modals/ReportListingModal';
+import ReportListingModal from './ReportListingModal';
 import parse from 'html-react-parser';
 import Cookies from 'js-cookie';
 import MapView from 'lib/Utils/MapView';
 import { SRLWrapper } from 'simple-react-lightbox';
-import naira from './Generics/Naira';
+import naira from '../Generics/Naira';
 
 interface Props {
   isOpen?: any;

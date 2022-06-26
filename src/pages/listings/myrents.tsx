@@ -1,5 +1,5 @@
 import axios from 'axios';
-import RentPage from 'lib/styles/customTheme/components/Listings/RentPage';
+import RentPage from 'lib/components/Listings/RentPage';
 import { DataAccess } from 'lib/Utils/Api';
 import { returnUserData } from 'lib/Utils/userData';
 import { GetServerSideProps } from 'next';

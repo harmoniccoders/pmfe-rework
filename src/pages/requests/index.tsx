@@ -1,8 +1,8 @@
 import { Box, Flex, Grid, GridItem, Heading, HStack } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import Pagination from 'lib/components/Pagination';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import RequestCard from 'lib/styles/customTheme/components/Listings/RequestCards';
+import PageTabs from 'lib/components/Generics/PageTabs';
+import RequestCard from 'lib/components/Listings/RequestCards';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';

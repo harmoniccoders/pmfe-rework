@@ -11,7 +11,7 @@ import {
 import ListingsCard from 'lib/components/ListingsCard';
 import Pagination from 'lib/components/Pagination';
 import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
-import PageTabs from '../Generics/PageTabs';
+import PageTabs from 'lib/components/Generics/PageTabs';
 import AddPropertyModal from '../Modals/AddPropertyModal';
 
 interface ListingTypes {

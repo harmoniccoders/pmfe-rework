@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Icons from '../Icons';
-import TenancyModal from 'lib/styles/customTheme/components/Modals/my-rent/TenancyModal';
+import TenancyModal from 'lib/components/Modals/my-rent/TenancyModal';
 import { ComplaintsCategory, TenancyView } from 'types/api';
 import moment from 'moment';
 type Props = {

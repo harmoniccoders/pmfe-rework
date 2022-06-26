@@ -24,11 +24,11 @@ import {
   RentCollectionType,
   TenantType,
 } from 'types/api';
-import ViewListedProperty from 'lib/styles/customTheme/components/Modals/ViewListedProperty';
-import ViewListedRentProperty from 'lib/styles/customTheme/components/Modals/ViewListedRentProperty';
-import DeleteListings from 'lib/styles/customTheme/components/Modals/DeleteLiting';
-import EditPropertyModal from 'lib/styles/customTheme/components/EditPropertyModal';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import ViewListedProperty from 'lib/components/Modals/ViewListedProperty';
+import ViewListedRentProperty from 'lib/components/Modals/ViewListedRentProperty';
+import DeleteListings from 'lib/components/Modals/DeleteLiting';
+import EditPropertyModal from 'lib/components/Modals/EditPropertyModal';
+import naira from 'lib/components/Generics/Naira';
 
 type Props = {
   item: PropertyView;

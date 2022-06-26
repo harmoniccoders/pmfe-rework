@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import RequestPage from 'lib/styles/customTheme/components/Modals/Buy/RequestPage';
+import RequestPage from 'lib/components/Buy/RequestPage';
 import { DataAccess } from 'lib/Utils/Api';
 
 import { GetServerSideProps } from 'next';

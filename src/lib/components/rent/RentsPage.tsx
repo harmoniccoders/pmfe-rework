@@ -8,8 +8,8 @@ import {
   RentCollectionType,
   TenantType,
 } from 'types/api';
-import AddRentModal from 'lib/styles/customTheme/components/Modals/AddRentModal';
-import RentoutModal from 'lib/styles/customTheme/components/Modals/RentoutModal';
+import AddRentModal from 'lib/components/Modals/AddRentModal';
+import RentoutModal from 'lib/components/Modals/RentoutModal';
 
 const RentsPage = ({
   propertyTitles,

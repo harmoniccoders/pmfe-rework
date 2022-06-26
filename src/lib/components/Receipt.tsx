@@ -11,7 +11,7 @@ import {
   Thead,
   Tbody,
 } from '@chakra-ui/react';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import naira from 'lib/components/Generics/Naira';
 import Link from 'next/link';
 import React from 'react';
 import { TableData, TableHead } from './Table';

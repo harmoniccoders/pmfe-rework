@@ -1,7 +1,8 @@
 import { Box, Heading, HStack } from '@chakra-ui/react';
 import Listed from 'lib/components/Listed';
 import { PropertyModel } from 'types/api';
-import PageTabs from '../../Generics/PageTabs';
+import PageTabs from 'lib/components/Generics/PageTabs';
+// import PageTabs fro../../styles/customTheme/components/Generics/PageTabsabs';
 
 function BuyPage({ data }: { data: PropertyModel[] }) {
   return (

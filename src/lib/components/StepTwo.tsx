@@ -12,11 +12,11 @@ import {
 import React from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
-import SubmitApplicationModal from 'lib/styles/customTheme/components/Modals/SubmitApplicationModal';
+import SubmitApplicationModal from 'lib/components/Modals/SubmitApplicationModal';
 import { FaCheck } from 'react-icons/fa';
-import PaySecurelyModal from 'lib/styles/customTheme/components/Modals/PaySecurelyModal';
+import PaySecurelyModal from 'lib/components/Modals/PaySecurelyModal';
 import { PaymentRatesView, PropertyView } from 'types/api';
-import RentApplicationModal from 'lib/styles/customTheme/components/Modals/RentApplicationModal';
+import RentApplicationModal from 'lib/components/Modals/RentApplicationModal';
 
 type Props = {
   applicationData: any;

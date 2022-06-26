@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import LandlordOptions from 'lib/components/landlord/LandlordOptions';
+import LandlordOptions from 'lib/components/my-rent/landlord/LandlordOptions';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';

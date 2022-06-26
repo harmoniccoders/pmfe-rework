@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import Icons from './Icons';
 import { FaCheck } from 'react-icons/fa';
-import LiveInspectionModal from 'lib/styles/customTheme/components/Modals/LiveInspectionModal';
-import InteractiveVideoModal from 'lib/styles/customTheme/components/Modals/InteractiveVideoModal';
+import LiveInspectionModal from 'lib/components/Modals/LiveInspectionModal';
+import InteractiveVideoModal from 'lib/components/Modals/InteractiveVideoModal';
 import { InspectionDateView, PropertyView } from 'types/api';
 
 type Props = {

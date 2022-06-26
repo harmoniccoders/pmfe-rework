@@ -1,6 +1,6 @@
 import { Box, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
-import LandSearchModal from 'lib/styles/customTheme/components/Modals/LandSearchModal';
+import PageTabs from 'lib/components/Generics/PageTabs';
+import LandSearchModal from 'lib/components/Modals/LandSearchModal';
 import { useState } from 'react';
 import { LandSearchView } from 'types/api';
 import CardButton from '../CardButton';

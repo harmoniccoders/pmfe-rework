@@ -11,9 +11,9 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react';
-import Hero from 'lib/components/Hero';
+import Hero from 'lib/components/Home/Hero';
 import PropertyCard from 'lib/components/PropertyCard';
-import Services from 'lib/components/Services';
+import Services from 'lib/components/Home/Services';
 import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';

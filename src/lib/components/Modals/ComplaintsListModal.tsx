@@ -8,7 +8,7 @@ import {
   Text,
   Box,
 } from '@chakra-ui/react';
-import LandlordOptions from 'lib/components/landlord/LandlordOptions';
+import LandlordOptions from 'lib/components/my-rent/landlord/LandlordOptions';
 import { useState } from 'react';
 
 interface LandlordProps {

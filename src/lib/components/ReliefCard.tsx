@@ -1,8 +1,8 @@
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { RentReliefView } from 'types/api';
-import ViewRentRelief from '../styles/customTheme/components/Modals/ViewRentRelief';
-import naira from 'lib/styles/customTheme/components/Generics/Naira';
+import ViewRentRelief from './Modals/ViewRentRelief';
+import naira from 'lib/components/Generics/Naira';
 
 const ReliefCard = ({ item }: { item: RentReliefView }) => {
   const [showModal, setShowModal] = useState<boolean>(false);

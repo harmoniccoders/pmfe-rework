@@ -1,5 +1,5 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
-import PageTabs from 'lib/styles/customTheme/components/Generics/PageTabs';
+import PageTabs from 'lib/components/Generics/PageTabs';
 import LandlordRentCard from 'lib/components/LandlordRentCard';
 
 function Landlord({ data }: { data: any }) {
@@ -16,8 +16,7 @@ function Landlord({ data }: { data: any }) {
           p=".2rem"
           mb="2.5rem"
         >
-          <PageTabs tabName="my-rent/enquiries" tabTitle="Enquiries" />
-          <PageTabs tabName="my-rent/requests" tabTitle="Requests" />
+         
           <PageTabs tabName="my-rent/rent-relief" tabTitle="Rent Relief" />
           <PageTabs tabName="my-rent/tenancy" tabTitle="My Tenancy" />
         </HStack>
