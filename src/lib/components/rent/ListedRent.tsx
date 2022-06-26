@@ -248,7 +248,7 @@ function ListedRent({ data }: { data: any }) {
                       width="40px"
                       height="40px"
                       mx="auto"
-                      src="/assets/apartment.png"
+                      src="/assets/Apartment.png"
                       alt="apartment-image"
                       objectFit="contain"
                     />
