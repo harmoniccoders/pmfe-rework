@@ -1,4 +1,4 @@
-import { Stack, Grid, Box, Image } from '@chakra-ui/react';
+import { Stack, Grid, Box, Image, Heading } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -76,9 +76,11 @@ const ForgotPassword = () => {
           <Stack
             alignItems="center !important"
             justifyContent="center"
+            h={["60vh", "auto"]}
             spacing={2}
             w="full"
           >
+            <Heading   fontSize="1.5rem" mb="4">Reset Password</Heading>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<UserresetinitiateEmailParameters>
                 label="Username"
