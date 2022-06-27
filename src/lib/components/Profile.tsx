@@ -120,23 +120,11 @@ function Profile() {
           },
         }
       );
+      Cookies.set('user', JSON.stringify(result.data.data));
       setUser(result.data.data);
+      console.log({ result });
     } catch (error) {}
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const data = (await _dataAccess.get(`/api/user/list`)).data;
-        const result = data.value.filter((x: any) => x.id == user.id);
-        if (result.length !== 0) {
-          setUser(result[0]);
-          return;
-        }
-      } catch (error) {}
-    };
-    getUser();
-  }, [user]);
 
   return (
     <Stack

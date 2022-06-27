@@ -49,21 +49,6 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
   };
   const { user, setUser } = useContext(UserContext);
 
-  const bearer = `Bearer ${Cookies.get('token')}`;
-  const _dataAccess = new DataAccess(bearer);
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const data = (await _dataAccess.get(`/api/user/list`)).data;
-        const result = data.value.filter((x: any) => x.id == user.id);
-        if (result.length !== 0) {
-          setUser(result[0]);
-        }
-      } catch (error) {}
-    };
-    getUser();
-  }, [user]);
-
   const [isOpen, setIsOpen] = useState(false);
   const dropDown = useRef(null);
   const dropDownB = useRef(null);
