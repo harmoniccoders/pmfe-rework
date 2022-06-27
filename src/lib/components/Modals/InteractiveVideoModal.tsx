@@ -22,7 +22,6 @@ type Props = {
 };
 
 const InteractiveVideoModal = ({ open, close, data }: Props) => {
-  
   return (
     <Modal
       isOpen={open}
@@ -67,17 +66,16 @@ const InteractiveVideoModal = ({ open, close, data }: Props) => {
                           <>
                             {media.isVideo && (
                               <SRLWrapper>
-                                <AspectRatio
-                                  maxH={['70px', '150px']}
-                                  w="full"
-                                  ratio={1}
+                                <video
+                                  controls
+                                  style={{
+                                    objectFit: 'cover',
+                                    maxWidth: '130px',
+                                    height: '130px',
+                                  }}
                                 >
-                                  <iframe
-                                    title="Interactive videp"
-                                    src={media.url as string}
-                                    allowFullScreen
-                                  />
-                                </AspectRatio>
+                                  <source src={media.url as string} />
+                                </video>
                               </SRLWrapper>
                             )}
                           </>

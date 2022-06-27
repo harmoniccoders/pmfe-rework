@@ -7,8 +7,10 @@ import {
   Flex,
   Text,
   Box,
+  Image,
 } from '@chakra-ui/react';
 import Form from 'lib/components/sell/Form';
+import Modals from 'lib/Utils/Modals';
 import { useState } from 'react';
 import { PropertyTitle, PropertyType } from 'types/api';
 
@@ -27,77 +29,30 @@ function AddPropertyModal({
 }: AddPropertyProps) {
   const [formStep, setFormStep] = useState(0);
   return (
-    <Modal
+    <Modals
       isOpen={isOpen}
       onClose={onClose}
-      size="lg"
-      motionPreset="slideInBottom"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        overflowY="scroll"
-        borderRadius="0"
-        pos="fixed"
-        maxH="100vh"
-      >
-        <ModalHeader>
-          {formStep === 0 ? (
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              onClick={onClose}
-            >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          ) : (
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              onClick={() => setFormStep(formStep - 1)}
-            >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          )}
-        </ModalHeader>
-
-        <ModalBody>
-          <Box px={5}>
-            <Form
-              propertyTypes={propertyTypes}
-              propertyTitles={propertyTitles}
-              formStep={formStep}
-              setFormStep={setFormStep}
-              onClose={onClose}
-            />
-          </Box>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+      pmlogo={
+        <Image
+          src="/assets/PropertyMataaz.png"
+          alt="company-logo"
+          w="100%"
+          h="100%"
+          objectFit="contain"
+        />
+      }
+      content={
+        <>
+          <Form
+            propertyTypes={propertyTypes}
+            propertyTitles={propertyTitles}
+            formStep={formStep}
+            setFormStep={setFormStep}
+            onClose={onClose}
+          />
+        </>
+      }
+    />
   );
 }
 

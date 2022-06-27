@@ -160,13 +160,14 @@ const PropertyCard = ({ item, matchId }: Props) => {
 
     try {
       const result = await (await rejectRequest(params)).data;
+      console.log({ result });
 
       if (result.status) {
         addToast('Successful', {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.reload();
+        // router.reload();
 
         return;
       }

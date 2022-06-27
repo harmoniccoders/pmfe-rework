@@ -29,6 +29,7 @@ import { useToasts } from 'react-toast-notifications';
 import RentReliefModal from '../RentReliefModal';
 import AgreementModal from '../AgreementModal';
 import TenancyAgreement from 'lib/components/my-rent/landlord/TenancyAgreement';
+const moment = require('moment');
 
 type Props = {
   isOpen: boolean;
@@ -247,7 +248,12 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
                 <HStack w="100%">
                   <Icons iconClass="fa-calendar-day" />
 
-                  <Text>Next rent is due in 365 days</Text>
+                  <Text>{`Next rent is due in ${moment(
+                    propertyData.rentDueDate
+                  ).diff(
+                    moment(propertyData.transaction?.dateCreated),
+                    'day'
+                  )} days`}</Text>
                 </HStack>
               </VStack>
 

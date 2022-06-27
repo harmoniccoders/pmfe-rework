@@ -2,7 +2,7 @@ import { Box, Text, Grid, Stack, Image, Flex, Divider } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import { LoginModel } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+import { UserContext } from 'lib/Utils/MainContext';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -31,6 +32,8 @@ const Login = () => {
   });
 
   const { addToast } = useToasts();
+
+  const { user, setUser } = useContext(UserContext);
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(true);
   const changePasswordField = () => {
@@ -57,7 +60,7 @@ const Login = () => {
         Cookies.set('token', result.data.token);
         Cookies.set('user', JSON.stringify(result.data));
         Cookies.set('userIn', 'true');
-
+        setUser(result.data);
         handleAfterLogin();
         return;
       }
@@ -76,7 +79,7 @@ const Login = () => {
           w={['90%', '100%', '40vw']}
           h={['100%', '100%', '60vh']}
           justifyContent="center"
-          display={["none", "flex"]}
+          display={['none', 'flex']}
           alignItems="center"
           textAlign="center"
           mx="1.3rem"

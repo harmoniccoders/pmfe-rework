@@ -90,7 +90,9 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
               </Heading>
               <SimpleGrid columns={2} pt="5" spacing="5">
                 <VStack w="full">
-                  <Text mb="2">Outstanding Balance</Text>
+                  <Text mb="2" noOfLines={1}>
+                    Outstanding Balance
+                  </Text>
                   <Text
                     bg="brand.100"
                     color="white"
@@ -103,7 +105,9 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
                   </Text>
                 </VStack>
                 <VStack>
-                  <Text mb="2">Next Payment Date</Text>
+                  <Text mb="2" noOfLines={1}>
+                    Next Payment Date
+                  </Text>
                   <Text
                     bg="brand.100"
                     color="white"

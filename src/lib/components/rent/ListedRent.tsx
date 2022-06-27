@@ -43,7 +43,7 @@ function ListedRent({ data }: { data: any }) {
   const [bathroomCounter, setBathroomCounter] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [openFilter, setOpenFilter] = useState(true);
+  const [openFilter, setOpenFilter] = useState(false);
 
   const getSearchedResult = async () => {
     router.push({
@@ -85,6 +85,19 @@ function ListedRent({ data }: { data: any }) {
   };
 
   const clearFilteredData = () => {
+    setFilterOptions({
+      isResidential: false,
+      isCommercial: false,
+      isMixed: false,
+      isFlat: false,
+      isBungalow: false,
+      isDuplex: false,
+      isTerrace: false,
+      bedrooms: 0,
+      bathrooms: 0,
+    });
+    setBedroomCounter(0);
+    setBathroomCounter(0);
     router.push({
       query: {
         filter: '',
@@ -99,7 +112,7 @@ function ListedRent({ data }: { data: any }) {
           <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
             <Box w="full">
               <InputGroup alignItems="center">
-                <InputLeftElement>
+                <InputLeftElement onClick={getSearchedResult}>
                   <Icons iconClass="fa-search" />
                 </InputLeftElement>
                 <Input
@@ -141,7 +154,12 @@ function ListedRent({ data }: { data: any }) {
               align="flex-start"
               spacing={5}
               transition="all .5s ease"
-              display={openFilter ? 'flex' : 'none'}
+              display={{
+                base: openFilter ? 'flex' : 'none',
+                md: openFilter ? 'flex' : 'none',
+                lg: 'flex',
+                xl: 'flex',
+              }}
             >
               <Grid
                 templateColumns="repeat(4,1fr)"

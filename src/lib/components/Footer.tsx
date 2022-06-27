@@ -3,7 +3,7 @@ import { FaFacebook, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 import NextLink from 'next/link';
 
 const Footer = () => {
-  const date = new Date().getFullYear()
+  const date = new Date().getFullYear();
   return (
     <Box w="90%" mx="auto" py={['3rem', '5rem']}>
       <SimpleGrid
@@ -14,7 +14,7 @@ const Footer = () => {
       >
         <VStack spacing="2" align="start">
           <Text fontSize="1.1rem" color="gray.700" fontWeight="bold">
-            Liquede
+            Property Mataaz
           </Text>
           <VStack align="start" fontSize=".9rem">
             <NextLink href="/">About Us </NextLink>

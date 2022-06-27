@@ -78,7 +78,7 @@ function MyRents({
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>
-            Sorry! There's no property at this time please check back later
+            Sorry! You have no property listed yet.
           </Heading>
         )}
       </Box>

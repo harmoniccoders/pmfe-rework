@@ -21,9 +21,10 @@ import { useToasts } from 'react-toast-notifications';
 import { UpdateUserModel, MediaModel } from 'types/api';
 import ButtonComponent from './Button';
 import { Widget } from '@uploadcare/react-widget';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { DataAccess } from 'lib/Utils/Api';
+import { UserContext } from 'lib/Utils/MainContext';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -32,11 +33,9 @@ const schema = yup.object().shape({
 });
 
 function Profile() {
-  const users = Cookies.get('user') as unknown as string;
-  let user: any;
-  if (users !== undefined) {
-    user = JSON.parse(users);
-  }
+  const { user, setUser } = useContext(UserContext);
+
+  // console.log({ user });
 
   const [updateUser, { loading, data, error }] =
     useOperationMethod('Userupdate');
@@ -94,7 +93,7 @@ function Profile() {
 
   const bearer = `Bearer ${Cookies.get('token')}`;
   const _dataAccess = new DataAccess(bearer);
-  const [isUser, setIsUser] = useState(user);
+
   const onChange = async (info: any) => {
     setUrl(info.originalUrl);
 
@@ -121,7 +120,7 @@ function Profile() {
           },
         }
       );
-      setIsUser(result.data.data);
+      setUser(result.data.data);
     } catch (error) {}
   };
 
@@ -130,11 +129,14 @@ function Profile() {
       try {
         const data = (await _dataAccess.get(`/api/user/list`)).data;
         const result = data.value.filter((x: any) => x.id == user.id);
-        setIsUser(result[0]);
+        if (result.length !== 0) {
+          setUser(result[0]);
+          return;
+        }
       } catch (error) {}
     };
     getUser();
-  }, []);
+  }, [user]);
 
   return (
     <Stack
@@ -166,7 +168,7 @@ function Profile() {
               <FaCamera color="#0042ff" fontSize="1.5rem" />
             </Box>
             <Image
-              src={isUser?.profilePicture || '/assets/user-icon.png'}
+              src={user?.profilePicture || '/assets/user-icon.png'}
               w="full"
               h="full"
               borderRadius="50%"

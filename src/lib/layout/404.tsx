@@ -2,22 +2,28 @@ import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 
 function NoPage() {
   return (
-    <Flex align="center" justifyContent="center" pb="2rem">
+    <Flex
+      align="center"
+      justifyContent="center"
+      pb="2rem"
+      minH="90vh"
+      alignItems={['center', 'unset']}
+    >
       <Box w="full">
-        <Box w="50%" mx="auto">
+        <Box w={['full', '50%']} mx="auto">
           <Image src="/assets/preview.png" w="full" h="auto" />
         </Box>
         <Text
           fontSize="2rem"
           fontWeight="bold"
           textAlign="center"
-          w="60%"
+          w={['full', '60%']}
           mx="auto"
           mt="1rem"
         >
           Sorry, this page is missing!
         </Text>
-        <Text w="30%" mx="auto" textAlign="center">
+        <Text w={['90%', '30%']} mx="auto" textAlign="center">
           You seem to have lost your way,🤣🤣🤣 Re-trace your step back to where
           you're coming from
         </Text>

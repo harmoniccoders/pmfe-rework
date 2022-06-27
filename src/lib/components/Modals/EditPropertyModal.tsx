@@ -7,6 +7,7 @@ import {
   Flex,
   Text,
   Box,
+  Image,
 } from '@chakra-ui/react';
 import EditPropertyForm from 'lib/components/sell/EditPropertyForm';
 import { useState } from 'react';
@@ -18,6 +19,7 @@ import {
   TenantType,
 } from 'types/api';
 import EditRentForm from 'lib/components/rent/EditRentForm';
+import Modals from 'lib/Utils/Modals';
 
 interface EditPropertyProps {
   isOpen: boolean;
@@ -42,66 +44,21 @@ function EditPropertyModal({
 }: EditPropertyProps) {
   const [formStep, setFormStep] = useState(0);
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      motionPreset="slideInBottom"
-      size="lg"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        overflowY="scroll"
-        borderRadius="0"
-        pos="fixed"
-        maxH="100vh"
-      >
-        <ModalHeader>
-          {formStep === 0 ? (
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              onClick={onClose}
-            >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          ) : (
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              onClick={() => setFormStep(formStep - 1)}
-            >
-              <Text
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-            </Flex>
-          )}
-        </ModalHeader>
-
-        <ModalBody>
-          <Box px={5}>
+    <>
+      <Modals
+        isOpen={isOpen}
+        onClose={onClose}
+        pmlogo={
+          <Image
+            src="/assets/PropertyMataaz.png"
+            alt="company-logo"
+            w="100%"
+            h="100%"
+            objectFit="contain"
+          />
+        }
+        content={
+          <>
             {item.isForSale && (
               <EditPropertyForm
                 propertyTypes={propertyTypes}
@@ -125,10 +82,10 @@ function EditPropertyModal({
                 item={item}
               />
             )}
-          </Box>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+          </>
+        }
+      />
+    </>
   );
 }
 

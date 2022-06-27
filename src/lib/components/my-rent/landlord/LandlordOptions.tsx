@@ -21,8 +21,8 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
 
   return (
     <>
-      <Box w="70%" mx="auto" py="2rem">
-        <Box w="full" h="400px" pos="relative">
+      <Box w={['90%', '70%']} mx="auto" py="2rem">
+        <Box w="full" h={['300px', '400px']} pos="relative">
           <>
             {singles.property?.mediaFiles &&
             singles.property?.mediaFiles?.length > 0 ? (

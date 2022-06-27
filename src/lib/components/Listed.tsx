@@ -113,7 +113,7 @@ function Listed({ data }: { data: any }) {
         <GridItem colSpan={[4, 4, 2, 2, 1]}>
           <VStack w="full" pb="1rem" align="flex-start" spacing={5}>
             <Box w="full">
-              <InputGroup alignItems="center">
+              <InputGroup alignItems="center" onClick={getSearchedResult}>
                 <InputLeftElement>
                   <Icons iconClass="fa-search" />
                 </InputLeftElement>

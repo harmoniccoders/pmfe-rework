@@ -36,10 +36,14 @@ const Services = () => {
           />
         </Box>
         <VStack spacing="3" align="start">
-          <Heading fontSize={['xl', '2xl']}>
+          <Heading
+            fontSize={['xl', '2xl']}
+            textAlign={['center', 'left']}
+            w="full"
+          >
             <Text display="inline" color="blue">
-              Sell{' '}
-            </Text>{' '}
+              Sell
+            </Text>
             your property fast
           </Heading>
           <Text fontSize="sm">
@@ -76,7 +80,11 @@ const Services = () => {
           />
         </Box>
         <VStack spacing="3" align="start">
-          <Heading fontSize={['xl', '2xl']}>
+          <Heading
+            fontSize={['xl', '2xl']}
+            textAlign={['center', 'left']}
+            w="full"
+          >
             <Text display="inline" color="blue">
               Buy
             </Text>{' '}
@@ -116,7 +124,11 @@ const Services = () => {
           />
         </Box>
         <VStack spacing="3" align="start">
-          <Heading fontSize={['xl', '2xl']}>
+          <Heading
+            fontSize={['xl', '2xl']}
+            textAlign={['center', 'left']}
+            w="full"
+          >
             All your{' '}
             <Text display="inline" color="blue">
               rent
@@ -157,7 +169,11 @@ const Services = () => {
           />
         </Box>
         <VStack spacing="3" align="start">
-          <Heading fontSize={['xl', '2xl']}>
+          <Heading
+            fontSize={['xl', '2xl']}
+            textAlign={['center', 'left']}
+            w="full"
+          >
             Enjoy top-notch{' '}
             <Text display="inline" color="blue">
               cleaning

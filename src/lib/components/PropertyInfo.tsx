@@ -25,7 +25,6 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
-  
   return (
     <>
       <VStack
@@ -175,18 +174,16 @@ const PropertyInfo = ({ data }: Props) => {
                   return (
                     <>
                       {media.isVideo && (
-                        <AspectRatio
-                          maxH={['70px', '150px']}
-                          w="full"
-                          ratio={1}
+                        <video
+                          controls
+                          style={{
+                            objectFit: 'cover',
+                            maxWidth: '130px',
+                            height: '130px',
+                          }}
                         >
-                          <iframe
-                            title="Interactive videp"
-                            src={media.url as string}
-                            allowFullScreen
-                          />
-                        </AspectRatio>
-                       
+                          <source src={media.url as string} />
+                        </video>
                       )}
                     </>
                   );

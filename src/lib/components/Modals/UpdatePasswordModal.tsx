@@ -5,6 +5,7 @@ import {
   ModalHeader,
   ModalBody,
   Text,
+  Image,
   Box,
   ModalCloseButton,
 } from '@chakra-ui/react';
@@ -17,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { PasswordResetModel } from 'types/api';
+import Modals from 'lib/Utils/Modals';
 
 interface AddPropertyProps {
   isOpen: boolean;
@@ -76,7 +78,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
         window.location.href = '/login';
         return;
       }
-      onClose()
+      onClose();
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
@@ -85,58 +87,55 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
     } catch (err) {}
   };
   return (
-    <Modal
+    <Modals
       isOpen={isOpen}
       onClose={onClose}
-      motionPreset="slideInBottom"
-      isCentered
-      size="lg"
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent py={5} borderRadius="0" pos="fixed" maxH="100vh">
-        <ModalHeader>
-          <ModalCloseButton />
-        </ModalHeader>
-
-        <ModalBody>
-          <Box px={5} h={['100vh', 'auto']}>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-              <PrimaryInput<PasswordResetModel>
-                label="Old Password"
-                name="existingPassword"
-                error={errors.existingPassword}
-                defaultValue=""
-                register={register}
-                changePasswordType={changePasswordType}
-                type={passwordType ? 'password' : 'text'}
-                iconClass={passwordType ? 'fa-eye' : 'fa-eye-slash'}
-              />
-              <PrimaryInput<PasswordResetModel>
-                label="New Password"
-                name="newPassword"
-                defaultValue=""
-                register={register}
-                error={errors.newPassword}
-                changePasswordType={changePasswordField}
-                type={showPassword ? 'password' : 'text'}
-                iconClass={showPassword ? 'fa-eye' : 'fa-eye-slash'}
-              />
-              {err && (
-                <Text color="red" fontSize=".8rem" textAlign="center" mt="1rem">
-                  {err}
-                </Text>
-              )}
-              <ButtonComponent
-                content="Change Password"
-                isValid={isValid}
-                loading={loading}
-              />
-            </form>
-          </Box>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+      pmlogo={
+        <Image
+          src="/assets/PropertyMataaz.png"
+          alt="company-logo"
+          w="100%"
+          h="100%"
+          objectFit="contain"
+        />
+      }
+      content={
+        <>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+            <PrimaryInput<PasswordResetModel>
+              label="Old Password"
+              name="existingPassword"
+              error={errors.existingPassword}
+              defaultValue=""
+              register={register}
+              changePasswordType={changePasswordType}
+              type={passwordType ? 'password' : 'text'}
+              iconClass={passwordType ? 'fa-eye' : 'fa-eye-slash'}
+            />
+            <PrimaryInput<PasswordResetModel>
+              label="New Password"
+              name="newPassword"
+              defaultValue=""
+              register={register}
+              error={errors.newPassword}
+              changePasswordType={changePasswordField}
+              type={showPassword ? 'password' : 'text'}
+              iconClass={showPassword ? 'fa-eye' : 'fa-eye-slash'}
+            />
+            {err && (
+              <Text color="red" fontSize=".8rem" textAlign="center" mt="1rem">
+                {err}
+              </Text>
+            )}
+            <ButtonComponent
+              content="Change Password"
+              isValid={isValid}
+              loading={loading}
+            />
+          </form>
+        </>
+      }
+    />
   );
 }
 

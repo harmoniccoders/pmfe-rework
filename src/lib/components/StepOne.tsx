@@ -70,7 +70,7 @@ const StepOne = ({ date, data }: Props) => {
           h={['100%', ' 100%']}
           overflow="hidden"
         >
-          <Heading fontSize="1rem" lineHeight={1.5}>
+          <Heading fontSize="1rem" lineHeight={1.5} noOfLines={1}>
             Step 1-enquiries
           </Heading>
           <Button

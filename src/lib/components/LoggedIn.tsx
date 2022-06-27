@@ -3,10 +3,11 @@ import { Box, Avatar, Text, Flex, Stack, VStack } from '@chakra-ui/react';
 import { BiChevronDown } from 'react-icons/bi';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
 import UpdateUserModal from 'lib/components/Modals/UpdatePasswordModal';
 import { DataAccess } from 'lib/Utils/Api';
+import { UserContext } from 'lib/Utils/MainContext';
 
 interface NavProps {
   path: string;
@@ -46,25 +47,22 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
     Cookies.remove('userIn');
     window.location.href = '/';
   };
-  const users = Cookies.get('user') as unknown as string;
-  let user: any;
-  if (users !== undefined) {
-    user = JSON.parse(users);
-  }
+  const { user, setUser } = useContext(UserContext);
 
   const bearer = `Bearer ${Cookies.get('token')}`;
   const _dataAccess = new DataAccess(bearer);
-  const [isUser, setIsUser] = useState(user);
   useEffect(() => {
     const getUser = async () => {
       try {
         const data = (await _dataAccess.get(`/api/user/list`)).data;
         const result = data.value.filter((x: any) => x.id == user.id);
-        setIsUser(result[0]);
+        if (result.length !== 0) {
+          setUser(result[0]);
+        }
       } catch (error) {}
     };
     getUser();
-  }, []);
+  }, [user]);
 
   const [isOpen, setIsOpen] = useState(false);
   const dropDown = useRef(null);
@@ -141,7 +139,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
           {user?.firstName || 'User'}
           <Avatar
             size="xs"
-            src={isUser?.profilePicture || '/assets/user-icon.png'}
+            src={user?.profilePicture || '/assets/user-icon.png'}
           />
           <BiChevronDown />
         </Flex>

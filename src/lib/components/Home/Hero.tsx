@@ -15,14 +15,18 @@ interface heroProps {
 }
 const Hero = ({ setSearchTerm, searchTerm, setIsSearched }: heroProps) => {
   const router = useRouter();
+
+  const getSearchedResult = () => {
+    router.push({
+      query: {
+        search: searchTerm,
+      },
+    });
+    setIsSearched(true);
+  };
   const handleKeyPress = (e: any) => {
     if (e.key === 'Enter') {
-      router.push({
-        query: {
-          search: searchTerm,
-        },
-      });
-      setIsSearched(true);
+      getSearchedResult();
     }
   };
   return (
@@ -51,7 +55,10 @@ const Hero = ({ setSearchTerm, searchTerm, setIsSearched }: heroProps) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyPress}
         />
-        <InputRightElement children={<BsSearch color="blue" />} />
+        <InputRightElement
+          onClick={getSearchedResult}
+          children={<BsSearch color="blue" />}
+        />
       </InputGroup>
     </VStack>
   );

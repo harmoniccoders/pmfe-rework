@@ -53,6 +53,7 @@ function MyListings({ data, propertyTitles, propertyTypes }: ListingTypes) {
                 height="3rem"
                 color="#fff"
                 borderRadius="8px"
+                display="none"
               >
                 + &nbsp; Add Property
               </Button>
@@ -80,7 +81,7 @@ function MyListings({ data, propertyTitles, propertyTypes }: ListingTypes) {
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>
-            Sorry! There's no property at this time please check back later
+            Sorry! You have no property listed yet.
           </Heading>
         )}
       </Box>

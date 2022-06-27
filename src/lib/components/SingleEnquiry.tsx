@@ -76,7 +76,7 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
 
   return (
     <HStack
-      w="90%"
+      w={['full', '90%']}
       mx="auto"
       alignItems="flex-start"
       py="1rem"
@@ -95,38 +95,29 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
           <StepThree applicationData={data} />
         </VStack>
 
-        <Button
-          width="100%"
-          my="40px"
-          fontSize="15px"
-          color="brand.900"
-          variant="outline"
-          onClick={() => CancelEnquiry()}
-          isLoading={loading}
-        >
-          Cancel Request
-        </Button>
+        <Box w="90%" mx="auto">
+          <Button
+            width="100%"
+            m="40px auto"
+            fontSize="15px"
+            color="brand.900"
+            variant="outline"
+            onClick={() => CancelEnquiry()}
+            isLoading={loading}
+          >
+            Cancel Request
+          </Button>
+        </Box>
       </Box>
 
       <Box
-        w={{ base: 'full', lg: '72%' }}
+        w={{ base: '90%', lg: '72%' }}
+        mx={{ base: 'auto !important' }}
         borderLeft={{ base: '0', lg: '2px solid #DCE1E7' }}
         mt={['1rem !important', '0']}
       >
         <PropertyInfo data={data} />
       </Box>
-      <Button
-        width="100%"
-        my="40px !important"
-        fontSize="15px"
-        color="brand.900"
-        display={['block', 'none']}
-        variant="outline"
-        onClick={() => CancelEnquiry()}
-        isLoading={loading}
-      >
-        Cancel Request
-      </Button>
     </HStack>
   );
 };

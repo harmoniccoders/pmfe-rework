@@ -20,6 +20,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { PropertyView, ReportModel } from 'types/api';
 import Cookies from 'js-cookie';
+import Modals from 'lib/Utils/Modals';
 
 type Props = {
   isOpen?: any;
@@ -82,110 +83,75 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
 
   return (
     <>
-      <Modal
+      <Modals
         isOpen={isOpen}
         onClose={onClose}
-        motionPreset="slideInBottom"
-        size="lg"
-        isCentered
-      >
-        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-        <ModalContent
-          py={5}
-          overflow="hidden"
-          borderRadius="0"
-          pos="fixed"
-          mb="0"
-          mt="0"
-          maxH="100vh"
-        >
-          <ModalHeader>
-            <Flex justifyContent="space-between" alignItems="center">
-              <Text
-                onClick={onClose}
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-                cursor="pointer"
-              >
-                <span
-                  className="fal fa-angle-left"
-                  style={{ marginRight: '5px' }}
-                ></span>
-                Back
-              </Text>
-
-              <Box w="150px" h="40px">
-                <Image
-                  src="/assets/PropertyMataaz.png"
-                  alt="company-logo"
-                  w="100%"
-                  h="100%"
-                  objectFit="contain"
-                />
-              </Box>
-            </Flex>
-          </ModalHeader>
-
-          <ModalBody>
-            <Box px={5} h={['100vh', 'auto']}>
-              <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-                <PrimaryInput<ReportModel>
-                  label="Property Name"
-                  name="propertyId"
-                  defaultValue={item.name as string}
-                  error={errors.propertyId}
-                  register={register}
-                />
-                {loggedInUser ? (
-                  <>
-                    <PrimaryInput<ReportModel>
-                      label="User's Name"
-                      name="userName"
-                      error={errors.userName}
-                      defaultValue={loggedInUser?.fullName}
-                      register={register}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <PrimaryInput<ReportModel>
-                      label="Email"
-                      name="email"
-                      error={errors.email}
-                      defaultValue=""
-                      register={register}
-                      placeholder="youremail@email.com"
-                    />
-                    <PrimaryInput<ReportModel>
-                      label="User's Name"
-                      name="userName"
-                      error={errors.userName}
-                      defaultValue=""
-                      placeholder="Please enter your full name"
-                      register={register}
-                    />
-                  </>
-                )}
-                <PrimaryTextArea<ReportModel>
-                  label="Complaints"
-                  name="description"
-                  minH="150px"
-                  error={errors.description}
-                  defaultValue=""
-                  register={register}
-                />
-                <ButtonComponent
-                  isValid={isValid}
-                  loading={loading}
-                  content="submit"
-                />
-              </form>
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        pmlogo={
+          <Image
+            src="/assets/PropertyMataaz.png"
+            alt="company-logo"
+            w="100%"
+            h="100%"
+            objectFit="contain"
+          />
+        }
+        content={
+          <>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+              <PrimaryInput<ReportModel>
+                label="Property Name"
+                name="propertyId"
+                defaultValue={item.name as string}
+                error={errors.propertyId}
+                register={register}
+              />
+              {loggedInUser ? (
+                <>
+                  <PrimaryInput<ReportModel>
+                    label="User's Name"
+                    name="userName"
+                    error={errors.userName}
+                    defaultValue={loggedInUser?.fullName}
+                    register={register}
+                  />
+                </>
+              ) : (
+                <>
+                  <PrimaryInput<ReportModel>
+                    label="Email"
+                    name="email"
+                    error={errors.email}
+                    defaultValue=""
+                    register={register}
+                    placeholder="youremail@email.com"
+                  />
+                  <PrimaryInput<ReportModel>
+                    label="User's Name"
+                    name="userName"
+                    error={errors.userName}
+                    defaultValue=""
+                    placeholder="Please enter your full name"
+                    register={register}
+                  />
+                </>
+              )}
+              <PrimaryTextArea<ReportModel>
+                label="Complaints"
+                name="description"
+                minH="150px"
+                error={errors.description}
+                defaultValue=""
+                register={register}
+              />
+              <ButtonComponent
+                isValid={isValid}
+                loading={loading}
+                content="submit"
+              />
+            </form>
+          </>
+        }
+      />
     </>
   );
 };

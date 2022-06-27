@@ -45,7 +45,7 @@ const Header = () => {
   const router = useRouter();
   const user = Cookies.get('user');
   return (
-    <Box position="sticky" w="full" top="0" bg="white" zIndex="50">
+    <Box position="sticky" w="full" top="0" bg="white" zIndex="50" shadow="md">
       <Flex
         w="90%"
         mx="auto"

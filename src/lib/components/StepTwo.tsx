@@ -135,7 +135,7 @@ const StepTwo = ({
                   applicationData?.hasApplied == false ||
                   data.status === 'SOLD'
                 : isRent
-                ? applicationData?.status !== 'REVIEWED' ||
+                ? applicationData?.applicationStatus !== 'REVIEWED' ||
                   data.status === 'INACTIVE'
                 : false
             }

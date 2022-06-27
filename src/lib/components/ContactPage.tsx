@@ -190,7 +190,6 @@ const ContactPage = () => {
               w="full"
               objectFit="cover"
             />
-          
           </Box>
           <Box
             w="400px"
@@ -224,7 +223,12 @@ const ContactPage = () => {
             >
               Hi there!
             </Text>
-            <Text fontSize=".8rem" color="#33333" w="80%" textAlign="center">
+            <Text
+              fontSize=".8rem"
+              color="#33333"
+              w={['98%', '80%']}
+              textAlign="center"
+            >
               Let's help you with anything related to our platform as we
               promised nothing but outstanding customer services
             </Text>
@@ -258,7 +262,7 @@ const ContactPage = () => {
             <ButtonComponent content="Send" isValid={true} loading={loading} />
           </form>
 
-          <Box display="block">
+          <Box display={['none', 'block']}>
             <HStack spacing={4} justify="center">
               <Flex align="center">
                 <Circle bgColor="brand.100" color="white" size="1rem">
