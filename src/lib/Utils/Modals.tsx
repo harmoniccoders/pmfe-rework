@@ -52,7 +52,7 @@ export default function Modals({
             alignItems="center"
             pt={['4rem', '0']}
           >
-            {formStep === 0 ? (
+            {formStep === 0 || formStep == undefined ? (
               <Text
                 display="flex"
                 alignItems="center"

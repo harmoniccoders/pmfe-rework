@@ -296,8 +296,10 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
 
   return (
     <Modals
-      isOpen={open}
-      onClose={close}
+      isOpen={isOpen}
+      onClose={onClose}
+      formStep={formStep}
+      setFormStep={setFormStep}
       pmlogo={true}
       content={
         <VStack alignItems="flex-start" spacing={3} width="100%">
