@@ -9,12 +9,12 @@ import { PropertyModel, PropertyTitle, PropertyType } from 'types/api';
 const listings = ({
   propertyTitles,
   propertyTypes,
-
   listings,
+  getBanks,
 }: {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-
+  getBanks: any[];
   listings: any;
 }) => {
   return (
@@ -22,6 +22,7 @@ const listings = ({
       data={listings}
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
+      getBanks={getBanks}
     />
   );
 };
@@ -52,12 +53,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const listings = (
       await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
     ).data;
+    const getBanks = await (
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
 
     return {
       props: {
         propertyTypes,
         propertyTitles,
         listings,
+        getBanks,
       },
     };
   } catch (error) {

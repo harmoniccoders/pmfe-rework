@@ -1,9 +1,5 @@
 import { Box, HStack } from '@chakra-ui/react';
-import {
-  PropertyTitle,
-  PropertyType,
-  PropertyView,
-} from 'types/api';
+import { PropertyTitle, PropertyType, PropertyView } from 'types/api';
 import PageTabs from '../Generics/PageTabs';
 import MyListings from './MyListings';
 
@@ -11,10 +7,12 @@ function ListPage({
   data,
   propertyTitles,
   propertyTypes,
+  getBanks,
 }: {
   data: PropertyView[];
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  getBanks: any[];
 }) {
   return (
     <Box w="100%" mt="3rem">
@@ -37,6 +35,7 @@ function ListPage({
           data={data}
           propertyTypes={propertyTypes}
           propertyTitles={propertyTitles}
+          getBanks={getBanks}
         />
       </Box>
     </Box>

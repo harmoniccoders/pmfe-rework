@@ -134,7 +134,6 @@ const EditPropertyForm = ({
 
   watch('sellMyself');
   const pmSales = getValues('sellMyself');
-  console.log({ pmSales });
 
   const RenderButton = () => {
     if (formStep === 0) {

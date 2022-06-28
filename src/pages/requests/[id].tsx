@@ -21,8 +21,6 @@ const matches = ({ data, id }: { data: any; id: any }) => {
     }
   });
 
-  console.log({ singleRequest });
-
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <>

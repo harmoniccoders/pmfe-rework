@@ -18,9 +18,15 @@ interface ListingTypes {
   data: any;
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  getBanks: any[];
 }
 
-function MyListings({ data, propertyTitles, propertyTypes }: ListingTypes) {
+function MyListings({
+  data,
+  propertyTitles,
+  propertyTypes,
+  getBanks,
+}: ListingTypes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const result = data.value.filter(
     (property: PropertyView) => !property.isDraft
@@ -90,6 +96,7 @@ function MyListings({ data, propertyTitles, propertyTypes }: ListingTypes) {
         onClose={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
+        getBanks={getBanks}
       />
     </Box>
   );
