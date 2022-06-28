@@ -167,7 +167,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
           appearance: 'success',
           autoDismiss: true,
         });
-        // router.reload();
+        router.push('/requests');
 
         return;
       }
