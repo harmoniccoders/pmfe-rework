@@ -28,6 +28,7 @@ const iconStyle = {
 const RequestCard = ({ item }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+  console.log({ item });
 
   return (
     <>
@@ -128,22 +129,17 @@ const RequestCard = ({ item }: Props) => {
               height="40px"
               width="full"
               disabled={
-                item.matches?.find((x) => {
+                (item.matches?.find((x) => {
                   x.status == 'ACCEPTED' || x.status == 'REJECTED';
-                }) ||
-                (item.matches && item.matches?.length > 0) ||
+                }) &&
+                  item.matches?.length > 0) ||
                 (item.matches && item.matches?.length == 0)
                   ? true
                   : false
               }
               onClick={() => router.push(`/requests/${item.id}`)}
             >
-              {item.matches &&
-              item.matches?.length > 0 &&
-              item.matches?.find((x) => {
-                //@ts-ignore
-                x.status !== 'ACCEPTED' || x.status !== 'REJECTED';
-              })
+              {item.matches && item.matches?.length > 0
                 ? `View ${item.matches.length} Matches`
                 : 'No matches found'}
             </Button>

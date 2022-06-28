@@ -355,7 +355,7 @@ const Form = ({
                             />
 
                             <Box as="span" cursor="pointer">
-                              <FaInfoCircle onClick={opened} />
+                              <FaInfoCircle onMouseEnter={opened} />
                             </Box>
                           </Flex>
                         </>
