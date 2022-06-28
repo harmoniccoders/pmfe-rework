@@ -10,6 +10,7 @@ import {
   Tooltip,
   Icon,
   AspectRatio,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -40,6 +41,7 @@ import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
+import HelpMeSellModal from '../Modals/HelpMeSellModal';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -60,6 +62,7 @@ const Form = ({
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
   const [draftLoading, setDraftLoading] = useState<boolean>(false);
   const [liveLoading, setLiveLoading] = useState<boolean>(false);
+  const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -351,11 +354,9 @@ const Form = ({
                               value={'false'}
                             />
 
-                            <Tooltip placement="top">
-                              <Box as="span" cursor="pointer">
-                                <FaInfoCircle onClick={() => setFormStep(2)} />
-                              </Box>
-                            </Tooltip>
+                            <Box as="span" cursor="pointer">
+                              <FaInfoCircle onClick={opened} />
+                            </Box>
                           </Flex>
                         </>
                       }
@@ -518,49 +519,11 @@ const Form = ({
                   />
                 </>
               )}
-              {formStep === 2 && (
-                <Box h="75vh">
-                  <Text fontSize="18px" fontWeight="600" mb="1rem">
-                    Benefits of letting us help you sell your property
-                  </Text>
-                  <ol>
-                    <li>
-                      <Text mt="1rem">
-                        Our 103% money-back guarantee will be activated on your
-                        property. This guarantee will help you sell your
-                        property faster as buyers will feel more confident to
-                        buy.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        Your property will be shown prominently in search
-                        results.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        {' '}
-                        Your property will feature the verification badge.
-                      </Text>
-                    </li>
-                  </ol>
-                  <Center>
-                    <Button
-                      position="absolute"
-                      bottom="10"
-                      w="75%"
-                      onClick={() => setFormStep(formStep - 1)}
-                    >
-                      ok
-                    </Button>
-                  </Center>
-                </Box>
-              )}
               {RenderButton()}
             </>
           </form>
         </Stack>
+        <HelpMeSellModal onClose={close} isOpen={open} />
       </Box>
     </>
   );
