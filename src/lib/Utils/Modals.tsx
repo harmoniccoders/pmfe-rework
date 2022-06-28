@@ -7,19 +7,24 @@ import {
   Box,
   Flex,
   Text,
+  Image,
 } from '@chakra-ui/react';
 
 interface modalProps {
   isOpen: any;
   onClose: any;
-  pmlogo?: any;
+  pmlogo: boolean;
   content: any;
+  formStep?: 0 | number;
+  setFormStep?: any;
 }
 export default function Modals({
   isOpen,
   onClose,
   pmlogo,
   content,
+  formStep,
+  setFormStep,
 }: modalProps) {
   return (
     <Modal
@@ -47,22 +52,47 @@ export default function Modals({
             alignItems="center"
             pt={['4rem', '0']}
           >
-            <Text
-              onClick={onClose}
-              display="flex"
-              alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
-            >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px' }}
-              ></span>
-              Back
-            </Text>
+            {formStep === 0 ? (
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+                onClick={onClose}
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            ) : (
+              <Text
+                display="flex"
+                alignItems="center"
+                fontSize="14px"
+                cursor="pointer"
+                //@ts-ignore
+                onClick={() => setFormStep(formStep - 1)}
+              >
+                <span
+                  className="fal fa-angle-left"
+                  style={{ marginRight: '5px' }}
+                ></span>
+                Back
+              </Text>
+            )}
 
             <Box w="150px" h="40px">
-              {pmlogo}
+              {pmlogo ? (
+                <Image
+                  src="/assets/PropertyMataaz.png"
+                  alt="company-logo"
+                  w="100%"
+                  h="100%"
+                  objectFit="contain"
+                />
+              ) : null}
             </Box>
           </Flex>
         </ModalHeader>

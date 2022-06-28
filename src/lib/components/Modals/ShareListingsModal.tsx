@@ -1,16 +1,4 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Flex,
-  Text,
-  Image,
-  Box,
-  Heading,
-  HStack,
-} from '@chakra-ui/react';
+import { Flex, Text, Box, Heading, HStack } from '@chakra-ui/react';
 import {
   FacebookShareButton,
   LinkedinShareButton,
@@ -60,15 +48,7 @@ const ShareListingsModal = ({ isOpen, onClose, id }: Props) => {
       <Modals
         isOpen={isOpen}
         onClose={onClose}
-        pmlogo={
-          <Image
-            src="/assets/PropertyMataaz.png"
-            alt="company-logo"
-            w="100%"
-            h="100%"
-            objectFit="contain"
-          />
-        }
+        pmlogo={true}
         content={
           <>
             {' '}

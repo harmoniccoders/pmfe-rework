@@ -90,15 +90,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
     <Modals
       isOpen={isOpen}
       onClose={onClose}
-      pmlogo={
-        <Image
-          src="/assets/PropertyMataaz.png"
-          alt="company-logo"
-          w="100%"
-          h="100%"
-          objectFit="contain"
-        />
-      }
+      pmlogo={true}
       content={
         <>
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>

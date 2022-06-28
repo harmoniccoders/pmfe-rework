@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import Modals from 'lib/Utils/Modals';
 import { useRouter } from 'next/router';
 import { FaTimes } from 'react-icons/fa';
 
@@ -19,43 +20,17 @@ interface RentoutProps {
   openModal: () => void;
 }
 const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
-  const router = useRouter()
+  const router = useRouter();
   const getHelp = () => {
     router.push('/contact');
-  }
+  };
   return (
-    <Modal
+    <Modals
       isOpen={isOpen}
-      size="lg"
       onClose={onClose}
-      motionPreset="slideInBottom"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        borderRadius="0"
-        w={['full', '80%']}
-        overflow="hidden"
-        maxH="100vh"
-        pos="fixed"
-        mt="1rem"
-        mb="1rem"
-      >
-        <ModalHeader>
-          <Flex
-            justifyContent="flex-end"
-            alignItems="center"
-            cursor="pointer"
-            fontSize="sm"
-            onClick={onClose}
-          >
-            <FaTimes />
-          </Flex>
-        </ModalHeader>
-
-        <ModalBody>
+      pmlogo={true}
+      content={
+        <>
           <Box h={['100vh', 'auto']} py="3" overflowY="auto">
             <Text fontWeight="600" color="black" fontSize="14">
               Choose an option to continue
@@ -83,9 +58,9 @@ const RentoutModal = ({ isOpen, onClose, openModal }: RentoutProps) => {
               </Button>
             </VStack>
           </Box>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </>
+      }
+    />
   );
 };
 export default RentoutModal;

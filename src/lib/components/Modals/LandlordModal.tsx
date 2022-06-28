@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { DataAccess } from 'lib/Utils/Api';
+import Modals from 'lib/Utils/Modals';
 import { useEffect, useState } from 'react';
 import { ComplaintsView } from 'types/api';
 import SingleComplainModal from './SingleComplaintModal';
@@ -46,70 +47,36 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   }, []);
 
   return (
-    <Modal
+    <Modals
       isOpen={isOpen}
       onClose={onClose}
-      size="lg"
-      motionPreset="slideInBottom"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        overflowY="auto"
-        borderRadius="0"
-        pos="fixed"
-        maxH="100vh"
-      >
-        <ModalHeader>
-          <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            onClick={onClose}
-          >
-            <Text
-              display="flex"
-              alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
-            >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px' }}
-              ></span>
-              Back
-            </Text>
-          </Flex>
-        </ModalHeader>
-
-        <ModalBody>
-          <Box px={5}>
-            <VStack spacing={5}>
-              {complains?.map((item: ComplaintsView) => {
-                return (
-                  <Box w="full" key={item.id}>
-                    <Stack spacing={3} onClick={onOpened} cursor="pointer">
-                      <Text fontWeight="600" fontSize={['1rem', '']}>
-                        {item.complaintsCategory}
-                      </Text>
-                      <Text>10/04/21</Text>
-                      <Divider />
-                    </Stack>
-                    <SingleComplainModal
-                      isOpen={opened}
-                      onClose={closed}
-                      closeModal={onClose}
-                      data={item}
-                    />
-                  </Box>
-                );
-              })}
-            </VStack>
-          </Box>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+      pmlogo={true}
+      content={
+        <>
+          <VStack spacing={5}>
+            {complains?.map((item: ComplaintsView) => {
+              return (
+                <Box w="full" key={item.id}>
+                  <Stack spacing={3} onClick={onOpened} cursor="pointer">
+                    <Text fontWeight="600" fontSize={['1rem', '']}>
+                      {item.complaintsCategory}
+                    </Text>
+                    <Text>10/04/21</Text>
+                    <Divider />
+                  </Stack>
+                  <SingleComplainModal
+                    isOpen={opened}
+                    onClose={closed}
+                    closeModal={onClose}
+                    data={item}
+                  />
+                </Box>
+              );
+            })}
+          </VStack>
+        </>
+      }
+    />
   );
 }
 

@@ -31,6 +31,7 @@ import { BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { incomeBracket } from 'lib/Utils/IncomeBracket';
 import { useRouter } from 'next/router';
+import Modals from 'lib/Utils/Modals';
 
 type Props = {
   onClose: any;
@@ -230,397 +231,359 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
+    <Modals
+      isOpen={open}
+      onClose={close}
+      pmlogo={true}
+      formStep={formStep}
+      setFormStep={setFormStep}
+      content={
+        <VStack alignItems="flex-start" spacing={3} width="100%">
+          <Text fontWeight={600} fontSize="16px">
+            {data.name}
+          </Text>
 
-      <ModalContent
-        py={5}
-        borderRadius="0"
-        overflowY="scroll"
-        maxH="100vh"
-        pos="fixed"
-      >
-        <ModalHeader>
-          <HStack
-            justifyContent="space-between"
-            alignItems="center"
-            width="100%"
-          >
-            <Text
-              onClick={formStep < 1 ? onClose : () => setFormStep(formStep - 1)}
-              display="flex"
-              alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
-              fontWeight={600}
-            >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px', fontWeight: 600 }}
-              ></span>
-              Back
-            </Text>
+          <Text fontWeight={600} color="brand.100" textTransform="capitalize">
+            Application form
+          </Text>
 
-            <Box w="150px" h="40px">
-              <Image
-                src="/assets/PropertyMataaz.png"
-                alt="company-logo"
-                w="100%"
-                h="100%"
-                objectFit="contain"
-              />
-            </Box>
-          </HStack>
-        </ModalHeader>
+          <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
+            <>
+              {formStep === 0 && (
+                <>
+                  <PrimaryInput<ApplicationModel>
+                    label="first name"
+                    name="register.firstName"
+                    error={errors.register?.firstName}
+                    placeholder="Type in your first name"
+                    defaultValue={user?.firstName || ''}
+                    register={register}
+                  />
 
-        <ModalBody>
-          <VStack alignItems="flex-start" spacing={3} width="100%">
-            <Text fontWeight={600} fontSize="16px">
-              {data.name}
-            </Text>
+                  <PrimaryInput<ApplicationModel>
+                    label="middle name"
+                    name="register.middleName"
+                    error={errors.register?.middleName}
+                    placeholder="Type in your middle name"
+                    defaultValue={user?.middleName || ''}
+                    register={register}
+                  />
 
-            <Text fontWeight={600} color="brand.100" textTransform="capitalize">
-              Application form
-            </Text>
+                  <PrimaryInput<ApplicationModel>
+                    label="last name"
+                    name="register.lastName"
+                    error={errors.register?.lastName}
+                    placeholder="Type in your middle name"
+                    defaultValue={user?.lastName || ''}
+                    register={register}
+                  />
 
-            <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-              <>
-                {formStep === 0 && (
-                  <>
-                    <PrimaryInput<ApplicationModel>
-                      label="first name"
-                      name="register.firstName"
-                      error={errors.register?.firstName}
-                      placeholder="Type in your first name"
-                      defaultValue={user?.firstName || ''}
-                      register={register}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="mobile number"
+                    name="register.phoneNumber"
+                    error={errors.register?.phoneNumber}
+                    placeholder="Enter your mobile number"
+                    defaultValue={user?.phoneNumber || ''}
+                    register={register}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="middle name"
-                      name="register.middleName"
-                      error={errors.register?.middleName}
-                      placeholder="Type in your middle name"
-                      defaultValue={user?.middleName || ''}
-                      register={register}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="email"
+                    name="register.email"
+                    error={errors.register?.email}
+                    placeholder="Enter your email"
+                    defaultValue={user?.email || ''}
+                    type="email"
+                    register={register}
+                  />
+                  <PrimaryInput<ApplicationModel>
+                    label="Residential Address"
+                    name="register.address"
+                    error={errors.register?.address}
+                    placeholder="Enter your address"
+                    defaultValue={user?.address || ''}
+                    register={register}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="last name"
-                      name="register.lastName"
-                      error={errors.register?.lastName}
-                      placeholder="Type in your middle name"
-                      defaultValue={user?.lastName || ''}
-                      register={register}
-                    />
+                  <PrimaryDate<ApplicationModel>
+                    label="Date of Birth"
+                    name="register.dateOfBirth"
+                    error={errors.register?.dateOfBirth}
+                    register={register}
+                    control={control}
+                    fontSize="sm"
+                    maxDate={new Date()}
+                    defaultValue={user?.dateOfBirth || ''}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="mobile number"
-                      name="register.phoneNumber"
-                      error={errors.register?.phoneNumber}
-                      placeholder="Enter your mobile number"
-                      defaultValue={user?.phoneNumber || ''}
-                      register={register}
-                    />
+                  <PrimarySelect<ApplicationModel>
+                    label="nationality"
+                    name="register.nationality"
+                    error={errors.register?.nationality}
+                    placeholder="Select your nationality"
+                    register={register}
+                    defaultValue={user?.nationality || ''}
+                    options={
+                      <>
+                        {CountryList.map((country: any, i: number) => {
+                          return (
+                            <option value={country} key={i}>
+                              {country}
+                            </option>
+                          );
+                        })}
+                      </>
+                    }
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="email"
-                      name="register.email"
-                      error={errors.register?.email}
-                      placeholder="Enter your email"
-                      defaultValue={user?.email || ''}
-                      type="email"
-                      register={register}
-                    />
-                    <PrimaryInput<ApplicationModel>
-                      label="Residential Address"
-                      name="register.address"
-                      error={errors.register?.address}
-                      placeholder="Enter your address"
-                      defaultValue={user?.address || ''}
-                      register={register}
-                    />
+                  <PrimarySelect<ApplicationModel>
+                    label="marital status"
+                    name="register.maritalStatus"
+                    error={errors.register?.maritalStatus}
+                    placeholder="Select your Status"
+                    register={register}
+                    defaultValue={user?.maritalStatus}
+                    options={
+                      <>
+                        {maritalStatus.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
+                  />
+                </>
+              )}
+              {formStep === 1 && (
+                <>
+                  <PrimaryInput<ApplicationModel>
+                    label="occupation"
+                    name="register.occupation"
+                    error={errors.register?.occupation}
+                    placeholder="Type in your occupation"
+                    defaultValue=""
+                    register={register}
+                  />
 
-                    <PrimaryDate<ApplicationModel>
-                      label="Date of Birth"
-                      name="register.dateOfBirth"
-                      error={errors.register?.dateOfBirth}
-                      register={register}
-                      control={control}
-                      fontSize="sm"
-                      maxDate={new Date()}
-                      defaultValue={user?.dateOfBirth || ''}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="employer"
+                    name="register.companyName"
+                    error={errors.register?.companyName}
+                    placeholder="Type in your companyName"
+                    defaultValue=""
+                    register={register}
+                  />
 
-                    <PrimarySelect<ApplicationModel>
-                      label="nationality"
-                      name="register.nationality"
-                      error={errors.register?.nationality}
-                      placeholder="Select your nationality"
-                      register={register}
-                      defaultValue={user?.nationality || ''}
-                      options={
-                        <>
-                          {CountryList.map((country: any, i: number) => {
-                            return (
-                              <option value={country} key={i}>
-                                {country}
-                              </option>
-                            );
-                          })}
-                        </>
-                      }
-                    />
-
-                    <PrimarySelect<ApplicationModel>
-                      label="marital status"
-                      name="register.maritalStatus"
-                      error={errors.register?.maritalStatus}
-                      placeholder="Select your Status"
-                      register={register}
-                      defaultValue={user?.maritalStatus}
-                      options={
-                        <>
-                          {maritalStatus.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                  </>
-                )}
-                {formStep === 1 && (
-                  <>
-                    <PrimaryInput<ApplicationModel>
-                      label="occupation"
-                      name="register.occupation"
-                      error={errors.register?.occupation}
-                      placeholder="Type in your occupation"
-                      defaultValue=""
-                      register={register}
-                    />
-
-                    <PrimaryInput<ApplicationModel>
-                      label="employer"
-                      name="register.companyName"
-                      error={errors.register?.companyName}
-                      placeholder="Type in your companyName"
-                      defaultValue=""
-                      register={register}
-                    />
-
-                    <PrimaryInput<ApplicationModel>
-                      label="work address"
-                      name="register.workAddress"
-                      error={errors.register?.workAddress}
-                      placeholder="Type in your work address"
-                      defaultValue=""
-                      register={register}
-                    />
-                    <PrimarySelect<ApplicationModel>
-                      register={register}
-                      error={errors.register?.annualIncome}
-                      label="what is your annual income"
-                      placeholder="This can be your annual salary of an estimated income "
-                      name="register.annualIncome"
-                      options={
-                        <>
-                          {incomeBracket.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
-                          })}
-                        </>
-                      }
-                    />
-                    <Box>
-                      <Flex
-                        w="full"
-                        border="1px solid grey"
-                        height="3rem"
-                        px="1rem"
-                        align="center"
-                        my="1.5rem"
-                        cursor="pointer"
-                        borderRadius="6px" //@ts-ignore
-                        onClick={() => widgetApiss.current.openDialog()}
-                      >
-                        <Icon as={BiImage} />
-                        <Text fontWeight="500" pl="1rem">
-                          Upload Passport Photograph
-                        </Text>
-                      </Flex>
-                      <Widget
-                        publicKey="fda3a71102659f95625f"
-                        //@ts-ignore
-                        id="file"
-                        imageShrink="640x480"
-                        imagePreviewMaxSize={9}
-                        imagesOnly
-                        onChange={(info) => onChangePassport(info)}
-                        //@ts-ignore
-                        ref={widgetApiss}
-                      />
-                      {uploadedPassport.length > 0 && (
-                        <>
-                          <HStack w="full" spacing="1rem" overflow="auto">
-                            {uploadedPassport
-                              .filter((m) => m.isImage)
-                              .map((item: any) => {
-                                return (
-                                  <SRLWrapper>
-                                    <Box
-                                      w="90px"
-                                      h="90px"
-                                      borderRadius="5px"
-                                      bgColor="brand.50"
-                                      flexShrink={0}
-                                      overflow="hidden"
-                                    >
-                                      <Image
-                                        src={item.url}
-                                        alt="propery-image"
-                                        w="100%"
-                                        height="100%"
-                                        objectFit="cover"
-                                      />
-                                    </Box>
-                                  </SRLWrapper>
-                                );
-                              })}
-                          </HStack>
-                        </>
-                      )}
-                    </Box>
-                    <Box>
-                      <Flex
-                        w="full"
-                        border="1px solid grey"
-                        height="3rem"
-                        px="1rem"
-                        align="center"
-                        my="1.5rem"
-                        cursor="pointer"
-                        borderRadius="6px" //@ts-ignore
-                        onClick={() => widgetApis.current.openDialog()}
-                      >
-                        <Icon as={BiImage} />
-                        <Text fontWeight="500" pl="1rem">
-                          Upload a Work ID
-                        </Text>
-                      </Flex>
-                      <Widget
-                        publicKey="fda3a71102659f95625f"
-                        //@ts-ignore
-                        id="file"
-                        imageShrink="640x480"
-                        imagePreviewMaxSize={9}
-                        imagesOnly
-                        onChange={(info) => onChangeId(info)}
-                        //@ts-ignore
-                        ref={widgetApis}
-                      />
-                      {uploadedId.length > 0 && (
-                        <>
-                          <HStack w="full" spacing="1rem" overflow="auto">
-                            {uploadedId
-                              .filter((m) => m.isImage)
-                              .map((item: any) => {
-                                return (
-                                  <SRLWrapper>
-                                    <Box
-                                      w="90px"
-                                      h="90px"
-                                      borderRadius="5px"
-                                      bgColor="brand.50"
-                                      flexShrink={0}
-                                      overflow="hidden"
-                                    >
-                                      <Image
-                                        src={item.url}
-                                        alt="propery-image"
-                                        w="100%"
-                                        height="100%"
-                                        objectFit="cover"
-                                      />
-                                    </Box>
-                                  </SRLWrapper>
-                                );
-                              })}
-                          </HStack>
-                        </>
-                      )}
-                    </Box>
-                    <Text
-                      fontSize="14px"
-                      fontWeight={600}
-                      lineHeight={1.5}
-                      mt="1.5rem"
+                  <PrimaryInput<ApplicationModel>
+                    label="work address"
+                    name="register.workAddress"
+                    error={errors.register?.workAddress}
+                    placeholder="Type in your work address"
+                    defaultValue=""
+                    register={register}
+                  />
+                  <PrimarySelect<ApplicationModel>
+                    register={register}
+                    error={errors.register?.annualIncome}
+                    label="what is your annual income"
+                    placeholder="This can be your annual salary of an estimated income "
+                    name="register.annualIncome"
+                    options={
+                      <>
+                        {incomeBracket.map((x: any) => {
+                          return <option value={x.name}>{x.name}</option>;
+                        })}
+                      </>
+                    }
+                  />
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApiss.current.openDialog()}
                     >
-                      Next of kin
-                    </Text>
-
-                    <PrimaryInput<ApplicationModel>
-                      label="first name"
-                      name="nextOfKin.firstName"
-                      error={errors.nextOfKin?.firstName}
-                      placeholder="Type in your first name"
-                      defaultValue=""
-                      register={register}
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload Passport Photograph
+                      </Text>
+                    </Flex>
+                    <Widget
+                      publicKey="fda3a71102659f95625f"
+                      //@ts-ignore
+                      id="file"
+                      imageShrink="640x480"
+                      imagePreviewMaxSize={9}
+                      imagesOnly
+                      onChange={(info) => onChangePassport(info)}
+                      //@ts-ignore
+                      ref={widgetApiss}
                     />
-
-                    <PrimaryInput<ApplicationModel>
-                      label="last name"
-                      name="nextOfKin.lastName"
-                      error={errors.nextOfKin?.lastName}
-                      placeholder="Type in your middle name"
-                      defaultValue=""
-                      register={register}
+                    {uploadedPassport.length > 0 && (
+                      <>
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {uploadedPassport
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                  >
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
+                  </Box>
+                  <Box>
+                    <Flex
+                      w="full"
+                      border="1px solid grey"
+                      height="3rem"
+                      px="1rem"
+                      align="center"
+                      my="1.5rem"
+                      cursor="pointer"
+                      borderRadius="6px" //@ts-ignore
+                      onClick={() => widgetApis.current.openDialog()}
+                    >
+                      <Icon as={BiImage} />
+                      <Text fontWeight="500" pl="1rem">
+                        Upload a Work ID
+                      </Text>
+                    </Flex>
+                    <Widget
+                      publicKey="fda3a71102659f95625f"
+                      //@ts-ignore
+                      id="file"
+                      imageShrink="640x480"
+                      imagePreviewMaxSize={9}
+                      imagesOnly
+                      onChange={(info) => onChangeId(info)}
+                      //@ts-ignore
+                      ref={widgetApis}
                     />
+                    {uploadedId.length > 0 && (
+                      <>
+                        <HStack w="full" spacing="1rem" overflow="auto">
+                          {uploadedId
+                            .filter((m) => m.isImage)
+                            .map((item: any) => {
+                              return (
+                                <SRLWrapper>
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                  >
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
+                                  </Box>
+                                </SRLWrapper>
+                              );
+                            })}
+                        </HStack>
+                      </>
+                    )}
+                  </Box>
+                  <Text
+                    fontSize="14px"
+                    fontWeight={600}
+                    lineHeight={1.5}
+                    mt="1.5rem"
+                  >
+                    Next of kin
+                  </Text>
 
-                    <PrimaryInput<ApplicationModel>
-                      label="mobile number"
-                      name="nextOfKin.phoneNumber"
-                      error={errors.nextOfKin?.phoneNumber}
-                      placeholder="Enter your mobile number"
-                      defaultValue=""
-                      register={register}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="first name"
+                    name="nextOfKin.firstName"
+                    error={errors.nextOfKin?.firstName}
+                    placeholder="Type in your first name"
+                    defaultValue=""
+                    register={register}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="email"
-                      name="nextOfKin.email"
-                      error={errors.nextOfKin?.email}
-                      placeholder="Enter your email"
-                      defaultValue=""
-                      type="email"
-                      register={register}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="last name"
+                    name="nextOfKin.lastName"
+                    error={errors.nextOfKin?.lastName}
+                    placeholder="Type in your middle name"
+                    defaultValue=""
+                    register={register}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="work address"
-                      name="nextOfKin.address"
-                      error={errors.nextOfKin?.address}
-                      placeholder="Type in your work address"
-                      defaultValue=""
-                      register={register}
-                    />
+                  <PrimaryInput<ApplicationModel>
+                    label="mobile number"
+                    name="nextOfKin.phoneNumber"
+                    error={errors.nextOfKin?.phoneNumber}
+                    placeholder="Enter your mobile number"
+                    defaultValue=""
+                    register={register}
+                  />
 
-                    <PrimaryInput<ApplicationModel>
-                      label="relationship"
-                      name="nextOfKin.relationship"
-                      error={errors.nextOfKin?.relationship}
-                      placeholder="Type in your relationship"
-                      defaultValue=""
-                      register={register}
-                    />
-                  </>
-                )}
-                {RenderButton()}
-              </>
-            </form>
-          </VStack>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+                  <PrimaryInput<ApplicationModel>
+                    label="email"
+                    name="nextOfKin.email"
+                    error={errors.nextOfKin?.email}
+                    placeholder="Enter your email"
+                    defaultValue=""
+                    type="email"
+                    register={register}
+                  />
+
+                  <PrimaryInput<ApplicationModel>
+                    label="work address"
+                    name="nextOfKin.address"
+                    error={errors.nextOfKin?.address}
+                    placeholder="Type in your work address"
+                    defaultValue=""
+                    register={register}
+                  />
+
+                  <PrimaryInput<ApplicationModel>
+                    label="relationship"
+                    name="nextOfKin.relationship"
+                    error={errors.nextOfKin?.relationship}
+                    placeholder="Type in your relationship"
+                    defaultValue=""
+                    register={register}
+                  />
+                </>
+              )}
+              {RenderButton()}
+            </>
+          </form>
+        </VStack>
+      }
+    />
   );
 };
 

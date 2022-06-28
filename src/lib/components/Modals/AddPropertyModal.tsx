@@ -1,14 +1,3 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Flex,
-  Text,
-  Box,
-  Image,
-} from '@chakra-ui/react';
 import Form from 'lib/components/sell/Form';
 import Modals from 'lib/Utils/Modals';
 import { useState } from 'react';
@@ -32,15 +21,9 @@ function AddPropertyModal({
     <Modals
       isOpen={isOpen}
       onClose={onClose}
-      pmlogo={
-        <Image
-          src="/assets/PropertyMataaz.png"
-          alt="company-logo"
-          w="100%"
-          h="100%"
-          objectFit="contain"
-        />
-      }
+      pmlogo={true}
+      formStep={formStep}
+      setFormStep={setFormStep}
       content={
         <>
           <Form

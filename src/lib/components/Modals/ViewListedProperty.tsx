@@ -41,15 +41,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
     <Modals
       isOpen={isOpen}
       onClose={onClose}
-      pmlogo={
-        <Image
-          src="/assets/PropertyMataaz.png"
-          alt="company-logo"
-          w="100%"
-          h="100%"
-          objectFit="contain"
-        />
-      }
+      pmlogo={true}
       content={
         <>
           <Flex w="100%" pos="relative" flexDirection="column">

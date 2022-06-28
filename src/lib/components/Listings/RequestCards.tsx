@@ -127,7 +127,14 @@ const RequestCard = ({ item }: Props) => {
               variant="solid"
               height="40px"
               width="full"
-              disabled={item.matches && item.matches.length == 0 ? true : false}
+              disabled={
+                item.matches?.find((x) => {
+                  x.status == 'ACCEPTED' || x.status == 'REJECTED';
+                }) ||
+                (item.matches && item.matches?.length > 0)
+                  ? true
+                  : false
+              }
               onClick={() => router.push(`/requests/${item.id}`)}
             >
               {item.matches?.find((x) => {

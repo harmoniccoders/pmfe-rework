@@ -60,7 +60,7 @@ const Login = () => {
         Cookies.set('token', result.data.token);
         Cookies.set('user', JSON.stringify(result.data));
         Cookies.set('userIn', 'true');
-        setUser(result.data);
+        setUser(JSON.stringify(result.data));
         handleAfterLogin();
         return;
       }

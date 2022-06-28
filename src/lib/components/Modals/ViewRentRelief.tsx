@@ -19,6 +19,7 @@ import { RentReliefView } from 'types/api';
 import naira from 'lib/components/Generics/Naira';
 import moment from 'moment';
 import InstructionModal from './InstructionModals';
+import Modals from 'lib/Utils/Modals';
 
 interface Props {
   isOpen: boolean;
@@ -47,42 +48,13 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
   }
   const nextPayment = item?.installments?.find((x) => x.status === 'PENDING');
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      motionPreset="slideInBottom"
-      size="lg"
-      isCentered
-    >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) " />
-
-      <ModalContent
-        py={5}
-        borderRadius="0"
-        overflowY="auto"
-        h="100vh"
-        pos="fixed"
-      >
-        <ModalHeader>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text
-              onClick={onClose}
-              display="flex"
-              alignItems="center"
-              fontSize="14px"
-              cursor="pointer"
-            >
-              <span
-                className="fal fa-angle-left"
-                style={{ marginRight: '5px' }}
-              ></span>
-              Back
-            </Text>
-          </Flex>
-        </ModalHeader>
-
-        <ModalBody>
-          <Box px={[1, 4]} py="5">
+    <>
+      <Modals
+        isOpen={isOpen}
+        onClose={onClose}
+        pmlogo={true}
+        content={
+          <>
             <VStack>
               <Text>Amount to pay</Text>
               <Heading fontSize="1.5rem">
@@ -200,16 +172,17 @@ const ViewRentRelief = ({ isOpen, onClose, item }: Props) => {
                 <Text>No payments made</Text>
               )}
             </VStack>
-          </Box>
-        </ModalBody>
-        <InstructionModal
-          open={isOpened}
-          close={onClosed}
-          nextPayment={nextPayment}
-          rentRelief={item}
-        />
-      </ModalContent>
-    </Modal>
+          </>
+        }
+      />
+
+      <InstructionModal
+        open={isOpened}
+        close={onClosed}
+        nextPayment={nextPayment}
+        rentRelief={item}
+      />
+    </>
   );
 };
 
