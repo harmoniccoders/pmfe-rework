@@ -17,9 +17,11 @@ const sell = ({
   propertyTitles,
   propertyTypes,
   listings,
+  getBanks,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  getBanks: any;
   listings: any;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,7 +63,7 @@ const sell = ({
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}
                         propertyTenants={[]}
-                        getBanks={undefined}
+                        getBanks={getBanks}
                         propertyCollection={[]}
                       />
                     </GridItem>
@@ -107,6 +109,7 @@ const sell = ({
         onClose={onClose}
         propertyTypes={propertyTypes}
         propertyTitles={propertyTitles}
+        getBanks={getBanks}
       />
     </Box>
   );

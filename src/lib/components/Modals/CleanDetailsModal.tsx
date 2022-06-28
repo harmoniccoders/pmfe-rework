@@ -49,7 +49,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     try {
       const result = await (await reject(params)).data;
       if (result.status) {
-        addToast('Action Succesful', {
+        addToast('Action successful', {
           appearance: 'error',
           autoDismiss: true,
         });
@@ -73,7 +73,7 @@ const CleanDetailsModal = ({ isOpen, onClose, item }: Props) => {
     try {
       const result = await (await accept(params)).data;
       if (result.status) {
-        addToast('Action Succesful', {
+        addToast('Action successful', {
           appearance: 'success',
           autoDismiss: true,
         });

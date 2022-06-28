@@ -93,7 +93,7 @@ const InstructionModal = ({
               receipt is generated for you
             </ListItem>
             <ListItem>
-              Upon succesful payment, a detailed receipt of your purchase will
+              Upon successful payment, a detailed receipt of your purchase will
               be presented to you which you can download or print for reference
               purposes
             </ListItem>

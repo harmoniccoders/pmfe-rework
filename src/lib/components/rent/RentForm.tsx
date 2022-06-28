@@ -10,6 +10,7 @@ import {
   Icon,
   AspectRatio,
   Image,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -42,13 +43,13 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import Cookies from 'js-cookie';
+import HelpMeSellModal from '../Modals/HelpMeSellModal';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
   propertyTenants: TenantType[];
   propertyCollection: RentCollectionType[];
-
   getBanks: any[];
   formStep: number;
   setFormStep: any;
@@ -71,6 +72,7 @@ const RentForm = ({
   const [PropertyUser, { loading, data, error }] =
     useOperationMethod('Propertycreate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -260,10 +262,13 @@ const RentForm = ({
       const result = await (await PropertyUser(undefined, data)).data;
 
       if (result.status !== 400) {
-        addToast('Property Added', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
+        addToast(
+          'Your property has been submitted for review. We will notify you when it goes live.',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
         isClosed();
         onClose();
         setFormStep(0);
@@ -286,7 +291,7 @@ const RentForm = ({
       return;
     }
   });
-  
+
   return (
     <>
       {userIn == 'true' ? (
@@ -533,7 +538,7 @@ const RentForm = ({
                                 value={'false'}
                               />
                               <Tooltip aria-label="A tooltip">
-                                <FaInfoCircle onClick={() => setFormStep(2)} />
+                                <FaInfoCircle onMouseOver={opened} />
                               </Tooltip>
                             </Flex>
                           </>
@@ -619,49 +624,11 @@ const RentForm = ({
                     </Box>
                   </>
                 )}
-                {formStep === 2 && (
-                  <Box h="75vh">
-                    <Text fontSize="18px" fontWeight="600" mb="1rem">
-                      Benefits of letting us help you rent your property
-                    </Text>
-                    <ol>
-                      <li>
-                        <Text mt="1rem">
-                          Our 103% money-back guarantee will be activated on
-                          your property. This guarantee will help you rent out
-                          your property faster as tenants will feel more
-                          confident to rent.
-                        </Text>
-                      </li>
-                      <li>
-                        <Text mt="1rem">
-                          Your property will be shown prominently in search
-                          results.
-                        </Text>
-                      </li>
-                      <li>
-                        <Text mt="1rem">
-                          {' '}
-                          Your property will feature the verification badge.
-                        </Text>
-                      </li>
-                    </ol>
-                    <Center>
-                      <Button
-                        position="absolute"
-                        bottom="10"
-                        w="75%"
-                        onClick={() => setFormStep(formStep - 1)}
-                      >
-                        ok
-                      </Button>
-                    </Center>
-                  </Box>
-                )}
                 {RenderButton()}
               </>
             </form>
           </Stack>
+          <HelpMeSellModal onClose={close} isOpen={open} isRent={true} />
         </Box>
       ) : null}
     </>

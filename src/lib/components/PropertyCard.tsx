@@ -24,6 +24,8 @@ import Cookies from 'js-cookie';
 import RentReliefModal from 'lib/components/Modals/RentReliefModal';
 import { useToasts } from 'react-toast-notifications';
 import naira from 'lib/components/Generics/Naira';
+import DeleteListings from './Modals/DeleteLiting';
+import RejectMatchModal from './Modals/RejectMatchModal';
 
 type Props = {
   item: PropertyView;
@@ -41,6 +43,7 @@ if (users !== undefined) {
 
 const PropertyCard = ({ item, matchId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
 
   const openReliefModal = () => {
@@ -139,36 +142,6 @@ const PropertyCard = ({ item, matchId }: Props) => {
           autoDismiss: true,
         });
         CreateEnquireView();
-        return;
-      }
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      return;
-    } catch (err) {}
-  };
-  const [
-    rejectRequest,
-    { loading: isLoaderr, data: isDataerr, error: isErrorerr },
-  ] = useOperationMethod('PropertyRequestmatchreject{matchId}');
-
-  const RejectRequest = async () => {
-    const params: Parameters = {
-      matchId: matchId as number,
-    };
-
-    try {
-      const result = await (await rejectRequest(params)).data;
-      console.log({ result });
-
-      if (result.status) {
-        addToast('Successful', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        router.push('/requests');
-
         return;
       }
       addToast(result.message, {
@@ -341,40 +314,46 @@ const PropertyCard = ({ item, matchId }: Props) => {
               </Button>
             </HStack>
           ) : isRequest ? (
-            <HStack px=".8rem" w="full" spacing={5}>
-              <Button
-                variant="outline"
-                height="40px"
-                width="full"
-                color="white"
-                bgColor="brand.800"
-                textTransform="capitalize"
-                onClick={() => RejectRequest()}
-                _hover={{
-                  bgColor: 'transparent',
-                  color: 'brand.800',
-                  borderColor: 'brand.800',
-                }}
-              >
-                Reject
-              </Button>
+            <Box w="full">
+              <Text fontSize=".9rem" mb=".5rem" pl="1rem" fontWeight="500">
+                Do you like this property?
+              </Text>
 
-              <Button
-                variant="solid"
-                height="40px"
-                bgColor=""
-                w="full"
-                disabled={item.createdByUser?.id === user?.id}
-                onClick={() => AcceptRequest()}
-                _hover={{
-                  bgColor: 'transparent',
-                  color: '#2FDF84',
-                  borderColor: '#2FDF84',
-                }}
-              >
-                Accept
-              </Button>
-            </HStack>
+              <HStack px=".8rem" w="full" spacing={5}>
+                <Button
+                  variant="outline"
+                  height="40px"
+                  width="full"
+                  color="white"
+                  bgColor="brand.800"
+                  textTransform="capitalize"
+                  onClick={opened}
+                  _hover={{
+                    bgColor: 'transparent',
+                    color: 'brand.800',
+                    borderColor: 'brand.800',
+                  }}
+                >
+                  Reject
+                </Button>
+
+                <Button
+                  variant="solid"
+                  height="40px"
+                  bgColor=""
+                  w="full"
+                  disabled={item.createdByUser?.id === user?.id}
+                  onClick={() => AcceptRequest()}
+                  _hover={{
+                    bgColor: 'transparent',
+                    color: '#2FDF84',
+                    borderColor: '#2FDF84',
+                  }}
+                >
+                  Accept
+                </Button>
+              </HStack>
+            </Box>
           ) : relief ? (
             <HStack px=".8rem" w="full" spacing={5}>
               <Button
@@ -442,6 +421,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
         onClose={onClose}
         item={item}
       />
+      <RejectMatchModal onClose={close} isOpen={open} item={matchId} />
     </>
   );
 };

@@ -42,6 +42,7 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+// const ngBanks = require('ng-banks');
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -49,12 +50,14 @@ interface Props {
   formStep: number;
   setFormStep: any;
   onClose: () => void;
+  getBanks: any;
 }
 const Form = ({
   propertyTitles,
   propertyTypes,
   formStep,
   setFormStep,
+  getBanks,
   onClose,
 }: Props) => {
   const [PropertyCreate, { loading: isLoading, data, error }] =
@@ -111,6 +114,10 @@ const Form = ({
     setFormStep(0);
     onClose();
   };
+
+  watch('sellMyself');
+  const pmSales = getValues('sellMyself');
+
   const RenderButton = () => {
     if (formStep === 0) {
       return (
@@ -239,10 +246,13 @@ const Form = ({
       if (result.status) {
         setLiveLoading(false);
         setDraftLoading(false);
-        addToast(result.message, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
+        addToast(
+          'Your property has been submitted for review. We will notify you when it goes live.',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
         onClose();
         setFormStep(0);
         router.reload();
@@ -355,13 +365,39 @@ const Form = ({
                             />
 
                             <Box as="span" cursor="pointer">
-                              <FaInfoCircle onMouseEnter={opened} />
+                              <FaInfoCircle onMouseOver={opened} />
                             </Box>
                           </Flex>
                         </>
                       }
                     />
                   </Box>
+                  {pmSales == ('false' as unknown as boolean) && (
+                    <Box mb="1.3rem">
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.bank}
+                        label="Your Bank"
+                        placeholder="Choose your bank"
+                        name="bank"
+                        options={
+                          <>
+                            {getBanks.map((x: any) => {
+                              return <option value={x.name}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+                      <PrimaryInput<PropertyModel>
+                        label="Your Account Number"
+                        name="accountNumber"
+                        placeholder="Enter your bank account number"
+                        defaultValue=""
+                        register={register}
+                        error={errors.accountNumber}
+                      />
+                    </Box>
+                  )}
                 </>
               )}
               {formStep === 1 && (

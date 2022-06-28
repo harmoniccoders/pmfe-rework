@@ -38,7 +38,7 @@ const PasswordReset = ({ code }: { code: string }) => {
     try {
       const result = await (await ResetComplete(undefined, data)).data;
       if (result.status) {
-        addToast('Password Reset Succesfull', {
+        addToast('Password Reset successfull', {
           appearance: 'success',
           autoDismiss: true,
         });

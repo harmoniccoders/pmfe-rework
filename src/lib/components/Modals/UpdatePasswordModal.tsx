@@ -71,7 +71,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
 
       if (result.status) {
         onClose();
-        addToast('Password succesfully changed', {
+        addToast('Password successfully changed', {
           appearance: 'success',
           autoDismiss: true,
         });

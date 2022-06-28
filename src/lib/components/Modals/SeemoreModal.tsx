@@ -198,7 +198,7 @@ const SeemoreModal = ({
                   ? 'You cannot enquire on owned property'
                   : relief
                   ? 'Get relief'
-                  : 'Enqiure'}
+                  : 'Enquire'}
               </Button>
             )}
 

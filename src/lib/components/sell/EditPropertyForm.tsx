@@ -10,6 +10,7 @@ import {
   Icon,
   AspectRatio,
   Center,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -40,6 +41,7 @@ import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
+import HelpMeSellModal from '../Modals/HelpMeSellModal';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -48,6 +50,7 @@ interface Props {
   formStep: number;
   setFormStep: any;
   onClose: () => void;
+  getBanks: any;
 }
 const EditPropertyForm = ({
   propertyTitles,
@@ -55,6 +58,7 @@ const EditPropertyForm = ({
   formStep,
   setFormStep,
   item,
+  getBanks,
   onClose,
 }: Props) => {
   const [PropertyCreate, { loading: isLoading, data, error }] =
@@ -62,6 +66,7 @@ const EditPropertyForm = ({
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
   const [draftLoading, setDraftLoading] = useState<boolean>(false);
   const [liveLoading, setLiveLoading] = useState<boolean>(false);
+  const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -107,6 +112,8 @@ const EditPropertyForm = ({
       price: item.price,
       numberOfBathrooms: item.numberOfBathrooms,
       numberOfBedrooms: item.numberOfBedrooms,
+      accountNumber: item.accountNumber,
+      bank: item.bank,
     },
   });
 
@@ -124,6 +131,11 @@ const EditPropertyForm = ({
     setFormStep(0);
     onClose();
   };
+
+  watch('sellMyself');
+  const pmSales = getValues('sellMyself');
+  console.log({ pmSales });
+
   const RenderButton = () => {
     if (formStep === 0) {
       return (
@@ -265,7 +277,7 @@ const EditPropertyForm = ({
       if (result.status) {
         setLiveLoading(false);
         setDraftLoading(false);
-        addToast('Property Succesfully Updated', {
+        addToast('Property successfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -381,7 +393,7 @@ const EditPropertyForm = ({
                             />
                             <Tooltip placement="top">
                               <Box as="span" cursor="pointer">
-                                <FaInfoCircle onClick={() => setFormStep(2)} />
+                                <FaInfoCircle onMouseOver={opened} />
                               </Box>
                             </Tooltip>
                           </Flex>
@@ -389,6 +401,32 @@ const EditPropertyForm = ({
                       }
                     />
                   </Box>
+                  {pmSales == ('false' as unknown as boolean) && (
+                    <Box mb="1.3rem">
+                      <PrimarySelect<PropertyModel>
+                        register={register}
+                        error={errors.bank}
+                        label="Your Bank"
+                        placeholder="Choose your bank"
+                        name="bank"
+                        options={
+                          <>
+                            {getBanks.map((x: any) => {
+                              return <option value={x.name}>{x.name}</option>;
+                            })}
+                          </>
+                        }
+                      />
+                      <PrimaryInput<PropertyModel>
+                        label="Your Account Number"
+                        name="accountNumber"
+                        placeholder="Enter your bank account number"
+                        defaultValue=""
+                        register={register}
+                        error={errors.accountNumber}
+                      />
+                    </Box>
+                  )}
                 </>
               )}
               {formStep === 1 && (
@@ -659,49 +697,12 @@ const EditPropertyForm = ({
                   />
                 </>
               )}
-              {formStep === 2 && (
-                <Box h="75vh">
-                  <Text fontSize="18px" fontWeight="600" mb="1rem">
-                    Benefits of letting us help you sell your property
-                  </Text>
-                  <ol>
-                    <li>
-                      <Text mt="1rem">
-                        Our 103% money-back guarantee will be activated on your
-                        property. This guarantee will help you sell your
-                        property faster as buyers will feel more confident to
-                        buy.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        Your property will be shown prominently in search
-                        results.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        {' '}
-                        Your property will feature the verification badge.
-                      </Text>
-                    </li>
-                  </ol>
-                  <Center>
-                    <Button
-                      position="absolute"
-                      bottom="10"
-                      w="75%"
-                      onClick={() => setFormStep(formStep - 1)}
-                    >
-                      ok
-                    </Button>
-                  </Center>
-                </Box>
-              )}
+
               {RenderButton()}
             </>
           </form>
         </Stack>
+        <HelpMeSellModal onClose={close} isOpen={open} />
       </Box>
     </>
   );

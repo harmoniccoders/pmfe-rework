@@ -1,14 +1,3 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Flex,
-  Text,
-  Box,
-  Image,
-} from '@chakra-ui/react';
 import EditPropertyForm from 'lib/components/sell/EditPropertyForm';
 import { useState } from 'react';
 import {
@@ -61,6 +50,7 @@ function EditPropertyModal({
                 setFormStep={setFormStep}
                 onClose={onClose}
                 item={item}
+                getBanks={getBanks}
               />
             )}
             {item.isForRent && (

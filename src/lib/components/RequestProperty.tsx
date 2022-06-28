@@ -54,7 +54,7 @@ const Form = ({ propertyTypes }: Props) => {
       const result = await (await requestProperty(undefined, data)).data;
 
       if (result.status) {
-        addToast('Request Succesful', {
+        addToast('Request property is successful', {
           appearance: 'success',
           autoDismiss: true,
         });

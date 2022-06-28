@@ -1,7 +1,7 @@
 import { Box, Stack, SimpleGrid } from '@chakra-ui/react';
 import { PropertyRequestInput, PropertyType } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, {  } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -47,7 +47,6 @@ const RequestRentProperty = ({ propertyTypes }: Props) => {
   watch('numberOfBedRooms');
   watch('numberOfBathrooms');
 
-
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -56,7 +55,7 @@ const RequestRentProperty = ({ propertyTypes }: Props) => {
       const result = await (await requestProperty(undefined, data)).data;
 
       if (result.status) {
-        addToast('Request Succesful', {
+        addToast('Request successful', {
           appearance: 'success',
           autoDismiss: true,
         });

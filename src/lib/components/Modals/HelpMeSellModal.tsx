@@ -1,7 +1,7 @@
 import Modals from 'lib/Utils/Modals';
 import { Button, Center, Text } from '@chakra-ui/react';
 
-function HelpMeSellModal({ isOpen, onClose }: any) {
+function HelpMeSellModal({ isOpen, onClose, isRent }: any) {
   return (
     <Modals
       isOpen={isOpen}
@@ -10,14 +10,19 @@ function HelpMeSellModal({ isOpen, onClose }: any) {
       content={
         <>
           <Text fontSize="18px" fontWeight="600" my="1rem">
-            Benefits of letting us help you sell your property
+            Benefits of letting us help you {isRent ? 'rent' : 'sell'} your
+            property
           </Text>
           <ol>
             <li>
               <Text mt="1rem">
                 Our 103% money-back guarantee will be activated on your
-                property. This guarantee will help you sell your property faster
-                as buyers will feel more confident to buy.
+                property. This guarantee will help you{' '}
+                {isRent ? 'rent' : 'sell'} your property faster as{' '}
+                {isRent
+                  ? 'users will feel more confident to rent'
+                  : 'buyers will feel more confident to buy'}
+                .
               </Text>
             </li>
             <li>

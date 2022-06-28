@@ -10,6 +10,7 @@ import {
   AspectRatio,
   Image,
   Center,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -44,6 +45,7 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import Geocode from 'react-geocode';
 import PrimaryState from 'lib/Utils/PrimaryState';
+import HelpMeSellModal from '../Modals/HelpMeSellModal';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -71,6 +73,7 @@ const EditRentForm = ({
   const [PropertyUpdate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -303,7 +306,7 @@ const EditRentForm = ({
       const result = await (await PropertyUpdate(undefined, data)).data;
 
       if (result.status !== 400) {
-        addToast('Property Succesfully Updated', {
+        addToast('Property successfully Updated', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -375,7 +378,6 @@ const EditRentForm = ({
                     getValues={getValues}
                     watch={watch}
                   />
-
 
                   <PrimaryInput<PropertyModel>
                     label="Landmark"
@@ -681,7 +683,7 @@ const EditRentForm = ({
                               value={'false'}
                             />
                             <Tooltip aria-label="A tooltip">
-                              <FaInfoCircle onClick={() => setFormStep(2)} />
+                              <FaInfoCircle onMouseOver={opened} />
                             </Tooltip>
                           </Flex>
                         </>
@@ -766,48 +768,12 @@ const EditRentForm = ({
                   </Box>
                 </>
               )}
-              {formStep === 2 && (
-                <Box h="75vh">
-                  <Text fontSize="18px" fontWeight="600" mb="1rem">
-                    Benefits of letting us help you rent your property
-                  </Text>
-                  <ol>
-                    <li>
-                      <Text mt="1rem">
-                        Our 103% money-back guarantee will be activated on your
-                        property. This guarantee will help you rent out your
-                        property faster as tenants will feel more confident to
-                        rent.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        Your property will be shown prominently in search
-                        results.
-                      </Text>
-                    </li>
-                    <li>
-                      <Text mt="1rem">
-                        Your property will feature the verification badge.
-                      </Text>
-                    </li>
-                  </ol>
-                  <Center>
-                    <Button
-                      position="absolute"
-                      bottom="10"
-                      w="75%"
-                      onClick={() => setFormStep(formStep - 1)}
-                    >
-                      ok
-                    </Button>
-                  </Center>
-                </Box>
-              )}
+
               {RenderButton()}
             </>
           </form>
         </Stack>
+        <HelpMeSellModal onClose={close} isOpen={open} isRent={true} />
       </Box>
     </>
   );

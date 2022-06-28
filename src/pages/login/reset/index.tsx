@@ -37,12 +37,15 @@ const ForgotPassword = () => {
     };
     try {
       const result = await (await InitiateEmail(params)).data;
-      
+
       if (result.status) {
-        addToast(result.message, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
+        addToast(
+          'We have sent a message to your registered email to help you reset your password',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
         router.push('/login');
         return;
       }
@@ -76,11 +79,13 @@ const ForgotPassword = () => {
           <Stack
             alignItems="center !important"
             justifyContent="center"
-            h={["60vh", "auto"]}
+            h={['60vh', 'auto']}
             spacing={2}
             w="full"
           >
-            <Heading   fontSize="1.5rem" mb="4">Reset Password</Heading>
+            <Heading fontSize="1.5rem" mb="4">
+              Reset Password
+            </Heading>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <PrimaryInput<UserresetinitiateEmailParameters>
                 label="Username"

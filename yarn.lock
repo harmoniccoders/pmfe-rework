@@ -5850,6 +5850,11 @@ next@^12.1.6:
     "@next/swc-win32-ia32-msvc" "12.1.6"
     "@next/swc-win32-x64-msvc" "12.1.6"
 
+ng-banks@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ng-banks/-/ng-banks-2.1.1.tgz#22d3402cf7dacc5d5a9c74a174d3ae4e05b1113d"
+  integrity sha512-vmYB5ru1DO1bNTfMFiCGJKrd9qOJXNoTYJZ/KHgN3cA1L1aJt8GMVHtzJCuP1XvIxlMuTVnFteWzxPvpM+nklg==
+
 node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"

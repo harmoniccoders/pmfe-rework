@@ -47,7 +47,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
 
       if (result.status) {
         onClose();
-        addToast('Tenant accepted succesfully', {
+        addToast('Tenant accepted successfully', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -74,7 +74,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
       const result = await (await rejectTenant(params)).data;
       onClose();
       if (result.status) {
-        addToast('Tenant rejected succesfully', {
+        addToast('Tenant rejected successfully', {
           appearance: 'success',
           autoDismiss: true,
         });

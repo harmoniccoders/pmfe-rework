@@ -55,32 +55,35 @@ function Profile() {
   const widgetApi = useRef();
 
   const onSubmit = async (data: UpdateUserModel) => {
-    if (!data.profilePicture) {
-      let media: MediaModel = {
-        url: url,
-        isImage: true,
-        name: '',
-        extention: '',
-        base64String: '',
-        isVideo: false,
-        isDocument: false,
-      };
-      data.profilePicture = media;
-    }
+    // if (!data.profilePicture) {
+    //   let media: MediaModel = {
+    //     url: url,
+    //     isImage: true,
+    //     name: '',
+    //     extention: '',
+    //     base64String: '',
+    //     isVideo: false,
+    //     isDocument: false,
+    //   };
+    //   data.profilePicture = media;
+    // }
 
-    data.profilePicture.url = url as string;
+    // data.profilePicture.url = url as string;
 
     data.id = user.id as number;
+
+    console.log({ data });
 
     try {
       const result = await (await updateUser(undefined, data)).data;
 
+      // console.log({ result });
       if (result.status) {
-        addToast('Update succesful!', {
+        addToast('Profile Update successful!', {
           appearance: 'success',
           autoDismiss: true,
         });
-        router.reload();
+        Cookies.set('user', JSON.stringify(result.data));
         return;
       }
       addToast(result.message, {
@@ -120,8 +123,19 @@ function Profile() {
           },
         }
       );
-      Cookies.set('user', JSON.stringify(result.data.data));
-      setUser(result.data.data);
+      if (result.data.status) {
+        addToast('Profile Update successful!', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        Cookies.set('user', JSON.stringify(result.data.data));
+        setUser(result.data.data);
+        return;
+      }
+      addToast(result.data.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
       console.log({ result });
     } catch (error) {}
   };

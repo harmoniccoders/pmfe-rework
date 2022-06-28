@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Heading } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import PropertyCard from 'lib/components/PropertyCard';
 import { DataAccess } from 'lib/Utils/Api';
@@ -21,6 +21,8 @@ const matches = ({ data, id }: { data: any; id: any }) => {
     }
   });
 
+  console.log({ singleRequest });
+
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <>
@@ -29,29 +31,39 @@ const matches = ({ data, id }: { data: any; id: any }) => {
             Sorry! There's no property at this time please check back later
           </Heading>
         ) : (
-          <Grid
-            templateColumns={[
-              'repeat(1,1fr)',
-              'repeat(1,1fr)',
-              'repeat(2,1fr)',
-              'repeat(3,1fr)',
-            ]}
-            columnGap="6"
-            rowGap={5}
-          >
-            <>
-              {singleRequest.map((item: PropertyRequestMatch) => {
-                return (
-                  <GridItem key={item.id}>
-                    <PropertyCard
-                      matchId={item.id}
-                      item={item.property as PropertyView}
-                    />
-                  </GridItem>
-                );
-              })}
-            </>
-          </Grid>
+          <>
+            <Text fontSize=".9rem" color="brand.100" fontWeight="700" my="2rem">
+              My Request - {result[0].numberOfBedRooms} Bedroom
+              {result[0].propertyType.name}
+            </Text>
+            <Text fontSize="1rem" fontWeight="700" my="2rem">
+              {singleRequest.length}{' '}
+              {singleRequest.length == 1 ? 'Match' : 'Matches'} Found!
+            </Text>
+            <Grid
+              templateColumns={[
+                'repeat(1,1fr)',
+                'repeat(1,1fr)',
+                'repeat(2,1fr)',
+                'repeat(3,1fr)',
+              ]}
+              columnGap="6"
+              rowGap={5}
+            >
+              <>
+                {singleRequest.map((item: PropertyRequestMatch) => {
+                  return (
+                    <GridItem key={item.id}>
+                      <PropertyCard
+                        matchId={item.id}
+                        item={item.property as PropertyView}
+                      />
+                    </GridItem>
+                  );
+                })}
+              </>
+            </Grid>
+          </>
         )}
       </>
     </Box>

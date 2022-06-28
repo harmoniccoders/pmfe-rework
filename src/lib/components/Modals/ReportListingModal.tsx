@@ -65,7 +65,7 @@ const ReportListingModal = ({ isOpen, onClose, item }: Props) => {
       const result = await (await reportProperty(undefined, data)).data;
 
       if (result.status !== 400) {
-        addToast('Succesful, We will look into it and react out to you', {
+        addToast('Successful, We will look into it and reach out to you', {
           appearance: 'success',
           autoDismiss: true,
         });

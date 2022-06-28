@@ -5,14 +5,17 @@ import SellPage from 'lib/components/sell/SellPage';
 import router from 'next/router';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const sell = ({
   propertyTitles,
   propertyTypes,
   listings,
+  getBanks,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
+  getBanks: any;
   listings: any;
 }) => {
   const data = listings.value;
@@ -31,6 +34,7 @@ const sell = ({
       propertyTitles={propertyTitles}
       propertyTypes={propertyTypes}
       listings={listings}
+      getBanks={getBanks}
     />
   );
 };
@@ -48,11 +52,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const listings = (
       await _dataAccess.get(`/api/Property/user/created/sale?${url}`)
     ).data;
+    const getBanks = await (
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
 
     return {
       props: {
         propertyTypes,
         propertyTitles,
+        getBanks,
         listings,
       },
     };
