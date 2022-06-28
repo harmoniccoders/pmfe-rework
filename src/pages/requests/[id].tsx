@@ -40,20 +40,16 @@ const matches = ({ data, id }: { data: any; id: any }) => {
             rowGap={5}
           >
             <>
-              {singleRequest
-                .filter((s: any) => {
-                  s.status !== 'REJECTED' || s.status !== 'ACCEPTED';
-                })
-                .map((item: PropertyRequestMatch) => {
-                  return (
-                    <GridItem key={item.id}>
-                      <PropertyCard
-                        matchId={item.id}
-                        item={item.property as PropertyView}
-                      />
-                    </GridItem>
-                  );
-                })}
+              {singleRequest.map((item: PropertyRequestMatch) => {
+                return (
+                  <GridItem key={item.id}>
+                    <PropertyCard
+                      matchId={item.id}
+                      item={item.property as PropertyView}
+                    />
+                  </GridItem>
+                );
+              })}
             </>
           </Grid>
         )}

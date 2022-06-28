@@ -89,6 +89,8 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
       return;
     } catch (err) {}
   };
+  console.log({ item });
+
   return (
     <Modals
       isOpen={isOpen}
@@ -169,7 +171,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                 py="2"
                 bgColor="brand.700"
               >
-                {item.status === 'APPROVED'
+                {item?.property?.status === 'INACTIVE'
                   ? 'Payment Confirmed'
                   : item.status === 'REJECTED'
                   ? 'Rejected'

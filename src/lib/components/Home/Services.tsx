@@ -43,7 +43,7 @@ const Services = () => {
           >
             <Text display="inline" color="blue">
               Sell
-            </Text>
+            </Text>{' '}
             your property fast
           </Heading>
           <Text fontSize="sm">

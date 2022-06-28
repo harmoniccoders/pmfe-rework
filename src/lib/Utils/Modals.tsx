@@ -50,7 +50,7 @@ export default function Modals({
           <Flex
             justifyContent="space-between"
             alignItems="center"
-            pt={['4rem', '0']}
+            pt={['2rem', '0']}
           >
             {formStep === 0 || formStep == undefined ? (
               <Text
@@ -98,7 +98,7 @@ export default function Modals({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5} pb="5rem">
+          <Box maxH="77vh" overflowY="auto" px={5} pb="4rem">
             {content}
           </Box>
         </ModalBody>

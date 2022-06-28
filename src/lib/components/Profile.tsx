@@ -135,6 +135,7 @@ function Profile() {
       mx="auto"
       overflow="hidden"
       align="center"
+      py="2rem"
     >
       <Box w="full" h="full" m="1rem unset" mt={['2rem', '1rem']}>
         <Flex align="flex-end" color="white">

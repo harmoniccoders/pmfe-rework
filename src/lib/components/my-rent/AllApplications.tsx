@@ -6,8 +6,7 @@ import TenantInfo from '../TenantInfo';
 
 const AllApplications = ({ result, data }: { data: any; result: any }) => {
   const onAccepted = result.find(
-    (item: ApplicationView) =>
-      item.status === 'ACCEPTED' || item.status === 'APPROVED'
+    (item: ApplicationView) => item.status === 'REVIEWED'
   );
   return (
     <Box>
@@ -16,9 +15,11 @@ const AllApplications = ({ result, data }: { data: any; result: any }) => {
       </Text>
       {result?.length > 0 ? (
         <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="5">
-          {result.map((item: ApplicationView) => (
-            <TenantInfo key={item.id} item={item} onAccepted={onAccepted} />
-          ))}
+          {result
+            .filter((x: ApplicationView) => x.applicationType == 'RENT')
+            .map((item: ApplicationView) => (
+              <TenantInfo key={item.id} item={item} onAccepted={onAccepted} />
+            ))}
         </SimpleGrid>
       ) : (
         <Text mt="3" fontWeight="medium" fontSize=".9rem">
@@ -26,7 +27,7 @@ const AllApplications = ({ result, data }: { data: any; result: any }) => {
         </Text>
       )}
       <Flex my="3rem" justifyContent="center">
-        <Pagination data={data} />
+        {/* <Pagination data={data} /> */}
       </Flex>
     </Box>
   );

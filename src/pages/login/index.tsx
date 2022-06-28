@@ -128,7 +128,7 @@ const Login = () => {
           <Divider mb="1rem !important" mt="1rem !important" />
           <Flex>
             <Text fontSize=".8rem" fontWeight="500">
-              Already have an account? &nbsp;
+              Don't have an account? &nbsp;
             </Text>
             <Text fontSize=".8rem" fontWeight="bold" color="brand.100">
               <Link href="/register"> Sign Up</Link>

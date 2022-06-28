@@ -350,6 +350,11 @@ const PropertyCard = ({ item, matchId }: Props) => {
                 bgColor="brand.800"
                 textTransform="capitalize"
                 onClick={() => RejectRequest()}
+                _hover={{
+                  bgColor: 'transparent',
+                  color: 'brand.800',
+                  borderColor: 'brand.800',
+                }}
               >
                 Reject
               </Button>
@@ -357,10 +362,15 @@ const PropertyCard = ({ item, matchId }: Props) => {
               <Button
                 variant="solid"
                 height="40px"
-                bgColor="#2FDF84"
+                bgColor=""
                 w="full"
                 disabled={item.createdByUser?.id === user?.id}
                 onClick={() => AcceptRequest()}
+                _hover={{
+                  bgColor: 'transparent',
+                  color: '#2FDF84',
+                  borderColor: '#2FDF84',
+                }}
               >
                 Accept
               </Button>

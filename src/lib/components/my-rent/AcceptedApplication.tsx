@@ -1,14 +1,11 @@
-import { Box, SimpleGrid,Text } from '@chakra-ui/react';
-import React from 'react'
+import { Box, SimpleGrid, Text } from '@chakra-ui/react';
+import React from 'react';
 import { ApplicationView } from 'types/api';
 import TenantInfo from '../TenantInfo';
 
 const AcceptedApplication = ({ result }: { result: any }) => {
   const accepted = result?.filter(
-    (item: ApplicationView) =>
-      item.status === 'REVIEWED' ||
-      item.status === 'APPROVED' ||
-      item.status === 'ACCEPTED'
+    (item: ApplicationView) => item.status === 'REVIEWED'
   );
   return (
     <Box>
@@ -30,4 +27,4 @@ const AcceptedApplication = ({ result }: { result: any }) => {
   );
 };
 
-export default AcceptedApplication
+export default AcceptedApplication;

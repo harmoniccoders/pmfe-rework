@@ -131,16 +131,19 @@ const RequestCard = ({ item }: Props) => {
                 item.matches?.find((x) => {
                   x.status == 'ACCEPTED' || x.status == 'REJECTED';
                 }) ||
-                (item.matches && item.matches?.length > 0)
+                (item.matches && item.matches?.length > 0) ||
+                (item.matches && item.matches?.length == 0)
                   ? true
                   : false
               }
               onClick={() => router.push(`/requests/${item.id}`)}
             >
-              {item.matches?.find((x) => {
-                x.status == 'ACCEPTED' || x.status == 'REJECTED';
-              }) ||
-              (item.matches && item.matches?.length > 0)
+              {item.matches &&
+              item.matches?.length > 0 &&
+              item.matches?.find((x) => {
+                //@ts-ignore
+                x.status !== 'ACCEPTED' || x.status !== 'REJECTED';
+              })
                 ? `View ${item.matches.length} Matches`
                 : 'No matches found'}
             </Button>
