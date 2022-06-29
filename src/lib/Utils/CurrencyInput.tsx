@@ -35,11 +35,9 @@ export const CurrencyField = <TFormValues extends Record<string, any>>({
   error,
   defaultValue,
   control,
-  radios,
-  icon,
   placeholder,
   fontSize,
-  minDate,
+  disableLabel,
 }: FormInputProps<TFormValues>) => {
   return (
     <GridItem>
@@ -65,6 +63,7 @@ export const CurrencyField = <TFormValues extends Record<string, any>>({
               decimalsLimit={2}
               prefix="&#8358;"
               className="currency"
+              disabled={disableLabel}
               onValueChange={(value) => field.onChange(value)}
             />
           )}

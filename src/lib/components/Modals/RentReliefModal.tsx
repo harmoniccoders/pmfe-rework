@@ -115,10 +115,12 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
     defaultValues: {
       propertyId: item?.id,
       applicationTypeId: 5,
+      reliefAmount: item.price,
     },
   });
 
   let reliefAmount = getValues('reliefAmount') as number;
+  // let reliefAmount = item.price as number;
   reliefAmount = +reliefAmount || 0;
   let payBackDate = moment(getValues('payBackDate')) as any;
   let repaymentFrequencyValue = getValues('repaymentFrequency');
@@ -139,7 +141,8 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
     repaymentFrequencyValue === 'once'
       ? 1
       : payBackDate.diff(startDate, repaymentFrequencyValue);
-  const installments = totalPayment / payments;
+  let installments = totalPayment / payments;
+  installments = installments.toFixed(0) as unknown as number;
 
   watch('reliefAmount');
   watch('payBackDate');
@@ -444,7 +447,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                     label="employer"
                     name="register.companyName"
                     error={errors.register?.companyName}
-                    placeholder="Type in your companyName"
+                    placeholder="Type in your company name"
                     defaultValue=""
                     register={register}
                   />
@@ -658,6 +661,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                     name={'reliefAmount'}
                     control={control}
                     label="Relief Amount"
+                    disableLabel={true}
                   />
                   <PrimaryDate<ApplicationModel>
                     label="Choose a pay back date"
