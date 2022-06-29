@@ -28,6 +28,12 @@ interface LandlordProps {
 function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   const { isOpen: opened, onClose: closed, onOpen: onOpened } = useDisclosure();
   const [complains, setComplains] = useState<any>();
+  const [singleComplaint, setSingleComplaint] = useState<any>();
+
+  const getSingleComplaint = (item: any) => {
+    setSingleComplaint(item);
+    onOpened();
+  };
 
   useEffect(() => {
     const getComplaints = async () => {
@@ -47,36 +53,48 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   }, []);
 
   return (
-    <Modals
-      isOpen={isOpen}
-      onClose={onClose}
-      pmlogo={true}
-      content={
-        <>
-          <VStack spacing={5}>
-            {complains?.map((item: ComplaintsView) => {
-              return (
-                <Box w="full" key={item.id}>
-                  <Stack spacing={3} onClick={onOpened} cursor="pointer">
-                    <Text fontWeight="600" fontSize={['1rem', '']}>
-                      {item.complaintsCategory}
-                    </Text>
-                    <Text>10/04/21</Text>
-                    <Divider />
-                  </Stack>
-                  <SingleComplainModal
-                    isOpen={opened}
-                    onClose={closed}
-                    closeModal={onClose}
-                    data={item}
-                  />
-                </Box>
-              );
-            })}
-          </VStack>
-        </>
-      }
-    />
+    <>
+      <Modals
+        isOpen={isOpen}
+        onClose={onClose}
+        pmlogo={true}
+        content={
+          <>
+            {complains.length <= 0 ? (
+              'No Complaints yet'
+            ) : (
+              <VStack spacing={5}>
+                {complains?.map((item: ComplaintsView) => {
+                  return (
+                    <Box w="full" key={item.id}>
+                      <Stack
+                        spacing={3}
+                        onClick={() => getSingleComplaint(item)}
+                        cursor="pointer"
+                      >
+                        <Text fontWeight="600" fontSize={['1rem', '']}>
+                          {item.complaintsCategory}
+                        </Text>
+                        <Text>10/04/21</Text>
+                        <Divider />
+                      </Stack>
+                    </Box>
+                  );
+                })}
+              </VStack>
+            )}
+          </>
+        }
+      />
+      {singleComplaint !== undefined && (
+        <SingleComplainModal
+          isOpen={opened}
+          onClose={closed}
+          closeModal={onClose}
+          data={singleComplaint}
+        />
+      )}
+    </>
   );
 }
 

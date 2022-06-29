@@ -28,7 +28,9 @@ const iconStyle = {
 const RequestCard = ({ item }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
-  const doneRequest: any = item.matches?.filter((x) => x.status !== 'PENDING');
+  const doneRequest: any = item.matches?.filter((x) => x.status == 'ACCEPTED');
+  const rejected = item.matches?.every((x: any) => x.status == 'REJECTED');
+  console.log({ rejected });
 
   return (
     <>
@@ -128,8 +130,16 @@ const RequestCard = ({ item }: Props) => {
               variant="solid"
               height="40px"
               width="full"
+              bgColor={
+                doneRequest.length > 0
+                  ? '#2FDF84'
+                  : rejected
+                  ? 'red'
+                  : 'brand.100'
+              }
               disabled={
                 (item.matches && item.matches?.length == 0) ||
+                rejected ||
                 doneRequest?.length > 0
                   ? true
                   : false
@@ -138,8 +148,11 @@ const RequestCard = ({ item }: Props) => {
             >
               {item.matches &&
               item.matches?.length > 0 &&
+              !rejected &&
               doneRequest?.length < 1
                 ? `View ${item.matches.length} Matches`
+                : !rejected && doneRequest.length > 0
+                ? 'Already Matched'
                 : 'No matches found'}
             </Button>
           </HStack>

@@ -342,6 +342,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
                   height="40px"
                   bgColor="#2FDF84"
                   w="full"
+                  isLoading={isLoader}
                   disabled={item.createdByUser?.id === user?.id}
                   onClick={() => AcceptRequest()}
                   _hover={{

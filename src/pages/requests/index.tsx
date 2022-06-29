@@ -19,6 +19,8 @@ const request = ({ data }: { data: any }) => {
       return;
     }
   });
+  console.log({ result });
+
   return (
     <Box w="90%" mx="auto" mt="3rem">
       <HStack

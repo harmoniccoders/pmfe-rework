@@ -1,4 +1,4 @@
-import { Box, Button, VStack, HStack } from '@chakra-ui/react';
+import { Box, Button, VStack, HStack, useDisclosure } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { PaymentRatesView, PropertyModel } from 'types/api';
 import StepOne from './StepOne';
@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import { DataAccess } from 'lib/Utils/Api';
 import Cookies from 'js-cookie';
+import CancelEnquiryModal from './Modals/CancelEnquiryModal';
 
 type Props = {
   data: PropertyModel;
@@ -22,40 +23,8 @@ type Props = {
 };
 
 const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
-  const [cancel, { loading, data: isData, error }] = useOperationMethod(
-    'Userenquirecancel{PropertyId}'
-  );
   const [applicationStatus, setApplicationStatus] = useState<any>();
-
-  const { addToast } = useToasts();
-  const router = useRouter();
-
-  const CancelEnquiry = async () => {
-    const params: Parameters = {
-      PropertyId: data.id as number,
-    };
-
-    try {
-      const result = await (await cancel(params)).data;
-
-      if (result.status) {
-        addToast(result.message, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        router.pathname.startsWith('/rent')
-          ? router.push('/rent/listed-property')
-          : router.push('/buy');
-
-        return;
-      }
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      return;
-    } catch (err) {}
-  };
+  const { onOpen, onClose, isOpen } = useDisclosure();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,8 +71,7 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
             fontSize="15px"
             color="brand.900"
             variant="outline"
-            onClick={() => CancelEnquiry()}
-            isLoading={loading}
+            onClick={onOpen}
           >
             Cancel Request
           </Button>
@@ -118,6 +86,7 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
       >
         <PropertyInfo data={data} />
       </Box>
+      <CancelEnquiryModal isOpen={isOpen} onClose={onClose} item={data} />
     </HStack>
   );
 };
