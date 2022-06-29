@@ -189,12 +189,28 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   const widgetApis = useRef();
 
   const RenderButton = () => {
-    if (formStep === 0 || formStep === 1) {
+    if (formStep === 0) {
       return (
         <Button
           type={isValid == false ? 'submit' : 'button'}
           w="100%"
           h="100%"
+          mt="2rem"
+          variant="solid"
+          textTransform="capitalize"
+          onClick={completeFormStep}
+          // disabled={isValid ? false : true}
+        >
+          Next
+        </Button>
+      );
+    } else if (formStep === 1) {
+      return (
+        <Button
+          type={isValid == false ? 'submit' : 'button'}
+          w="100%"
+          h="100%"
+          mt="2rem"
           variant="solid"
           textTransform="capitalize"
           onClick={completeFormStep}
@@ -208,7 +224,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
         <Box>
           <ButtonComponent
             content="Apply for Rent Relief"
-            isValid={isValid}
+            isValid={true}
             loading={loading}
           />
         </Box>

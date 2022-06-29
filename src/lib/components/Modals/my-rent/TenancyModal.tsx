@@ -56,7 +56,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
     register,
     handleSubmit,
     control,
-    setValue,
+    getValues,
     formState: { errors, isValid },
   } = useForm<ComplaintsModel>({
     resolver: yupResolver(schema),
@@ -66,12 +66,14 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const { addToast } = useToasts();
 
   const onSubmit = async (data: ComplaintsModel) => {
+    console.log({ data });
+
     try {
       const result = await (await CreateComplaint(undefined, data)).data;
 
       onClose();
       if (result.status) {
-        addToast('Application Successful', {
+        addToast('Successful', {
           appearance: 'success',
           autoDismiss: true,
         });
@@ -84,6 +86,15 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
       });
     } catch (err) {}
   };
+
+  const [cat, setCat] = useState();
+  // console.log({ selectedCategory });
+  const handleOnChange = (e: any) => {
+    const { value } = e.target;
+    setCat(value);
+    setShowCategory(true);
+  };
+  const subCat = category.filter((x) => x.id == cat)[0];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -139,14 +150,14 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
                   height="3rem"
                   fontSize=".9rem"
                   icon={<Icons iconClass="fa-angle-right" />}
-                  onChange={() => setShowCategory(true)}
+                  onChange={handleOnChange}
                   textTransform="capitalize"
                 >
                   <option disabled>choose a category </option>
                   <>
                     {category.map((item: any) => {
                       return (
-                        <option value={item.name} key={item.id}>
+                        <option value={item.id} key={item.id}>
                           {item.name}
                         </option>
                       );
@@ -164,15 +175,13 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
                   register={register}
                   options={
                     <>
-                      {category.map((item: any) =>
-                        item.complaintsSubCategories.map((subcategory: any) => {
-                          return (
-                            <option value={subcategory.id} key={subcategory.id}>
-                              {subcategory.name}
-                            </option>
-                          );
-                        })
-                      )}
+                      {subCat?.complaintsSubCategories?.map((item: any) => {
+                        return (
+                          <option value={item.id} key={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
                     </>
                   }
                 />
