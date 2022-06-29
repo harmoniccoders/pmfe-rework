@@ -89,23 +89,23 @@ const RentForm = ({
     price: yup.number().required(),
     budget: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number(),
+      then: yup.number().required(),
     }),
     rentCollectionTypeId: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number(),
+      then: yup.number().required(),
     }),
     tenantTypeId: yup.number().when('name', {
       is: () => formStep === 1,
-      then: yup.number(),
+      then: yup.number().required(),
     }),
     bank: yup.string().when('name', {
       is: () => formStep === 1,
-      then: yup.string(),
+      then: yup.string().required(),
     }),
     accountNumber: yup.string().when('name', {
       is: () => formStep === 1,
-      then: yup.string(),
+      then: yup.string().required(),
     }),
   });
 
@@ -179,7 +179,7 @@ const RentForm = ({
             <Box w="50%">
               <ButtonComponent
                 content="Submit"
-                isValid={isValid}
+                isValid={true}
                 loading={loading}
               />
             </Box>
