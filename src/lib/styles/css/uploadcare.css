@@ -19,10 +19,10 @@
 .uploadcare--powered-by {
   display: none !important;
 }
-.uploadcare--dialog__panel {
+/* .uploadcare--dialog__panel {
   width: 50% !important;
   margin: auto !important;
-}
+} */
 .uploadcare--menu {
   /* display: none !important; */
   padding-right: 0 !important;
@@ -40,14 +40,14 @@
   right: 0%;
   top: 0%;
 }
-.uploadcare--menu__items {
+/* .uploadcare--menu__items {
   padding-right: 0 !important;
   width: 1px;
-}
-.uploadcare--menu__item {
+} */
+/* .uploadcare--menu__item {
   display: none;
-}
-.uploadcare--dialog__panel .uploadcare--menu,
+} */
+/* .uploadcare--dialog__panel .uploadcare--menu,
 .uploadcare--dialog__panel .uploadcare--menu__item {
   width: 0 !important;
-}
+} */

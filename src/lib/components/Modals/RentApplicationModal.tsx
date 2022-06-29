@@ -233,8 +233,8 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
   return (
     <Modals
-      isOpen={open}
-      onClose={close}
+      isOpen={isOpen}
+      onClose={onClose}
       pmlogo={true}
       formStep={formStep}
       setFormStep={setFormStep}

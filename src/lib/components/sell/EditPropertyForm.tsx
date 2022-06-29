@@ -239,7 +239,19 @@ const EditPropertyForm = ({
     try {
       const result = await (await deleteItem(params)).data;
       if (result.status) {
+        addToast(
+          'File deleted successfully, you may need to reload page to see changes',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
+        return;
       }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } catch (err) {}
   };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
