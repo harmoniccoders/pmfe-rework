@@ -31,7 +31,7 @@ const matches = ({ data, id }: { data: any; id: any }) => {
         ) : (
           <>
             <Text fontSize=".9rem" color="brand.100" fontWeight="700" my="2rem">
-              My Request - {result[0].numberOfBedRooms} Bedroom
+              My Request - {result[0].numberOfBedRooms} Bedroom{' '}
               {result[0].propertyType.name}
             </Text>
             <Text fontSize="1rem" fontWeight="700" my="2rem">

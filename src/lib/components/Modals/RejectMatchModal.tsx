@@ -102,9 +102,7 @@ const RejectMatchModal = ({ isOpen, onClose, item }: Props) => {
                 height="40px"
                 width="full"
                 bgColor="brand.900"
-                isDisabled={
-                  item.status === 'INACTIVE' || item.status === 'SOLD'
-                }
+                disabled={item.status === 'INACTIVE' || item.status === 'SOLD'}
                 isLoading={loading}
                 onClick={() => RejectRequest()}
               >

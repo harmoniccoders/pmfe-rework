@@ -340,13 +340,14 @@ const PropertyCard = ({ item, matchId }: Props) => {
                 <Button
                   variant="solid"
                   height="40px"
-                  bgColor=""
+                  bgColor="#2FDF84"
                   w="full"
                   disabled={item.createdByUser?.id === user?.id}
                   onClick={() => AcceptRequest()}
                   _hover={{
                     bgColor: 'transparent',
                     color: '#2FDF84',
+                    border: ' 1px solid',
                     borderColor: '#2FDF84',
                   }}
                 >
@@ -421,7 +422,9 @@ const PropertyCard = ({ item, matchId }: Props) => {
         onClose={onClose}
         item={item}
       />
-      <RejectMatchModal onClose={close} isOpen={open} item={matchId} />
+      {isRequest && (
+        <RejectMatchModal onClose={close} isOpen={open} item={matchId} />
+      )}
     </>
   );
 };

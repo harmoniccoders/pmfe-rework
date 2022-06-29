@@ -86,24 +86,25 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
   const { addToast } = useToasts();
   const completeFormStep = () => {
-    setFormStep((cur: number) => cur + 1);
+    if (isValid) {
+      setFormStep((cur: number) => cur + 1);
+      return;
+    }
   };
   const RenderButton = () => {
     if (formStep === 0) {
       return (
-        <Box onClick={completeFormStep}>
-          <Button
-            type="button"
-            w="100%"
-            h="100%"
-            mt="1.5rem"
-            variant="solid"
-            textTransform="capitalize"
-            disabled={isValid ? false : true}
-          >
-            Next
-          </Button>
-        </Box>
+        <Button
+          type={isValid == false ? 'submit' : 'button'}
+          w="100%"
+          h="100%"
+          variant="solid"
+          textTransform="capitalize"
+          onClick={completeFormStep}
+          // disabled={isValid ? false : true}
+        >
+          Next
+        </Button>
       );
     } else if (formStep === 1) {
       return (

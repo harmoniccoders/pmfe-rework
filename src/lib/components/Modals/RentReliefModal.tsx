@@ -179,7 +179,10 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   const { addToast } = useToasts();
 
   const completeFormStep = () => {
-    setFormStep((cur: number) => cur + 1);
+    if (isValid) {
+      setFormStep((cur: number) => cur + 1);
+      return;
+    }
   };
 
   const widgetApiss = useRef();
@@ -188,19 +191,17 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   const RenderButton = () => {
     if (formStep === 0 || formStep === 1) {
       return (
-        <Box onClick={completeFormStep}>
-          <Button
-            type="button"
-            w="100%"
-            h="100%"
-            mt="1.5rem"
-            variant="solid"
-            textTransform="capitalize"
-            disabled={isValid ? false : true}
-          >
-            Next
-          </Button>
-        </Box>
+        <Button
+          type={isValid == false ? 'submit' : 'button'}
+          w="100%"
+          h="100%"
+          variant="solid"
+          textTransform="capitalize"
+          onClick={completeFormStep}
+          // disabled={isValid ? false : true}
+        >
+          Next
+        </Button>
       );
     } else {
       return (
