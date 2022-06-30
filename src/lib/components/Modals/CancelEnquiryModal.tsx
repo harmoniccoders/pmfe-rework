@@ -14,6 +14,8 @@ import { PropertyView } from 'types/api';
 import { Parameters } from 'openapi-client-axios';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
+import {FaTrash} from 'react-icons/fa'
+import Icons from '../Icons';
 
 type Props = {
   isOpen?: any;
@@ -77,11 +79,12 @@ const CancelEnquiryModal = ({ isOpen, onClose, item }: Props) => {
       >
         <ModalHeader textAlign="center">
           <>
-            <Text fontSize="1.1rem" fontWeight="bold">
-              Are you sure you want to cancel this enquiry?
-            </Text>
-            <Text color="red" fontSize=".8rem">
-              Please note, action cannot be reversed
+            <Box textAlign="center" color="brand.800" fontSize="2rem">
+              <Icons iconClass="fa-trash-alt" />
+            </Box>
+            <Text fontSize=".8rem">
+              Are you sure you want to cancel your enquiry? All progress on this
+              transaction will be lost
             </Text>
           </>
         </ModalHeader>
@@ -93,7 +96,13 @@ const CancelEnquiryModal = ({ isOpen, onClose, item }: Props) => {
                 variant="solid"
                 height="40px"
                 width="full"
-                bgColor="brand.800"
+                bgColor="black"
+                _hover={{
+                  bgColor: 'white',
+                  color: 'black',
+                  border: '1px solid',
+                  borderColor: 'black',
+                }}
                 onClick={onClose}
               >
                 No
@@ -102,7 +111,13 @@ const CancelEnquiryModal = ({ isOpen, onClose, item }: Props) => {
                 variant="solid"
                 height="40px"
                 width="full"
-                bgColor="brand.900"
+                bgColor="brand.800"
+                _hover={{
+                  bgColor: 'white',
+                  color: 'brand.800',
+                  border: '1px solid',
+                  borderColor: 'brand.800',
+                }}
                 disabled={item.status === 'INACTIVE' || item.status === 'SOLD'}
                 isLoading={loading}
                 onClick={() => CancelEnquiry()}
