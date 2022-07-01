@@ -50,10 +50,12 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         height="3rem"
         fontSize=".9rem"
         textTransform="capitalize"
+        placeholder={placeholder}
         defaultValue={defaultValue}
+        // isReadOnly
         icon={<Icons iconClass="fa-angle-right" />}
       >
-        <option disabled>{placeholder}</option>
+        {/* <option disabled>{placeholder}</option> */}
         {options}
       </Select>
       <Text fontSize=".7rem" color="red">

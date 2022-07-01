@@ -86,6 +86,8 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
           disabled={disableLabel}
           border={border}
           borderColor={borderColor}
+          // readOnly={true}
+          // onFocus={this.removeAttribute('readonly')}
         />
 
         <InputRightElement

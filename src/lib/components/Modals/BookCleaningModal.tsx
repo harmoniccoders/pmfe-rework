@@ -213,7 +213,7 @@ const BookCleaningModal = ({
               fontSize="sm"
             />
             <ButtonComponent
-              content="Get Qoute"
+              content="Get Quote"
               isValid={isValid}
               loading={loading}
             />

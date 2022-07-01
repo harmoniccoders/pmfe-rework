@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
+import { FormControl, FormLabel, Text } from '@chakra-ui/react';
 import WYSIWYGEditor from 'lib/components/Editor';
 import { stripHtml } from 'string-strip-html';
 
@@ -77,10 +77,10 @@ export const PrimaryEditor = <TFormValues extends Record<string, any>>({
           },
         }}
       />
-      <FormErrorMessage fontSize=".7rem" color="red">
+      <Text fontSize=".7rem" color="red">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </FormErrorMessage>
+      </Text>
     </FormControl>
   );
 };

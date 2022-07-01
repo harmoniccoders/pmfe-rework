@@ -23,12 +23,13 @@ export default function PrimaryState({
 }: Props) {
   const naijaStates = NaijaStates.all();
   const selectedState = getValues('state');
+
   const [lgas, setLgas] = useState([]);
 
   //Get Local Government
   useEffect(() => {
     const getLga = async (state: string) => {
-      if (state !== undefined) {
+      if (selectedState !== '' && selectedState !== undefined) {
         setLgas(NaijaStates.lgas(state).lgas);
         return;
       }
@@ -41,7 +42,7 @@ export default function PrimaryState({
       <PrimarySelect<PropertyModel>
         register={register}
         error={error}
-        label='State'
+        label="State"
         placeholder="Which state in Nigeria is your property located"
         name={name || 'state'}
         options={
@@ -53,7 +54,7 @@ export default function PrimaryState({
         }
       />
 
-      {getValues('state') !== undefined && name !== 'location' ? (
+      {selectedState !== '' && name !== 'location' ? (
         <PrimarySelect<PropertyModel>
           register={register}
           error={errors}

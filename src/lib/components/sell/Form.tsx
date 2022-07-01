@@ -11,6 +11,7 @@ import {
   Icon,
   AspectRatio,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -42,6 +43,7 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+import ReactToast from '../Generics/ReactToast';
 // const ngBanks = require('ng-banks');
 
 interface Props {
@@ -74,13 +76,14 @@ const Form = ({
     area: yup.string().required(),
     lga: yup.string().required(),
     state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
+    propertyTypeId: yup.string().required(),
     sellMyself: yup.string().required(),
     name: yup.string().required(),
     price: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number().required(),
     }),
+    // mediaFiles: yup.string().required(),
   });
 
   const {
@@ -231,11 +234,32 @@ const Form = ({
     }
   };
 
+  const toast = useToast();
   const onSubmit = async (data: PropertyModel) => {
     await getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
-
     data.mediaFiles = uploadedMedia;
+    if (
+      data.numberOfBathrooms == undefined ||
+      data.numberOfBathrooms == 0 ||
+      data.numberOfBedrooms == undefined ||
+      data.numberOfBedrooms == 0
+    ) {
+      toast({
+        position: 'top-right',
+        status: 'warning',
+        description: 'Number of bedrooms or bathrooms can not be 0',
+      });
+      return;
+    }
+    if (data.mediaFiles.length == 0) {
+      toast({
+        position: 'top-right',
+        status: 'warning',
+        description: 'Please upload an image or video of your property',
+      });
+      return;
+    }
 
     try {
       if (data.isDraft) {
