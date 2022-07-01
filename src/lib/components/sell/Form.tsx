@@ -43,7 +43,6 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
-import ReactToast from '../Generics/ReactToast';
 // const ngBanks = require('ng-banks');
 
 interface Props {
