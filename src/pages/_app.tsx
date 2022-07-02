@@ -13,6 +13,7 @@ import Layout from 'lib/layout';
 import { UserProvider } from 'lib/Utils/MainContext';
 import Cookies from 'js-cookie';
 import SimpleReactLightbox from 'simple-react-lightbox';
+import NextNProgress from 'nextjs-progressbar';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   let headers: HeadersInit;
@@ -51,6 +52,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <ToastProvider>
             <SimpleReactLightbox>
               <Layout>
+                <NextNProgress color="#0042ff" />
                 <Component {...pageProps} />
               </Layout>
             </SimpleReactLightbox>
