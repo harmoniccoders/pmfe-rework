@@ -43,6 +43,7 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+import { PrimaryCheckbox } from 'lib/Utils/CheckBox/PrimaryCheckbox';
 // const ngBanks = require('ng-banks');
 
 interface Props {
@@ -122,6 +123,7 @@ const Form = ({
 
   watch('sellMyself');
   const pmSales = getValues('sellMyself');
+  console.log({ pmSales });
 
   const RenderButton = () => {
     if (formStep === 0) {
@@ -370,6 +372,13 @@ const Form = ({
                     defaultValue=""
                     error={errors.description}
                   />
+                  {/* <PrimaryCheckbox<PropertyModel>
+                    name="sellMyself"
+                    control={control}
+                    label="Yes"
+                    error={errors.sellMyself}
+                    register={register}
+                  /> */}
                   <Box my="1.3em">
                     <RadioButton<PropertyModel>
                       name="sellMyself"
