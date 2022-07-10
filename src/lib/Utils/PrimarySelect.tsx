@@ -1,4 +1,10 @@
-import { FormLabel, Select, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Select,
+  Text,
+} from '@chakra-ui/react';
 import Icons from 'lib/components/Icons';
 import { FieldError, Path, UseFormRegister } from 'react-hook-form';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
@@ -28,7 +34,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
   defaultValue,
 }: FormInputProps<TFormValues>) => {
   return (
-    <>
+    <FormControl isInvalid={error?.type === 'required'}>
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
@@ -58,10 +64,10 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         {/* <option disabled>{placeholder}</option> */}
         {options}
       </Select>
-      <Text fontSize=".7rem" color="red">
+      <FormErrorMessage fontSize=".7rem">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </Text>
-    </>
+      </FormErrorMessage>
+    </FormControl>
   );
 };

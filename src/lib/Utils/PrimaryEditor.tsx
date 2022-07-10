@@ -1,4 +1,9 @@
-import { FormControl, FormLabel, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Text,
+} from '@chakra-ui/react';
 import WYSIWYGEditor from 'lib/components/Editor';
 import { stripHtml } from 'string-strip-html';
 
@@ -49,7 +54,7 @@ export const PrimaryEditor = <TFormValues extends Record<string, any>>({
   control,
 }: FormInputProps<TFormValues>) => {
   return (
-    <FormControl mt="5">
+    <FormControl mt="5" isInvalid={error?.type === 'required'}>
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
@@ -77,10 +82,10 @@ export const PrimaryEditor = <TFormValues extends Record<string, any>>({
           },
         }}
       />
-      <Text fontSize=".7rem" color="red">
+      <FormErrorMessage fontSize=".7rem">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </Text>
+      </FormErrorMessage>
     </FormControl>
   );
 };

@@ -61,7 +61,7 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
   borderColor,
 }: FormInputProps<TFormValues>) => {
   return (
-    <FormControl>
+    <FormControl isInvalid={error?.type === 'required'}>
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
@@ -95,10 +95,10 @@ export const PrimaryInput = <TFormValues extends Record<string, any>>({
           onClick={changePasswordType}
         />
       </InputGroup>
-      <Text fontSize=".7rem" color="red">
+      <FormErrorMessage fontSize=".7rem">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </Text>
+      </FormErrorMessage>
     </FormControl>
   );
 };
