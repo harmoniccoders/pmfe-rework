@@ -362,11 +362,11 @@ function ListedRent({ data }: { data: any }) {
         </GridItem>
         <GridItem colSpan={[4, 4, 2, 2, 3]}>
           <ListedProperties result={result} />
+          <Center my="2rem">
+            <Pagination data={data} />
+          </Center>
         </GridItem>
       </SimpleGrid>
-      <Center my="2rem">
-        <Pagination data={data} />
-      </Center>
     </Box>
   );
 }

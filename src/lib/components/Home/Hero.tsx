@@ -37,6 +37,8 @@ const Hero = ({ setSearchTerm, searchTerm, setIsSearched }: heroProps) => {
       backgroundPosition="center"
       spacing="5"
       justify="center"
+      w="full"
+      backgroundSize="cover"
     >
       <Text
         color="white"
