@@ -45,24 +45,24 @@ const ContactPage = () => {
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const onSubmit = async (data: Register) => {
-    try {
-      const result = await (await SendMessage(undefined, data)).data;
+  // const onSubmit = async (data: Register) => {
+  //   try {
+  //     const result = await (await SendMessage(undefined, data)).data;
 
-      if (result.status) {
-        addToast('Message sent sucessfully', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-        return;
-      }
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      return;
-    } catch (err) {}
-  };
+  //     if (result.status) {
+  //       addToast('Message sent sucessfully', {
+  //         appearance: 'success',
+  //         autoDismiss: true,
+  //       });
+  //       return;
+  //     }
+  //     addToast(result.message, {
+  //       appearance: 'error',
+  //       autoDismiss: true,
+  //     });
+  //     return;
+  //   } catch (err) {}
+  // };
 
   const form = useRef<any>();
 

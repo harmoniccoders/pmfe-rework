@@ -39,7 +39,7 @@ function VerifySession({ data }: { data: any }) {
               onClick={() => setOpen(true)}
             />
           </SimpleGrid>
-          {request.length > 0 ? (
+          {request?.length > 0 ? (
             <SimpleGrid columns={[1, 2, 2, 3]} spacing="6">
               {request.map((item: LandSearchView) => (
                 <LandSearchCard item={item} />

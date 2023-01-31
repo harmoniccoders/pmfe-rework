@@ -14,7 +14,7 @@ const CleanPage = ({
 }) => {
   const [isOpen, setIsopen] = useState<boolean>(false);
   const requests = cleanRequests.value;
-  
+
   const closeModal = () => {
     setIsopen(false);
   };
@@ -23,7 +23,7 @@ const CleanPage = ({
   };
   return (
     <Box w="90%" mx="auto" py="5">
-      <SimpleGrid columns={{base: 1, md: 2, xl:3}} spacing={8}>
+      <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={8}>
         <CardButton
           img="/assets/cleanProperty.png"
           title="Book Cleaning Session"
@@ -34,7 +34,7 @@ const CleanPage = ({
       <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
         Cleaning Session
       </Text>
-      {requests.length > 0 ? (
+      {requests?.length > 0 ? (
         <CleanProperty requests={requests} />
       ) : (
         <Center h="30vh" fontSize=".9rem">

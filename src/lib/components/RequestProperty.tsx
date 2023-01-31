@@ -14,7 +14,7 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 
 interface Props {
-  propertyTypes: PropertyType[];
+  propertyTypes?: PropertyType[];
 }
 const Form = ({ propertyTypes }: Props) => {
   const [requestProperty, { loading, data, error }] =
@@ -83,7 +83,7 @@ const Form = ({ propertyTypes }: Props) => {
                   name="propertyTypeId"
                   options={
                     <>
-                      {propertyTypes.map((x: PropertyType) => {
+                      {propertyTypes?.map((x: PropertyType) => {
                         return <option value={x.id}>{x.name}</option>;
                       })}
                     </>

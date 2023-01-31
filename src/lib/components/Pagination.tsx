@@ -40,7 +40,13 @@ function Pagination({ data }: { data: PagedCollection }) {
     }
   };
   return (
-    <Flex align="center" justify="center" p="0 2rem" w="100%">
+    <Flex
+      align="center"
+      justify="center"
+      p="0 2rem"
+      w="100%"
+      display={data.value?.length == 0 ? 'none' : 'flex'}
+    >
       <Flex align="center">
         <Square
           size="30px"

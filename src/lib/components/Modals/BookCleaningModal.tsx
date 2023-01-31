@@ -150,7 +150,7 @@ const BookCleaningModal = ({
               fontSize="sm"
               options={
                 <>
-                  {result.map((x: PropertyType) => {
+                  {result?.map((x: PropertyType) => {
                     return <option value={x.id}>{x.name}</option>;
                   })}
                 </>
