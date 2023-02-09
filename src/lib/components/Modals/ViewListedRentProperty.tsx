@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { DataAccess } from 'lib/Utils/Api';
 import Modals from 'lib/Utils/Modals';
+import { useToasts } from 'react-toast-notifications';
 
 const iconStyle = {
   color: '#0042ff',
@@ -48,6 +49,7 @@ const ViewListedRentProperty = ({
 }: Props) => {
   const router = useRouter();
   const [applications, setApplications] = useState(0);
+  const { addToast } = useToasts();
   useEffect(() => {
     const fetchData = async () => {
       const bearer = `Bearer ${Cookies.get('token')}`;

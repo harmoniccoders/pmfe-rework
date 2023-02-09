@@ -17,6 +17,7 @@ import Modals from 'lib/Utils/Modals';
 
 import React, { useState } from 'react';
 import { useOperationMethod } from 'react-openapi-client';
+import { useToasts } from 'react-toast-notifications';
 import {
   PaymentRatesView,
   PropertyView,
@@ -44,6 +45,7 @@ const InstructionModal = ({
 }: Props) => {
   const [redirect, setRedirect] = useState(false);
   let payData: any;
+  const { addToast } = useToasts();
 
   if (item) {
     payData = {

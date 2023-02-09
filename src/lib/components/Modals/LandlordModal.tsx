@@ -16,6 +16,7 @@ import Cookies from 'js-cookie';
 import { DataAccess } from 'lib/Utils/Api';
 import Modals from 'lib/Utils/Modals';
 import { useEffect, useState } from 'react';
+import { useToasts } from 'react-toast-notifications';
 import { ComplaintsView } from 'types/api';
 import SingleComplainModal from './SingleComplaintModal';
 
@@ -29,6 +30,7 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
   const { isOpen: opened, onClose: closed, onOpen: onOpened } = useDisclosure();
   const [complains, setComplains] = useState<any>();
   const [singleComplaint, setSingleComplaint] = useState<any>();
+  const { addToast } = useToasts();
 
   const getSingleComplaint = (item: any) => {
     setSingleComplaint(item);

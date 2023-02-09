@@ -25,6 +25,7 @@ type Props = {
 const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
   const [applicationStatus, setApplicationStatus] = useState<any>();
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const {addToast} = useToasts()
 
   useEffect(() => {
     const fetchData = async () => {
