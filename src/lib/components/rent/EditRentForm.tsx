@@ -11,6 +11,8 @@ import {
   Image,
   Center,
   useDisclosure,
+  VStack,
+  Spinner,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -20,9 +22,10 @@ import {
   MediaModel,
   RentCollectionType,
   TenantType,
+  PropertyView,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -46,6 +49,9 @@ import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import Geocode from 'react-geocode';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+import NewCheckbox from 'lib/Utils/CheckBox/NewCheckbox';
+import { UserContext } from 'lib/Utils/MainContext';
+import { useNonInitialEffect } from '../Generics/useNonInitialEffect';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -54,7 +60,7 @@ interface Props {
   propertyCollection: RentCollectionType[];
   getBanks: any[];
   formStep: number;
-  item: PropertyModel;
+  item: PropertyView;
   setFormStep: any;
   onClose: () => void;
 }
@@ -74,6 +80,7 @@ const EditRentForm = ({
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
+  console.log({ item });
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -88,26 +95,26 @@ const EditRentForm = ({
     numberOfBathrooms: yup.number().required(),
     numberOfBedrooms: yup.number().required(),
     price: yup.number().required(),
-    budget: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    rentCollectionTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    tenantTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
-    bank: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string(),
-    }),
-    accountNumber: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string(),
-    }),
+    // budget: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // rentCollectionTypeId: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // tenantTypeId: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
+    // bank: yup.string().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.string(),
+    // }),
+    // accountNumber: yup.string().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.string(),
+    // }),
   });
 
   const {
@@ -128,23 +135,23 @@ const EditRentForm = ({
       isForSale: item.isForSale,
       isDraft: item.isDraft,
       isForRent: item.isForRent,
-      name: item.name,
+      name: item.name as string,
       propertyTypeId: item.propertyTypeId,
-      rentCollectionTypeId: item.rentCollectionTypeId,
-      tenantTypeId: item.tenantTypeId,
-      title: item.title,
+      title: item.title as string,
       state: item.state,
       lga: item.lga,
       area: item.area,
-      address: item.address,
-      description: item.description,
-      bank: item.bank,
-      accountNumber: item.accountNumber,
-      budget: item.budget,
+      address: item.address as string,
+      description: item.description as string,
+      bank: item.createdByUser?.bank,
+      accountNumber: item.createdByUser?.accountNumber,
       sellMyself: item.sellMyself,
       price: item.price,
       numberOfBathrooms: item.numberOfBathrooms,
       numberOfBedrooms: item.numberOfBedrooms,
+      rentCollectionTypeId: 1,
+      tenantTypeId: 1,
+      budget: '',
     },
   });
 
@@ -169,30 +176,19 @@ const EditRentForm = ({
     if (formStep === 0) {
       return (
         <>
-          {
-            //@ts-ignore
-            getValues('sellMyself') === 'true' ? (
-              <ButtonComponent
-                content="Submit"
-                isValid={isValid}
-                loading={isLoading}
-              />
-            ) : (
-              <Box onClick={completeFormStep}>
-                <Button
-                  type="button"
-                  w="100%"
-                  h="100%"
-                  variant="solid"
-                  textTransform="capitalize"
-                  disabled={isValid ? false : true}
-                  isLoading={isLoading}
-                >
-                  Next
-                </Button>
-              </Box>
-            )
-          }
+          {sellMyself ? (
+            <ButtonComponent content="Submit" loading={isLoading} />
+          ) : (
+            <Button
+              w="100%"
+              h="100%"
+              variant="solid"
+              textTransform="capitalize"
+              onClick={completeFormStep}
+            >
+              Next
+            </Button>
+          )}
         </>
       );
     } else if (formStep === 1) {
@@ -200,11 +196,7 @@ const EditRentForm = ({
         <Box>
           <HStack spacing={3} pt="5">
             <Box w="50%">
-              <ButtonComponent
-                content="Submit"
-                isValid={isValid}
-                loading={isLoading}
-              />
+              <ButtonComponent content="Submit" loading={isLoading} />
             </Box>
             <Button
               w="50%"
@@ -261,10 +253,11 @@ const EditRentForm = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const [deleteItem, { loading, data: isData, error: isError }] =
+  const [mediaFilesItem, setMediaFilesItem] = useState(item.mediaFiles);
+  const [deleteItem, { loading: load, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  useEffect(() => {
+  useNonInitialEffect(() => {
     const deleteMedia = async () => {
       const params: Parameters = {
         id: selectedId as number,
@@ -274,10 +267,15 @@ const EditRentForm = ({
         const result = await (await deleteItem(params)).data;
         if (result.status) {
         }
-      } catch (err) {}
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+      setMediaFilesItem(mediaFilesItem?.filter((x) => x.id !== selectedId));
     };
     deleteMedia();
-    getValues('mediaFiles');
   }, [selectedId]);
 
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
@@ -297,11 +295,14 @@ const EditRentForm = ({
       return values;
     }
   };
-
+  const [sellMyself, setSellMyself] = useState(item.sellMyself);
+  const { user } = useContext(UserContext);
   const onSubmit = async (data: PropertyModel) => {
     getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
-    data.mediaFiles = uploadedMedia;
+    data.mediaFiles = mediaFilesItem?.concat(uploadedMedia);
+    data.bank = user?.bank || data.bank;
+    data.accountNumber = user?.accountNumber || data.accountNumber;
     try {
       const result = await (await PropertyUpdate(undefined, data)).data;
 
@@ -316,14 +317,19 @@ const EditRentForm = ({
         router.reload();
         return;
       }
+      onClose();
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
       });
       setFormStep(0);
-      onClose();
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   return (
     <>
@@ -443,11 +449,11 @@ const EditRentForm = ({
                       ref={widgetApi}
                     />
                     <>
-                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                      {mediaFilesItem && mediaFilesItem?.length > 0 && (
                         <HStack w="full" spacing="1rem" overflow="auto">
-                          {item.mediaFiles
+                          {mediaFilesItem
                             .filter((m) => m.isImage)
-                            .map((item: any) => {
+                            .map((x: any) => {
                               return (
                                 <SRLWrapper>
                                   <Box
@@ -478,16 +484,20 @@ const EditRentForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      <FaTrash
-                                        color="white"
-                                        fontSize="1rem"
-                                        onClick={() => {
-                                          setSelectedId(item.id);
-                                        }}
-                                      />
+                                      {load && selectedId == x.id ? (
+                                        <Spinner />
+                                      ) : (
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            setSelectedId(x.id);
+                                          }}
+                                        />
+                                      )}
                                     </Box>
                                     <Image
-                                      src={item.url}
+                                      src={x.url}
                                       alt="propery-image"
                                       w="100%"
                                       height="100%"
@@ -497,45 +507,45 @@ const EditRentForm = ({
                                 </SRLWrapper>
                               );
                             })}
+                          {uploadedMedia.length > 0 && (
+                            <>
+                              <HStack
+                                w="full"
+                                spacing="1rem"
+                                overflow="auto"
+                                mt="1rem"
+                              >
+                                {uploadedMedia
+                                  .filter((m) => m.isImage)
+                                  .map((x: any) => {
+                                    return (
+                                      <SRLWrapper>
+                                        <Box
+                                          w="90px"
+                                          h="90px"
+                                          borderRadius="5px"
+                                          bgColor="brand.50"
+                                          flexShrink={0}
+                                          overflow="hidden"
+                                          pos="relative"
+                                        >
+                                          <Image
+                                            src={x.url}
+                                            alt="propery-image"
+                                            w="100%"
+                                            height="100%"
+                                            objectFit="cover"
+                                          />
+                                        </Box>
+                                      </SRLWrapper>
+                                    );
+                                  })}
+                              </HStack>
+                            </>
+                          )}
                         </HStack>
                       )}
                     </>
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack
-                          w="full"
-                          spacing="1rem"
-                          overflow="auto"
-                          mt="1rem"
-                        >
-                          {uploadedMedia
-                            .filter((m) => m.isImage)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                    pos="relative"
-                                  >
-                                    <Image
-                                      src={item.url}
-                                      alt="propery-image"
-                                      w="100%"
-                                      height="100%"
-                                      objectFit="cover"
-                                    />
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
                   </Box>
                   <Box>
                     <Flex
@@ -568,11 +578,11 @@ const EditRentForm = ({
                       ref={widgetApis}
                     />
                     <>
-                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
+                      {mediaFilesItem && mediaFilesItem?.length > 0 && (
                         <HStack w="full" spacing="1rem" overflow="auto">
-                          {item.mediaFiles
+                          {mediaFilesItem
                             .filter((m) => m.isVideo)
-                            .map((item: any) => {
+                            .map((x: any) => {
                               return (
                                 <SRLWrapper>
                                   <Box role="group" pos="relative">
@@ -594,17 +604,21 @@ const EditRentForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      <FaTrash
-                                        color="white"
-                                        fontSize="1rem"
-                                        onClick={() => {
-                                          setSelectedId(item.id);
-                                        }}
-                                      />
+                                      {load && selectedId == x.id ? (
+                                        <Spinner />
+                                      ) : (
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            setSelectedId(x.id);
+                                          }}
+                                        />
+                                      )}
                                     </Box>
                                     <video width="150px" height="150px">
                                       <source
-                                        src={item.url as string}
+                                        src={x.url as string}
                                         type="video/mp4"
                                       />
                                       Your browser does not support this video
@@ -613,43 +627,43 @@ const EditRentForm = ({
                                 </SRLWrapper>
                               );
                             })}
+                          {uploadedMedia.length > 0 && (
+                            <>
+                              <HStack w="full" spacing="1rem" overflow="auto">
+                                {uploadedMedia
+                                  .filter((m) => m.isVideo)
+                                  .map((x: any) => {
+                                    return (
+                                      <SRLWrapper>
+                                        <Box
+                                          w="90px"
+                                          h="90px"
+                                          borderRadius="5px"
+                                          bgColor="brand.50"
+                                          flexShrink={0}
+                                          overflow="hidden"
+                                        >
+                                          <AspectRatio
+                                            maxW="150px"
+                                            w="full"
+                                            ratio={1}
+                                          >
+                                            <iframe
+                                              title="Interactive videp"
+                                              src={x.url as string}
+                                              allowFullScreen
+                                            />
+                                          </AspectRatio>
+                                        </Box>
+                                      </SRLWrapper>
+                                    );
+                                  })}
+                              </HStack>
+                            </>
+                          )}
                         </HStack>
                       )}
                     </>
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {uploadedMedia
-                            .filter((m) => m.isVideo)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                  >
-                                    <AspectRatio
-                                      maxW="150px"
-                                      w="full"
-                                      ratio={1}
-                                    >
-                                      <iframe
-                                        title="Interactive videp"
-                                        src={item.url as string}
-                                        allowFullScreen
-                                      />
-                                    </AspectRatio>
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
                   </Box>
 
                   <NumberCounter
@@ -664,32 +678,23 @@ const EditRentForm = ({
                     getValues={getValues}
                     label="Number of Bathrooms"
                   />
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
-                      defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to manage the tenant myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me manage my tenant'}
-                              value={'false'}
-                            />
-                            <Tooltip aria-label="A tooltip">
-                              <FaInfoCircle onMouseOver={opened} />
-                            </Tooltip>
-                          </Flex>
-                        </>
-                      }
+                  <VStack my="1.3em" align="flex-start">
+                    <NewCheckbox
+                      checked={sellMyself}
+                      onChange={() => setSellMyself(true)}
+                      label="I want to manage the tenant myself"
                     />
-                  </Box>
+                    <Flex align="center" gap="1" pos="relative">
+                      <NewCheckbox
+                        checked={!sellMyself}
+                        onChange={() => setSellMyself(false)}
+                        label="Help me manage my tenant"
+                      />
+                      <Box as="span" cursor="pointer">
+                        <FaInfoCircle onMouseOver={opened} />
+                      </Box>
+                    </Flex>
+                  </VStack>
                 </>
               )}
               {formStep === 1 && (
@@ -735,6 +740,7 @@ const EditRentForm = ({
                       label="How Frequently do you want to collect rent?"
                       placeholder="Choose option: weekly, monthly, yearly"
                       name="rentCollectionTypeId"
+                      // defaultValue={item?.rent}
                       options={
                         <>
                           {propertyCollection.map((x: RentCollectionType) => {
@@ -746,13 +752,19 @@ const EditRentForm = ({
                     <PrimarySelect<PropertyModel>
                       register={register}
                       error={errors.bank}
+                      defaultValue={item?.createdByUser?.bank}
                       label="Your Bank"
                       placeholder="Choose your bank"
                       name="bank"
+                      disabled={item?.createdByUser?.bank !== null}
                       options={
                         <>
-                          {getBanks.map((x: any) => {
-                            return <option value={x.name}>{x.name}</option>;
+                          {getBanks?.map((x: any, i: any) => {
+                            return (
+                              <option value={x.name} key={i}>
+                                {x.name}
+                              </option>
+                            );
                           })}
                         </>
                       }
@@ -761,9 +773,12 @@ const EditRentForm = ({
                       label="Your Account Number"
                       name="accountNumber"
                       placeholder="Enter your bank account number"
-                      defaultValue=""
+                      defaultValue={
+                        item?.createdByUser?.accountNumber as string
+                      }
                       register={register}
                       error={errors.accountNumber}
+                      disableLabel={item?.createdByUser?.accountNumber !== null}
                     />
                   </Box>
                 </>

@@ -11,6 +11,8 @@ import {
   AspectRatio,
   Center,
   useDisclosure,
+  useToast,
+  VStack,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -18,9 +20,10 @@ import {
   PropertyModel,
   PropertyTitle,
   PropertyType,
+  PropertyView,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -42,11 +45,13 @@ import Geocode from 'react-geocode';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+import NewCheckbox from 'lib/Utils/CheckBox/NewCheckbox';
+import { UserContext } from 'lib/Utils/MainContext';
 
 interface Props {
   propertyTitles: PropertyTitle[];
   propertyTypes: PropertyType[];
-  item: PropertyModel;
+  item: PropertyView;
   formStep: number;
   setFormStep: any;
   onClose: () => void;
@@ -64,24 +69,23 @@ const EditPropertyForm = ({
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
-  const [draftLoading, setDraftLoading] = useState<boolean>(false);
-  const [liveLoading, setLiveLoading] = useState<boolean>(false);
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
+  // console.log({ getBanks });
 
   const schema = yup.object().shape({
-    address: yup.string().required(),
-    description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    sellMyself: yup.string().required(),
-    name: yup.string().required(),
-    price: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number(),
-    }),
+    // address: yup.string().required(),
+    // description: yup.string().required(),
+    // title: yup.string().required(),
+    // area: yup.string().required(),
+    // lga: yup.string().required(),
+    // state: yup.string().required(),
+    // propertyTypeId: yup.number().required(),
+    // sellMyself: yup.string().required(),
+    // name: yup.string().required(),
+    // price: yup.number().when('name', {
+    //   is: () => formStep === 1,
+    //   then: yup.number(),
+    // }),
   });
 
   const {
@@ -92,7 +96,7 @@ const EditPropertyForm = ({
     reset,
     getValues,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -100,20 +104,20 @@ const EditPropertyForm = ({
       id: item.id,
       isActive: item.isActive,
       isForRent: item.isForRent,
-      name: item.name,
+      name: item.name as string,
       propertyTypeId: item.propertyTypeId,
-      title: item.title,
+      title: item?.title as string,
       state: item.state,
       lga: item.lga,
       area: item.area,
-      address: item.address,
-      description: item.description,
+      address: item?.address as string,
+      description: item?.description as string,
       sellMyself: item.sellMyself,
       price: item.price,
       numberOfBathrooms: item.numberOfBathrooms,
       numberOfBedrooms: item.numberOfBedrooms,
-      accountNumber: item.accountNumber,
-      bank: item.bank,
+      accountNumber: item?.createdByUser?.accountNumber,
+      bank: item.createdByUser?.bank,
     },
   });
 
@@ -131,9 +135,6 @@ const EditPropertyForm = ({
     setFormStep(0);
     onClose();
   };
-
-  watch('sellMyself');
-  const pmSales = getValues('sellMyself');
 
   const RenderButton = () => {
     if (formStep === 0) {
@@ -157,28 +158,24 @@ const EditPropertyForm = ({
           <HStack spacing={3}>
             <Button
               w="50%"
-              type="submit"
               variant="outline"
               onClick={() => {
-                setValue('isDraft', true);
+                saveToDraft(true);
               }}
-              isLoading={draftLoading}
+              isLoading={draftLoading && isSubmitting}
             >
               {item.isDraft ? 'Update Draft' : 'Move to Draft'}
             </Button>
-            <Box
+            <Button
               w="50%"
+              variant="outline"
               onClick={() => {
-                setValue('isDraft', false);
-                setValue('isForSale', true);
+                saveToDraft(false);
               }}
+              isLoading={!draftLoading && isSubmitting}
             >
-              <ButtonComponent
-                content={!item.isDraft ? 'Update Listing' : 'Publish Listing'}
-                isValid={isValid}
-                loading={liveLoading}
-              />
-            </Box>
+              {item.isDraft ? 'Publish' : 'Update'}
+            </Button>
           </HStack>
           <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
             Cancel
@@ -252,7 +249,12 @@ const EditPropertyForm = ({
         appearance: 'error',
         autoDismiss: true,
       });
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
@@ -271,48 +273,87 @@ const EditPropertyForm = ({
       return values;
     }
   };
-
-  const onSubmit = async (data: PropertyModel) => {
-    getLongAndLat(data);
-    data.sellMyself = data.sellMyself as boolean;
-
-    data.mediaFiles = uploadedMedia;
-    try {
-      if (data.isDraft) {
-        setDraftLoading(true);
-      } else {
-        setLiveLoading(true);
+  const [sellMyself, setSellMyself] = useState(item.sellMyself);
+  const { user } = useContext(UserContext);
+  const [draftLoading, setDraftLoading] = useState(false);
+  const toast = useToast();
+  const saveToDraft = (draft: boolean) => {
+    draft ? setDraftLoading(true) : setDraftLoading(false);
+    const onSubmit = async (data: PropertyModel) => {
+      await getLongAndLat(data);
+      {
+        draft ? (data.isDraft = true) : (data.isDraft = false);
       }
-      const result = await (await PropertyCreate(undefined, data)).data;
 
-      if (result.status) {
-        setLiveLoading(false);
-        setDraftLoading(false);
-        addToast('Property successfully Updated', {
-          appearance: 'success',
-          autoDismiss: true,
+      data.sellMyself = sellMyself;
+      data.mediaFiles = item.mediaFiles?.concat(uploadedMedia);
+      data.bank = user?.bank || data.bank;
+      data.accountNumber = user?.accountNumber || data.accountNumber;
+      if (
+        data.numberOfBathrooms == undefined ||
+        data.numberOfBathrooms == 0 ||
+        data.numberOfBedrooms == undefined ||
+        data.numberOfBedrooms == 0
+      ) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Number of bedrooms or bathrooms can not be 0',
         });
-        onClose();
-        setFormStep(0);
-        router.reload();
         return;
       }
-      setLiveLoading(false);
-      setDraftLoading(false);
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      setFormStep(0);
-      onClose();
-      return;
-    } catch (err) {}
+      if ((data.mediaFiles as unknown as []).length == 0) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Please upload an image or video of your property',
+        });
+        return;
+      }
+
+      try {
+        const result = await (await PropertyCreate(undefined, data)).data;
+
+        if (result.status) {
+          draft
+            ? addToast('Property Saved to Draft', {
+                appearance: 'success',
+                autoDismiss: true,
+              })
+            : addToast(
+                'Your property has been submitted for review. We will notify you when it goes live.',
+                {
+                  appearance: 'success',
+                  autoDismiss: true,
+                }
+              );
+          onClose();
+          setFormStep(0);
+          router.reload();
+          return;
+        }
+        addToast(result.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        setFormStep(0);
+        onClose();
+        return;
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    };
+    handleSubmit(onSubmit)();
   };
+
   return (
     <>
       <Box>
         <Stack>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <form style={{ width: '100%' }}>
             <>
               {formStep === 0 && (
                 <>
@@ -384,46 +425,41 @@ const EditPropertyForm = ({
                     defaultValue=""
                     error={errors.description}
                   />
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
-                      defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to sell myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me sell'}
-                              value={'false'}
-                            />
-                            <Tooltip placement="top">
-                              <Box as="span" cursor="pointer">
-                                <FaInfoCircle onMouseOver={opened} />
-                              </Box>
-                            </Tooltip>
-                          </Flex>
-                        </>
-                      }
+                  <VStack my="1.3em" align="flex-start">
+                    <NewCheckbox
+                      checked={sellMyself}
+                      onChange={() => setSellMyself(true)}
+                      label="I want to sell myself"
                     />
-                  </Box>
-                  {pmSales == ('false' as unknown as boolean) && (
+                    <Flex align="center" gap="1" pos="relative">
+                      <NewCheckbox
+                        checked={!sellMyself}
+                        onChange={() => setSellMyself(false)}
+                        label="Help me sell"
+                      />
+                      <Box as="span" cursor="pointer">
+                        <FaInfoCircle onMouseOver={opened} />
+                      </Box>
+                    </Flex>
+                  </VStack>
+                  {!sellMyself && (
                     <Box mb="1.3rem">
                       <PrimarySelect<PropertyModel>
                         register={register}
                         error={errors.bank}
+                        defaultValue={item?.createdByUser?.bank}
                         label="Your Bank"
                         placeholder="Choose your bank"
                         name="bank"
+                        disabled={item?.createdByUser?.bank !== null}
                         options={
                           <>
-                            {getBanks.map((x: any) => {
-                              return <option value={x.name}>{x.name}</option>;
+                            {getBanks?.map((x: any, i: any) => {
+                              return (
+                                <option value={x.name} key={i}>
+                                  {x.name}
+                                </option>
+                              );
                             })}
                           </>
                         }
@@ -432,9 +468,14 @@ const EditPropertyForm = ({
                         label="Your Account Number"
                         name="accountNumber"
                         placeholder="Enter your bank account number"
-                        defaultValue=""
+                        defaultValue={
+                          item?.createdByUser?.accountNumber as string
+                        }
                         register={register}
                         error={errors.accountNumber}
+                        disableLabel={
+                          item?.createdByUser?.accountNumber !== null
+                        }
                       />
                     </Box>
                   )}

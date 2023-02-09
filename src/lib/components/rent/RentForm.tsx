@@ -11,6 +11,7 @@ import {
   AspectRatio,
   Image,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -22,7 +23,7 @@ import {
   TenantType,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -44,6 +45,8 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import Cookies from 'js-cookie';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
+import NewCheckbox from 'lib/Utils/CheckBox/NewCheckbox';
+import { UserContext } from 'lib/Utils/MainContext';
 
 interface Props {
   propertyTitles: PropertyTitle[];
@@ -73,6 +76,7 @@ const RentForm = ({
     useOperationMethod('Propertycreate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
+  const { user } = useContext(UserContext);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -82,7 +86,6 @@ const RentForm = ({
     lga: yup.string().required(),
     state: yup.string().required(),
     propertyTypeId: yup.number().required(),
-    sellMyself: yup.string().required(),
     name: yup.string().required(),
     numberOfBathrooms: yup.number().required(),
     numberOfBedrooms: yup.number().required(),
@@ -115,6 +118,7 @@ const RentForm = ({
     control,
     watch,
     reset,
+    trigger,
     getValues,
     setValue,
     formState: { errors, isValid },
@@ -130,7 +134,8 @@ const RentForm = ({
   watch('numberOfBathrooms');
   watch('sellMyself');
 
-  const completeFormStep = () => {
+  const completeFormStep = async () => {
+    await trigger();
     if (isValid) {
       setFormStep((cur: number) => cur + 1);
       return;
@@ -144,21 +149,16 @@ const RentForm = ({
     setFormStep(0);
     onClose();
   };
+  const [sellMyself, setSellMyself] = useState(true);
   const RenderButton = () => {
     if (formStep === 0) {
       return (
         <>
           {
-            //@ts-ignore
-            getValues('sellMyself') === 'true' ? (
-              <ButtonComponent
-                content="Submit"
-                isValid={isValid}
-                loading={loading}
-              />
+            sellMyself ? (
+              <ButtonComponent content="Submit" loading={loading} />
             ) : (
               <Button
-                type={isValid == false ? 'submit' : 'button'}
                 w="100%"
                 h="100%"
                 variant="solid"
@@ -259,6 +259,8 @@ const RentForm = ({
     await getLongAndLat(data);
     data.sellMyself = data.sellMyself as boolean;
     data.mediaFiles = uploadedMedia;
+    data.bank = user?.bank || data.bank;
+    data.accountNumber = user?.accountNumber || data.accountNumber;
     try {
       const result = await (await PropertyUser(undefined, data)).data;
 
@@ -283,7 +285,12 @@ const RentForm = ({
       setFormStep(0);
       onClose();
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   const userIn = Cookies.get('userIn');
   useEffect(() => {
@@ -520,32 +527,23 @@ const RentForm = ({
                       getValues={getValues}
                       label="Number of Bathrooms"
                     />
-                    <Box my="1.3em">
-                      <RadioButton<PropertyModel>
-                        name="sellMyself"
-                        register={register}
-                        defaultValue=""
-                        error={errors.sellMyself}
-                        control={control}
-                        radios={
-                          <>
-                            <RadioInput
-                              label={'I want to manage the tenant myself'}
-                              value={'true'}
-                            />
-                            <Flex align="center" gap="1" pos="relative">
-                              <RadioInput
-                                label={'Help me manage my tenant'}
-                                value={'false'}
-                              />
-                              <Tooltip aria-label="A tooltip">
-                                <FaInfoCircle onMouseOver={opened} />
-                              </Tooltip>
-                            </Flex>
-                          </>
-                        }
+                    <VStack my="1.3em" align="flex-start">
+                      <NewCheckbox
+                        checked={sellMyself}
+                        onChange={() => setSellMyself(true)}
+                        label="I want to manage the tenant myself"
                       />
-                    </Box>
+                      <Flex align="center" gap="1" pos="relative">
+                        <NewCheckbox
+                          checked={!sellMyself}
+                          onChange={() => setSellMyself(false)}
+                          label="Help me manage my tenant"
+                        />
+                        <Box as="span" cursor="pointer">
+                          <FaInfoCircle onMouseOver={opened} />
+                        </Box>
+                      </Flex>
+                    </VStack>
                   </>
                 )}
                 {formStep === 1 && (
@@ -605,22 +603,28 @@ const RentForm = ({
                         label="Your Bank"
                         placeholder="Choose your bank"
                         name="bank"
+                        defaultValue={user?.bank}
+                        disabled={user?.bank !== null}
                         options={
                           <>
-                            {getBanks.map((x: any) => {
-                              return <option value={x.name}>{x.name}</option>;
+                            {getBanks?.map((x: any, i: any) => {
+                              return (
+                                <option value={x.name} key={i}>
+                                  {x.name}
+                                </option>
+                              );
                             })}
                           </>
                         }
                       />
-
                       <PrimaryInput<PropertyModel>
                         label="Your Account Number"
                         name="accountNumber"
                         placeholder="Enter your bank account number"
-                        defaultValue=""
+                        defaultValue={user?.accountNumber}
                         register={register}
                         error={errors.accountNumber}
+                        disableLabel={user?.accountNumber !== null}
                       />
                     </Box>
                   </>

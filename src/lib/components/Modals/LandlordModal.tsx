@@ -47,7 +47,12 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
           )
         ).data;
         setComplains(datas.value);
-      } catch (err) {}
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     };
     getComplaints();
   }, []);

@@ -37,7 +37,12 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
         ).data;
 
         setApplicationStatus(result);
-      } catch (err) {}
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     };
 
     fetchData();

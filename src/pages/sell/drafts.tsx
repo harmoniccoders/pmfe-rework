@@ -11,10 +11,11 @@ const drafts = ({
   propertyTitles,
   propertyTypes,
   listings,
+  getBanks,
 }: {
   propertyTypes: PropertyType[];
   propertyTitles: PropertyTitle[];
-
+  getBanks: any;
   listings: any;
 }) => {
   const result = listings.value;
@@ -45,6 +46,7 @@ const drafts = ({
                         propertyTitles={propertyTitles}
                         propertyTenants={[]}
                         propertyCollection={[]}
+                        getBanks={getBanks}
                       />
                     </GridItem>
                   </>
@@ -85,12 +87,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     const listings = (await _dataAccess.get(`/api/Property/user/drafts?${url}`))
       .data;
+    const getBanks = await (
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
 
     return {
       props: {
         propertyTypes,
         propertyTitles,
-
+        getBanks,
         listings,
       },
     };

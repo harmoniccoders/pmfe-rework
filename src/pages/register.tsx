@@ -68,7 +68,12 @@ const signupform = () => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   return (
     <Box width="90%" mx="auto" mt={['1.875rem', '2.3rem']}>

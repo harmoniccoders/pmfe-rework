@@ -26,6 +26,7 @@ const sell = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const data = listings.value;
+  console.log({ data });
 
   const result = data?.filter((property: PropertyView) => !property.isDraft);
 
@@ -57,8 +58,9 @@ const sell = ({
               {result.map((item: PropertyView) => {
                 return (
                   <>
-                    <GridItem key={item.id}>
+                    <GridItem>
                       <ListingsCard
+                        key={item.id}
                         item={item}
                         propertyTypes={propertyTypes}
                         propertyTitles={propertyTitles}

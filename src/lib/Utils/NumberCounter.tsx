@@ -80,7 +80,7 @@ function NumberCounter({
           </NumberIncrementStepper>
         </Flex>
       </NumberInput>
-      <Text fontSize=".7rem" color="red">
+      <Text fontSize=".7rem" color="red" textAlign="center">
         {getValues(valueName) <= 0 || undefined ? `${label} is required` : ''}
       </Text>
     </Box>

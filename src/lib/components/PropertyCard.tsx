@@ -62,7 +62,12 @@ const PropertyCard = ({ item, matchId }: Props) => {
 
     try {
       const result = await (await addViews(params)).data;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   const router = useRouter();
@@ -83,7 +88,12 @@ const PropertyCard = ({ item, matchId }: Props) => {
 
     try {
       const result = await (await addEnquiry(params)).data;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   const isRequest = router.pathname.startsWith('/requests/');
@@ -108,7 +118,12 @@ const PropertyCard = ({ item, matchId }: Props) => {
           ? router.push(`/rent/enquire/${item.id}`)
           : router.push(`/buy/enquire/${item.id}`);
       }
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   const { addToast } = useToasts();
 
@@ -149,7 +164,12 @@ const PropertyCard = ({ item, matchId }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   return (

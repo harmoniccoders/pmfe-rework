@@ -84,7 +84,12 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
         appearance: 'error',
         autoDismiss: true,
       });
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   const [cat, setCat] = useState();

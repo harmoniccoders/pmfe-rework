@@ -20,6 +20,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   fontSize?: string;
   options: any;
   defaultValue?: any;
+  disabled?: boolean;
 }
 export const PrimarySelect = <TFormValues extends Record<string, any>>({
   name,
@@ -32,6 +33,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
   fontSize = '1rem',
   options,
   defaultValue,
+  disabled,
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl isInvalid={error?.type === 'required'}>
@@ -58,6 +60,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         textTransform="capitalize"
         placeholder={placeholder}
         defaultValue={defaultValue}
+        disabled={disabled}
         // isReadOnly
         icon={<Icons iconClass="fa-angle-right" />}
       >

@@ -15,7 +15,7 @@ const ButtonComponent = ({ content, isValid, loading }: Props) => {
       my="25px"
       variant="solid"
       textTransform="capitalize"
-      disabled={isValid ? false : true}
+      // disabled={isValid ? false : true}
       isLoading={loading}
     >
       {content}

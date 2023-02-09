@@ -28,8 +28,7 @@ const myRents = ({
       propertyTypes={propertyTypes}
       propertyTitles={propertyTitles}
       propertyTenants={propertyTenants}
-      propertyCollection={propertyCollection}
-    
+      propertyCollection={propertyCollection} 
       getBanks={getBanks}
     />
   );

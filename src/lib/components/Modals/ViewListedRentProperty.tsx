@@ -59,7 +59,12 @@ const ViewListedRentProperty = ({
         ).data;
 
         setApplications(result.value?.length);
-      } catch (err) {}
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     };
 
     fetchData();

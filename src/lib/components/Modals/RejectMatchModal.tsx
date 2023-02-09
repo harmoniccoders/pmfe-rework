@@ -53,7 +53,12 @@ const RejectMatchModal = ({ isOpen, onClose, item }: Props) => {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   return (
     <Modal

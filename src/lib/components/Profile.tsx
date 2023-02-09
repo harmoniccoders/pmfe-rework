@@ -91,7 +91,12 @@ function Profile() {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   const bearer = `Bearer ${Cookies.get('token')}`;

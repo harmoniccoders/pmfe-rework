@@ -12,6 +12,7 @@ import {
   AspectRatio,
   useDisclosure,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -19,9 +20,10 @@ import {
   PropertyModel,
   PropertyTitle,
   PropertyType,
+  UserView,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -44,6 +46,8 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import HelpMeSellModal from '../Modals/HelpMeSellModal';
 import { PrimaryCheckbox } from 'lib/Utils/CheckBox/PrimaryCheckbox';
+import NewCheckbox from 'lib/Utils/CheckBox/NewCheckbox';
+import { UserContext } from 'lib/Utils/MainContext';
 // const ngBanks = require('ng-banks');
 
 interface Props {
@@ -65,9 +69,8 @@ const Form = ({
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertycreate');
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
-  const [draftLoading, setDraftLoading] = useState<boolean>(false);
-  const [liveLoading, setLiveLoading] = useState<boolean>(false);
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
+  const { user } = useContext(UserContext);
 
   const schema = yup.object().shape({
     address: yup.string().required(),
@@ -77,7 +80,6 @@ const Form = ({
     lga: yup.string().required(),
     state: yup.string().required(),
     propertyTypeId: yup.string().required(),
-    sellMyself: yup.string().required(),
     name: yup.string().required(),
     price: yup.number().when('name', {
       is: () => formStep === 1,
@@ -89,12 +91,13 @@ const Form = ({
   const {
     register,
     handleSubmit,
+    trigger,
     control,
     watch,
     reset,
     getValues,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -106,7 +109,8 @@ const Form = ({
   watch('numberOfBathrooms');
   watch('numberOfBedrooms');
 
-  const completeFormStep = () => {
+  const completeFormStep = async () => {
+    await trigger();
     if (isValid) {
       setFormStep((cur: number) => cur + 1);
       return;
@@ -121,15 +125,10 @@ const Form = ({
     onClose();
   };
 
-  watch('sellMyself');
-  const pmSales = getValues('sellMyself');
-  console.log({ pmSales });
-
   const RenderButton = () => {
     if (formStep === 0) {
       return (
         <Button
-          type={isValid == false ? 'submit' : 'button'}
           w="100%"
           h="100%"
           variant="solid"
@@ -146,27 +145,24 @@ const Form = ({
           <HStack spacing={3}>
             <Button
               w="50%"
-              type="submit"
               variant="outline"
               onClick={() => {
-                setValue('isDraft', true);
+                saveToDraft(true);
               }}
-              isLoading={draftLoading}
+              isLoading={draftLoading && isSubmitting}
             >
               Save as Draft
             </Button>
-            <Box
+            <Button
               w="50%"
+              variant="outline"
               onClick={() => {
-                setValue('isDraft', false);
+                saveToDraft(false);
               }}
+              isLoading={!draftLoading && isSubmitting}
             >
-              <ButtonComponent
-                content="Submit"
-                isValid={true}
-                loading={liveLoading}
-              />
-            </Box>
+              Publish
+            </Button>
           </HStack>
           <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
             Cancel
@@ -235,72 +231,85 @@ const Form = ({
     }
   };
 
+  const [sellMyself, setSellMyself] = useState(true);
+  const [draftLoading, setDraftLoading] = useState(false);
   const toast = useToast();
-  const onSubmit = async (data: PropertyModel) => {
-    await getLongAndLat(data);
-    data.sellMyself = data.sellMyself as boolean;
-    data.mediaFiles = uploadedMedia;
-    if (
-      data.numberOfBathrooms == undefined ||
-      data.numberOfBathrooms == 0 ||
-      data.numberOfBedrooms == undefined ||
-      data.numberOfBedrooms == 0
-    ) {
-      toast({
-        position: 'top-right',
-        status: 'warning',
-        description: 'Number of bedrooms or bathrooms can not be 0',
-      });
-      return;
-    }
-    if (data.mediaFiles.length == 0) {
-      toast({
-        position: 'top-right',
-        status: 'warning',
-        description: 'Please upload an image or video of your property',
-      });
-      return;
-    }
+  const saveToDraft = (draft: boolean) => {
+    draft ? setDraftLoading(true) : setDraftLoading(false);
+    const onSubmit = async (data: PropertyModel) => {
+      await getLongAndLat(data);
+      draft ? (data.isDraft = true) : (data.isDraft = false);
 
-    try {
-      if (data.isDraft) {
-        setDraftLoading(true);
-      } else {
-        setLiveLoading(true);
-      }
-      const result = await (await PropertyCreate(undefined, data)).data;
-
-      if (result.status) {
-        setLiveLoading(false);
-        setDraftLoading(false);
-        addToast(
-          'Your property has been submitted for review. We will notify you when it goes live.',
-          {
-            appearance: 'success',
-            autoDismiss: true,
-          }
-        );
-        onClose();
-        setFormStep(0);
-        router.reload();
+      data.sellMyself = sellMyself;
+      data.mediaFiles = uploadedMedia;
+      data.bank = user?.bank || data.bank;
+      data.accountNumber = user?.accountNumber || data.accountNumber;
+      if (
+        data.numberOfBathrooms == undefined ||
+        data.numberOfBathrooms == 0 ||
+        data.numberOfBedrooms == undefined ||
+        data.numberOfBedrooms == 0
+      ) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Number of bedrooms or bathrooms can not be 0',
+        });
         return;
       }
-      setLiveLoading(false);
-      setDraftLoading(false);
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      setFormStep(0);
-      onClose();
-      return;
-    } catch (err) {}
+
+      if (data.mediaFiles.length == 0) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Please upload an image or video of your property',
+        });
+        return;
+      }
+      console.log({ data });
+
+      try {
+        const result = await (await PropertyCreate(undefined, data)).data;
+
+        if (result.status) {
+          draft
+            ? addToast('Property Saved to Draft', {
+                appearance: 'success',
+                autoDismiss: true,
+              })
+            : addToast(
+                'Your property has been submitted for review. We will notify you when it goes live.',
+                {
+                  appearance: 'success',
+                  autoDismiss: true,
+                }
+              );
+          onClose();
+          setFormStep(0);
+          router.reload();
+          return;
+        }
+        addToast(result.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        setFormStep(0);
+        onClose();
+        return;
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    };
+    handleSubmit(onSubmit)();
   };
   return (
     <>
       <Box>
         <Stack>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <form style={{ width: '100%' }}>
             <>
               {formStep === 0 && (
                 <>
@@ -372,41 +381,25 @@ const Form = ({
                     defaultValue=""
                     error={errors.description}
                   />
-                  {/* <PrimaryCheckbox<PropertyModel>
-                    name="sellMyself"
-                    control={control}
-                    label="Yes"
-                    error={errors.sellMyself}
-                    register={register}
-                  /> */}
-                  <Box my="1.3em">
-                    <RadioButton<PropertyModel>
-                      name="sellMyself"
-                      register={register}
-                      defaultValue=""
-                      error={errors.sellMyself}
-                      control={control}
-                      radios={
-                        <>
-                          <RadioInput
-                            label={'I want to sell myself'}
-                            value={'true'}
-                          />
-                          <Flex align="center" gap="1" pos="relative">
-                            <RadioInput
-                              label={'Help me sell'}
-                              value={'false'}
-                            />
 
-                            <Box as="span" cursor="pointer">
-                              <FaInfoCircle onMouseOver={opened} />
-                            </Box>
-                          </Flex>
-                        </>
-                      }
+                  <VStack my="1.3em" align="flex-start">
+                    <NewCheckbox
+                      checked={sellMyself}
+                      onChange={() => setSellMyself(true)}
+                      label="I want to sell myself"
                     />
-                  </Box>
-                  {pmSales == ('false' as unknown as boolean) && (
+                    <Flex align="center" gap="1" pos="relative">
+                      <NewCheckbox
+                        checked={!sellMyself}
+                        onChange={() => setSellMyself(false)}
+                        label="Help me sell"
+                      />
+                      <Box as="span" cursor="pointer">
+                        <FaInfoCircle onMouseOver={opened} />
+                      </Box>
+                    </Flex>
+                  </VStack>
+                  {!sellMyself && (
                     <Box mb="1.3rem">
                       <PrimarySelect<PropertyModel>
                         register={register}
@@ -414,10 +407,16 @@ const Form = ({
                         label="Your Bank"
                         placeholder="Choose your bank"
                         name="bank"
+                        defaultValue={user?.bank}
+                        disabled={user?.bank !== null}
                         options={
                           <>
-                            {getBanks.map((x: any) => {
-                              return <option value={x.name}>{x.name}</option>;
+                            {getBanks?.map((x: any, i: any) => {
+                              return (
+                                <option value={x.name} key={i}>
+                                  {x.name}
+                                </option>
+                              );
                             })}
                           </>
                         }
@@ -426,9 +425,10 @@ const Form = ({
                         label="Your Account Number"
                         name="accountNumber"
                         placeholder="Enter your bank account number"
-                        defaultValue=""
+                        defaultValue={user?.accountNumber}
                         register={register}
                         error={errors.accountNumber}
+                        disableLabel={user?.accountNumber !== null}
                       />
                     </Box>
                   )}

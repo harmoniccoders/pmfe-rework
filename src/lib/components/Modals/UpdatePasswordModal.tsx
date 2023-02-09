@@ -84,7 +84,12 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
         autoDismiss: true,
       });
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
   return (
     <Modals

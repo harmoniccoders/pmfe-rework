@@ -21,12 +21,13 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import NumberCounter from 'lib/Utils/NumberCounter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { buildingState } from 'lib/Utils/BuildingStates';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 import PrimaryState from 'lib/Utils/PrimaryState';
 import Modals from 'lib/Utils/Modals';
+import { useNonInitialEffect } from '../Generics/useNonInitialEffect';
 
 const schema = yup.object().shape({
   buildingType: yup.string().required(),
@@ -55,7 +56,7 @@ const BookCleaningModal = ({
     setValue,
     getValues,
     reset,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<CleaningModel>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -94,7 +95,6 @@ const BookCleaningModal = ({
           appearance: 'success',
           autoDismiss: true,
         });
-        closeModal();
         router.push('/clean');
         return;
       }
@@ -102,10 +102,18 @@ const BookCleaningModal = ({
         appearance: 'error',
         autoDismiss: true,
       });
-      closeModal();
+      clearFieldsOnClose();
       return;
-    } catch (err) {}
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
+  useNonInitialEffect(() => {
+    clearFieldsOnClose();
+  }, [isSubmitSuccessful]);
   return (
     <Modals
       isOpen={isOpen}
@@ -212,11 +220,7 @@ const BookCleaningModal = ({
               label="Number of Floors"
               fontSize="sm"
             />
-            <ButtonComponent
-              content="Get Quote"
-              isValid={isValid}
-              loading={loading}
-            />
+            <ButtonComponent content="Get Quote" loading={loading} />
           </form>
           <Button
             variant="outline"
