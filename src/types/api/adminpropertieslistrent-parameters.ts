@@ -6,4 +6,5 @@ export interface AdminpropertieslistrentParameters {
   Offset?: null | number;
   Limit?: null | number;
   search?: null | string;
+  filter?: null | string;
 }

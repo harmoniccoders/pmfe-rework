@@ -5,4 +5,5 @@
 export interface UserlistParameters {
   Offset?: null | number;
   Limit?: null | number;
+  search?: null | string;
 }

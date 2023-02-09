@@ -21,6 +21,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   options: any;
   defaultValue?: any;
   disabled?: boolean;
+  borderColor?: string;
 }
 export const PrimarySelect = <TFormValues extends Record<string, any>>({
   name,
@@ -34,6 +35,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
   options,
   defaultValue,
   disabled,
+  borderColor = 'grey',
 }: FormInputProps<TFormValues>) => {
   return (
     <FormControl isInvalid={error?.type === 'required'}>
@@ -53,8 +55,9 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
       <Select
         {...register(name, { required, ...validate })}
         w="full"
-        border="1px solid grey"
+        border="1px solid"
         borderRadius="0"
+        borderColor={borderColor}
         height="3rem"
         fontSize=".9rem"
         textTransform="capitalize"

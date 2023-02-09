@@ -3,6 +3,7 @@ import {
   Circle,
   Flex,
   FormLabel,
+  HStack,
   Image,
   Input,
   Stack,
@@ -25,6 +26,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { DataAccess } from 'lib/Utils/Api';
 import { UserContext } from 'lib/Utils/MainContext';
+import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
@@ -32,7 +34,7 @@ const schema = yup.object().shape({
   profilePicture: yup.string(),
 });
 
-function Profile() {
+function Profile({ getBanks }: { getBanks: any }) {
   const { user, setUser } = useContext(UserContext);
 
   // console.log({ user });
@@ -47,6 +49,11 @@ function Profile() {
   } = useForm<UpdateUserModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      bank: user?.bank,
+      accountNumber: user?.accountNumber,
+      phoneNumber: user?.phoneNumber,
+    },
   });
 
   const { addToast } = useToasts();
@@ -55,24 +62,16 @@ function Profile() {
   const widgetApi = useRef();
 
   const onSubmit = async (data: UpdateUserModel) => {
-    // if (!data.profilePicture) {
-    //   let media: MediaModel = {
-    //     url: url,
-    //     isImage: true,
-    //     name: '',
-    //     extention: '',
-    //     base64String: '',
-    //     isVideo: false,
-    //     isDocument: false,
-    //   };
-    //   data.profilePicture = media;
-    // }
-
-    // data.profilePicture.url = url as string;
-
     data.id = user.id as number;
-
-    console.log({ data });
+    data.profilePicture = {
+      url: user.profilePicture,
+      isImage: true,
+      name: '',
+      extention: '',
+      base64String: '',
+      isVideo: false,
+      isDocument: false,
+    };
 
     try {
       const result = await (await updateUser(undefined, data)).data;
@@ -116,6 +115,9 @@ function Profile() {
         isVideo: false,
         isDocument: false,
       },
+      bank: user.bank,
+      accountNumber: user.accountNumber,
+      phoneNumber: user.phoneNumber,
     };
 
     try {
@@ -144,6 +146,7 @@ function Profile() {
       console.log({ result });
     } catch (error) {}
   };
+  console.log({ user });
 
   return (
     <Stack
@@ -265,35 +268,45 @@ function Profile() {
                 borderColor="#99b3ff"
               />
             </Box>
-            <Box w="full">
-              <FormLabel
-                textTransform="capitalize"
-                pos="relative"
-                top={5}
-                left={4}
-                width="fit-content"
-                zIndex={3}
-                bg="brand.200"
+            <HStack>
+              {user?.bank !== undefined && (
+                <PrimarySelect<UpdateUserModel>
+                  register={register}
+                  error={errors.bank}
+                  label="Your Bank"
+                  placeholder="Choose your bank"
+                  name="bank"
+                  defaultValue={user?.bank}
+                  borderColor="#99b3ff"
+                  options={
+                    <>
+                      {getBanks?.map((x: any, i: any) => {
+                        return (
+                          <option value={x.name} key={i}>
+                            {x.name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  }
+                />
+              )}
+
+              <PrimaryInput<UpdateUserModel>
+                label="Bank Name"
                 fontSize=".8rem"
-                px=".2rem"
-              >
-                Occupation
-              </FormLabel>
-              <Input
-                placeholder=""
-                variant="outline"
-                defaultValue={
-                  user?.occupation ? user.occupation : 'No data available'
-                }
-                disabled={true}
-                borderColor="brand.100"
+                name="accountNumber"
+                placeholder="Enter your bank account number"
+                error={errors.accountNumber}
+                defaultValue={user?.accountNumber}
+                register={register}
                 border="2px solid"
+                borderColor="#99b3ff"
               />
-            </Box>
+            </HStack>
             <Box w="full">
               <ButtonComponent
                 content="Update User Information"
-                isValid={isValid}
                 loading={loading}
               />
             </Box>

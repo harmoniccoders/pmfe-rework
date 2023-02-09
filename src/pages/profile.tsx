@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import Profile from 'lib/components/Profile';
 import { DataAccess } from 'lib/Utils/Api';
@@ -14,30 +15,29 @@ function profile({ data }: any) {
       return;
     }
   });
-  return <Profile />;
+  return <Profile getBanks={data} />;
 }
 
 export default profile;
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const bearer = `Bearer ${ctx.req.cookies.token}`;
-//   const _dataAccess = new DataAccess(bearer);
-//   let { url } = ctx.query;
-//   url = 'limit=25&offset=14';
-//   try {
-//     const data = (await _dataAccess.get(`/api/user/list?${url}`)).data;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    const data = await (
+      await axios.get(
+        'https://raw.githubusercontent.com/tomiiide/nigerian-banks/master/banks.json'
+      )
+    ).data;
 
-//     return {
-//       props: {
-//         data,
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       props: {
-//         propertyTypes: {},
-//         listings: [],
-//       },
-//     };
-//   }
-// };
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        data: [],
+      },
+    };
+  }
+};

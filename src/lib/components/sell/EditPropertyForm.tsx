@@ -443,6 +443,14 @@ const EditPropertyForm = ({
                     </Flex>
                   </VStack>
                   {!sellMyself && (
+                     <Tooltip
+                     label={
+                       user?.accountNumber !== null
+                         ? 'Account information can only be changed on your profile page'
+                         : ''
+                     }
+                     hasArrow
+                   >
                     <Box mb="1.3rem">
                       <PrimarySelect<PropertyModel>
                         register={register}
@@ -478,6 +486,7 @@ const EditPropertyForm = ({
                         }
                       />
                     </Box>
+                    </Tooltip>
                   )}
                 </>
               )}

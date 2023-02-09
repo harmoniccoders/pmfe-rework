@@ -749,37 +749,50 @@ const EditRentForm = ({
                         </>
                       }
                     />
-                    <PrimarySelect<PropertyModel>
-                      register={register}
-                      error={errors.bank}
-                      defaultValue={item?.createdByUser?.bank}
-                      label="Your Bank"
-                      placeholder="Choose your bank"
-                      name="bank"
-                      disabled={item?.createdByUser?.bank !== null}
-                      options={
-                        <>
-                          {getBanks?.map((x: any, i: any) => {
-                            return (
-                              <option value={x.name} key={i}>
-                                {x.name}
-                              </option>
-                            );
-                          })}
-                        </>
+                    <Tooltip
+                      label={
+                        user?.accountNumber !== null
+                          ? 'Account information can only be changed on your profile page'
+                          : ''
                       }
-                    />
-                    <PrimaryInput<PropertyModel>
-                      label="Your Account Number"
-                      name="accountNumber"
-                      placeholder="Enter your bank account number"
-                      defaultValue={
-                        item?.createdByUser?.accountNumber as string
-                      }
-                      register={register}
-                      error={errors.accountNumber}
-                      disableLabel={item?.createdByUser?.accountNumber !== null}
-                    />
+                      hasArrow
+                    >
+                      <Box>
+                        <PrimarySelect<PropertyModel>
+                          register={register}
+                          error={errors.bank}
+                          defaultValue={item?.createdByUser?.bank}
+                          label="Your Bank"
+                          placeholder="Choose your bank"
+                          name="bank"
+                          disabled={item?.createdByUser?.bank !== null}
+                          options={
+                            <>
+                              {getBanks?.map((x: any, i: any) => {
+                                return (
+                                  <option value={x.name} key={i}>
+                                    {x.name}
+                                  </option>
+                                );
+                              })}
+                            </>
+                          }
+                        />
+                        <PrimaryInput<PropertyModel>
+                          label="Your Account Number"
+                          name="accountNumber"
+                          placeholder="Enter your bank account number"
+                          defaultValue={
+                            item?.createdByUser?.accountNumber as string
+                          }
+                          register={register}
+                          error={errors.accountNumber}
+                          disableLabel={
+                            item?.createdByUser?.accountNumber !== null
+                          }
+                        />
+                      </Box>
+                    </Tooltip>
                   </Box>
                 </>
               )}

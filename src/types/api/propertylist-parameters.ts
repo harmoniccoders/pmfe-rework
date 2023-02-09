@@ -6,4 +6,5 @@ export interface PropertylistParameters {
   Offset?: null | number;
   Limit?: null | number;
   search?: null | string;
+  filter?: null | string;
 }

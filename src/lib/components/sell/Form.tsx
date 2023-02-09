@@ -400,37 +400,46 @@ const Form = ({
                     </Flex>
                   </VStack>
                   {!sellMyself && (
-                    <Box mb="1.3rem">
-                      <PrimarySelect<PropertyModel>
-                        register={register}
-                        error={errors.bank}
-                        label="Your Bank"
-                        placeholder="Choose your bank"
-                        name="bank"
-                        defaultValue={user?.bank}
-                        disabled={user?.bank !== null}
-                        options={
-                          <>
-                            {getBanks?.map((x: any, i: any) => {
-                              return (
-                                <option value={x.name} key={i}>
-                                  {x.name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        }
-                      />
-                      <PrimaryInput<PropertyModel>
-                        label="Your Account Number"
-                        name="accountNumber"
-                        placeholder="Enter your bank account number"
-                        defaultValue={user?.accountNumber}
-                        register={register}
-                        error={errors.accountNumber}
-                        disableLabel={user?.accountNumber !== null}
-                      />
-                    </Box>
+                    <Tooltip
+                      label={
+                        user?.accountNumber !== null
+                          ? 'Account information can only be changed on your profile page'
+                          : ''
+                      }
+                      hasArrow
+                    >
+                      <Box mb="1.3rem">
+                        <PrimarySelect<PropertyModel>
+                          register={register}
+                          error={errors.bank}
+                          label="Your Bank"
+                          placeholder="Choose your bank"
+                          name="bank"
+                          defaultValue={user?.bank}
+                          disabled={user?.bank !== null}
+                          options={
+                            <>
+                              {getBanks?.map((x: any, i: any) => {
+                                return (
+                                  <option value={x.name} key={i}>
+                                    {x.name}
+                                  </option>
+                                );
+                              })}
+                            </>
+                          }
+                        />
+                        <PrimaryInput<PropertyModel>
+                          label="Your Account Number"
+                          name="accountNumber"
+                          placeholder="Enter your bank account number"
+                          defaultValue={user?.accountNumber}
+                          register={register}
+                          error={errors.accountNumber}
+                          disableLabel={user?.accountNumber !== null}
+                        />
+                      </Box>
+                    </Tooltip>
                   )}
                 </>
               )}

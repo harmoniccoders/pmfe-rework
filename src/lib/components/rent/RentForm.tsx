@@ -154,22 +154,20 @@ const RentForm = ({
     if (formStep === 0) {
       return (
         <>
-          {
-            sellMyself ? (
-              <ButtonComponent content="Submit" loading={loading} />
-            ) : (
-              <Button
-                w="100%"
-                h="100%"
-                variant="solid"
-                textTransform="capitalize"
-                onClick={completeFormStep}
-                // disabled={isValid ? false : true}
-              >
-                Next
-              </Button>
-            )
-          }
+          {sellMyself ? (
+            <ButtonComponent content="Submit" loading={loading} />
+          ) : (
+            <Button
+              w="100%"
+              h="100%"
+              variant="solid"
+              textTransform="capitalize"
+              onClick={completeFormStep}
+              // disabled={isValid ? false : true}
+            >
+              Next
+            </Button>
+          )}
         </>
       );
     } else if (formStep === 1) {
@@ -597,35 +595,47 @@ const RentForm = ({
                           </>
                         }
                       />
-                      <PrimarySelect<PropertyModel>
-                        register={register}
-                        error={errors.bank}
-                        label="Your Bank"
-                        placeholder="Choose your bank"
-                        name="bank"
-                        defaultValue={user?.bank}
-                        disabled={user?.bank !== null}
-                        options={
-                          <>
-                            {getBanks?.map((x: any, i: any) => {
-                              return (
-                                <option value={x.name} key={i}>
-                                  {x.name}
-                                </option>
-                              );
-                            })}
-                          </>
+                      <Tooltip
+                        label={
+                          user?.accountNumber !== null
+                            ? 'Account information can only be changed on your profile page'
+                            : ''
                         }
-                      />
-                      <PrimaryInput<PropertyModel>
-                        label="Your Account Number"
-                        name="accountNumber"
-                        placeholder="Enter your bank account number"
-                        defaultValue={user?.accountNumber}
-                        register={register}
-                        error={errors.accountNumber}
-                        disableLabel={user?.accountNumber !== null}
-                      />
+                        hasArrow
+                      >
+                        <Box>
+                          <PrimarySelect<PropertyModel>
+                            register={register}
+                            error={errors.bank}
+                            label="Your Bank"
+                            placeholder="Choose your bank"
+                            name="bank"
+                            defaultValue={user?.bank}
+                            disabled={user?.bank !== null}
+                            options={
+                              <>
+                                {getBanks?.map((x: any, i: any) => {
+                                  return (
+                                    <option value={x.name} key={i}>
+                                      {x.name}
+                                    </option>
+                                  );
+                                })}
+                              </>
+                            }
+                          />
+
+                          <PrimaryInput<PropertyModel>
+                            label="Your Account Number"
+                            name="accountNumber"
+                            placeholder="Enter your bank account number"
+                            defaultValue={user?.accountNumber}
+                            register={register}
+                            error={errors.accountNumber}
+                            disableLabel={user?.accountNumber !== null}
+                          />
+                        </Box>
+                      </Tooltip>
                     </Box>
                   </>
                 )}
