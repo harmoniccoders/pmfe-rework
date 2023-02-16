@@ -55,7 +55,7 @@ const sell = ({
             rowGap={5}
           >
             <>
-              {result.map((item: PropertyView) => {
+              {result?.map((item: PropertyView) => {
                 return (
                   <>
                     <GridItem>

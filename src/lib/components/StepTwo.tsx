@@ -132,7 +132,7 @@ const StepTwo = ({
             disabled={
               isBuy
                 ? applicationData?.hasPaid == true ||
-                  applicationData?.hasApplied == false ||
+                  // applicationData?.hasApplied == false ||
                   data.status === 'SOLD'
                 : isRent
                 ? applicationData?.applicationStatus !== 'REVIEWED' ||

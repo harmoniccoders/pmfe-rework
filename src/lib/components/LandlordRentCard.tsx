@@ -57,8 +57,8 @@ const LandlordRentCard = ({ data }: any) => {
                 <Icons iconClass="fa-calendar-day" style={iconStyle} />
 
                 <Text>{`Next rent is due in ${moment(item.rentDueDate).diff(
-                  moment(item.transaction?.dateCreated),
-                  'day'
+                  moment(),
+                  'days'
                 )} days`}</Text>
               </HStack>
             </VStack>

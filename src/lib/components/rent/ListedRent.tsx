@@ -108,7 +108,7 @@ function ListedRent({ data }: { data: any }) {
 
   return (
     <Box>
-      {result.length === 0 ? (
+      {result?.length === 0 || result == undefined ? (
         <NoData />
       ) : (
         <SimpleGrid columns={4} gap={9}>

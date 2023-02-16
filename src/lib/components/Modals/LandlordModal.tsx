@@ -67,7 +67,7 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
         pmlogo={true}
         content={
           <>
-            {complains.length <= 0 ? (
+            {complains?.length <= 0 ? (
               'No Complaints yet'
             ) : (
               <VStack spacing={5}>

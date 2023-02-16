@@ -54,7 +54,7 @@ const enquires = ({ data }: { data: any }) => {
               columnGap="7"
               rowGap={6}
             >
-              {result.map((item: UserEnquiry) => {
+              {result?.map((item: UserEnquiry) => {
                 return (
                   <GridItem key={item.id}>
                     <PropertyCard item={item.property as PropertyView} />

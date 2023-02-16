@@ -4,7 +4,7 @@ import CleanProperty from '../clean/CleanProperty';
 
 function CleanSession({ cleanRequests }: { cleanRequests: any }) {
   const requests = cleanRequests.value;
-  const newRequest = requests.filter((item: any) => item.status === 'ACTIVE');
+  const newRequest = requests?.filter((item: any) => item.status === 'ACTIVE');
   return (
     <Box w="100%" mt="3rem">
       <Box w="90%" mx="auto">
@@ -27,7 +27,7 @@ function CleanSession({ cleanRequests }: { cleanRequests: any }) {
           <Text fontWeight="bold" mt="8" color="brand.100" fontSize="lg">
             Clean
           </Text>
-          {requests.length > 0 ? (
+          {requests?.length > 0 ? (
             <CleanProperty requests={newRequest} />
           ) : (
             <Text mt="3" fontWeight="medium" fontSize=".9rem">

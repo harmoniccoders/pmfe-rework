@@ -6,14 +6,15 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 const index = ({ data }: { data: any }) => {
-   const router = useRouter();
-   const isUser = Cookies.get('userIn');
-   useEffect(() => {
-     if (isUser !== 'true') {
-       router.push({ pathname: '/login', query: { from: router.pathname } });
-       return;
-     }
-   });
+  const router = useRouter();
+  const isUser = Cookies.get('userIn');
+  useEffect(() => {
+    if (isUser !== 'true') {
+      router.push({ pathname: '/login', query: { from: router.pathname } });
+      return;
+    }
+  });
+  console.log({ data });
 
   return <Landlord data={data} />;
 };
@@ -21,8 +22,6 @@ const index = ({ data }: { data: any }) => {
 export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   let { url } = ctx.query;

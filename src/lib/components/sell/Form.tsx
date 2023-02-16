@@ -329,7 +329,7 @@ const Form = ({
                     name="propertyTypeId"
                     options={
                       <>
-                        {propertyTypes.map((x: PropertyType) => {
+                        {propertyTypes?.map((x: PropertyType) => {
                           return <option value={x.id}>{x.name}</option>;
                         })}
                       </>

@@ -38,7 +38,7 @@ const request = ({ data }: { data: any }) => {
         <PageTabs tabName="requests" tabTitle="My Requests" />
       </HStack>
       <>
-        {result.length <= 0 ? (
+        {result?.length <= 0 ? (
           <Heading fontSize="16px" lineHeight={1.5}>
             Sorry! You have no property requested yet.
           </Heading>
@@ -54,7 +54,7 @@ const request = ({ data }: { data: any }) => {
               columnGap="8"
               rowGap={7}
             >
-              {result.map((item: PropertyRequestView) => {
+              {result?.map((item: PropertyRequestView) => {
                 return (
                   <GridItem key={item.id}>
                     <RequestCard item={item} />

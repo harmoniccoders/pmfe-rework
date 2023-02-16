@@ -18,7 +18,7 @@ const ListedProperties = ({ result }: { result: PropertyView[] }) => {
       width="100%"
     >
       <>
-        {result.map((item) => {
+        {result?.map((item) => {
           return (
             <GridItem key={item.id}>
               <PropertyCard item={item} />

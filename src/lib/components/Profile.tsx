@@ -268,7 +268,7 @@ function Profile({ getBanks }: { getBanks: any }) {
                 borderColor="#99b3ff"
               />
             </Box>
-            <HStack>
+            <Stack direction={['column', 'row']} w="full">
               {user?.bank !== undefined && (
                 <PrimarySelect<UpdateUserModel>
                   register={register}
@@ -293,7 +293,7 @@ function Profile({ getBanks }: { getBanks: any }) {
               )}
 
               <PrimaryInput<UpdateUserModel>
-                label="Bank Name"
+                label="Account Number"
                 fontSize=".8rem"
                 name="accountNumber"
                 placeholder="Enter your bank account number"
@@ -303,7 +303,7 @@ function Profile({ getBanks }: { getBanks: any }) {
                 border="2px solid"
                 borderColor="#99b3ff"
               />
-            </HStack>
+            </Stack>
             <Box w="full">
               <ButtonComponent
                 content="Update User Information"

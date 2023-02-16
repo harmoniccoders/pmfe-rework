@@ -28,7 +28,7 @@ function MyListings({
   getBanks,
 }: ListingTypes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const result = data.value.filter(
+  const result = data.value?.filter(
     (property: PropertyView) => !property.isDraft
   );
   return (
@@ -47,7 +47,7 @@ function MyListings({
         <PageTabs tabName="listings/myrents" tabTitle="For Rent" />
       </HStack>
       <Box>
-        {result.length > 0 ? (
+        {result?.length > 0 ? (
           <Box>
             <Flex justify="space-between" align="center" my="8">
               <Text fontWeight="bold" color="brand.100" fontSize="lg">

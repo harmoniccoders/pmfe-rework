@@ -45,6 +45,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
+  console.log({ item });
 
   const openReliefModal = () => {
     setOpenRelief(true);
@@ -222,6 +223,21 @@ const PropertyCard = ({ item, matchId }: Props) => {
           >
             {item.lga}
           </Flex>
+          {!item.isForSale && (
+            <Box
+              bgColor="#2FDF84"
+              w="full"
+              p=".3rem 1rem"
+              pos="absolute"
+              bottom="0"
+            >
+              <Text mb="0" fontSize=".9rem" fontWeight="500">
+                {item.createdByUser === user?.id
+                  ? 'This property has been sold'
+                  : 'This property has been purchased by you'}
+              </Text>
+            </Box>
+          )}
         </Box>
         <VStack align="flex-start" spacing={4}>
           <Flex

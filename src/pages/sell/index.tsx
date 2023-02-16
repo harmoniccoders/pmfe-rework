@@ -69,7 +69,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } catch (error) {
     return {
       props: {
-        propertyTypes: {},
+        propertyTypes: [],
+        propertyTitles: [],
+        getBanks: [],
         listings: [],
       },
     };

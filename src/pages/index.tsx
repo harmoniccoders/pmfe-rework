@@ -48,7 +48,7 @@ const index = ({ data }: { data: any }) => {
             </Button>
           </Flex>
           <>
-            {result?.length <= 0 ? (
+            {result?.length <= 0 || result?.length == undefined ? (
               <Heading fontSize="16px" lineHeight={1.5}>
                 No result found
               </Heading>
@@ -64,7 +64,7 @@ const index = ({ data }: { data: any }) => {
                 rowGap={5}
               >
                 <>
-                  {result.map((item: PropertyView) => {
+                  {result?.map((item: PropertyView) => {
                     return (
                       <GridItem key={item.id}>
                         <PropertyCard item={item} />

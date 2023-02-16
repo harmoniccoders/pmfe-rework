@@ -22,7 +22,7 @@ const drafts = ({
 
   return (
     <Box w="90%" mx="auto" py="4">
-      {result.length > 0 ? (
+      {result?.length > 0 ? (
         <Box>
           <Flex justify="space-between" align="center" my="8">
             <Text fontWeight="bold" color="brand.100" fontSize="lg">
@@ -36,7 +36,7 @@ const drafts = ({
             rowGap={5}
           >
             <>
-              {result.map((item: PropertyView) => {
+              {result?.map((item: PropertyView) => {
                 return (
                   <>
                     <GridItem key={item.id}>

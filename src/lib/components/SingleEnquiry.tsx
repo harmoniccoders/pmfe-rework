@@ -13,6 +13,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import { DataAccess } from 'lib/Utils/Api';
 import Cookies from 'js-cookie';
 import CancelEnquiryModal from './Modals/CancelEnquiryModal';
+import { useNonInitialEffect } from './Generics/useNonInitialEffect';
 
 type Props = {
   data: PropertyModel;
@@ -25,7 +26,8 @@ type Props = {
 const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
   const [applicationStatus, setApplicationStatus] = useState<any>();
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const {addToast} = useToasts()
+  const { addToast } = useToasts();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +50,11 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
 
     fetchData();
   }, []);
+
+  useNonInitialEffect(() => {
+    router.reload();
+  }, [applicationStatus?.hasPaid == true]);
+  console.log(applicationStatus?.hasPaid);
 
   return (
     <HStack
