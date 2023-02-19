@@ -11,6 +11,7 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { Parameters } from 'openapi-client-axios';
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 
 const schema = yup.object().shape({
   token: yup.string().required(),
@@ -22,6 +23,9 @@ const verify = () => {
 
   const [VerifyUser, { loading, data, error }] = useOperationMethod(
     'UserverifyUser{token}{email}'
+  );
+  const [ReverifyUser, { loading:load, data:datas, error:errored }] = useOperationMethod(
+    'Userreverify{email}' 
   );
   const {
     register,
@@ -35,7 +39,33 @@ const verify = () => {
     mode: 'all',
   });
   const { addToast } = useToasts();
-
+  const [minutes, setMinutes] = useState(1); 
+  const [seconds,setSeconds] = useState(59);
+   console.log({seconds})
+  const resendCode =async () => {
+    try {
+      const result = await (await ReverifyUser(userEmail)).data 
+      console.log({result})
+      if (result.status) {
+        addToast('Code has been sent, check your mail', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        setMinutes(1); setSeconds(59)
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  }
   const onSubmit = async (data: UserverifyUserTokenEmailParameters) => {
     const params: Parameters = {
       token: data.token as string,
@@ -64,7 +94,24 @@ const verify = () => {
       });
     }
   };
-
+useEffect(()=>{
+  const timeInterval = setInterval (()=>{
+     if (seconds > 0 ) {
+      setSeconds(seconds - 1)
+     }
+     if (seconds === 0) {
+       if (minutes === 0) {
+         clearInterval(timeInterval)
+       } else {
+         setMinutes(minutes - 1)
+         setSeconds (59)
+       }
+     }
+  }, 1000)
+   return() => {
+    clearInterval(timeInterval)
+   }
+}, [seconds, minutes])
   return (
     <Box w="100%">
       <Box
@@ -149,6 +196,26 @@ const verify = () => {
                 loading={loading}
               />
             </form>
+            {/* <ButtonComponent
+              //  disabled={seconds > 0 || minutes > 0}
+                  content="Resend code"
+                   isValid={isValid}
+               loading={loading}
+               /> */}
+              <Text
+              color="black"
+              lineHeight={1.5}
+              mt="10px"
+              mb="5px"
+              w="80%"
+              mx="auto"
+              textAlign="center"
+            >
+              Didnt receive code? <Box cursor={"pointer"} as="span" color={seconds > 0 || minutes > 0? "gray.300":"brand.100"} onClick={seconds > 0 || minutes > 0? ()=> void(0): ()=> resendCode()}>resend code</Box>
+              {(seconds > 0 || minutes > 0) && <Box as="span"> In {minutes} {minutes > 1? "minutes":"minute"}:{seconds} {seconds > 1? "seconds":"second"} </Box>}
+                
+            </Text>
+
 
             <Divider borderColor="brand.50" />
 
