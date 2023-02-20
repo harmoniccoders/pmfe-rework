@@ -276,14 +276,15 @@ const RentForm = ({
         router.push('/listings/myrents');
         return;
       }
+      onClose();
       addToast(result.message, {
         appearance: 'error',
         autoDismiss: true,
       });
       setFormStep(0);
-      onClose();
       return;
-    } catch (err: any) {
+    } catch (err: any) { 
+      onClose();
       addToast(err.message || err.body.message, {
         appearance: 'error',
         autoDismiss: true,
@@ -590,7 +591,7 @@ const RentForm = ({
                         options={
                           <>
                             {propertyCollection.map((x: RentCollectionType) => {
-                              return <option value={x.id}>{x.name}</option>;
+                              return <option disabled={x.name!=="YEARLY"} value={x.id}>{x.name}</option>;
                             })}
                           </>
                         }
