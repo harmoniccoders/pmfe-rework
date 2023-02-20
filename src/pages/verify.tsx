@@ -196,12 +196,7 @@ useEffect(()=>{
                 loading={loading}
               />
             </form>
-            {/* <ButtonComponent
-              //  disabled={seconds > 0 || minutes > 0}
-                  content="Resend code"
-                   isValid={isValid}
-               loading={loading}
-               /> */}
+            
               <Text
               color="black"
               lineHeight={1.5}
