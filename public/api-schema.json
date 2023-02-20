@@ -506,6 +506,146 @@
         }
       }
     },
+    "/api/Admin/properties/rent/list": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminpropertiesrentlist",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/properties/sale/list": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminpropertiessalelist",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Admin/properties/list/rent/pending": {
       "get": {
         "tags": [
@@ -4017,17 +4157,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStandardResponse"
+                  "$ref": "#/components/schemas/ReceiptViewStandardResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStandardResponse"
+                  "$ref": "#/components/schemas/ReceiptViewStandardResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStandardResponse"
+                  "$ref": "#/components/schemas/ReceiptViewStandardResponse"
                 }
               }
             }
@@ -4447,30 +4587,30 @@
           "Report"
         ],
         "operationId": "Reportlist",
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PagingOptions"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PagingOptions"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PagingOptions"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PagingOptions"
-              }
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -4961,6 +5101,47 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/reverify/{email}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "Userreverify{email}",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -10577,6 +10758,84 @@
         },
         "additionalProperties": false
       },
+      "ReceiptView": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "property": {
+            "$ref": "#/components/schemas/PropertyView"
+          },
+          "paymentLog": {
+            "$ref": "#/components/schemas/PaymentLog"
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReceiptViewStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReceiptView"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PropertyRequestInput": {
         "type": "object",
         "properties": {
@@ -10805,26 +11064,6 @@
           },
           "description": {
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PagingOptions": {
-        "type": "object",
-        "properties": {
-          "offset": {
-            "maximum": 99999,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "limit": {
-            "maximum": 100,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
