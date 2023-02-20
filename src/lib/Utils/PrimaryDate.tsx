@@ -16,7 +16,7 @@ interface FormInputProps<TFormValues extends Record<string, unknown>> {
   validate?: any;
   label?: string;
   register: UseFormRegister<TFormValues>;
-  defaultValue?: string | number | undefined;
+  defaultValue?: any;
   error: FieldError | undefined;
   control: Control<TFormValues>;
   radios?: any;
@@ -38,7 +38,7 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
   control,
   radios,
   icon,
-  placeholder,
+  placeholder="Select a date",
   fontSize,
   minDate,
   maxDate,
@@ -63,12 +63,12 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
           render={({ field }) => (
             //@ts-ignore
             <DatePicker
-              placeholderText="Select date"
+              placeholderText={placeholder}
               dateFormat="d MMM yyyy"
               minDate={minDate}
               maxDate={maxDate}
               onChange={(date) => field.onChange(date)}
-              selected={field.value}
+              selected={field.value || defaultValue} 
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"

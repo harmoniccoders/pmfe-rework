@@ -100,6 +100,8 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   let user: any;
   if (users !== undefined) {
     user = JSON.parse(users);
+  console.log({user})
+
   }
 
   const {
@@ -385,15 +387,18 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                     register={register}
                   />
 
+                  {/* <PrimaryInput<ApplicationModel> */}
                   <PrimaryDate<ApplicationModel>
                     label="Date of Birth"
+                    // type="date"
                     name="register.dateOfBirth"
+                    placeholder="Select date of birth"
                     error={errors.register?.dateOfBirth}
                     register={register}
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={user?.dateOfBirth || ''}
+                    defaultValue={new Date(user?.dateOfBirth)  || new Date()}
                   />
 
                   <PrimarySelect<ApplicationModel>

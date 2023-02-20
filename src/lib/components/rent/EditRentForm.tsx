@@ -736,6 +736,7 @@ const EditRentForm = ({
                     <Text fontWeight="600">Rent Collection</Text>
                     <PrimarySelect<PropertyModel>
                       register={register}
+
                       error={errors.rentCollectionTypeId}
                       label="How Frequently do you want to collect rent?"
                       placeholder="Choose option: weekly, monthly, yearly"
