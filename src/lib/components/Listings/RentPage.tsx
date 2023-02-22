@@ -43,7 +43,7 @@ function RentPage({
           mb="2.5rem"
         >
           <PageTabs tabName="listings" tabTitle="My Listings" />
-          <PageTabs tabName="enquiries" tabTitle="My Enquiries" />
+          <PageTabs tabName="enquires" tabTitle="My Enquiries" />
           <PageTabs tabName="requests" tabTitle="My Requests" />
         </HStack>
         <MyRents
