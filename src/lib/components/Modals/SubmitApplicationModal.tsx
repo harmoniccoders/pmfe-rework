@@ -260,7 +260,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={new Date(user?.dateOfBirth) || new Date()}
+                    defaultValue={new Date(user?.dateOfBirth) || new Date() }
                   />
 
                   <PrimarySelect<ApplicationModel>
