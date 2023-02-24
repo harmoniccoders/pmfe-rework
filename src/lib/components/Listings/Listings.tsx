@@ -28,7 +28,7 @@ function ListPage({
           mb="2.5rem"
         >
           <PageTabs tabName="listings" tabTitle="My Listings" />
-          <PageTabs tabName="enquires" tabTitle="My Enquires" />
+          <PageTabs tabName="enquires" tabTitle="My Enquiries" />
           <PageTabs tabName="requests" tabTitle="My Requests" />
         </HStack>
         <MyListings
