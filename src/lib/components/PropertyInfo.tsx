@@ -125,7 +125,7 @@ const PropertyInfo = ({ data }: Props) => {
         <Heading fontSize="14px">Overview</Heading>
 
         <Text fontSize="14px" lineHeight={1.5}>
-          {parse(data.description as string)}
+          {parse(data?.description as string)}
         </Text>
 
         <Heading fontSize="14px">Pictures</Heading>

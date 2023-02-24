@@ -8,6 +8,7 @@ import {
   Icon,
   Text,
   HStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Icons from './Icons';
@@ -16,6 +17,7 @@ import { FaCheck } from 'react-icons/fa';
 import { DataAccess } from 'lib/Utils/Api';
 import Cookies from 'js-cookie';
 import { useToasts } from 'react-toast-notifications';
+import ReceiptModal from './Modals/ReceiptModal';
 
 type Props = {
   applicationData: any;
@@ -30,6 +32,8 @@ const StepThree = ({ applicationData }: Props) => {
     applicationData.status === 'SOLD' || applicationData.status === 'INACTIVE';
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [receiptData, setReceiptData] = useState<any>();
 
   const loadReceipt = async () => {
     const bearer = `Bearer ${Cookies.get('token')}`;
@@ -39,9 +43,11 @@ const StepThree = ({ applicationData }: Props) => {
       const result = await _dataAccess.get(
         `/api/Property/property/receipt/${applicationData.id}`
       );
-      console.log(result);
+      // console.log(result);
       if (result.status) {
         setLoading(false);
+        setReceiptData(result.data);
+        onOpen();
         console.log({ result });
         return;
       }
@@ -142,6 +148,7 @@ const StepThree = ({ applicationData }: Props) => {
           </Button>
         </VStack>
       </Flex>
+      <ReceiptModal open={isOpen} close={onClose} data={receiptData} />
     </>
   );
 };

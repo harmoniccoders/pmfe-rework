@@ -6,8 +6,13 @@ import { Button } from '@chakra-ui/react';
 interface props {
   rootElementId: string;
   downloadFileName: string;
+  variant?: string;
 }
-const PdfDownloader = ({ rootElementId, downloadFileName }: props) => {
+const PdfDownloader = ({
+  rootElementId,
+  downloadFileName,
+  variant = 'outline',
+}: props) => {
   const downloadPdfDocument = () => {
     const input = document.getElementById(rootElementId);
     html2canvas(input as HTMLElement).then((canvas) => {
@@ -21,7 +26,7 @@ const PdfDownloader = ({ rootElementId, downloadFileName }: props) => {
 
   return (
     <Button
-      variant="outline"
+      variant={variant}
       color={['brand.100', 'white']}
       onClick={downloadPdfDocument}
     >
