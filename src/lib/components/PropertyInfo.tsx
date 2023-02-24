@@ -25,6 +25,7 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
+  console.log({ data });
   return (
     <>
       <VStack
@@ -111,13 +112,13 @@ const PropertyInfo = ({ data }: Props) => {
             <Icons iconClass="fa-tags" style={iconStyle} />
             <Text fontSize="13px" ml="4px">
               &#8358;
-              {data.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              {data?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             </Text>
           </GridItem>
           <GridItem mb="5px" display="flex" alignItems="center">
             <Icons iconClass="fa-award" style={iconStyle} />
             <Text fontSize="13px" ml="4px">
-              {data.title}
+              {data?.title}
             </Text>
           </GridItem>
         </Grid>
@@ -125,7 +126,9 @@ const PropertyInfo = ({ data }: Props) => {
         <Heading fontSize="14px">Overview</Heading>
 
         <Text fontSize="14px" lineHeight={1.5}>
-          {parse(data?.description as string)}
+          {data.description !== undefined
+            ? parse(data?.description as string)
+            : ''}
         </Text>
 
         <Heading fontSize="14px">Pictures</Heading>

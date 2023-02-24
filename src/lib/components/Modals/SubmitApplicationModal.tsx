@@ -183,6 +183,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
       formStep={formStep}
       setFormStep={setFormStep}
       pmlogo={true}
+      width="40%"
       content={
         <VStack alignItems="flex-start" spacing={3} width="100%">
           <Text fontWeight={600} fontSize="16px">
@@ -259,7 +260,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={user?.dateOfBirth || ''}
+                    defaultValue={new Date(user?.dateOfBirth) || new Date()}
                   />
 
                   <PrimarySelect<ApplicationModel>
@@ -393,7 +394,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
                   />
                 </>
               )}
-              {RenderButton()}
+              <Box mt="1rem">{RenderButton()}</Box>
             </>
           </form>
         </VStack>

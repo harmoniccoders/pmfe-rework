@@ -105,7 +105,7 @@ export default function Modals({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="100vh" overflowY="auto" px={5} pb="4rem">
+          <Box maxH="90vh" overflowY="auto" px={5} pb="4rem">
             {content}
           </Box>
         </ModalBody>
