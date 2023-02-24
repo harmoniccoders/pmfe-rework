@@ -314,7 +314,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={user?.dateOfBirth || ''}
+                    defaultValue={new Date(user?.dateOfBirth) || new Date() }
                   />
 
                   <PrimarySelect<ApplicationModel>
@@ -579,7 +579,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
                   />
                 </>
               )}
-              {RenderButton()}
+              <Box mt="1rem">{RenderButton()}</Box>
             </>
           </form>
         </VStack>
