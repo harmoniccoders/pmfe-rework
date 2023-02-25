@@ -135,6 +135,7 @@ const StepThree = ({ applicationData }: Props) => {
             display="flex"
             alignItems="center"
             disabled={!payment}
+            onClick={() => window.open(applicationData?.documentUrl, '_blank')}
           >
             <Box
               pr="10px"

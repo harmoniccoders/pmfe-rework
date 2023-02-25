@@ -12,4 +12,5 @@ export interface TenancyView {
   rentDueDate?: string;
   status?: null | string;
   renewable?: boolean;
+  agreed?: boolean;
 }

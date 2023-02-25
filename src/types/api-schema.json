@@ -4676,6 +4676,60 @@
         }
       }
     },
+    "/api/Report/contact": {
+      "post": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "Reportcontact",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Request/list": {
       "get": {
         "tags": [
@@ -5027,6 +5081,47 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TenancyViewStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Tenancy/agreement/update/{id}": {
+      "post": {
+        "tags": [
+          "Tenancy"
+        ],
+        "operationId": "Tenancyagreementupdate{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanStandardResponse"
                 }
               }
             }
@@ -5789,39 +5884,6 @@
         },
         "additionalProperties": false
       },
-      "Report": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "dateCreated": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "dateModified": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "propertyId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "description": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "PropertyType": {
         "type": "object",
         "properties": {
@@ -6236,6 +6298,9 @@
           },
           "status": {
             "$ref": "#/components/schemas/Status"
+          },
+          "agreed": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -6688,6 +6753,51 @@
               "$ref": "#/components/schemas/Inspections"
             },
             "nullable": true
+          },
+          "documentUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "propertyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "property": {
+            "$ref": "#/components/schemas/Property"
           }
         },
         "additionalProperties": false
@@ -7419,6 +7529,10 @@
           "propertyTypeId": {
             "type": "integer",
             "format": "int32"
+          },
+          "documentUrl": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7980,6 +8094,10 @@
           "propertyRequestMatchId": {
             "type": "integer",
             "format": "int32"
+          },
+          "documentUrl": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9088,6 +9206,9 @@
             "nullable": true
           },
           "renewable": {
+            "type": "boolean"
+          },
+          "agreed": {
             "type": "boolean"
           }
         },
@@ -11041,7 +11162,6 @@
       },
       "ReportModel": {
         "required": [
-          "description",
           "propertyId"
         ],
         "type": "object",
@@ -11063,7 +11183,8 @@
             "format": "int32"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11071,6 +11192,10 @@
       "ReportView": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "property": {
             "$ref": "#/components/schemas/Property"
           },

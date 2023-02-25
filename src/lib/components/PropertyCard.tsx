@@ -223,7 +223,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
           >
             {item.lga}
           </Flex>
-          {!item.isForSale && (
+          {/* {!item.isForSale && (
             <Box
               bgColor="#2FDF84"
               w="full"
@@ -237,7 +237,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
                   : 'This property has been purchased by you'}
               </Text>
             </Box>
-          )}
+          )} */}
         </Box>
         <VStack align="flex-start" spacing={4}>
           <Flex
@@ -435,6 +435,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
                 variant="solid"
                 height="40px"
                 w="full"
+                isLoading={isLoad}
                 bgColor={
                   item.createdByUser?.id === user?.id ? 'gray.300' : 'brand.100'
                 }

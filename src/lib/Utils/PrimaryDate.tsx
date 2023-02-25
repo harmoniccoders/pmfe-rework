@@ -1,4 +1,11 @@
-import { FormControl, FormLabel, GridItem, Icon, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  GridItem,
+  Icon,
+  Text,
+} from '@chakra-ui/react';
 import {
   Controller,
   UseFormRegister,
@@ -38,14 +45,16 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
   control,
   radios,
   icon,
-  placeholder="Select a date",
+  placeholder = 'Select a date',
   fontSize,
   minDate,
   maxDate,
 }: FormInputProps<TFormValues>) => {
   return (
     <GridItem>
-      <FormControl>
+      <FormControl
+        isInvalid={error?.type === 'required' || error?.message !== undefined}
+      >
         <FormLabel
           htmlFor={label}
           textTransform="capitalize"
@@ -68,22 +77,21 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
               minDate={minDate}
               maxDate={maxDate}
               onChange={(date) => field.onChange(date)}
-              selected={field.value || defaultValue} 
+              selected={field.value || defaultValue}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
               // peekNextMonth
-              
             />
           )}
           name={name}
           control={control}
         />
       </FormControl>
-      <Text fontSize=".7rem" color="red">
+      <FormErrorMessage fontSize=".7rem" textTransform="capitalize">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
-      </Text>
+      </FormErrorMessage>
     </GridItem>
   );
 };

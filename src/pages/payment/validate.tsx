@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const data = await (
       await _dataAccess.get(`/api/payment/validate/${tx_ref}/${transaction_id}`)
     ).data;
-    console.log({ data });
+    // console.log({ data });
 
     return {
       props: {

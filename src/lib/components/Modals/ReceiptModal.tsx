@@ -27,6 +27,8 @@ const ReceiptModal = ({ open, close, data }: Props) => {
       onClose={close}
       pmlogo={false}
       width="50%"
+      h="90vh"
+      pb="1rem"
       showBack={false}
       content={
         <>
@@ -46,7 +48,7 @@ const ReceiptModal = ({ open, close, data }: Props) => {
           <HStack
             gap={6}
             justify="space-between"
-            mb="2rem"
+            // mb="2rem"
             w="full"
             px={8}
             // display={['flex', 'none']}

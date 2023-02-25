@@ -34,4 +34,5 @@ export interface PropertyView {
   enquiries?: number;
   dateCreated?: string;
   propertyTypeId?: number;
+  documentUrl?: null | string;
 }

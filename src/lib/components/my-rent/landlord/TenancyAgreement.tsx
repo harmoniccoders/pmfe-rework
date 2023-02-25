@@ -15,8 +15,11 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import LandlordOptions from 'lib/components/my-rent/landlord/LandlordOptions';
-import moment from 'moment'
+import moment from 'moment';
+import { useOperationMethod } from 'react-openapi-client';
 import { TenancyView } from 'types/api';
+import { Parameters } from 'openapi-client-axios';
+import { useToasts } from 'react-toast-notifications';
 
 interface LandlordProps {
   isOpen: boolean;
@@ -29,7 +32,32 @@ export default function TenancyAgreement({
   onClose,
   data,
 }: LandlordProps) {
- 
+  const [agreeTenancy, { loading }] = useOperationMethod(
+    'Tenancyagreementupdate{id}'
+  );
+
+  const { addToast } = useToasts();
+
+  const submitAgreement = async () => {
+    const params: Parameters = {
+      id: data.id as number,
+    };
+    try {
+      const result = (await agreeTenancy(params)).data;
+      console.log({ result });
+      if (result.status) {
+        addToast('Agreement Submitted', {
+          appearance: 'success',
+        });
+        onClose();
+        return;
+      }
+    } catch (err: any) {
+      console.log({ err });
+    }
+  };
+
+
   return (
     <Modal
       isOpen={isOpen}
@@ -47,6 +75,8 @@ export default function TenancyAgreement({
         overflowY="auto"
         h="100vh"
         pos="fixed"
+        w="50%"
+        maxW="100%"
       >
         <ModalHeader>
           <Flex justifyContent="space-between" alignItems="center">
@@ -127,12 +157,18 @@ export default function TenancyAgreement({
             </Heading>
             <VStack spacing="5" align="flex-start">
               <Divider />
-              <Checkbox colorScheme="green" alignItems="flex-start">
+              <Checkbox colorScheme="blue" alignItems="flex-start">
                 I agree that checking this box and tapping the agree button
                 constitutes an appending of my electronic signature to the
                 Tenancy Agreement herein.
               </Checkbox>
-              <Button fontSize="1rem" w="full">
+              <Button
+                fontSize="1rem"
+                w="full"
+                mt="1rem"
+                isLoading={loading}
+                onClick={submitAgreement}
+              >
                 Agree and Submit
               </Button>
             </VStack>

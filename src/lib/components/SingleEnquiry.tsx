@@ -51,9 +51,10 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
     fetchData();
   }, []);
 
-  useNonInitialEffect(() => {
-    router.reload();
-  }, [applicationStatus?.hasPaid == true]);
+  // useNonInitialEffect(() => {
+  //   router.reload();
+  // }, [applicationStatus?.hasPaid == true]);
+  // console.log(applicationStatus);
   console.log(applicationStatus?.hasPaid);
 
   return (

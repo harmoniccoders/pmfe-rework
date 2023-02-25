@@ -7,6 +7,7 @@ import {
   Grid,
   HStack,
   useDisclosure,
+  Button,
 } from '@chakra-ui/react';
 import Icons from '../../Icons';
 import { TenancyView } from 'types/api';
@@ -15,7 +16,7 @@ import LandlordModal from 'lib/components/Modals/LandlordModal';
 import TenancyAgreement from './TenancyAgreement';
 import moment from 'moment';
 
-const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
+const LandlordOptions = ({ singles }: { singles: any }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: opened, onOpen: onOpened, onClose: closed } = useDisclosure();
 
@@ -39,7 +40,11 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
               </>
             ) : (
               <Image
-                src="/assets/nb.webp"
+                src={
+                  singles?.property?.mediaFiles?.length > 0
+                    ? singles?.property?.mediaFiles[0].url
+                    : '/assets/nb.webp'
+                }
                 alt="propery-image"
                 w="100%"
                 height="100%"
@@ -73,7 +78,7 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
           <HStack>
             <Icons iconClass="fa-calendar" />
             <Text>{`Next rent is due in ${moment(singles.rentDueDate).diff(
-              moment(singles.transaction?.dateCreated),
+              moment(),
               'day'
             )} days`}</Text>
           </HStack>
@@ -101,13 +106,17 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
               </Text>
             </HStack>
           </Box>
-          <Box
+          <Button
             w="full"
-            border="1px solid gray"
+            border="1px solid"
+            variant="outline"
+            borderColor="gray"
+            color="black"
             mt=".2rem"
             p=".75rem"
             borderRadius="4px"
             cursor="pointer"
+            disabled
           >
             <HStack>
               <Icons iconClass="fa-money-bill-wave" />
@@ -120,8 +129,8 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
                 Payments
               </Text>
             </HStack>
-          </Box>
-          <Box
+          </Button>
+          {/* <Box
             w="full"
             border="1px solid gray"
             mt=".2rem"
@@ -137,10 +146,10 @@ const LandlordOptions = ({ singles }: { singles: TenancyView }) => {
                 ml="4px"
                 fontWeight="600"
               >
-                Recipts
+                Receipts
               </Text>
             </HStack>
-          </Box>
+          </Box> */}
           <Box
             w="full"
             border="1px solid gray"

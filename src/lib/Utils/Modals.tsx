@@ -18,6 +18,8 @@ interface modalProps {
   formStep?: 0 | number;
   setFormStep?: any;
   width?: any;
+  h?: any;
+  pb?: any;
   showBack?: boolean;
 }
 export default function Modals({
@@ -27,7 +29,9 @@ export default function Modals({
   content,
   formStep,
   setFormStep,
-  width = '30%',
+  width = '40%',
+  h = '77vh',
+  pb = '4rem',
   showBack = true,
 }: modalProps) {
   return (
@@ -105,7 +109,7 @@ export default function Modals({
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="90vh" overflowY="auto" px={5} pb="4rem">
+          <Box maxH={h} overflowY="auto" px={5} pb={pb}>
             {content}
           </Box>
         </ModalBody>
