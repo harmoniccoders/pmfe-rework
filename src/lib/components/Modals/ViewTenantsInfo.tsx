@@ -15,7 +15,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { Application } from 'types/api';
 import moment from 'moment';
@@ -24,6 +24,8 @@ import { Parameters } from 'openapi-client-axios';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import Modals from 'lib/Utils/Modals';
+import Cookies from 'js-cookie';
+import { DataAccess } from 'lib/Utils/Api';
 
 interface Props {
   isOpen: boolean;
@@ -99,6 +101,33 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
       });
     }
   };
+
+  const [status, setStatus] = useState<string>('');
+  console.log({ status });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const bearer = `Bearer ${Cookies.get('token')}`;
+      const _dataAccess = new DataAccess(bearer);
+
+      try {
+        const result = (
+          await _dataAccess.get(
+            `/api/Application/get/user/property/${item?.property?.id}`
+          )
+        ).data;
+
+        setStatus(result);
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
   console.log({ item });
 
   return (
@@ -181,7 +210,8 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                 py="2"
                 bgColor="brand.700"
               >
-                {item?.property?.status === 'INACTIVE'
+                {item?.property?.status === 'INACTIVE' ||
+                item?.status === 'REVIEWED'
                   ? 'Payment Confirmed'
                   : item.status === 'REJECTED'
                   ? 'Rejected'

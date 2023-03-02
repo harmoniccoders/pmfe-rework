@@ -118,7 +118,12 @@ const PropertyCard = ({ item, matchId }: Props) => {
           : router.pathname.startsWith('/rent')
           ? router.push(`/rent/enquire/${item.id}`)
           : router.push(`/buy/enquire/${item.id}`);
+        return;
       }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } catch (err: any) {
       addToast(err.message || err.body.message, {
         appearance: 'error',
@@ -223,21 +228,35 @@ const PropertyCard = ({ item, matchId }: Props) => {
           >
             {item.lga}
           </Flex>
-          {/* {!item.isForSale && (
-            <Box
-              bgColor="#2FDF84"
-              w="full"
-              p=".3rem 1rem"
-              pos="absolute"
-              bottom="0"
-            >
-              <Text mb="0" fontSize=".9rem" fontWeight="500">
-                {item.createdByUser === user?.id
-                  ? 'This property has been sold'
-                  : 'This property has been purchased by you'}
-              </Text>
-            </Box>
-          )} */}
+
+          {
+            //@ts-ignore
+            (item.statusId == 8 || item.statusId == 10) && (
+              <Box
+                bgColor="#2FDF84"
+                w="full"
+                p=".3rem 1rem"
+                pos="absolute"
+                bottom="0"
+              >
+                <Text mb="0" fontSize=".9rem" fontWeight="500">
+                  {item.isForRent ? (
+                    <>
+                      {item.createdByUser === user?.id
+                        ? 'This property has an active tenant'
+                        : 'You are an active tenant of this property'}
+                    </>
+                  ) : (
+                    <>
+                      {item.createdByUser === user?.id
+                        ? 'This property has been sold'
+                        : 'This property has been purchased by you'}
+                    </>
+                  )}
+                </Text>
+              </Box>
+            )
+          }
         </Box>
         <VStack align="flex-start" spacing={4}>
           <Flex

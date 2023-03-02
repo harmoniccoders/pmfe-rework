@@ -48,8 +48,8 @@ const DateSliders = ({ item, date, close }: Props) => {
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      propertyId: item.id,
-      userId: user.id,
+      propertyId: item?.id,
+      userId: user?.id,
     },
   });
 

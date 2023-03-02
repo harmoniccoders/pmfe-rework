@@ -142,7 +142,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       ? 1
       : payBackDate.diff(startDate, repaymentFrequencyValue);
   const installs = totalPayment / payments;
-  console.log({ installs, totalPayment });
+  // console.log({ installs, totalPayment });
   const installments = installs.toFixed(0) as unknown as number;
 
   watch('reliefAmount');

@@ -55,7 +55,7 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
   //   router.reload();
   // }, [applicationStatus?.hasPaid == true]);
   // console.log(applicationStatus);
-  console.log(applicationStatus?.hasPaid);
+  console.log(data);
 
   return (
     <HStack

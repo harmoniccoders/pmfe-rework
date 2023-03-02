@@ -32,7 +32,7 @@ import { useRouter } from 'next/router';
 import { useOperationMethod } from 'react-openapi-client';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { Widget } from '@uploadcare/react-widget';
 import { BiImage } from 'react-icons/bi';
@@ -283,7 +283,7 @@ const RentForm = ({
       });
       setFormStep(0);
       return;
-    } catch (err: any) { 
+    } catch (err: any) {
       onClose();
       addToast(err.message || err.body.message, {
         appearance: 'error',
@@ -432,7 +432,39 @@ const RentForm = ({
                                       bgColor="brand.50"
                                       flexShrink={0}
                                       overflow="hidden"
+                                      role="group"
+                                      pos="relative"
                                     >
+                                      <Box
+                                        pos="absolute"
+                                        left="50%"
+                                        top="50%"
+                                        w="full"
+                                        h="full"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        transition=".5s ease all"
+                                        opacity="0"
+                                        cursor="pointer"
+                                        transform="translate(-50%, -50%)"
+                                        _groupHover={{
+                                          opacity: 1,
+                                          bgColor: 'rgba(0,0,0,.5)',
+                                        }}
+                                      >
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            setUploadedMedia(
+                                              uploadedMedia.filter(
+                                                (x) => x.url !== item.url
+                                              )
+                                            );
+                                          }}
+                                        />
+                                      </Box>
                                       <Image
                                         src={item.url}
                                         alt="propery-image"
@@ -493,7 +525,39 @@ const RentForm = ({
                                       bgColor="brand.50"
                                       flexShrink={0}
                                       overflow="hidden"
+                                      role="group"
+                                      pos="relative"
                                     >
+                                      <Box
+                                        pos="absolute"
+                                        left="50%"
+                                        top="50%"
+                                        w="full"
+                                        h="full"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        transition=".5s ease all"
+                                        opacity="0"
+                                        cursor="pointer"
+                                        transform="translate(-50%, -50%)"
+                                        _groupHover={{
+                                          opacity: 1,
+                                          bgColor: 'rgba(0,0,0,.5)',
+                                        }}
+                                      >
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            setUploadedMedia(
+                                              uploadedMedia.filter(
+                                                (x) => x.url !== item.url
+                                              )
+                                            );
+                                          }}
+                                        />
+                                      </Box>
                                       <AspectRatio
                                         maxW="150px"
                                         w="full"
@@ -591,7 +655,14 @@ const RentForm = ({
                         options={
                           <>
                             {propertyCollection.map((x: RentCollectionType) => {
-                              return <option disabled={x.name!=="YEARLY"} value={x.id}>{x.name}</option>;
+                              return (
+                                <option
+                                  disabled={x.name !== 'YEARLY'}
+                                  value={x.id}
+                                >
+                                  {x.name}
+                                </option>
+                              );
                             })}
                           </>
                         }

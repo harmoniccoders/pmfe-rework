@@ -57,7 +57,6 @@ export default function TenancyAgreement({
     }
   };
 
-
   return (
     <Modal
       isOpen={isOpen}
@@ -157,7 +156,11 @@ export default function TenancyAgreement({
             </Heading>
             <VStack spacing="5" align="flex-start">
               <Divider />
-              <Checkbox colorScheme="blue" alignItems="flex-start">
+              <Checkbox
+                colorScheme="blue"
+                alignItems="flex-start"
+                isChecked={data.agreed}
+              >
                 I agree that checking this box and tapping the agree button
                 constitutes an appending of my electronic signature to the
                 Tenancy Agreement herein.
@@ -168,6 +171,7 @@ export default function TenancyAgreement({
                 mt="1rem"
                 isLoading={loading}
                 onClick={submitAgreement}
+                disabled={data.agreed}
               >
                 Agree and Submit
               </Button>
