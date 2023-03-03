@@ -18,7 +18,7 @@ const sell = ({
   getBanks: any;
   listings: any;
 }) => {
-  const data = listings.value;
+  const data = listings?.value;
 
   //Redirect user to login and back here when login is successful
   const isUser = Cookies.get('userIn');

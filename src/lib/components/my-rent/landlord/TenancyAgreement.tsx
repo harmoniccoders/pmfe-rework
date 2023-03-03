@@ -160,6 +160,7 @@ export default function TenancyAgreement({
                 colorScheme="blue"
                 alignItems="flex-start"
                 isChecked={data.agreed}
+                size="lg"
               >
                 I agree that checking this box and tapping the agree button
                 constitutes an appending of my electronic signature to the

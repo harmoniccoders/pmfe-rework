@@ -141,7 +141,7 @@ const Form = ({
       );
     } else if (formStep === 1) {
       return (
-        <Box>
+        <Box mt="2rem">
           <HStack spacing={3}>
             <Button
               w="50%"
@@ -164,7 +164,12 @@ const Form = ({
               Publish
             </Button>
           </HStack>
-          <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
+          <Button
+            w="full"
+            variant="outline"
+            onClick={() => clearPreviewData()}
+            mt="1rem"
+          >
             Cancel
           </Button>
         </Box>

@@ -172,7 +172,7 @@ const RentForm = ({
       );
     } else if (formStep === 1) {
       return (
-        <Box>
+        <Box mt="2rem">
           <HStack spacing={3} pt="5">
             <Box w="50%">
               <ButtonComponent
@@ -183,6 +183,7 @@ const RentForm = ({
             </Box>
             <Button
               w="50%"
+              mt="1rem"
               variant="outline"
               onClick={() => clearPreviewData()}
             >

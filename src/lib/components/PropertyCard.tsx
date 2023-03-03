@@ -231,7 +231,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
 
           {
             //@ts-ignore
-            (item.statusId == 8 || item.statusId == 10) && (
+            (item.status.name == 'SOLD' || item.status.name == 'INACTIVE') && (
               <Box
                 bgColor="#2FDF84"
                 w="full"

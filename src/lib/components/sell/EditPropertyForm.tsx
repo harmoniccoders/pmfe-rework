@@ -209,6 +209,7 @@ const EditPropertyForm = ({
         name: '',
         extention: '',
         base64String: '',
+        propertyId: item.id,
       };
 
       medias.push(newMedia);
@@ -264,6 +265,26 @@ const EditPropertyForm = ({
       });
     }
   };
+  const [uploadMedia, { loading: isLoad, data: isDatas, error: isErrors }] =
+    useOperationMethod('Mediaupload');
+
+  const updateMedia = async (data: MediaModel) => {
+    try {
+      const result = await (await uploadMedia(undefined, data)).data;
+      if (result.status) {
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -285,10 +306,24 @@ const EditPropertyForm = ({
   const { user } = useContext(UserContext);
   const [draftLoading, setDraftLoading] = useState(false);
   const toast = useToast();
+
+  const asyncForEach = async (array: any, callback: any) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  };
+
   const saveToDraft = (draft: boolean) => {
     draft ? setDraftLoading(true) : setDraftLoading(false);
+
     const onSubmit = async (data: PropertyModel) => {
       await getLongAndLat(data);
+      await asyncForEach(
+        uploadedMedia.filter((x) => x.propertyId !== undefined),
+        async (select: MediaModel) => {
+          await updateMedia(select);
+        }
+      );
       {
         draft ? (data.isDraft = true) : (data.isDraft = false);
       }
