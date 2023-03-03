@@ -79,11 +79,11 @@ function MyListings({
                 );
               })}
             </SimpleGrid>
-            <Box my="2rem">
+            {/* <Box my="2rem">
               <Flex justifyContent="center">
                 <Pagination data={data} />
               </Flex>
-            </Box>
+            </Box> */}
           </Box>
         ) : (
           <Heading fontSize="16px" lineHeight={1.5}>

@@ -48,7 +48,7 @@ const TenancyCard = ({ category, data }: Props) => {
 
             <Text fontSize="14px">{`Next rent is due in ${moment(
               data.rentDueDate
-            ).diff(moment(data.transaction?.dateCreated), 'day')} days`}</Text>
+            ).diff(moment(), 'day')} days`}</Text>
           </HStack>
         </VStack>
 

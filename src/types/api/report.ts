@@ -1,4 +1,5 @@
 /* tslint:disable */
+import { Property } from './property';
 import { User } from './user';
 
 export interface Report {
@@ -6,7 +7,9 @@ export interface Report {
   dateCreated?: string;
   dateModified?: string;
   propertyId?: number;
-  userId?: number;
+  userId?: null | number;
   user?: User;
-  description?: number;
+  description?: null | string;
+  email?: null | string;
+  property?: Property;
 }

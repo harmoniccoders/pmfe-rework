@@ -51,7 +51,7 @@ function Tenant({
               For Tenant
             </Text>
 
-            {data.length > 0 ? (
+            {data?.length > 0 ? (
               <MyTenancy category={category} data={data} />
             ) : (
               <Text mt="3" fontWeight="medium" fontSize=".9rem">

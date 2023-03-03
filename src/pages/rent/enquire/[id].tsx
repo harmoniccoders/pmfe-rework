@@ -15,7 +15,6 @@ interface Props {
 }
 
 const index = ({ data, date, paymentRates }: Props) => {
-  
   const router = useRouter();
   const isUser = Cookies.get('userIn');
   useEffect(() => {
@@ -40,7 +39,6 @@ const index = ({ data, date, paymentRates }: Props) => {
 export default index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
   const bearer = `Bearer ${ctx.req.cookies.token}`;
   const _dataAccess = new DataAccess(bearer);
   const id = ctx.params?.id;
@@ -63,7 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } catch (error) {
     return {
       props: {
-        data: [],
+        data: {},
       },
     };
   }

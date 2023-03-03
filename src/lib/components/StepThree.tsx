@@ -7,11 +7,17 @@ import {
   Box,
   Icon,
   Text,
+  HStack,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import Icons from './Icons';
 import { TbHourglassHigh } from 'react-icons/tb';
 import { FaCheck } from 'react-icons/fa';
+import { DataAccess } from 'lib/Utils/Api';
+import Cookies from 'js-cookie';
+import { useToasts } from 'react-toast-notifications';
+import ReceiptModal from './Modals/ReceiptModal';
 
 type Props = {
   applicationData: any;
@@ -24,6 +30,40 @@ const iconStyle = {
 const StepThree = ({ applicationData }: Props) => {
   const payment =
     applicationData.status === 'SOLD' || applicationData.status === 'INACTIVE';
+  const { addToast } = useToasts();
+  const [loading, setLoading] = useState(false);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [receiptData, setReceiptData] = useState<any>();
+
+  const loadReceipt = async () => {
+    const bearer = `Bearer ${Cookies.get('token')}`;
+    const _dataAccess = new DataAccess(bearer);
+    setLoading(true);
+    try {
+      const result = await _dataAccess.get(
+        `/api/Property/property/receipt/${applicationData.id}`
+      );
+      // console.log(result);
+      if (result.status) {
+        setLoading(false);
+        setReceiptData(result.data);
+        onOpen();
+        console.log({ result });
+        return;
+      }
+      setLoading(false);
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    } catch (error: any) {
+      addToast(error.body || error.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  };
   return (
     <>
       <Flex
@@ -65,22 +105,24 @@ const StepThree = ({ applicationData }: Props) => {
             width="100%"
             fontSize="13px"
             color="brand.900"
-            justifyContent="flex-start"
             role="group"
-            display="flex"
-            alignItems="center"
             disabled={!payment}
+            onClick={loadReceipt}
+            isLoading={loading}
+            justifyContent={loading ? 'center' : 'flex-start'}
           >
-            <Box
-              pr="10px"
-              _groupHover={{
-                color: 'white',
-              }}
-            >
-              <Icons iconClass="fa-scroll" />
-            </Box>
+            <HStack align="center">
+              <Box
+                pr="10px"
+                _groupHover={{
+                  color: 'white',
+                }}
+              >
+                <Icons iconClass="fa-scroll" />
+              </Box>
 
-            <Text>View Receipt</Text>
+              <Text>View Receipt</Text>
+            </HStack>
           </Button>
 
           <Button
@@ -93,6 +135,7 @@ const StepThree = ({ applicationData }: Props) => {
             display="flex"
             alignItems="center"
             disabled={!payment}
+            onClick={() => window.open(applicationData?.documentUrl, '_blank')}
           >
             <Box
               pr="10px"
@@ -106,6 +149,7 @@ const StepThree = ({ applicationData }: Props) => {
           </Button>
         </VStack>
       </Flex>
+      <ReceiptModal open={isOpen} close={onClose} data={receiptData} />
     </>
   );
 };

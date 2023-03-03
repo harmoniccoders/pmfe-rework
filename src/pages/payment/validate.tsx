@@ -1,5 +1,7 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import Validate from 'lib/components/Validate';
+import { DataAccess } from 'lib/Utils/Api';
 import { GetServerSideProps } from 'next';
 import { Transaction } from 'types/api';
 
@@ -13,6 +15,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const tx_ref = ctx.query.tx_ref;
   const transaction_id = ctx.query.transaction_id;
   const status = ctx.query.status;
+  const bearer = `Bearer ${Cookies.get('token')}`;
+  const _dataAccess = new DataAccess(bearer);
+  console.log({ tx_ref, transaction_id, status });
 
   if (status == 'cancelled') {
     return {
@@ -20,15 +25,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         permanent: false,
         destination: '/payment/cancelled',
       },
-      props: {},
     };
   }
   try {
     const data = await (
-      await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASEURL}/api/payment/validate/${tx_ref}/${transaction_id}`
-      )
+      await _dataAccess.get(`/api/payment/validate/${tx_ref}/${transaction_id}`)
     ).data;
+    // console.log({ data });
 
     return {
       props: {

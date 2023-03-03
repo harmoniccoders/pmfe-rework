@@ -1,4 +1,4 @@
-import {  Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 
 interface Props {
   content: string;
@@ -7,6 +7,7 @@ interface Props {
 }
 
 const ButtonComponent = ({ content, isValid, loading }: Props) => {
+  // console.log({ isValid });
   return (
     <Button
       type="submit"
@@ -15,7 +16,7 @@ const ButtonComponent = ({ content, isValid, loading }: Props) => {
       my="25px"
       variant="solid"
       textTransform="capitalize"
-      // disabled={isValid ? false : true}
+      disabled={isValid ? false : true}
       isLoading={loading}
     >
       {content}

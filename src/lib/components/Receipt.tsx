@@ -17,14 +17,15 @@ import React from 'react';
 import { TableData, TableHead } from './Table';
 
 type ReceiptProps = {
-  name: string;
-  amount: string | number;
-  price: string | number;
-  txRef: string;
+  name: string | number | undefined | null;
+  amount: string | number | undefined | null;
+  price: string | number | undefined | null;
+  txRef: string | undefined | null;
   property: any;
   date: any;
-  card: string;
+  card: string | undefined | null;
   mr?: string | [string, string];
+  p?: string;
 };
 function Receipt({
   name,
@@ -35,15 +36,16 @@ function Receipt({
   date,
   card,
   mr,
+  p = '3rem 2rem 2rem',
 }: ReceiptProps) {
   return (
     <Box
       w={['full', '93%']}
       ml="auto"
       mr={mr}
-      p="3rem 2rem 2rem"
+      p={p}
       mb={['1rem', '0rem']}
-      minH="100vh"
+      minH="50vh"
       overflow="hidden"
     >
       <Link href="/" passHref>

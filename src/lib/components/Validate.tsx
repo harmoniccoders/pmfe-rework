@@ -7,8 +7,9 @@ import { useReactToPrint } from 'react-to-print';
 import { Transaction } from 'types/api';
 import Receipt from './Receipt';
 
-function Validate({ data }: { data: Transaction }) {
+function Validate({ data }: { data: any }) {
   const transaction = data;
+  console.log({ transaction });
   const componentRef = useRef<any>();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -36,7 +37,7 @@ function Validate({ data }: { data: Transaction }) {
           <PdfDownloader
             rootElementId="receipt"
             downloadFileName={`${transaction?.property?.name || ''}-${
-              transaction?.paymentLog?.transactionReference || ''
+              transaction?.transaction?.paymentLog?.transactionReference || ''
             }`}
           />
 
@@ -65,23 +66,21 @@ function Validate({ data }: { data: Transaction }) {
             name={`${transaction?.user?.firstName || ''}  ${
               transaction?.user?.lastName || ''
             }`}
-            amount={(transaction?.amount as unknown as number) || 0}
+            amount={(transaction?.transaction?.amount as unknown as number) || 0}
             price={transaction?.property?.price || 0}
-            txRef={transaction?.paymentLog?.transactionReference || ''}
+            txRef={
+              transaction?.transaction?.paymentLog?.transactionReference || ''
+            }
             property={`1. ${transaction?.property?.name || ''} - ${
               transaction?.property?.lga || ''
             }`}
-            date={`${
-              moment(
-                new Date(transaction?.paymentLog?.createdAt as string)
-              ).format('Do MMM YYYY') || ''
+            date={moment(transaction?.transaction?.dateCreated).format(
+              'DD MMMM YYYY - LT'
+            )}
+            card={`${
+              transaction?.transaction?.paymentLog?.card?.type || ''
             } - ${
-              moment(
-                new Date(transaction?.paymentLog?.createdAt as string).getTime()
-              ).format('LT') || ''
-            }`}
-            card={`${transaction?.paymentLog?.card?.type || ''} - ${
-              transaction?.paymentLog?.card?.last4Digits || ''
+              transaction?.transaction?.paymentLog?.card?.last4Digits || ''
             }`}
           />
         </Box>
@@ -89,29 +88,25 @@ function Validate({ data }: { data: Transaction }) {
         <div style={{ display: 'none' }}>
           <Box w="90%" mx="auto" ref={componentRef}>
             <Receipt
-              mr="auto"
+              mr={['auto', 'unset']}
               name={`${transaction?.user?.firstName || ''}  ${
                 transaction?.user?.lastName || ''
               }`}
-              amount={(transaction?.amount as unknown as number) || 0}
-              price={(transaction?.property?.price as unknown as number) || 0}
-              txRef={transaction?.paymentLog?.transactionReference || ''}
+              amount={(transaction?.transaction?.amount as unknown as number) || 0}
+              price={transaction?.property?.price || 0}
+              txRef={
+                transaction?.transaction?.paymentLog?.transactionReference || ''
+              }
               property={`1. ${transaction?.property?.name || ''} - ${
                 transaction?.property?.lga || ''
               }`}
-              date={`${
-                moment(
-                  new Date(transaction?.paymentLog?.createdAt as string)
-                ).format('Do MMM YYYY') || ''
+              date={moment(transaction?.transaction?.dateCreated).format(
+                'DD MMMM YYYY - LT'
+              )}
+              card={`${
+                transaction?.transaction?.paymentLog?.card?.type || ''
               } - ${
-                moment(
-                  new Date(
-                    transaction?.paymentLog?.createdAt as string
-                  ).getTime()
-                ).format('LT') || ''
-              }`}
-              card={`${transaction?.paymentLog?.card?.type || ''} - ${
-                transaction?.paymentLog?.card?.last4Digits || ''
+                transaction?.transaction?.paymentLog?.card?.last4Digits || ''
               }`}
             />
           </Box>

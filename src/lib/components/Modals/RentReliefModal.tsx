@@ -30,7 +30,7 @@ import Cookies from 'js-cookie';
 import ButtonComponent from 'lib/components/Button';
 import { PrimaryDate } from 'lib/Utils/PrimaryDate';
 import { Widget } from '@uploadcare/react-widget';
-import { BiImage } from 'react-icons/bi';
+import { BiError, BiImage } from 'react-icons/bi';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { CurrencyField } from 'lib/Utils/CurrencyInput';
 import moment from 'moment';
@@ -57,11 +57,11 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   const schema = yup.object().shape({
     register: yup.object({
       firstName: yup.string().required(),
-      middleName: yup.string(),
+      // middleName: yup.string(),
       lastName: yup.string().required(),
       email: yup.string().email().required(),
       phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      dateOfBirth: yup.string().required(),
+      // dateOfBirth: yup.string().required(),
       occupation: yup.string().when('firstName', {
         is: () => formStep === 1,
         then: yup.string().required(),
@@ -81,7 +81,6 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       nationality: yup.string(),
       maritalStatus: yup.string().required(),
     }),
-
     reliefAmount: yup.number().when('firstName', {
       is: () => formStep === 2,
       then: yup.number().required(),
@@ -100,6 +99,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   let user: any;
   if (users !== undefined) {
     user = JSON.parse(users);
+    console.log({ user });
   }
 
   const {
@@ -141,8 +141,9 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
     repaymentFrequencyValue === 'once'
       ? 1
       : payBackDate.diff(startDate, repaymentFrequencyValue);
-  let installments = totalPayment / payments;
-  installments = installments.toFixed(0) as unknown as number;
+  const installs = totalPayment / payments;
+  // console.log({ installs, totalPayment });
+  const installments = installs.toFixed(0) as unknown as number;
 
   watch('reliefAmount');
   watch('payBackDate');
@@ -227,7 +228,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
         <Box>
           <ButtonComponent
             content="Apply for Rent Relief"
-            isValid={true}
+            isValid={installs === Infinity ? false : true}
             loading={loading}
           />
         </Box>
@@ -320,9 +321,10 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       onClose={onClose}
       formStep={formStep}
       setFormStep={setFormStep}
+      width="40%"
       pmlogo={true}
       content={
-        <VStack alignItems="flex-start" spacing={3} width="100%">
+        <VStack alignItems="flex-start" spacing={3} width="100%" mb="3rem">
           <Text fontWeight={600} color="brand.100" textTransform="capitalize">
             Rent Relief form
           </Text>
@@ -385,15 +387,18 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                     register={register}
                   />
 
+                  {/* <PrimaryInput<ApplicationModel> */}
                   <PrimaryDate<ApplicationModel>
                     label="Date of Birth"
+                    // type="date"
                     name="register.dateOfBirth"
+                    placeholder="Select date of birth"
                     error={errors.register?.dateOfBirth}
                     register={register}
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={user?.dateOfBirth || ''}
+                    defaultValue={new Date(user?.dateOfBirth) || new Date()}
                   />
 
                   <PrimarySelect<ApplicationModel>
@@ -671,8 +676,21 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                     control={control}
                     fontSize="sm"
                     minDate={new Date()}
-                    defaultValue={user?.dateOfBirth}
+                    defaultValue={new Date()}
                   />
+                  {installments == Infinity && (
+                    <HStack
+                      bgColor="red.100"
+                      fontSize=".8rem"
+                      p=".3rem .5rem"
+                      mt=".5rem"
+                    >
+                      <Icon as={BiError} color="red.500" />
+                      <Text>
+                        Pay back date should match repayment frequency
+                      </Text>
+                    </HStack>
+                  )}
                   <PrimarySelect<ApplicationModel>
                     label="How do you want to pay back?"
                     name="repaymentFrequency"
@@ -725,7 +743,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
                       <Box>
                         <Text>Installments</Text>
                         <Text fontWeight="600">
-                          {naira(installments as unknown as number)}
+                          {naira(installments == Infinity ? 0 : installments)}
                           {/* {installments.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,

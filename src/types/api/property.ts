@@ -52,4 +52,5 @@ export interface Property {
   rentCollectionType?: RentCollectionType;
   rentCollectionTypeId?: null | number;
   inspections?: null | Array<Inspections>;
+  documentUrl?: null | string;
 }

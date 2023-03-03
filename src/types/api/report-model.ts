@@ -4,5 +4,5 @@ export interface ReportModel {
   userName?: null | string;
   email?: null | string;
   userId?: number;
-  description: string;
+  description?: null | string;
 }

@@ -3,6 +3,7 @@ import { Property } from './property';
 import { User } from './user';
 
 export interface ReportView {
+  id?: number;
   property?: Property;
   user?: User;
   description?: null | string;

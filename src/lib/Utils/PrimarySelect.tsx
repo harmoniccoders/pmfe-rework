@@ -8,7 +8,6 @@ import {
 import Icons from 'lib/components/Icons';
 import { FieldError, Path, UseFormRegister } from 'react-hook-form';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-
 interface FormInputProps<TFormValues extends Record<string, unknown>> {
   name: Path<TFormValues>;
   placeholder: string;
@@ -38,7 +37,9 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
   borderColor = 'grey',
 }: FormInputProps<TFormValues>) => {
   return (
-    <FormControl isInvalid={error?.type === 'required'}>
+    <FormControl
+      isInvalid={error?.type === 'required' || error?.message !== undefined}
+    >
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
@@ -70,7 +71,7 @@ export const PrimarySelect = <TFormValues extends Record<string, any>>({
         {/* <option disabled>{placeholder}</option> */}
         {options}
       </Select>
-      <FormErrorMessage fontSize=".7rem">
+      <FormErrorMessage fontSize=".7rem" textTransform="capitalize">
         {(error?.type === 'required' && `${label} is required`) ||
           error?.message}
       </FormErrorMessage>

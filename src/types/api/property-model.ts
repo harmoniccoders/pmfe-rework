@@ -32,4 +32,5 @@ export interface PropertyModel {
   bank?: null | string;
   accountNumber?: null | string;
   propertyRequestMatchId?: number;
+  documentUrl?: null | string;
 }

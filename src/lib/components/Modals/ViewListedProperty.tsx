@@ -211,7 +211,7 @@ const ViewListedProperty = ({ isOpen, onClose, item, openModal }: Props) => {
                 {item.enquiries}
               </Text>
               <Text fontSize="14px" fontWeight="500">
-                Enquires
+                Enquiries
               </Text>
             </GridItem>
           </Grid>

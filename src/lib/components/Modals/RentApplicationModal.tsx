@@ -52,13 +52,13 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
-    register: yup.object({
+    register: yup.object().shape({
       firstName: yup.string().required(),
-      middleName: yup.string(),
+      // middleName: yup.string(),
       lastName: yup.string().required(),
       email: yup.string().email().required(),
       phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      dateOfBirth: yup.string().required(),
+      // dateOfBirth: yup.string().required(),
       passportPhotograph: yup.string(),
       workId: yup.string(),
       occupation: yup.string().when('firstName', {
@@ -77,14 +77,17 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
       maritalStatus: yup.string().required(),
     }),
 
-    // nextOfKin: yup.object({
-    //   firstName: yup.string().required(),
-    //   lastName: yup.string().required(),
-    //   email: yup.string().email().required(),
-    //   phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-    //   address: yup.string().required(),
-    //   relationship: yup.string().required(),
-    // }),
+    nextOfKin: yup.object().when('firstName', {
+      is: () => formStep === 1,
+      then: yup.object().shape({
+        firstName: yup.string().required(),
+        lastName: yup.string().required(),
+        email: yup.string().email().required(),
+        phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+        address: yup.string().required(),
+        relationship: yup.string().required(),
+      }),
+    }),
   });
 
   const users = Cookies.get('user') as unknown as string;
@@ -238,6 +241,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
       pmlogo={true}
       formStep={formStep}
       setFormStep={setFormStep}
+      width="40%"
       content={
         <VStack alignItems="flex-start" spacing={3} width="100%">
           <Text fontWeight={600} fontSize="16px">
@@ -314,7 +318,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={user?.dateOfBirth || ''}
+                    defaultValue={new Date(user?.dateOfBirth) || new Date()}
                   />
 
                   <PrimarySelect<ApplicationModel>
@@ -579,7 +583,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
                   />
                 </>
               )}
-              {RenderButton()}
+              <Box mt="1rem">{RenderButton()}</Box>
             </>
           </form>
         </VStack>

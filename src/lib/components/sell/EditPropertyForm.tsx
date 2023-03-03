@@ -13,6 +13,7 @@ import {
   useDisclosure,
   useToast,
   VStack,
+  Spinner,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -68,7 +69,9 @@ const EditPropertyForm = ({
 }: Props) => {
   const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
-  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>(
+    item.mediaFiles as MediaModel[]
+  );
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   // console.log({ getBanks });
 
@@ -154,7 +157,7 @@ const EditPropertyForm = ({
       );
     } else if (formStep === 1) {
       return (
-        <Box>
+        <Box mt="2rem">
           <HStack spacing={3}>
             <Button
               w="50%"
@@ -177,7 +180,12 @@ const EditPropertyForm = ({
               {item.isDraft ? 'Publish' : 'Update'}
             </Button>
           </HStack>
-          <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
+          <Button
+            w="full"
+            variant="outline"
+            onClick={() => clearPreviewData()}
+            mt="1rem"
+          >
             Cancel
           </Button>
         </Box>
@@ -201,6 +209,7 @@ const EditPropertyForm = ({
         name: '',
         extention: '',
         base64String: '',
+        propertyId: item.id,
       };
 
       medias.push(newMedia);
@@ -208,6 +217,8 @@ const EditPropertyForm = ({
 
     setUploadedMedia([...uploadedMedia, ...medias]);
   };
+
+  console.log({ uploadedMedia });
 
   const groupInfo = async (uuid: string) => {
     const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
@@ -228,21 +239,39 @@ const EditPropertyForm = ({
   const [deleteItem, { loading, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  const deleteMedia = async (mediaId: any) => {
+  const deleteMedia = async (media: any) => {
     const params: Parameters = {
-      id: mediaId,
+      id: media.id,
     };
 
+    if (media.id == undefined) {
+      setUploadedMedia(uploadedMedia.filter((x) => x.url !== media.url));
+      return;
+    }
     try {
       const result = await (await deleteItem(params)).data;
       if (result.status) {
-        addToast(
-          'File deleted successfully, you may need to reload page to see changes',
-          {
-            appearance: 'success',
-            autoDismiss: true,
-          }
-        );
+        setUploadedMedia(uploadedMedia.filter((x) => x.url !== media.url));
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  };
+  const [uploadMedia, { loading: isLoad, data: isDatas, error: isErrors }] =
+    useOperationMethod('Mediaupload');
+
+  const updateMedia = async (data: MediaModel) => {
+    try {
+      const result = await (await uploadMedia(undefined, data)).data;
+      if (result.status) {
         return;
       }
       addToast(result.message, {
@@ -277,16 +306,30 @@ const EditPropertyForm = ({
   const { user } = useContext(UserContext);
   const [draftLoading, setDraftLoading] = useState(false);
   const toast = useToast();
+
+  const asyncForEach = async (array: any, callback: any) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  };
+
   const saveToDraft = (draft: boolean) => {
     draft ? setDraftLoading(true) : setDraftLoading(false);
+
     const onSubmit = async (data: PropertyModel) => {
       await getLongAndLat(data);
+      await asyncForEach(
+        uploadedMedia.filter((x) => x.propertyId !== undefined),
+        async (select: MediaModel) => {
+          await updateMedia(select);
+        }
+      );
       {
         draft ? (data.isDraft = true) : (data.isDraft = false);
       }
 
       data.sellMyself = sellMyself;
-      data.mediaFiles = item.mediaFiles?.concat(uploadedMedia);
+      data.mediaFiles = uploadedMedia;
       data.bank = user?.bank || data.bank;
       data.accountNumber = user?.accountNumber || data.accountNumber;
       if (
@@ -443,49 +486,49 @@ const EditPropertyForm = ({
                     </Flex>
                   </VStack>
                   {!sellMyself && (
-                     <Tooltip
-                     label={
-                       user?.accountNumber !== null
-                         ? 'Account information can only be changed on your profile page'
-                         : ''
-                     }
-                     hasArrow
-                   >
-                    <Box mb="1.3rem">
-                      <PrimarySelect<PropertyModel>
-                        register={register}
-                        error={errors.bank}
-                        defaultValue={item?.createdByUser?.bank}
-                        label="Your Bank"
-                        placeholder="Choose your bank"
-                        name="bank"
-                        disabled={item?.createdByUser?.bank !== null}
-                        options={
-                          <>
-                            {getBanks?.map((x: any, i: any) => {
-                              return (
-                                <option value={x.name} key={i}>
-                                  {x.name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        }
-                      />
-                      <PrimaryInput<PropertyModel>
-                        label="Your Account Number"
-                        name="accountNumber"
-                        placeholder="Enter your bank account number"
-                        defaultValue={
-                          item?.createdByUser?.accountNumber as string
-                        }
-                        register={register}
-                        error={errors.accountNumber}
-                        disableLabel={
-                          item?.createdByUser?.accountNumber !== null
-                        }
-                      />
-                    </Box>
+                    <Tooltip
+                      label={
+                        user?.accountNumber !== null
+                          ? 'Account information can only be changed on your profile page'
+                          : ''
+                      }
+                      hasArrow
+                    >
+                      <Box mb="1.3rem">
+                        <PrimarySelect<PropertyModel>
+                          register={register}
+                          error={errors.bank}
+                          defaultValue={item?.createdByUser?.bank}
+                          label="Your Bank"
+                          placeholder="Choose your bank"
+                          name="bank"
+                          disabled={item?.createdByUser?.bank !== null}
+                          options={
+                            <>
+                              {getBanks?.map((x: any, i: any) => {
+                                return (
+                                  <option value={x.name} key={i}>
+                                    {x.name}
+                                  </option>
+                                );
+                              })}
+                            </>
+                          }
+                        />
+                        <PrimaryInput<PropertyModel>
+                          label="Your Account Number"
+                          name="accountNumber"
+                          placeholder="Enter your bank account number"
+                          defaultValue={
+                            item?.createdByUser?.accountNumber as string
+                          }
+                          register={register}
+                          error={errors.accountNumber}
+                          disableLabel={
+                            item?.createdByUser?.accountNumber !== null
+                          }
+                        />
+                      </Box>
                     </Tooltip>
                   )}
                 </>
@@ -533,9 +576,14 @@ const EditPropertyForm = ({
                       ref={widgetApi}
                     />
                     <>
-                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {item.mediaFiles
+                      {uploadedMedia && uploadedMedia?.length > 0 && (
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
+                          {uploadedMedia
                             .filter((m) => m.isImage)
                             .map((item: any) => {
                               return (
@@ -568,13 +616,17 @@ const EditPropertyForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      <FaTrash
-                                        color="white"
-                                        fontSize="1rem"
-                                        onClick={() => {
-                                          deleteMedia(item.id);
-                                        }}
-                                      />
+                                      {loading ? (
+                                        <Spinner />
+                                      ) : (
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            deleteMedia(item);
+                                          }}
+                                        />
+                                      )}
                                     </Box>
                                     <Image
                                       src={item.url}
@@ -590,42 +642,6 @@ const EditPropertyForm = ({
                         </HStack>
                       )}
                     </>
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack
-                          w="full"
-                          spacing="1rem"
-                          overflow="auto"
-                          mt="1rem"
-                        >
-                          {uploadedMedia
-                            .filter((m) => m.isImage)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                    pos="relative"
-                                  >
-                                    <Image
-                                      src={item.url}
-                                      alt="propery-image"
-                                      w="100%"
-                                      height="100%"
-                                      objectFit="cover"
-                                    />
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
                   </Box>
                   <Box>
                     <Flex
@@ -658,14 +674,28 @@ const EditPropertyForm = ({
                       ref={widgetApis}
                     />
                     <>
-                      {item.mediaFiles && item.mediaFiles?.length > 0 && (
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {item.mediaFiles
+                      {uploadedMedia && uploadedMedia?.length > 0 && (
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
+                          {uploadedMedia
                             .filter((m) => m.isVideo)
                             .map((item: any) => {
                               return (
                                 <SRLWrapper>
-                                  <Box role="group" pos="relative">
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
                                     <Box
                                       pos="absolute"
                                       left="50%"
@@ -684,21 +714,25 @@ const EditPropertyForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      <FaTrash
-                                        color="white"
-                                        fontSize="1rem"
-                                        onClick={() => {
-                                          deleteMedia(item.id);
-                                        }}
-                                      />
+                                      {loading ? (
+                                        <Spinner />
+                                      ) : (
+                                        <FaTrash
+                                          color="white"
+                                          fontSize="1rem"
+                                          onClick={() => {
+                                            deleteMedia(item);
+                                          }}
+                                        />
+                                      )}
                                     </Box>
-                                    <video width="150px" height="150px">
-                                      <source
-                                        src={item.url as string}
-                                        type="video/mp4"
-                                      />
-                                      Your browser does not support this video
-                                    </video>
+                                    <Image
+                                      src={item.url}
+                                      alt="propery-image"
+                                      w="100%"
+                                      height="100%"
+                                      objectFit="cover"
+                                    />
                                   </Box>
                                 </SRLWrapper>
                               );
@@ -706,40 +740,6 @@ const EditPropertyForm = ({
                         </HStack>
                       )}
                     </>
-                    {uploadedMedia.length > 0 && (
-                      <>
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {uploadedMedia
-                            .filter((m) => m.isVideo)
-                            .map((item: any) => {
-                              return (
-                                <SRLWrapper>
-                                  <Box
-                                    w="90px"
-                                    h="90px"
-                                    borderRadius="5px"
-                                    bgColor="brand.50"
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                  >
-                                    <AspectRatio
-                                      maxW="150px"
-                                      w="full"
-                                      ratio={1}
-                                    >
-                                      <iframe
-                                        title="Interactive videp"
-                                        src={item.url as string}
-                                        allowFullScreen
-                                      />
-                                    </AspectRatio>
-                                  </Box>
-                                </SRLWrapper>
-                              );
-                            })}
-                        </HStack>
-                      </>
-                    )}
                   </Box>
 
                   <NumberCounter

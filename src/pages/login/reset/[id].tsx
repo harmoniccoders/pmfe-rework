@@ -32,6 +32,11 @@ const PasswordReset = ({ code }: { code: string }) => {
   });
 
   const { addToast } = useToasts();
+  const [showPassword, setShowPassword] = useState(true);
+  const changePasswordField = () => {
+    setShowPassword(!showPassword);
+  };
+
   const [showSuccess, setShowSuccess] = useState(false);
 
   const onSubmit = async (data: PasswordReset) => {
@@ -116,7 +121,10 @@ const PasswordReset = ({ code }: { code: string }) => {
                   error={errors.newPassword}
                   defaultValue=""
                   register={register}
-                  type="password"
+                  changePasswordType={changePasswordField}
+                  type={showPassword ? 'password' : 'text'}
+                  iconClass={showPassword ? 'fa-eye' : 'fa-eye-slash'} 
+        
                 />
 
                 <ButtonComponent

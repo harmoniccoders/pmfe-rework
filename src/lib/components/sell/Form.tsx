@@ -33,7 +33,7 @@ import { useOperationMethod } from 'react-openapi-client';
 import axios from 'axios';
 import { RadioButton } from 'lib/Utils/CheckBox/RadioButton';
 import RadioInput from 'lib/Utils/CheckBox/RadioInput';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaTrash } from 'react-icons/fa';
 import NumberCounter from 'lib/Utils/NumberCounter';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import { Widget } from '@uploadcare/react-widget';
@@ -141,7 +141,7 @@ const Form = ({
       );
     } else if (formStep === 1) {
       return (
-        <Box>
+        <Box mt="2rem">
           <HStack spacing={3}>
             <Button
               w="50%"
@@ -164,7 +164,12 @@ const Form = ({
               Publish
             </Button>
           </HStack>
-          <Button w="full" variant="outline" onClick={() => clearPreviewData()}>
+          <Button
+            w="full"
+            variant="outline"
+            onClick={() => clearPreviewData()}
+            mt="1rem"
+          >
             Cancel
           </Button>
         </Box>
@@ -500,7 +505,39 @@ const Form = ({
                                     bgColor="brand.50"
                                     flexShrink={0}
                                     overflow="hidden"
+                                    role="group"
+                                    pos="relative"
                                   >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setUploadedMedia(
+                                            uploadedMedia.filter(
+                                              (x) => x.url !== item.url
+                                            )
+                                          );
+                                        }}
+                                      />
+                                    </Box>
                                     <Image
                                       src={item.url}
                                       alt="propery-image"
@@ -561,7 +598,39 @@ const Form = ({
                                     bgColor="brand.50"
                                     flexShrink={0}
                                     overflow="hidden"
+                                    role="group"
+                                    pos="relative"
                                   >
+                                    <Box
+                                      pos="absolute"
+                                      left="50%"
+                                      top="50%"
+                                      w="full"
+                                      h="full"
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      transition=".5s ease all"
+                                      opacity="0"
+                                      cursor="pointer"
+                                      transform="translate(-50%, -50%)"
+                                      _groupHover={{
+                                        opacity: 1,
+                                        bgColor: 'rgba(0,0,0,.5)',
+                                      }}
+                                    >
+                                      <FaTrash
+                                        color="white"
+                                        fontSize="1rem"
+                                        onClick={() => {
+                                          setUploadedMedia(
+                                            uploadedMedia.filter(
+                                              (x) => x.url !== item.url
+                                            )
+                                          );
+                                        }}
+                                      />
+                                    </Box>
                                     <AspectRatio
                                       maxW="150px"
                                       w="full"

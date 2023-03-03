@@ -1,7 +1,7 @@
 /* tslint:disable */
-import { ReceiptViewStandardResponse } from './receipt-view-standard-response';
+import { StringStandardResponse } from './string-standard-response';
 
-export type PropertypropertyreceiptPropertyIdResponse<
+export type ReportcontactResponse<
   TCode extends 200 = 200,
   TContentType extends 'text/plain' | 'application/json' | 'text/json' =
     | 'text/plain'
@@ -9,10 +9,10 @@ export type PropertypropertyreceiptPropertyIdResponse<
     | 'text/json'
 > = TCode extends 200
   ? TContentType extends 'text/plain'
-    ? ReceiptViewStandardResponse
+    ? StringStandardResponse
     : TContentType extends 'application/json'
-    ? ReceiptViewStandardResponse
+    ? StringStandardResponse
     : TContentType extends 'text/json'
-    ? ReceiptViewStandardResponse
+    ? StringStandardResponse
     : any
   : any;

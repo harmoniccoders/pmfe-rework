@@ -17,6 +17,10 @@ interface modalProps {
   content: any;
   formStep?: 0 | number;
   setFormStep?: any;
+  width?: any;
+  h?: any;
+  pb?: any;
+  showBack?: boolean;
 }
 export default function Modals({
   isOpen,
@@ -25,6 +29,10 @@ export default function Modals({
   content,
   formStep,
   setFormStep,
+  width = '40%',
+  h = '77vh',
+  pb = '4rem',
+  showBack = true,
 }: modalProps) {
   return (
     <Modal
@@ -45,12 +53,15 @@ export default function Modals({
         pos="fixed"
         mt="0rem"
         mb="0rem"
+        maxW="100%"
+        w={width}
       >
         <ModalHeader>
           <Flex
             justifyContent="space-between"
             alignItems="center"
             pt={['2rem', '0']}
+            display={showBack ? 'flex' : 'none'}
           >
             {formStep === 0 || formStep == undefined ? (
               <Text
@@ -83,8 +94,8 @@ export default function Modals({
               </Text>
             )}
 
-            <Box w="150px" h="40px">
-              {pmlogo ? (
+            {pmlogo ? (
+              <Box w="150px" h="40px">
                 <Image
                   src="/assets/PropertyMataaz.png"
                   alt="company-logo"
@@ -92,13 +103,13 @@ export default function Modals({
                   h="100%"
                   objectFit="contain"
                 />
-              ) : null}
-            </Box>
+              </Box>
+            ) : null}
           </Flex>
         </ModalHeader>
 
         <ModalBody>
-          <Box maxH="77vh" overflowY="auto" px={5} pb="4rem">
+          <Box maxH={h} overflowY="auto" px={5} pb={pb}>
             {content}
           </Box>
         </ModalBody>
