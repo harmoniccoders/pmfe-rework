@@ -83,7 +83,9 @@ const EditRentForm = ({
     item.mediaFiles as MediaModel[]
   );
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
-  // console.log({ item });
+  const [sellMyself, setSellMyself] = useState(item.sellMyself);
+  const { user } = useContext(UserContext);
+  console.log({ sellMyself });
 
   const schema = yup.object().shape({
     // address: yup.string().required(),
@@ -128,7 +130,7 @@ const EditRentForm = ({
     reset,
     getValues,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -148,7 +150,7 @@ const EditRentForm = ({
       description: item.description as string,
       bank: item.createdByUser?.bank,
       accountNumber: item.createdByUser?.accountNumber,
-      sellMyself: item.sellMyself,
+      sellMyself: sellMyself,
       price: item.price,
       numberOfBathrooms: item.numberOfBathrooms,
       numberOfBedrooms: item.numberOfBedrooms,
@@ -160,6 +162,9 @@ const EditRentForm = ({
 
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
+  watch('sellMyself');
+
+  console.log(watch('sellMyself'));
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -177,7 +182,7 @@ const EditRentForm = ({
       return (
         <>
           {sellMyself ? (
-            <ButtonComponent content="Submit" loading={isLoading} />
+            <ButtonComponent content="Submit" loading={isSubmitting} isValid />
           ) : (
             <Button
               w="100%"
@@ -196,7 +201,7 @@ const EditRentForm = ({
         <Box mt="2rem">
           <HStack spacing={3} pt="5">
             <Box w="50%">
-              <ButtonComponent content="Submit" loading={isLoading} />
+              <ButtonComponent content="Submit" loading={isSubmitting} />
             </Box>
             <Button
               w="50%"
@@ -321,9 +326,7 @@ const EditRentForm = ({
       return values;
     }
   };
-  const [sellMyself, setSellMyself] = useState(item.sellMyself);
-  const { user } = useContext(UserContext);
-  const [draftLoading, setDraftLoading] = useState(false);
+
   const toast = useToast();
 
   const asyncForEach = async (array: any, callback: any) => {
@@ -332,90 +335,77 @@ const EditRentForm = ({
     }
   };
 
-  const saveToDraft = (draft: boolean) => {
-    draft ? setDraftLoading(true) : setDraftLoading(false);
-
-    const onSubmit = async (data: PropertyModel) => {
-      await getLongAndLat(data);
-      await asyncForEach(
-        uploadedMedia.filter((x) => x.propertyId !== undefined),
-        async (select: MediaModel) => {
-          await updateMedia(select);
-        }
-      );
-      {
-        draft ? (data.isDraft = true) : (data.isDraft = false);
+  const onSubmit = async (data: PropertyModel) => {
+    await getLongAndLat(data);
+    await asyncForEach(
+      uploadedMedia.filter((x) => x.propertyId !== undefined),
+      async (select: MediaModel) => {
+        await updateMedia(select);
       }
+    );
 
-      data.sellMyself = sellMyself;
-      data.mediaFiles = uploadedMedia;
-      data.bank = user?.bank || data.bank;
-      data.accountNumber = user?.accountNumber || data.accountNumber;
-      if (
-        data.numberOfBathrooms == undefined ||
-        data.numberOfBathrooms == 0 ||
-        data.numberOfBedrooms == undefined ||
-        data.numberOfBedrooms == 0
-      ) {
-        toast({
-          position: 'top-right',
-          status: 'warning',
-          description: 'Number of bedrooms or bathrooms can not be 0',
-        });
-        return;
-      }
-      if ((data.mediaFiles as unknown as []).length == 0) {
-        toast({
-          position: 'top-right',
-          status: 'warning',
-          description: 'Please upload an image or video of your property',
-        });
-        return;
-      }
+    data.sellMyself = sellMyself;
+    data.mediaFiles = uploadedMedia;
+    data.bank = user?.bank || data.bank;
+    data.accountNumber = user?.accountNumber || data.accountNumber;
+    if (
+      data.numberOfBathrooms == undefined ||
+      data.numberOfBathrooms == 0 ||
+      data.numberOfBedrooms == undefined ||
+      data.numberOfBedrooms == 0
+    ) {
+      toast({
+        position: 'top-right',
+        status: 'warning',
+        description: 'Number of bedrooms or bathrooms can not be 0',
+      });
+      return;
+    }
+    // if ((data.mediaFiles as unknown as []).length == 0) {
+    //   toast({
+    //     position: 'top-right',
+    //     status: 'warning',
+    //     description: 'Please upload an image or video of your property',
+    //   });
+    //   return;
+    // }
 
-      try {
-        const result = await (await PropertyCreate(undefined, data)).data;
+    try {
+      const result = await (await PropertyCreate(undefined, data)).data;
 
-        if (result.status) {
-          draft
-            ? addToast('Property Saved to Draft', {
-                appearance: 'success',
-                autoDismiss: true,
-              })
-            : addToast(
-                'Your property has been submitted for review. We will notify you when it goes live.',
-                {
-                  appearance: 'success',
-                  autoDismiss: true,
-                }
-              );
-          onClose();
-          setFormStep(0);
-          router.reload();
-          return;
-        }
-        addToast(result.message, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-        setFormStep(0);
+      if (result.status) {
+        addToast(
+          'Your property has been submitted for review. We will notify you when it goes live.',
+          {
+            appearance: 'success',
+            autoDismiss: true,
+          }
+        );
         onClose();
+        setFormStep(0);
+        router.reload();
         return;
-      } catch (err: any) {
-        addToast(err.message || err.body.message, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
       }
-    };
-    handleSubmit(onSubmit)();
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      setFormStep(0);
+      onClose();
+      return;
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   return (
     <>
       <Box>
         <Stack>
-          <form style={{ width: '100%' }}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <>
               {formStep == 0 && (
                 <>

@@ -21,6 +21,7 @@ import {
   MediaModel,
   RentCollectionType,
   TenantType,
+  UserView,
 } from 'types/api';
 import ButtonComponent from 'lib/components/Button';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -77,19 +78,20 @@ const RentForm = ({
   const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const { user } = useContext(UserContext);
+  const users: UserView = user;
 
   const schema = yup.object().shape({
+    name: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    title: yup.string().required(),
+    state: yup.string().required(),
+    lga: yup.string().required(),
+    area: yup.string().required(),
     address: yup.string().required(),
     description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    name: yup.string().required(),
+    price: yup.number().required(),
     numberOfBathrooms: yup.number().required(),
     numberOfBedrooms: yup.number().required(),
-    price: yup.number().required(),
     budget: yup.number().when('name', {
       is: () => formStep === 1,
       then: yup.number().required(),
@@ -121,18 +123,20 @@ const RentForm = ({
     trigger,
     getValues,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
       isForRent: true,
+      bank: users.bank,
+      accountNumber: users.accountNumber,
     },
   });
 
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
-  watch('sellMyself');
+  console.log(watch('sellMyself'));
 
   const completeFormStep = async () => {
     await trigger();
@@ -155,7 +159,11 @@ const RentForm = ({
       return (
         <>
           {sellMyself ? (
-            <ButtonComponent content="Submit" loading={loading} />
+            <ButtonComponent
+              content="Submit"
+              loading={isSubmitting}
+              isValid={true}
+            />
           ) : (
             <Button
               w="100%"
@@ -178,7 +186,7 @@ const RentForm = ({
               <ButtonComponent
                 content="Submit"
                 isValid={true}
-                loading={loading}
+                loading={isSubmitting}
               />
             </Box>
             <Button
@@ -256,7 +264,7 @@ const RentForm = ({
 
   const onSubmit = async (data: PropertyModel) => {
     await getLongAndLat(data);
-    data.sellMyself = data.sellMyself as boolean;
+    data.sellMyself = sellMyself;
     data.mediaFiles = uploadedMedia;
     data.bank = user?.bank || data.bank;
     data.accountNumber = user?.accountNumber || data.accountNumber;

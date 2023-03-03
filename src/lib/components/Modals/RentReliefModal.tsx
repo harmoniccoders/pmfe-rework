@@ -15,7 +15,7 @@ import {
   SimpleGrid,
   Heading,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MediaModel, PropertyView } from 'types/api';
 import { useRouter } from 'next/router';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
@@ -107,6 +107,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
     handleSubmit,
     control,
     getValues,
+    setValue,
     watch,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
@@ -118,6 +119,14 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
       reliefAmount: item.price,
     },
   });
+
+  useEffect(() => {
+    //@ts-ignore
+    setValue('register.dateOfBirth', new Date(user?.dateOfBirth));
+  }, []);
+
+  // console.log(watch('register.dateOfBirth'));
+  // console.log(user.dateOfBirth);
 
   let reliefAmount = getValues('reliefAmount') as number;
   // let reliefAmount = item.price as number;
@@ -237,6 +246,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   };
 
   const onSubmit = async (data: ApplicationModel) => {
+    console.log({ data });
     data.register
       ? (data.register.dateOfBirth = new Date(
           data.register?.dateOfBirth as unknown as Date
