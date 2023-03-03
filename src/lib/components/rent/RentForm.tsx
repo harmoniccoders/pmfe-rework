@@ -559,17 +559,16 @@ const RentForm = ({
                                           }}
                                         />
                                       </Box>
-                                      <AspectRatio
-                                        maxW="150px"
-                                        w="full"
-                                        ratio={1}
+                                      <video
+                                        controls
+                                        style={{
+                                          objectFit: 'cover',
+                                          maxWidth: '130px',
+                                          height: '130px',
+                                        }}
                                       >
-                                        <iframe
-                                          title="Interactive videp"
-                                          src={item.url as string}
-                                          allowFullScreen
-                                        />
-                                      </AspectRatio>
+                                        <source src={item.url as string} />
+                                      </video>
                                     </Box>
                                   </SRLWrapper>
                                 );

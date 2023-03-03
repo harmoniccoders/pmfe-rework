@@ -13,6 +13,7 @@ import {
   useDisclosure,
   VStack,
   Spinner,
+  useToast,
 } from '@chakra-ui/react';
 import { PrimaryInput } from 'lib/Utils/PrimaryInput';
 import {
@@ -76,25 +77,27 @@ const EditRentForm = ({
   item,
   onClose,
 }: Props) => {
-  const [PropertyUpdate, { loading: isLoading, data, error }] =
+  const [PropertyCreate, { loading: isLoading, data, error }] =
     useOperationMethod('Propertyupdate');
-  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>([]);
+  const [uploadedMedia, setUploadedMedia] = useState<MediaModel[]>(
+    item.mediaFiles as MediaModel[]
+  );
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
-  console.log({ item });
+  // console.log({ item });
 
   const schema = yup.object().shape({
-    address: yup.string().required(),
-    description: yup.string().required(),
-    title: yup.string().required(),
-    area: yup.string().required(),
-    lga: yup.string().required(),
-    state: yup.string().required(),
-    propertyTypeId: yup.number().required(),
-    sellMyself: yup.string().required(),
-    name: yup.string().required(),
-    numberOfBathrooms: yup.number().required(),
-    numberOfBedrooms: yup.number().required(),
-    price: yup.number().required(),
+    // address: yup.string().required(),
+    // description: yup.string().required(),
+    // title: yup.string().required(),
+    // area: yup.string().required(),
+    // lga: yup.string().required(),
+    // state: yup.string().required(),
+    // propertyTypeId: yup.number().required(),
+    // sellMyself: yup.string().required(),
+    // name: yup.string().required(),
+    // numberOfBathrooms: yup.number().required(),
+    // numberOfBedrooms: yup.number().required(),
+    // price: yup.number().required(),
     // budget: yup.number().when('name', {
     //   is: () => formStep === 1,
     //   then: yup.number(),
@@ -157,7 +160,6 @@ const EditRentForm = ({
 
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
-  watch('sellMyself');
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
@@ -165,8 +167,6 @@ const EditRentForm = ({
 
   const widgetApi = useRef();
   const widgetApis = useRef();
-
-  const [selectedId, setSelectedId] = useState<Number>();
 
   const clearPreviewData = () => {
     setFormStep(0);
@@ -193,13 +193,14 @@ const EditRentForm = ({
       );
     } else if (formStep === 1) {
       return (
-        <Box>
+        <Box mt="2rem">
           <HStack spacing={3} pt="5">
             <Box w="50%">
               <ButtonComponent content="Submit" loading={isLoading} />
             </Box>
             <Button
               w="50%"
+              mt="1rem"
               variant="outline"
               onClick={() => clearPreviewData()}
             >
@@ -217,8 +218,6 @@ const EditRentForm = ({
   const onChangeImg = async (info: any, type: boolean) => {
     uploaded = await groupInfo(info.uuid);
 
-    let newArr = [info.count];
-
     let medias: MediaModel[] = [];
 
     uploaded.files.forEach((file: any) => {
@@ -229,6 +228,7 @@ const EditRentForm = ({
         name: '',
         extention: '',
         base64String: '',
+        propertyId: item.id,
       };
 
       medias.push(newMedia);
@@ -236,6 +236,8 @@ const EditRentForm = ({
 
     setUploadedMedia([...uploadedMedia, ...medias]);
   };
+
+  // console.log({ uploadedMedia });
 
   const groupInfo = async (uuid: string) => {
     const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
@@ -253,31 +255,55 @@ const EditRentForm = ({
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const [mediaFilesItem, setMediaFilesItem] = useState(item.mediaFiles);
-  const [deleteItem, { loading: load, data: isData, error: isError }] =
+  const [deleteItem, { loading, data: isData, error: isError }] =
     useOperationMethod('Mediadelete{id}');
 
-  useNonInitialEffect(() => {
-    const deleteMedia = async () => {
-      const params: Parameters = {
-        id: selectedId as number,
-      };
-
-      try {
-        const result = await (await deleteItem(params)).data;
-        if (result.status) {
-        }
-      } catch (err: any) {
-        addToast(err.message || err.body.message, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-      }
-      setMediaFilesItem(mediaFilesItem?.filter((x) => x.id !== selectedId));
+  const deleteMedia = async (media: any) => {
+    const params: Parameters = {
+      id: media.id,
     };
-    deleteMedia();
-  }, [selectedId]);
 
+    if (media.id == undefined) {
+      setUploadedMedia(uploadedMedia.filter((x) => x.url !== media.url));
+      return;
+    }
+    try {
+      const result = await (await deleteItem(params)).data;
+      if (result.status) {
+        setUploadedMedia(uploadedMedia.filter((x) => x.url !== media.url));
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  };
+  const [uploadMedia, { loading: isLoad, data: isDatas, error: isErrors }] =
+    useOperationMethod('Mediaupload');
+
+  const updateMedia = async (data: MediaModel) => {
+    try {
+      const result = await (await uploadMedia(undefined, data)).data;
+      if (result.status) {
+        return;
+      }
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } catch (err: any) {
+      addToast(err.message || err.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  };
   Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string);
   Geocode.setRegion('ng');
   //@ts-ignore
@@ -297,45 +323,99 @@ const EditRentForm = ({
   };
   const [sellMyself, setSellMyself] = useState(item.sellMyself);
   const { user } = useContext(UserContext);
-  const onSubmit = async (data: PropertyModel) => {
-    getLongAndLat(data);
-    data.sellMyself = data.sellMyself as boolean;
-    data.mediaFiles = mediaFilesItem?.concat(uploadedMedia);
-    data.bank = user?.bank || data.bank;
-    data.accountNumber = user?.accountNumber || data.accountNumber;
-    try {
-      const result = await (await PropertyUpdate(undefined, data)).data;
+  const [draftLoading, setDraftLoading] = useState(false);
+  const toast = useToast();
 
-      if (result.status !== 400) {
-        addToast('Property successfully Updated', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-
-        onClose();
-        setFormStep(0);
-        router.reload();
-        return;
-      }
-      onClose();
-      addToast(result.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      setFormStep(0);
-      return;
-    } catch (err: any) {
-      addToast(err.message || err.body.message, {
-        appearance: 'error',
-        autoDismiss: true,
-      });
+  const asyncForEach = async (array: any, callback: any) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
     }
   };
+
+  const saveToDraft = (draft: boolean) => {
+    draft ? setDraftLoading(true) : setDraftLoading(false);
+
+    const onSubmit = async (data: PropertyModel) => {
+      await getLongAndLat(data);
+      await asyncForEach(
+        uploadedMedia.filter((x) => x.propertyId !== undefined),
+        async (select: MediaModel) => {
+          await updateMedia(select);
+        }
+      );
+      {
+        draft ? (data.isDraft = true) : (data.isDraft = false);
+      }
+
+      data.sellMyself = sellMyself;
+      data.mediaFiles = uploadedMedia;
+      data.bank = user?.bank || data.bank;
+      data.accountNumber = user?.accountNumber || data.accountNumber;
+      if (
+        data.numberOfBathrooms == undefined ||
+        data.numberOfBathrooms == 0 ||
+        data.numberOfBedrooms == undefined ||
+        data.numberOfBedrooms == 0
+      ) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Number of bedrooms or bathrooms can not be 0',
+        });
+        return;
+      }
+      if ((data.mediaFiles as unknown as []).length == 0) {
+        toast({
+          position: 'top-right',
+          status: 'warning',
+          description: 'Please upload an image or video of your property',
+        });
+        return;
+      }
+
+      try {
+        const result = await (await PropertyCreate(undefined, data)).data;
+
+        if (result.status) {
+          draft
+            ? addToast('Property Saved to Draft', {
+                appearance: 'success',
+                autoDismiss: true,
+              })
+            : addToast(
+                'Your property has been submitted for review. We will notify you when it goes live.',
+                {
+                  appearance: 'success',
+                  autoDismiss: true,
+                }
+              );
+          onClose();
+          setFormStep(0);
+          router.reload();
+          return;
+        }
+        addToast(result.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        setFormStep(0);
+        onClose();
+        return;
+      } catch (err: any) {
+        addToast(err.message || err.body.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    };
+    handleSubmit(onSubmit)();
+  };
+
   return (
     <>
       <Box>
         <Stack>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+          <form style={{ width: '100%' }}>
             <>
               {formStep == 0 && (
                 <>
@@ -418,6 +498,7 @@ const EditRentForm = ({
                     control={control}
                     label="Rent (Per year)"
                   />
+
                   <Box>
                     <Flex
                       w="full"
@@ -449,11 +530,16 @@ const EditRentForm = ({
                       ref={widgetApi}
                     />
                     <>
-                      {mediaFilesItem && mediaFilesItem?.length > 0 && (
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {mediaFilesItem
+                      {uploadedMedia && uploadedMedia?.length > 0 && (
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
+                          {uploadedMedia
                             .filter((m) => m.isImage)
-                            .map((x: any) => {
+                            .map((item: any) => {
                               return (
                                 <SRLWrapper>
                                   <Box
@@ -484,20 +570,20 @@ const EditRentForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      {load && selectedId == x.id ? (
+                                      {loading ? (
                                         <Spinner />
                                       ) : (
                                         <FaTrash
                                           color="white"
                                           fontSize="1rem"
                                           onClick={() => {
-                                            setSelectedId(x.id);
+                                            deleteMedia(item);
                                           }}
                                         />
                                       )}
                                     </Box>
                                     <Image
-                                      src={x.url}
+                                      src={item.url}
                                       alt="propery-image"
                                       w="100%"
                                       height="100%"
@@ -507,42 +593,6 @@ const EditRentForm = ({
                                 </SRLWrapper>
                               );
                             })}
-                          {uploadedMedia.length > 0 && (
-                            <>
-                              <HStack
-                                w="full"
-                                spacing="1rem"
-                                overflow="auto"
-                                mt="1rem"
-                              >
-                                {uploadedMedia
-                                  .filter((m) => m.isImage)
-                                  .map((x: any) => {
-                                    return (
-                                      <SRLWrapper>
-                                        <Box
-                                          w="90px"
-                                          h="90px"
-                                          borderRadius="5px"
-                                          bgColor="brand.50"
-                                          flexShrink={0}
-                                          overflow="hidden"
-                                          pos="relative"
-                                        >
-                                          <Image
-                                            src={x.url}
-                                            alt="propery-image"
-                                            w="100%"
-                                            height="100%"
-                                            objectFit="cover"
-                                          />
-                                        </Box>
-                                      </SRLWrapper>
-                                    );
-                                  })}
-                              </HStack>
-                            </>
-                          )}
                         </HStack>
                       )}
                     </>
@@ -578,14 +628,28 @@ const EditRentForm = ({
                       ref={widgetApis}
                     />
                     <>
-                      {mediaFilesItem && mediaFilesItem?.length > 0 && (
-                        <HStack w="full" spacing="1rem" overflow="auto">
-                          {mediaFilesItem
+                      {uploadedMedia && uploadedMedia?.length > 0 && (
+                        <HStack
+                          w="full"
+                          spacing="1rem"
+                          overflow="auto"
+                          mt="1rem"
+                        >
+                          {uploadedMedia
                             .filter((m) => m.isVideo)
-                            .map((x: any) => {
+                            .map((item: any) => {
                               return (
                                 <SRLWrapper>
-                                  <Box role="group" pos="relative">
+                                  <Box
+                                    w="90px"
+                                    h="90px"
+                                    borderRadius="5px"
+                                    bgColor="brand.50"
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    role="group"
+                                    pos="relative"
+                                  >
                                     <Box
                                       pos="absolute"
                                       left="50%"
@@ -604,68 +668,36 @@ const EditRentForm = ({
                                         bgColor: 'rgba(0,0,0,.5)',
                                       }}
                                     >
-                                      {load && selectedId == x.id ? (
+                                      {loading ? (
                                         <Spinner />
                                       ) : (
                                         <FaTrash
                                           color="white"
                                           fontSize="1rem"
                                           onClick={() => {
-                                            setSelectedId(x.id);
+                                            deleteMedia(item);
                                           }}
                                         />
                                       )}
                                     </Box>
-                                    <video width="150px" height="150px">
-                                      <source
-                                        src={x.url as string}
-                                        type="video/mp4"
-                                      />
-                                      Your browser does not support this video
+                                    <video
+                                      controls
+                                      style={{
+                                        objectFit: 'cover',
+                                        maxWidth: '130px',
+                                        height: '130px',
+                                      }}
+                                    >
+                                      <source src={item.url as string} />
                                     </video>
                                   </Box>
                                 </SRLWrapper>
                               );
                             })}
-                          {uploadedMedia.length > 0 && (
-                            <>
-                              <HStack w="full" spacing="1rem" overflow="auto">
-                                {uploadedMedia
-                                  .filter((m) => m.isVideo)
-                                  .map((x: any) => {
-                                    return (
-                                      <SRLWrapper>
-                                        <Box
-                                          w="90px"
-                                          h="90px"
-                                          borderRadius="5px"
-                                          bgColor="brand.50"
-                                          flexShrink={0}
-                                          overflow="hidden"
-                                        >
-                                          <AspectRatio
-                                            maxW="150px"
-                                            w="full"
-                                            ratio={1}
-                                          >
-                                            <iframe
-                                              title="Interactive videp"
-                                              src={x.url as string}
-                                              allowFullScreen
-                                            />
-                                          </AspectRatio>
-                                        </Box>
-                                      </SRLWrapper>
-                                    );
-                                  })}
-                              </HStack>
-                            </>
-                          )}
                         </HStack>
                       )}
                     </>
                   </Box>
-
                   <NumberCounter
                     valueName="numberOfBedrooms"
                     setValue={setValue}
@@ -736,7 +768,6 @@ const EditRentForm = ({
                     <Text fontWeight="600">Rent Collection</Text>
                     <PrimarySelect<PropertyModel>
                       register={register}
-
                       error={errors.rentCollectionTypeId}
                       label="How Frequently do you want to collect rent?"
                       placeholder="Choose option: weekly, monthly, yearly"

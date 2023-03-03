@@ -218,7 +218,7 @@ const EditPropertyForm = ({
     setUploadedMedia([...uploadedMedia, ...medias]);
   };
 
-  console.log({ uploadedMedia });
+  // console.log({ uploadedMedia });
 
   const groupInfo = async (uuid: string) => {
     const result = await fetch(`https://api.uploadcare.com/groups/${uuid}/`, {
@@ -726,13 +726,16 @@ const EditPropertyForm = ({
                                         />
                                       )}
                                     </Box>
-                                    <Image
-                                      src={item.url}
-                                      alt="propery-image"
-                                      w="100%"
-                                      height="100%"
-                                      objectFit="cover"
-                                    />
+                                    <video
+                                      controls
+                                      style={{
+                                        objectFit: 'cover',
+                                        maxWidth: '130px',
+                                        height: '130px',
+                                      }}
+                                    >
+                                      <source src={item.url as string} />
+                                    </video>
                                   </Box>
                                 </SRLWrapper>
                               );
