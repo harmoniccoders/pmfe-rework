@@ -1553,6 +1553,132 @@
         }
       }
     },
+    "/api/Admin/enquiries/user/get/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminenquiriesuserget{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEnquiryPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEnquiryPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEnquiryPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/list/user/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Adminlistuser{id}",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyRequestViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Application/new": {
       "post": {
         "tags": [
@@ -2280,6 +2406,60 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplaintsViewPagedCollectionStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Complaints/property/list/all": {
+      "get": {
+        "tags": [
+          "Complaints"
+        ],
+        "operationId": "Complaintspropertylistall",
+        "parameters": [
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "maximum": 99999,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
             }
           }
         ],
@@ -5122,6 +5302,47 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BooleanStandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Tenancy/{id}": {
+      "get": {
+        "tags": [
+          "Tenancy"
+        ],
+        "operationId": "Tenancy{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenancyViewStandardResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenancyViewStandardResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenancyViewStandardResponse"
                 }
               }
             }
@@ -8917,6 +9138,9 @@
               "$ref": "#/components/schemas/InspectionView"
             },
             "nullable": true
+          },
+          "singleInspection": {
+            "$ref": "#/components/schemas/InspectionView"
           }
         },
         "additionalProperties": false
@@ -9291,6 +9515,94 @@
           },
           "data": {
             "$ref": "#/components/schemas/TenancyViewPagedCollection"
+          },
+          "statusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserEnquiryPagedCollection": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "previous": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "last": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserEnquiry"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserEnquiryPagedCollectionStandardResponse": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "default": "GET",
+            "nullable": true
+          },
+          "routeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeValues": {
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserEnquiryPagedCollection"
           },
           "statusCode": {
             "type": "string",
@@ -11579,94 +11891,6 @@
           },
           "newPassword": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserEnquiryPagedCollection": {
-        "type": "object",
-        "properties": {
-          "offset": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "limit": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "first": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "previous": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "next": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "last": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "self": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "value": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserEnquiry"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserEnquiryPagedCollectionStandardResponse": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string",
-            "nullable": true
-          },
-          "relations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "method": {
-            "type": "string",
-            "default": "GET",
-            "nullable": true
-          },
-          "routeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "routeValues": {
-            "nullable": true
-          },
-          "status": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/UserEnquiryPagedCollection"
-          },
-          "statusCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "errors": {
             "nullable": true
           }
         },

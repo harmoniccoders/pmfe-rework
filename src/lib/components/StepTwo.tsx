@@ -105,10 +105,9 @@ const StepTwo = ({
             </Box>
 
             <Text>
-              {applicationData?.applicationStatus == 'ACTIVE'
+              {applicationData?.applicationStatus == 'ACTIVE' ||
+              applicationData?.applicationStatus == 'REVIEWED'
                 ? 'Application Submitted'
-                : applicationData?.applicationStatus == 'REVIEWED'
-                ? 'Under review'
                 : applicationData?.applicationStatus == 'ACCEPTED'
                 ? 'Proceed to payment'
                 : applicationData?.applicationStatus == 'APPROVED'

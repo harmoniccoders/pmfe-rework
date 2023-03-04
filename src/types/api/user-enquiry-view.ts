@@ -13,4 +13,5 @@ export interface UserEnquiryView {
   area?: null | string;
   dateCreated?: string;
   inspection?: null | Array<InspectionView>;
+  singleInspection?: InspectionView;
 }
