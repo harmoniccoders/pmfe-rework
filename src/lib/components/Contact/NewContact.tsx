@@ -47,8 +47,8 @@ const NewContact = () => {
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      userName: user.fullName,
-      email: user.email,
+      userName: user?.fullName,
+      email: user?.email,
     },
   });
   const { addToast } = useToasts();
