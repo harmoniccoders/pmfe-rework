@@ -613,6 +613,7 @@ const Form = ({
                                       transition=".5s ease all"
                                       opacity="0"
                                       cursor="pointer"
+                                      zIndex="999"
                                       transform="translate(-50%, -50%)"
                                       _groupHover={{
                                         opacity: 1,
@@ -622,6 +623,7 @@ const Form = ({
                                       <FaTrash
                                         color="white"
                                         fontSize="1rem"
+                                        cursor="pointer"
                                         onClick={() => {
                                           setUploadedMedia(
                                             uploadedMedia.filter(

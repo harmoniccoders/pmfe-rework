@@ -105,9 +105,10 @@ const StepTwo = ({
             </Box>
 
             <Text>
-              {applicationData?.applicationStatus == 'ACTIVE' ||
-              applicationData?.applicationStatus == 'REVIEWED'
+              {applicationData?.applicationStatus == 'ACTIVE'
                 ? 'Application Submitted'
+                : applicationData?.applicationStatus == 'REVIEWED'
+                ? 'Application Accepted'
                 : applicationData?.applicationStatus == 'ACCEPTED'
                 ? 'Proceed to payment'
                 : applicationData?.applicationStatus == 'APPROVED'
@@ -134,8 +135,9 @@ const StepTwo = ({
                   // applicationData?.hasApplied == false ||
                   data.status === 'SOLD'
                 : isRent
-                ? //  applicationData?.applicationStatus === 'REVIEWED' ||
-                  applicationData?.hasPaid == true || data.status === 'INACTIVE'
+                ? applicationData?.applicationStatus !== 'REVIEWED' ||
+                  applicationData?.hasPaid == true ||
+                  data.status === 'INACTIVE'
                 : false
             }
             onClick={payOpen}

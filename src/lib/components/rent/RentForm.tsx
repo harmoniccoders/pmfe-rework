@@ -549,6 +549,7 @@ const RentForm = ({
                                         transition=".5s ease all"
                                         opacity="0"
                                         cursor="pointer"
+                                        zIndex="999"
                                         transform="translate(-50%, -50%)"
                                         _groupHover={{
                                           opacity: 1,

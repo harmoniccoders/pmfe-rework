@@ -76,7 +76,14 @@ const InstructionModal = ({
           close();
           setRedirect(false);
         }, 3000);
+        return;
       }
+      close();
+      addToast(result.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
     } catch (err: any) {
       addToast(err.message || err.body.message, {
         appearance: 'error',

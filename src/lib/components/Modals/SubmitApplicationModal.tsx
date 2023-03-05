@@ -41,28 +41,27 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
   const mobile = /^([0]{1})[0-9]{10}$/;
   const schema = yup.object().shape({
-    register: yup.object({
-      firstName: yup.string().required(),
-      middleName: yup.string(),
-      lastName: yup.string().required(),
-      email: yup.string().email().required(),
-      phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-      dateOfBirth: yup.string().required(),
-      occupation: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string().required(),
-      }),
-      companyName: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string().required(),
-      }),
-      workAddress: yup.string().when('firstName', {
-        is: () => formStep === 1,
-        then: yup.string().required(),
-      }),
-      nationality: yup.string().required(),
-      maritalStatus: yup.string().required(),
-    }),
+    // register: yup.object({
+    //   firstName: yup.string().required(),
+    //   lastName: yup.string().required(),
+    //   email: yup.string().email().required(),
+    //   // phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+    //   dateOfBirth: yup.string().required(),
+    //   // occupation: yup.string().when('firstName', {
+    //   //   is: () => formStep === 1,
+    //   //   then: yup.string().required(),
+    //   // }),
+    //   // companyName: yup.string().when('firstName', {
+    //   //   is: () => formStep === 1,
+    //   //   then: yup.string().required(),
+    //   // }),
+    //   // workAddress: yup.string().when('firstName', {
+    //   //   is: () => formStep === 1,
+    //   //   then: yup.string().required(),
+    //   // }),
+    //   nationality: yup.string().required(),
+    //   maritalStatus: yup.string().required(),
+    // }),
   });
 
   const users = Cookies.get('user') as unknown as string;
@@ -77,6 +76,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
     register,
     handleSubmit,
     control,
+    trigger,
     setValue,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
@@ -86,16 +86,16 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
   const { addToast } = useToasts();
   const completeFormStep = () => {
-    if (isValid) {
-      setFormStep((cur: number) => cur + 1);
-      return;
-    }
+    setFormStep((cur: number) => cur + 1);
+    return;
+
+    // }
   };
+  console.log({ isValid });
   const RenderButton = () => {
     if (formStep === 0) {
       return (
         <Button
-          type={isValid == false ? 'submit' : 'button'}
           w="100%"
           h="100%"
           variant="solid"
@@ -260,7 +260,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
                     control={control}
                     fontSize="sm"
                     maxDate={new Date()}
-                    defaultValue={new Date(user?.dateOfBirth) || new Date() }
+                    defaultValue={new Date(user?.dateOfBirth) || new Date()}
                   />
 
                   <PrimarySelect<ApplicationModel>

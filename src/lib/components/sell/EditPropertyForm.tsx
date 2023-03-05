@@ -709,6 +709,7 @@ const EditPropertyForm = ({
                                       opacity="0"
                                       cursor="pointer"
                                       transform="translate(-50%, -50%)"
+                                      zIndex="999"
                                       _groupHover={{
                                         opacity: 1,
                                         bgColor: 'rgba(0,0,0,.5)',
