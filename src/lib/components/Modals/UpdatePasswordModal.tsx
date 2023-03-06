@@ -19,6 +19,8 @@ import { useOperationMethod } from 'react-openapi-client';
 import { useToasts } from 'react-toast-notifications';
 import { PasswordResetModel } from 'types/api';
 import Modals from 'lib/Utils/Modals';
+import Cookies from 'js-cookie';
+import { LogUserOut } from '../Generics/Logout';
 
 interface AddPropertyProps {
   isOpen: boolean;
@@ -75,7 +77,7 @@ function UpdateUserModal({ isOpen, onClose }: AddPropertyProps) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.href = '/login';
+        LogUserOut('/login');
         return;
       }
       onClose();

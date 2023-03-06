@@ -30,8 +30,8 @@ import { PrimarySelect } from 'lib/Utils/PrimarySelect';
 
 const mobile = /^([0]{1})[0-9]{10}$/;
 const schema = yup.object().shape({
-  phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
-  profilePicture: yup.string(),
+  // phoneNumber: yup.string().matches(mobile, 'Invalid phone number'),
+  // profilePicture: yup.string(),
 });
 
 function Profile({ getBanks }: { getBanks: any }) {

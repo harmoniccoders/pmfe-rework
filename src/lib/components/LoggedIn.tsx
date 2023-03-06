@@ -8,6 +8,7 @@ import listenForOutsideClick from 'lib/Utils/listenForOutsideClick';
 import UpdateUserModal from 'lib/components/Modals/UpdatePasswordModal';
 import { DataAccess } from 'lib/Utils/Api';
 import { UserContext } from 'lib/Utils/MainContext';
+import { LogUserOut } from './Generics/Logout';
 
 interface NavProps {
   path: string;
@@ -41,12 +42,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
   const [isOpened, setIsOpened] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>();
-  const LogUserOut = () => {
-    Cookies.remove('user');
-    Cookies.remove('token');
-    Cookies.remove('userIn');
-    window.location.href = '/';
-  };
+
   const { user, setUser } = useContext(UserContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -156,7 +152,7 @@ const LoggedIn = ({ closeMenu }: { closeMenu: () => void }) => {
             w="full"
             cursor="pointer"
             _hover={{ color: 'brand.100' }}
-            onClick={() => LogUserOut()}
+            onClick={() => LogUserOut('/')}
           >
             Logout
           </Text>
