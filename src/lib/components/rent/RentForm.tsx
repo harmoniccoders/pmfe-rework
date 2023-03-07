@@ -136,7 +136,7 @@ const RentForm = ({
 
   watch('numberOfBedrooms');
   watch('numberOfBathrooms');
-  console.log(watch('sellMyself'));
+  // console.log(watch('sellMyself'));
 
   const completeFormStep = async () => {
     await trigger();

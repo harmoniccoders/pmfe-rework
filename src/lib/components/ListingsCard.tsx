@@ -54,7 +54,7 @@ const ListingsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  console.log({ item });
+  // console.log({ item });
 
   return (
     <>

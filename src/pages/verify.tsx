@@ -41,11 +41,11 @@ const verify = () => {
   const { addToast } = useToasts();
   const [minutes, setMinutes] = useState(1); 
   const [seconds,setSeconds] = useState(59);
-   console.log({seconds})
+  //  console.log({seconds})
   const resendCode =async () => {
     try {
       const result = await (await ReverifyUser(userEmail)).data 
-      console.log({result})
+      // console.log({result})
       if (result.status) {
         addToast('Code has been sent, check your mail', {
           appearance: 'success',

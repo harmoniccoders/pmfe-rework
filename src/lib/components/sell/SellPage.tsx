@@ -26,7 +26,7 @@ const sell = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const data = listings?.value;
-  console.log({ data });
+  // console.log({ data });
 
   const result = data?.filter((property: PropertyView) => !property.isDraft);
 

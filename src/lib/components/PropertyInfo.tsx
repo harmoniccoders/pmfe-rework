@@ -25,7 +25,7 @@ const iconStyle = {
 };
 
 const PropertyInfo = ({ data }: Props) => {
-  console.log({ data });
+  // console.log({ data });
   return (
     <>
       <VStack

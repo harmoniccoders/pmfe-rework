@@ -48,7 +48,7 @@ const StepThree = ({ applicationData }: Props) => {
         setLoading(false);
         setReceiptData(result.data);
         onOpen();
-        console.log({ result });
+        // console.log({ result });
         return;
       }
       setLoading(false);

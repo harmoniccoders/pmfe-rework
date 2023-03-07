@@ -9,7 +9,7 @@ import Receipt from './Receipt';
 
 function Validate({ data }: { data: any }) {
   const transaction = data;
-  console.log({ transaction });
+  // console.log({ transaction });
   const componentRef = useRef<any>();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,

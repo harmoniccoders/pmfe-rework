@@ -35,7 +35,7 @@ const RejectMatchModal = ({ isOpen, onClose, item }: Props) => {
 
     try {
       const result = await (await rejectRequest(params)).data;
-      console.log({ result });
+      // console.log({ result });
 
       if (result.status) {
         onClose();

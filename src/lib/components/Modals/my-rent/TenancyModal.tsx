@@ -49,7 +49,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const [CreateComplaint, { loading, data, error }] =
     useOperationMethod('Complaintscreate');
 
-  console.log({ propertyData });
+  // console.log({ propertyData });
 
   const [showCategory, setShowCategory] = useState<boolean>(false);
 
@@ -75,7 +75,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
         setLoading(false);
         setReceiptData(result.data);
         onOpen();
-        console.log({ result });
+        // console.log({ result });
         return;
       }
       setLoading(false);
@@ -106,7 +106,7 @@ const TenancyModal = ({ isOpen, onClose, category, propertyData }: Props) => {
   const { addToast } = useToasts();
 
   const onSubmit = async (data: ComplaintsModel) => {
-    console.log({ data });
+    // console.log({ data });
 
     try {
       const result = await (await CreateComplaint(undefined, data)).data;

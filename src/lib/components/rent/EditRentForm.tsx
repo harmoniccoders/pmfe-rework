@@ -85,7 +85,7 @@ const EditRentForm = ({
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const [sellMyself, setSellMyself] = useState(item.sellMyself);
   const { user } = useContext(UserContext);
-  console.log({ sellMyself });
+  // console.log({ sellMyself });
 
   const schema = yup.object().shape({
     // address: yup.string().required(),
@@ -164,7 +164,7 @@ const EditRentForm = ({
   watch('numberOfBathrooms');
   watch('sellMyself');
 
-  console.log(watch('sellMyself'));
+  // console.log(watch('sellMyself'));
 
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);

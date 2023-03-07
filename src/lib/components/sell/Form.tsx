@@ -271,7 +271,7 @@ const Form = ({
         });
         return;
       }
-      console.log({ data });
+      // console.log({ data });
 
       try {
         const result = await (await PropertyCreate(undefined, data)).data;

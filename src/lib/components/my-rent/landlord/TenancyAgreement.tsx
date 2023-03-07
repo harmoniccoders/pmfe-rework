@@ -44,7 +44,7 @@ export default function TenancyAgreement({
     };
     try {
       const result = (await agreeTenancy(params)).data;
-      console.log({ result });
+      // console.log({ result });
       if (result.status) {
         addToast('Agreement Submitted', {
           appearance: 'success',

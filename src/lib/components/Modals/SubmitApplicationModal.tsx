@@ -91,7 +91,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
 
     // }
   };
-  console.log({ isValid });
+  // console.log({ isValid });
   const RenderButton = () => {
     if (formStep === 0) {
       return (

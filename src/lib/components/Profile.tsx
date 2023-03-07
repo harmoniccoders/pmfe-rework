@@ -143,10 +143,10 @@ function Profile({ getBanks }: { getBanks: any }) {
         appearance: 'error',
         autoDismiss: true,
       });
-      console.log({ result });
+      // console.log({ result });
     } catch (error) {}
   };
-  console.log({ user });
+  // console.log({ user });
 
   return (
     <Stack

@@ -99,7 +99,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   let user: any;
   if (users !== undefined) {
     user = JSON.parse(users);
-    console.log({ user });
+    // console.log({ user });
   }
 
   const {
@@ -258,7 +258,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
   };
 
   const onSubmit = async (data: ApplicationModel) => {
-    console.log({ data });
+    // console.log({ data });
     data.register
       ? (data.register.dateOfBirth = new Date(
           data.register?.dateOfBirth as unknown as Date

@@ -30,7 +30,7 @@ const RequestCard = ({ item }: Props) => {
   const router = useRouter();
   const doneRequest: any = item.matches?.filter((x) => x.status == 'ACCEPTED');
   const rejected = item.matches?.every((x: any) => x.status == 'REJECTED');
-  console.log({ rejected });
+  // console.log({ rejected });
 
   return (
     <>

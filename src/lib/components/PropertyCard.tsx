@@ -45,7 +45,7 @@ const PropertyCard = ({ item, matchId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const [openRelief, setOpenRelief] = useState<boolean>(false);
-  console.log({ item });
+  // console.log({ item });
 
   const openReliefModal = () => {
     setOpenRelief(true);

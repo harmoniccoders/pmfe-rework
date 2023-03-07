@@ -14,7 +14,7 @@ const index = ({ data }: { data: any }) => {
       return;
     }
   });
-  console.log({ data });
+  // console.log({ data });
 
   return <Landlord data={data} />;
 };

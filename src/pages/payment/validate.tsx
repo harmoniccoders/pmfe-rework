@@ -17,9 +17,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const status = ctx.query.status;
   const bearer = `Bearer ${Cookies.get('token')}`;
   const _dataAccess = new DataAccess(bearer);
-  console.log({ tx_ref, transaction_id, status });
+  // console.log({ tx_ref, transaction_id, status });
 
   if (status == 'cancelled') {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/payment/cancelled',
+      },
+    };
+  }
+  if (status == 'failed') {
     return {
       redirect: {
         permanent: false,
