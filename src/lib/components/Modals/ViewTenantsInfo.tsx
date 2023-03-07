@@ -103,7 +103,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
   };
 
   const [status, setStatus] = useState<string>('');
-  console.log({ status });
+  // console.log({ status });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,12 +112,10 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
 
       try {
         const result = (
-          await _dataAccess.get(
-            `/api/Application/get/user/property/${item?.property?.id}`
-          )
+          await _dataAccess.get(`/api/Property/get/${item?.property?.id}`)
         ).data;
 
-        setStatus(result);
+        setStatus(result.status);
       } catch (err: any) {
         addToast(err.message || err.body.message, {
           appearance: 'error',
@@ -128,7 +126,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
 
     fetchData();
   }, []);
-  console.log({ item });
+  // console.log({ item });
 
   return (
     <Modals
@@ -210,8 +208,7 @@ const ViewTenantsInfo = ({ isOpen, onClose, item }: Props) => {
                 py="2"
                 bgColor="brand.700"
               >
-                {item?.property?.status === 'INACTIVE' ||
-                item?.status === 'REVIEWED'
+                {status === 'INACTIVE'
                   ? 'Payment Confirmed'
                   : item.status === 'REJECTED'
                   ? 'Rejected'

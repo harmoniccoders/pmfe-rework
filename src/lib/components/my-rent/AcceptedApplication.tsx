@@ -12,7 +12,7 @@ const AcceptedApplication = ({ result }: { result: any }) => {
       <Text fontWeight="bold" mt="2" color="brand.100" fontSize="lg">
         Accepted Applications
       </Text>
-      {accepted.length > 0 ? (
+      {accepted?.length > 0 ? (
         <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="5">
           {accepted.map((item: ApplicationView) => (
             <TenantInfo key={item.id} item={item} />

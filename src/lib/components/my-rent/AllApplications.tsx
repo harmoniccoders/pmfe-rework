@@ -5,7 +5,7 @@ import Pagination from '../Pagination';
 import TenantInfo from '../TenantInfo';
 
 const AllApplications = ({ result, data }: { data: any; result: any }) => {
-  const onAccepted = result.find(
+  const onAccepted = result?.find(
     (item: ApplicationView) => item.status === 'REVIEWED'
   );
   return (

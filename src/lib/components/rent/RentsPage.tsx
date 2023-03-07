@@ -34,8 +34,9 @@ const RentsPage = ({
   };
 
   const openRentRelief = () => {
-    router.push('/rent/rent-relief');
+    router.push('/my-rent/tenancy/tenant');
   };
+  // '/rent/rent-relief'
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showModal, setShowModal] = useState<boolean>(false);

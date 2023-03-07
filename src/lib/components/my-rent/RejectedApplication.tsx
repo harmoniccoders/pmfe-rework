@@ -12,9 +12,9 @@ const RejectedApplication = ({ result }: { result: any }) => {
       <Text fontWeight="bold" mt="2" color="brand.100" fontSize="lg">
         Rejected Applications
       </Text>
-      {rejected.length > 0 ? (
+      {rejected?.length > 0 ? (
         <SimpleGrid columns={[1, 1, 2, 3]} spacing="6" mt="5">
-          {rejected.map((item: ApplicationView) => (
+          {rejected?.map((item: ApplicationView) => (
             <TenantInfo key={item.id} item={item} />
           ))}
         </SimpleGrid>
@@ -23,7 +23,6 @@ const RejectedApplication = ({ result }: { result: any }) => {
           You have not rejected any applications for the property...
         </Text>
       )}
-     
     </Box>
   );
 };
