@@ -21,41 +21,20 @@ type Props = {
   paymentRates: PaymentRatesView;
   isBuy: boolean;
   isRent: boolean;
+  result: any;
+  inspection: any;
 };
 
-const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
-  const [applicationStatus, setApplicationStatus] = useState<any>();
+const SingleEnquiry = ({
+  data,
+  date,
+  paymentRates,
+  isBuy,
+  isRent,
+  result,
+  inspection,
+}: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const { addToast } = useToasts();
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const bearer = `Bearer ${Cookies.get('token')}`;
-      const _dataAccess = new DataAccess(bearer);
-
-      try {
-        const result = (
-          await _dataAccess.get(`/api/Application/get/user/property/${data.id}`)
-        ).data;
-
-        setApplicationStatus(result);
-      } catch (err: any) {
-        addToast(err.message || err.body.message, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // useNonInitialEffect(() => {
-  //   router.reload();
-  // }, [applicationStatus?.hasPaid == true]);
-  // console.log(applicationStatus);
-  // console.log(data);
 
   return (
     <HStack
@@ -67,9 +46,9 @@ const SingleEnquiry = ({ data, date, paymentRates, isBuy, isRent }: Props) => {
     >
       <Box w={{ base: 'full', md: 'full', lg: '45%', xl: '28%' }}>
         <VStack w="100%" alignItems="flex-start" spacing="0rem" px="1.2rem">
-          <StepOne date={date} data={data} />
+          <StepOne date={date} data={data} inspection={inspection} />
           <StepTwo
-            applicationData={applicationStatus}
+            applicationData={result}
             paymentRates={paymentRates}
             data={data}
             isBuy={isBuy}

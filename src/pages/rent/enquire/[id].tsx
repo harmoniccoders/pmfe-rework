@@ -12,9 +12,11 @@ interface Props {
   data: PropertyModel;
   date?: InspectionDateView;
   paymentRates: PaymentRatesView;
+  result: any;
+  inspection: any;
 }
 
-const index = ({ data, date, paymentRates }: Props) => {
+const index = ({ data, date, paymentRates, result, inspection }: Props) => {
   const router = useRouter();
   const isUser = Cookies.get('userIn');
   useEffect(() => {
@@ -31,6 +33,8 @@ const index = ({ data, date, paymentRates }: Props) => {
         date={date}
         isRent={true}
         isBuy={false}
+        result={result}
+        inspection={inspection}
       />
     </Box>
   );
@@ -51,11 +55,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const date = (
       await _dataAccess.get(`/api/Property/inspectiondates/list/${id}`)
     ).data;
+    const result = (
+      await _dataAccess.get(`/api/Application/get/user/property/${data.id}`)
+    ).data;
+    const inspection = (
+      await _dataAccess.get(
+        `/api/Property/inspections/user/property/${data?.id}`
+      )
+    ).data;
+
+    // console.log({ inspection });
+
     return {
       props: {
         paymentRates,
         data,
         date,
+        result,
+        inspection,
       },
     };
   } catch (error) {

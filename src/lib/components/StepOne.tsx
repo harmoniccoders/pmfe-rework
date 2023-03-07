@@ -16,18 +16,19 @@ import Icons from './Icons';
 import { FaCheck } from 'react-icons/fa';
 import LiveInspectionModal from 'lib/components/Modals/LiveInspectionModal';
 import InteractiveVideoModal from 'lib/components/Modals/InteractiveVideoModal';
-import { InspectionDateView, PropertyView } from 'types/api';
+import { InspectionDateView, InspectionView, PropertyView } from 'types/api';
 
 type Props = {
   date?: InspectionDateView;
   data: PropertyView;
+  inspection: InspectionView;
 };
 
 const iconStyle = {
   color: '#191919',
 };
 
-const StepOne = ({ date, data }: Props) => {
+const StepOne = ({ date, data, inspection }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -183,6 +184,7 @@ const StepOne = ({ date, data }: Props) => {
           close={onClose}
           date={date}
           item={data}
+          status={inspection}
         />
       )}
     </>

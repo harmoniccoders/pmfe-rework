@@ -21,9 +21,10 @@ type Props = {
   close: any;
   date?: InspectionDateView;
   item?: PropertyView;
+  status: any;
 };
 
-const LiveInspectionModal = ({ open, close, date, item }: Props) => {
+const LiveInspectionModal = ({ open, close, date, item, status }: Props) => {
   return (
     <Modals
       isOpen={open}
@@ -33,7 +34,12 @@ const LiveInspectionModal = ({ open, close, date, item }: Props) => {
         <>
           <VStack spacing={4} alignItems="flex-start">
             <Text fontWeight={600}>Select an inspection type</Text>
-            <ScheduleTabs date={date} item={item} close={close} />
+            <ScheduleTabs
+              date={date}
+              item={item}
+              close={close}
+              status={status}
+            />
           </VStack>
         </>
       }

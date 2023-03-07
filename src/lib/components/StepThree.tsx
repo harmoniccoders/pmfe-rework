@@ -135,7 +135,12 @@ const StepThree = ({ applicationData }: Props) => {
             display="flex"
             alignItems="center"
             disabled={!payment}
-            onClick={() => window.open(applicationData?.documentUrl, '_blank')}
+            onClick={
+              applicationData.documentUrl === null ||
+              applicationData.documentUrl === undefined
+                ? () => alert('No documentation found! Contact admin')
+                : () => window.open(applicationData?.documentUrl, '_blank')
+            }
           >
             <Box
               pr="10px"
