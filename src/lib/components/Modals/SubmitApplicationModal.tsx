@@ -183,7 +183,7 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
       formStep={formStep}
       setFormStep={setFormStep}
       pmlogo={true}
-      width="40%"
+      width={['90%', '40%']}
       content={
         <VStack alignItems="flex-start" spacing={3} width="100%">
           <Text fontWeight={600} fontSize="16px">

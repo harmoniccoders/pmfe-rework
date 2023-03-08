@@ -235,7 +235,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
     } else {
       return (
         <Box>
-          {/* <Button
+          <Button
             type="submit"
             w="100%"
             h="100%"
@@ -246,12 +246,12 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
             isLoading={loading}
           >
             Apply for Rent Relief
-          </Button> */}
-          <ButtonComponent
+          </Button>
+          {/* <ButtonComponent
             content="Apply for Rent Relief"
             isValid={installs === Infinity ? false : true}
             loading={loading}
-          />
+          /> */}
         </Box>
       );
     }

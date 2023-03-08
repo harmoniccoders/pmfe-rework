@@ -60,7 +60,7 @@ const ScheduleTabs = ({ date, item, close, status }: Props) => {
 
         <TabPanels>
           <TabPanel mt="2rem">
-            {status !== undefined ? (
+            {status !== null ? (
               <>
                 <Text fontWeight={600} mb="1rem">
                   Selected Inspection Date
@@ -82,21 +82,23 @@ const ScheduleTabs = ({ date, item, close, status }: Props) => {
                       fontSize="16px"
                       textTransform="uppercase"
                     >
-                      {moment(status.inspectionDate?.date).format('ddd')}
+                      {moment(status?.inspectionDate?.date).format('ddd')}
                     </Text>
                     <Text fontWeight={600} fontSize="16px">
-                      {moment(status.inspectionDate?.date).format('MMM DD')}
+                      {moment(status?.inspectionDate?.date).format('MMM DD')}
                     </Text>
                   </VStack>
                   <VStack>
                     <Clock
                       value={
-                        new Date(status.inspectionTime?.time as unknown as Date)
+                        new Date(
+                          status?.inspectionTime?.time as unknown as Date
+                        )
                       }
                       size={80}
                     />
                     <Box>
-                      {moment(status.inspectionTime?.time).format('LT')}
+                      {moment(status?.inspectionTime?.time).format('LT')}
                     </Box>
                   </VStack>
                 </HStack>

@@ -29,7 +29,7 @@ export default function Modals({
   content,
   formStep,
   setFormStep,
-  width = '40%',
+  width = ['90%', '40%'],
   h = '77vh',
   pb = '4rem',
   showBack = true,
