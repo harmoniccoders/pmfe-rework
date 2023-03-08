@@ -78,10 +78,16 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
     control,
     trigger,
     setValue,
+    watch,
     formState: { errors, isValid },
   } = useForm<ApplicationModel>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      register: {
+        dateOfBirth: new Date(user?.dateOfBirth) as unknown as string,
+      },
+    },
   });
 
   const { addToast } = useToasts();
@@ -121,14 +127,18 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
     }
   };
 
+  // console.log(watch('register.dateOfBirth'));
   const onSubmit = async (data: ApplicationModel) => {
-    data.register
-      ? (data.register.dateOfBirth = new Date(
-          data.register?.dateOfBirth as unknown as Date
-        ).toLocaleDateString())
-      : null;
+    // data.register
+    //   ? (data.register.dateOfBirth = new Date(
+    //       data.register?.dateOfBirth as unknown as Date
+    //     ).toLocaleDateString())
+    //   : null;
+    // {data.register?.dateOfBirth == un}
     data.propertyId = propertyId;
     data.applicationTypeId = 1;
+
+    console.log({ data });
 
     try {
       const result = await (await SubmitApplication(undefined, data)).data;
@@ -148,7 +158,13 @@ const SubmitApplicationModal = ({ onClose, isOpen, data }: Props) => {
       });
       onClose();
       return;
-    } catch (error) {}
+    } catch (error: any) {
+      onClose();
+      addToast(error.message || error.body.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
   };
 
   const CountryList = require('country-list').getNames();

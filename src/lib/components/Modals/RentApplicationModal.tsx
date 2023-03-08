@@ -107,6 +107,9 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
     defaultValues: {
       propertyId: data.id,
       applicationTypeId: 2,
+      register: {
+        dateOfBirth: new Date(user?.dateOfBirth) as unknown as string,
+      },
     },
   });
 
@@ -179,11 +182,11 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
   };
 
   const onSubmit = async (data: ApplicationModel) => {
-    data.register
-      ? (data.register.dateOfBirth = new Date(
-          data.register?.dateOfBirth as unknown as Date
-        ).toLocaleDateString())
-      : null;
+    // data.register
+    //   ? (data.register.dateOfBirth = new Date(
+    //       data.register?.dateOfBirth as unknown as Date
+    //     ).toLocaleDateString())
+    //   : null;
 
     data.register!.passportPhotograph = uploadedPassport[0];
     data.register!.workId = uploadedId[0];
@@ -241,7 +244,7 @@ const RentApplicationModal = ({ onClose, isOpen, data }: Props) => {
       pmlogo={true}
       formStep={formStep}
       setFormStep={setFormStep}
-      width="40%"
+      width={['90%', '40%']}
       content={
         <VStack alignItems="flex-start" spacing={3} width="100%">
           <Text fontWeight={600} fontSize="16px">
