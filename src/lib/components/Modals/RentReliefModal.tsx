@@ -242,7 +242,7 @@ const RentReliefModal = ({ onClose, isOpen, item }: Props) => {
             mt="2rem"
             variant="solid"
             textTransform="capitalize"
-            disabled={installs === Infinity ? false : true}
+            disabled={installs === Infinity ? true : false}
             isLoading={loading}
           >
             Apply for Rent Relief
