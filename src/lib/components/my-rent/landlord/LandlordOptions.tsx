@@ -117,6 +117,7 @@ const LandlordOptions = ({ singles }: { singles: any }) => {
             borderRadius="4px"
             cursor="pointer"
             disabled
+            justifyContent="flex-start"
           >
             <HStack>
               <Icons iconClass="fa-money-bill-wave" />
