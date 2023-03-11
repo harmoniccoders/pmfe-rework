@@ -36,6 +36,19 @@ const SingleEnquiry = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
 
+  const reloadPage = () => {
+    if (document.hidden) {
+      console.log('hidden');
+    } else {
+      console.log('shown');
+      router.reload();
+    }
+  };
+  const router = useRouter();
+  useEffect(() => {
+    document.addEventListener('visibilitychange', reloadPage);
+  }, []);
+
   return (
     <HStack
       w={['full', '90%']}

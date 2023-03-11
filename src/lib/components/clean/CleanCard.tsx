@@ -69,7 +69,7 @@ const CleanCard = ({
                 <Icons iconClass="fa-bed" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
                   {`${bedroom} ${
-                    bedroom ? (bedroom > 1 ? 'Bedrooms' : 'Bedroom') : null
+                    bedroom ? (bedroom > 1 ? 'Bedrooms' : 'Bedroom') : 'Bedroom'
                   }`}
                 </Text>
               </Flex>
@@ -79,7 +79,11 @@ const CleanCard = ({
                 <Icons iconClass="fa-toilet" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
                   {`${bathroom} ${
-                    bathroom ? (bathroom > 1 ? 'Bathrooms' : 'Bathroom') : null
+                    bathroom
+                      ? bathroom > 1
+                        ? 'Bathrooms'
+                        : 'Bathroom'
+                      : 'Bathrooms'
                   }`}
                 </Text>
               </Flex>
@@ -89,7 +93,7 @@ const CleanCard = ({
                 <Icons iconClass="fa-tags" style={iconStyle} />
                 <Text fontSize="13px" ml="4px">
                   {`${floor} ${
-                    floor ? (floor > 1 ? 'Floors' : 'Floor') : null
+                    floor ? (floor > 1 ? 'Floors' : 'Floor') : 'Floor'
                   }`}
                 </Text>
               </Flex>

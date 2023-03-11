@@ -72,7 +72,7 @@ const Form = ({
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   const { user } = useContext(UserContext);
 
-  const schema = yup.object().shape({
+  let validationSchema = {
     address: yup.string().required(),
     description: yup.string().required(),
     title: yup.string().required(),
@@ -81,12 +81,17 @@ const Form = ({
     state: yup.string().required(),
     propertyTypeId: yup.string().required(),
     name: yup.string().required(),
-    price: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number().required(),
-    }),
-    // mediaFiles: yup.string().required(),
-  });
+  };
+  if (formStep === 1) {
+    validationSchema = {
+      //@ts-ignore
+      price: yup.number().required(),
+      numberOfBedrooms: yup.number().min(1).required(),
+      numberOfBathrooms: yup.number().min(1).required(),
+      numberOfFloors: yup.number().min(1).required(),
+    };
+  }
+  const schema = yup.object().shape(validationSchema);
 
   const {
     register,
@@ -96,7 +101,6 @@ const Form = ({
     watch,
     reset,
     getValues,
-    setValue,
     formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
@@ -105,9 +109,6 @@ const Form = ({
       isForSale: true,
     },
   });
-
-  watch('numberOfBathrooms');
-  watch('numberOfBedrooms');
 
   const completeFormStep = async () => {
     await trigger();
@@ -249,19 +250,6 @@ const Form = ({
       data.mediaFiles = uploadedMedia;
       data.bank = user?.bank || data.bank;
       data.accountNumber = user?.accountNumber || data.accountNumber;
-      if (
-        data.numberOfBathrooms == undefined ||
-        data.numberOfBathrooms == 0 ||
-        data.numberOfBedrooms == undefined ||
-        data.numberOfBedrooms == 0
-      ) {
-        toast({
-          position: 'top-right',
-          status: 'warning',
-          description: 'Number of bedrooms or bathrooms can not be 0',
-        });
-        return;
-      }
 
       if (data.mediaFiles.length == 0) {
         toast({
@@ -653,16 +641,18 @@ const Form = ({
                   </Box>
 
                   <NumberCounter
-                    valueName="numberOfBedrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBedrooms}
+                    name="numberOfBedrooms"
                     label="Number of Bedrooms"
                     fontSize="sm"
                   />
                   <NumberCounter
-                    valueName="numberOfBathrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBathrooms}
+                    name="numberOfBathrooms"
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />

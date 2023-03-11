@@ -87,11 +87,11 @@ export const PrimaryDate = <TFormValues extends Record<string, any>>({
           name={name}
           control={control}
         />
+        <FormErrorMessage fontSize=".7rem" textTransform="capitalize">
+          {(error?.type === 'required' && `${label} is required`) ||
+            error?.message}
+        </FormErrorMessage>
       </FormControl>
-      <FormErrorMessage fontSize=".7rem" textTransform="capitalize">
-        {(error?.type === 'required' && `${label} is required`) ||
-          error?.message}
-      </FormErrorMessage>
     </GridItem>
   );
 };

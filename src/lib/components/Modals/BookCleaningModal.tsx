@@ -35,6 +35,9 @@ const schema = yup.object().shape({
   propertyTypeId: yup.number().required(),
   location: yup.string().required(),
   dateNeeded: yup.string().required(),
+  numberOfBedrooms: yup.number().min(1).required(),
+  numberOfBathrooms: yup.number().min(1).required(),
+  numberOfFloors: yup.number().min(1).required(),
 });
 
 const BookCleaningModal = ({
@@ -77,10 +80,6 @@ const BookCleaningModal = ({
     });
     closeModal();
   };
-
-  watch('numberOfBedrooms');
-  watch('numberOfBathrooms');
-  watch('numberOfFloors');
 
   const onSubmit = async (data: CleaningModel) => {
     data.dateNeeded = new Date(
@@ -200,27 +199,42 @@ const BookCleaningModal = ({
             />
 
             <NumberCounter
-              valueName="numberOfBedrooms"
-              setValue={setValue}
-              getValues={getValues}
+              register={register}
+              control={control}
+              error={errors.numberOfBedrooms}
+              name="numberOfBedrooms"
               label="Number of Bedrooms"
               fontSize="sm"
             />
             <NumberCounter
-              valueName="numberOfBathrooms"
-              setValue={setValue}
-              getValues={getValues}
+              register={register}
+              control={control}
+              error={errors.numberOfBathrooms}
+              name="numberOfBathrooms"
               label="Number of Bathrooms"
               fontSize="sm"
             />
             <NumberCounter
-              valueName="numberOfFloors"
-              setValue={setValue}
-              getValues={getValues}
+              register={register}
+              control={control}
+              error={errors.numberOfFloors}
+              name="numberOfFloors"
               label="Number of Floors"
               fontSize="sm"
             />
-            <ButtonComponent content="Get Quote" loading={loading} />
+            {/* <ButtonComponent content="Get Quote" loading={loading} /> */}
+            <Button
+              type="submit"
+              w="100%"
+              h="50px"
+              my="25px"
+              variant="solid"
+              textTransform="capitalize"
+              disabled={isValid ? false : true}
+              isLoading={loading}
+            >
+              Get Quote
+            </Button>
           </form>
           <Button
             variant="outline"

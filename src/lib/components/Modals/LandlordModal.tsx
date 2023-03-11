@@ -59,6 +59,8 @@ function LandlordModal({ isOpen, onClose, data }: LandlordProps) {
     getComplaints();
   }, []);
 
+  // console.log({ complains });
+
   return (
     <>
       <Modals

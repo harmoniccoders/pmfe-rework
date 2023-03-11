@@ -75,21 +75,26 @@ const EditPropertyForm = ({
   const { isOpen: open, onOpen: opened, onClose: close } = useDisclosure();
   // console.log({ getBanks });
 
-  const schema = yup.object().shape({
-    // address: yup.string().required(),
-    // description: yup.string().required(),
-    // title: yup.string().required(),
-    // area: yup.string().required(),
-    // lga: yup.string().required(),
-    // state: yup.string().required(),
-    // propertyTypeId: yup.number().required(),
-    // sellMyself: yup.string().required(),
-    // name: yup.string().required(),
-    // price: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-  });
+  let validationSchema = {
+    address: yup.string().required(),
+    description: yup.string().required(),
+    title: yup.string().required(),
+    area: yup.string().required(),
+    lga: yup.string().required(),
+    state: yup.string().required(),
+    propertyTypeId: yup.string().required(),
+    name: yup.string().required(),
+  };
+  if (formStep === 1) {
+    validationSchema = {
+      //@ts-ignore
+      price: yup.number().required(),
+      numberOfBedrooms: yup.number().min(1).required(),
+      numberOfBathrooms: yup.number().min(1).required(),
+      numberOfFloors: yup.number().min(1).required(),
+    };
+  }
+  const schema = yup.object().shape(validationSchema);
 
   const {
     register,
@@ -98,7 +103,6 @@ const EditPropertyForm = ({
     watch,
     reset,
     getValues,
-    setValue,
     formState: { errors, isValid, isSubmitting },
   } = useForm<PropertyModel>({
     resolver: yupResolver(schema),
@@ -123,10 +127,6 @@ const EditPropertyForm = ({
       bank: item.createdByUser?.bank,
     },
   });
-
-  watch('numberOfBathrooms');
-  watch('numberOfBedrooms');
-
   const completeFormStep = () => {
     setFormStep((cur: number) => cur + 1);
   };
@@ -332,19 +332,7 @@ const EditPropertyForm = ({
       data.mediaFiles = uploadedMedia;
       data.bank = user?.bank || data.bank;
       data.accountNumber = user?.accountNumber || data.accountNumber;
-      if (
-        data.numberOfBathrooms == undefined ||
-        data.numberOfBathrooms == 0 ||
-        data.numberOfBedrooms == undefined ||
-        data.numberOfBedrooms == 0
-      ) {
-        toast({
-          position: 'top-right',
-          status: 'warning',
-          description: 'Number of bedrooms or bathrooms can not be 0',
-        });
-        return;
-      }
+
       if ((data.mediaFiles as unknown as []).length == 0) {
         toast({
           position: 'top-right',
@@ -747,16 +735,18 @@ const EditPropertyForm = ({
                   </Box>
 
                   <NumberCounter
-                    valueName="numberOfBedrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBedrooms}
+                    name="numberOfBedrooms"
                     label="Number of Bedrooms"
                     fontSize="sm"
                   />
                   <NumberCounter
-                    valueName="numberOfBathrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBathrooms}
+                    name="numberOfBathrooms"
                     label="Number of Bathrooms"
                     fontSize="sm"
                   />

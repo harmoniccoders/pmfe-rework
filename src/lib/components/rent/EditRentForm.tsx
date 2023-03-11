@@ -87,40 +87,35 @@ const EditRentForm = ({
   const { user } = useContext(UserContext);
   // console.log({ sellMyself });
 
-  const schema = yup.object().shape({
-    // address: yup.string().required(),
-    // description: yup.string().required(),
-    // title: yup.string().required(),
-    // area: yup.string().required(),
-    // lga: yup.string().required(),
-    // state: yup.string().required(),
-    // propertyTypeId: yup.number().required(),
-    // sellMyself: yup.string().required(),
-    // name: yup.string().required(),
-    // numberOfBathrooms: yup.number().required(),
-    // numberOfBedrooms: yup.number().required(),
-    // price: yup.number().required(),
-    // budget: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // rentCollectionTypeId: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // tenantTypeId: yup.number().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.number(),
-    // }),
-    // bank: yup.string().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.string(),
-    // }),
-    // accountNumber: yup.string().when('name', {
-    //   is: () => formStep === 1,
-    //   then: yup.string(),
-    // }),
-  });
+  let validationSchema = {
+    name: yup.string().required(),
+    propertyTypeId: yup.number().required(),
+    title: yup.string().required(),
+    state: yup.string().required(),
+    lga: yup.string().required(),
+    area: yup.string().required(),
+    address: yup.string().required(),
+    description: yup.string().required(),
+    price: yup.number().required(),
+    numberOfBathrooms: yup.number().required(),
+    numberOfBedrooms: yup.number().required(),
+  };
+
+  if (formStep === 1) {
+    validationSchema = {
+      //@ts-ignore
+      budget: yup.number().required(),
+      rentCollectionTypeId: yup.number().required(),
+      tenantTypeId: yup.number().required(),
+      bank: yup.string().required(),
+      accountNumber: yup.string().required(),
+      price: yup.number().required(),
+      numberOfBedrooms: yup.number().min(1).required(),
+      numberOfBathrooms: yup.number().min(1).required(),
+      numberOfFloors: yup.number().min(1).required(),
+    };
+  }
+  const schema = yup.object().shape(validationSchema);
 
   const {
     register,
@@ -159,9 +154,6 @@ const EditRentForm = ({
       budget: '',
     },
   });
-
-  watch('numberOfBedrooms');
-  watch('numberOfBathrooms');
   watch('sellMyself');
 
   // console.log(watch('sellMyself'));
@@ -348,19 +340,7 @@ const EditRentForm = ({
     data.mediaFiles = uploadedMedia;
     data.bank = user?.bank || data.bank;
     data.accountNumber = user?.accountNumber || data.accountNumber;
-    if (
-      data.numberOfBathrooms == undefined ||
-      data.numberOfBathrooms == 0 ||
-      data.numberOfBedrooms == undefined ||
-      data.numberOfBedrooms == 0
-    ) {
-      toast({
-        position: 'top-right',
-        status: 'warning',
-        description: 'Number of bedrooms or bathrooms can not be 0',
-      });
-      return;
-    }
+
     // if ((data.mediaFiles as unknown as []).length == 0) {
     //   toast({
     //     position: 'top-right',
@@ -690,16 +670,20 @@ const EditRentForm = ({
                     </>
                   </Box>
                   <NumberCounter
-                    valueName="numberOfBedrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBedrooms}
+                    name="numberOfBedrooms"
                     label="Number of Bedrooms"
+                    fontSize="sm"
                   />
                   <NumberCounter
-                    valueName="numberOfBathrooms"
-                    setValue={setValue}
-                    getValues={getValues}
+                    register={register}
+                    control={control}
+                    error={errors.numberOfBathrooms}
+                    name="numberOfBathrooms"
                     label="Number of Bathrooms"
+                    fontSize="sm"
                   />
                   <VStack my="1.3em" align="flex-start">
                     <NewCheckbox

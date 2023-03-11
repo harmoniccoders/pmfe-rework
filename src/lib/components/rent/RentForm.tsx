@@ -80,7 +80,7 @@ const RentForm = ({
   const { user } = useContext(UserContext);
   const users: UserView = user;
 
-  const schema = yup.object().shape({
+  let validationSchema = {
     name: yup.string().required(),
     propertyTypeId: yup.number().required(),
     title: yup.string().required(),
@@ -92,27 +92,23 @@ const RentForm = ({
     price: yup.number().required(),
     numberOfBathrooms: yup.number().required(),
     numberOfBedrooms: yup.number().required(),
-    budget: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number().required(),
-    }),
-    rentCollectionTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number().required(),
-    }),
-    tenantTypeId: yup.number().when('name', {
-      is: () => formStep === 1,
-      then: yup.number().required(),
-    }),
-    bank: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string().required(),
-    }),
-    accountNumber: yup.string().when('name', {
-      is: () => formStep === 1,
-      then: yup.string().required(),
-    }),
-  });
+  };
+
+  if (formStep === 1) {
+    validationSchema = {
+      //@ts-ignore
+      budget: yup.number().required(),
+      rentCollectionTypeId: yup.number().required(),
+      tenantTypeId: yup.number().required(),
+      bank: yup.string().required(),
+      accountNumber: yup.string().required(),
+      price: yup.number().required(),
+      numberOfBedrooms: yup.number().min(1).required(),
+      numberOfBathrooms: yup.number().min(1).required(),
+      numberOfFloors: yup.number().min(1).required(),
+    };
+  }
+  const schema = yup.object().shape(validationSchema);
 
   const {
     register,
@@ -133,9 +129,6 @@ const RentForm = ({
       accountNumber: users.accountNumber,
     },
   });
-
-  watch('numberOfBedrooms');
-  watch('numberOfBathrooms');
   // console.log(watch('sellMyself'));
 
   const completeFormStep = async () => {
@@ -588,16 +581,20 @@ const RentForm = ({
                     </Box>
 
                     <NumberCounter
-                      valueName="numberOfBedrooms"
-                      setValue={setValue}
-                      getValues={getValues}
+                      register={register}
+                      control={control}
+                      error={errors.numberOfBedrooms}
+                      name="numberOfBedrooms"
                       label="Number of Bedrooms"
+                      fontSize="sm"
                     />
                     <NumberCounter
-                      valueName="numberOfBathrooms"
-                      setValue={setValue}
-                      getValues={getValues}
+                      register={register}
+                      control={control}
+                      error={errors.numberOfBathrooms}
+                      name="numberOfBathrooms"
                       label="Number of Bathrooms"
+                      fontSize="sm"
                     />
                     <VStack my="1.3em" align="flex-start">
                       <NewCheckbox

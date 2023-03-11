@@ -8,24 +8,42 @@ import {
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
+  FormControl,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
-interface CounterProps {
-  valueName: string;
-  setValue: any;
-  getValues: any;
+import {
+  Controller,
+  UseFormRegister,
+  Path,
+  FieldError,
+  Control,
+} from 'react-hook-form';
+interface CounterProps<TFormValues extends Record<string, unknown>> {
   label: string;
   fontSize?: string;
+  name: Path<TFormValues>;
+  required?: boolean;
+  register: UseFormRegister<TFormValues>;
+  defaultValue?: any;
+  error: FieldError | undefined;
+  control: Control<TFormValues>;
 }
-function NumberCounter({
-  valueName,
+const NumberCounter = <TFormValues extends Record<string, any>>({
   label,
   fontSize,
-  setValue,
-  getValues,
-}: CounterProps) {
+  required,
+  register,
+  defaultValue,
+  error,
+  control,
+  name,
+}: CounterProps<TFormValues>) => {
   return (
-    <Box my="1.5rem">
+    <FormControl
+      isInvalid={error?.type === 'required' || error?.message !== undefined}
+      my="1.5rem"
+    >
       <FormLabel
         htmlFor={label}
         textTransform="capitalize"
@@ -36,55 +54,68 @@ function NumberCounter({
       >
         {label}
       </FormLabel>
-      <NumberInput
-        onChange={(valueString: string) =>
-          setValue(valueName, parseInt(valueString))
-        }
-        value={getValues(valueName) || 0}
-        max={50}
-        min={0}
+
+      <Controller
+        render={({ field }) => (
+          //@ts-ignore
+
+          <NumberInput
+            onChange={(value) => field.onChange(value)}
+            value={field.value || 0}
+            max={50}
+            min={0}
+            defaultValue={defaultValue}
+          >
+            <Flex justify="space-between">
+              <NumberDecrementStepper
+                border="0"
+                justifyContent="flex-start"
+                _active={{ bgColor: 'none' }}
+              >
+                <Button
+                  bg="brand.100"
+                  width="40px"
+                  height="40px"
+                  variant="solid"
+                  borderRadius="50%"
+                  color="white"
+                >
+                  -
+                </Button>
+              </NumberDecrementStepper>
+              <NumberInputField textAlign="center" w="50%" />
+              <NumberIncrementStepper
+                border="0"
+                justifyContent="flex-end"
+                _active={{ bgColor: 'none' }}
+              >
+                <Button
+                  bg="brand.100"
+                  width="40px"
+                  height="40px"
+                  variant="solid"
+                  borderRadius="50%"
+                  color="white"
+                >
+                  +
+                </Button>
+              </NumberIncrementStepper>
+            </Flex>
+          </NumberInput>
+        )}
+        name={name}
+        control={control}
+      />
+      <FormErrorMessage
+        fontSize=".7rem"
+        textTransform="capitalize"
+        justifyContent="center"
       >
-        <Flex justify="space-between">
-          <NumberDecrementStepper
-            border="0"
-            justifyContent="flex-start"
-            _active={{ bgColor: 'none' }}
-          >
-            <Button
-              bg="brand.100"
-              width="40px"
-              height="40px"
-              variant="solid"
-              borderRadius="50%"
-              color="white"
-            >
-              -
-            </Button>
-          </NumberDecrementStepper>
-          <NumberInputField textAlign="center" w="50%" />
-          <NumberIncrementStepper
-            border="0"
-            justifyContent="flex-end"
-            _active={{ bgColor: 'none' }}
-          >
-            <Button
-              bg="brand.100"
-              width="40px"
-              height="40px"
-              variant="solid"
-              borderRadius="50%"
-              color="white"
-            >
-              +
-            </Button>
-          </NumberIncrementStepper>
-        </Flex>
-      </NumberInput>
-      <Text fontSize=".7rem" color="red" textAlign="center">
-        {getValues(valueName) <= 0 || undefined ? `${label} is required` : ''}
-      </Text>
-    </Box>
+        {(error?.type === 'required' && `${label} is required`) ||
+          error?.message}
+      </FormErrorMessage>
+    </FormControl>
   );
-}
+};
 
 export default NumberCounter;
